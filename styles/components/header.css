@@ -1,0 +1,75 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--large-gap);
+
+    padding: var(--large-padding);
+    box-sizing: border-box;
+
+    max-width: var(--max-width);
+    width: 100%;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header .brand {
+    display: flex;
+    align-items: center;
+
+    margin: 0;
+    user-select: none;
+}
+
+.header .brand .accent {
+    color: var(--primary);
+}
+
+.header .links {
+    display: flex;
+    align-items: center;
+    gap: var(--small-gap);
+
+    padding: var(--small-padding);
+    box-sizing: border-box;
+
+    border-radius: var(--border-radius);
+    background-color: var(--dark);
+    border: var(--small-border) solid var(--light);
+}
+
+.header .links .link {
+    display: flex;
+    align-items: center;
+    gap: var(--small-gap);
+
+    font-size: var(--small-font);
+    padding: var(--small-padding) calc(var(--small-padding) * 2);
+
+    border-radius: calc(var(--border-radius) / 2);
+    user-select: none;
+    
+    transition: var(--transition-speed) background-color;
+}
+
+.header .links .link.active {
+    background-color: var(--light);
+}
+
+.header .links .link:not(.active) {
+    cursor: pointer;
+    opacity: var(--dim-opacity);
+}
+
+.header .links .link:not(.active):hover {
+    background-color: var(--light);
+}
+
+.header .links .link:not(.active):active {
+    opacity: var(--dimmer-opacity)
+}
+
+.header .links .link .icon {
+    opacity: var(--dim-opacity);
+}

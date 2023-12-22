@@ -1,0 +1,26 @@
+html {
+    --background: #141414;
+    --primary: #e42222;
+    --light: #1A1A1A;
+    --dark: #0F0F0F;
+    --text: #FFFFFF;
+
+    --border-radius: 10px;
+    --max-width: 75rem;
+    --transition-speed: .2s;
+    
+    --dim-opacity: 75%;
+    --dimmer-opacity: 50%;
+    
+    --small-gap: 10px;
+    --large-gap: 20px;
+
+    --small-border: 1px;
+    --large-border: 2px;
+
+    --small-padding: 10px;
+    --large-padding: 20px;
+
+    --small-font: .8rem;
+    --large-font: 1.2rem;
+}
