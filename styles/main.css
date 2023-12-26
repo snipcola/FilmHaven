@@ -6,3 +6,8 @@
 @import url(./components/header.responsive.css);
 
 @import url(./components/content.css);
+
+@import url(./components/big-card.css);
+@import url(./components/big-card.responsive.css);
+
+@import url(./components/button.css);

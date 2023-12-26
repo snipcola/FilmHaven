@@ -66,10 +66,6 @@
     background-color: var(--light);
 }
 
-.header .links .link:not(.active):active {
-    opacity: var(--dimmer-opacity)
-}
-
 .header .links .link .icon {
     opacity: var(--dim-opacity);
 }

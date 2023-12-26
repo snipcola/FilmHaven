@@ -1,0 +1,66 @@
+.big-card {
+    position: relative;
+    display: flex;
+    
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 35rem;
+
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.big-card .image {
+    width: 100rem;
+    object-fit: cover;
+
+    user-select: none;
+    pointer-events: none;
+}
+
+.big-card .details {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    position: absolute;
+    bottom: 1rem;
+
+    border-radius: var(--border-radius);
+    padding: var(--small-padding);
+
+    text-align: center;
+}
+
+.big-card .vignette {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.3) 50%);
+}
+
+.big-card .title {
+    font-size: 1.75rem;
+    font-weight: 600;
+
+    margin-bottom: 0;
+}
+
+.big-card .description {
+    opacity: var(--dim-opacity);
+    max-width: 80%;
+}
+
+.big-card .buttons {
+    display: flex;
+    gap: var(--small-padding);
+}

@@ -1,7 +1,9 @@
 html {
     --background: #141414;
     --primary: #e42222;
+    --primary-dark: #b81a1a;
     --light: #1A1A1A;
+    --dark-light: #1A1A1C;
     --dark: #0F0F0F;
     --text: #FFFFFF;
 

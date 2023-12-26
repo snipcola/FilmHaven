@@ -4,6 +4,8 @@
         <title>FilmHaven</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="A catalog of thousands of movies & shows, at your fingertips.">
+        <link rel="icon" href="favicon.ico">
         <link rel="stylesheet" href="./external/normalize.min.css">
         <link rel="stylesheet" href="./external/fontawesome/style.min.css">
         <link rel="stylesheet" href="./styles/main.css">
@@ -13,12 +15,10 @@
     <body>
         <div class="header">
             <h3 class="brand">
-                Film
-                <span class="accent">Haven</span>
+                Film<span class="accent">Haven</span>
             </h3>
             <h3 class="brand mobile">
-                F
-                <span class="accent">H</span>
+                F<span class="accent">H</span>
             </h3>
             <div class="links">
                 <div class="link active">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="link">
                     <i class="icon fa-solid fa-tv"></i>
-                    <span class="text">TV</span>
+                    <span class="text">Shows</span>
                 </div>
                 <div class="link">
                     <i class="icon fa-solid fa-cog"></i>
@@ -37,10 +37,23 @@
         </div>
         <div class="content">
             <div class="section movies active">
-                <p>Movies</p>
+                <div class="big-card">
+                    <img class="image" src="https://image.tmdb.org/t/p/w1280/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg">
+                    <div class="vignette"></div>
+                    <div class="details">
+                        <h2 class="title">Avengers: Endgame</h2>
+                        <p class="description">With the help of remaining allies, the Avengers must assemble once more in order to undo Thanos's actions and undo the chaos to the universe, no matter what consequences may be in store, and no matter who they face... Avenge the fallen.</p>
+                        <div class="buttons">
+                            <div class="button">
+                                <i class="icon fa-solid fa-play"></i>
+                                <span class="text">Watch Now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="section tv">
-                <p>TV</p>
+            <div class="section shows">
+                <p>Shows</p>
             </div>
             <div class="section settings">
                 <p>Settings</p>

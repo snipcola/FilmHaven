@@ -20,3 +20,9 @@
         justify-content: center;
     }
 }
+
+@media only screen and (max-width: 425px) {
+    .header .links .link .text {
+        display: none;
+    }
+}
