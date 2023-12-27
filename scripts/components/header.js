@@ -1,7 +1,17 @@
+import { config } from "../config.js";
 import { getInnerText } from "../functions.js";
+import { getHash, setHash, onHashChange } from "../hash.js";
 
 let links = [];
 let sections = [];
+
+function setPage(index) {
+    setHash("page", index);
+}
+
+function getPage() {
+    return getHash("page");
+}
 
 function isActive(link) {
     return link.classList.contains("active");
@@ -21,7 +31,9 @@ function setLinksInactive() {
 
 function setSectionActive(link) {
     const sectionName = getInnerText(link);
-    const section = document.querySelector(`.content > .section.${sectionName}`);
+    const section = document.querySelector(`.content > .section.${sectionName.toLowerCase()}`);
+
+    document.title = `${config.name} - ${sectionName}`;
     
     if (!section) {
         return console.error(`Failed to find section "${sectionName}".`);
@@ -43,9 +55,28 @@ function setLinkActive(link) {
 }
 
 function initializeLinks() {
-    for (const link of links) {
+    function handlePageChange() {
+        const activePage = getPage();
+
+        const defaultLinkIndex = links[activePage] ? activePage : 0;
+        const defaultLink = links[defaultLinkIndex];
+
+        if (defaultLink) {
+            setLinkActive(defaultLink);
+            setPage(defaultLinkIndex);
+        }
+    }
+
+    handlePageChange();
+    onHashChange(handlePageChange);
+
+    for (var i = 0; i < links.length; i++) {
+        const linkIndex = i;
+        const link = links[linkIndex];
+
         link.addEventListener("click", function () {
             setLinkActive(link);
+            setPage(linkIndex);
         });
     }
 }

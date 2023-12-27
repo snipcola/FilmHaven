@@ -16,6 +16,8 @@
 
     box-sizing: border-box;
     user-select: none;
+
+    font-size: 0.9rem;
 }
 
 .button:hover {
@@ -28,7 +30,7 @@
 
 .button.secondary {
     background-color: var(--dark);
-    border: var(--small-border) solid var(--light);
+    border: var(--small-border) solid var(--lighter);
 }
 
 .button.secondary:hover {

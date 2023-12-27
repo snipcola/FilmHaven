@@ -6,7 +6,7 @@
     justify-content: center;
 
     width: 100%;
-    height: 35rem;
+    height: 32.5rem;
 
     border-radius: var(--border-radius);
     overflow: hidden;
@@ -25,7 +25,7 @@
     justify-content: center;
 
     position: absolute;
-    bottom: 2.5rem;
+    bottom: 3rem;
 
     border-radius: var(--border-radius);
     padding: var(--small-padding);
@@ -71,43 +71,42 @@
 .carousel .control {
     display: flex;
     position: absolute;
-
-    top: 0;
-    left: 0;
     
+    bottom: 0.5rem;
     width: 100%;
-    height: 100%;
 
     align-items: center;
     justify-content: space-between;
 
-    font-size: 2rem;
+    font-size: 1.25rem;
 }
 
 .carousel .control .previous {
-    margin-left: var(--large-padding);
+    margin-left: var(--small-padding);
 }
 
 .carousel .control .next {
-    margin-right: var(--large-padding);
+    margin-right: var(--small-padding);
 }
 
-.carousel .control .action {
+.carousel .control .indicators {
+    display: flex;
+    align-items: center;
+
+    background-color: var(--dark);
+    gap: calc(var(--small-gap) / 2);
+
     padding: var(--small-padding);
     border-radius: var(--border-radius);
-
-    cursor: pointer;
-    transition: var(--transition-speed) opacity;
-
-    background-color: var(--dark-light);
-    opacity: var(--dim-opacity);
 }
 
-.carousel .control .action:hover {
-    opacity: 90%;
+.carousel .control .indicator {
+    padding: calc(var(--small-padding) / 5) var(--small-padding);
+    background-color: var(--lightest);
+
+    border-radius: var(--border-radius);
 }
 
-.carousel .control .action.inactive {
-    opacity: var(--dimmer-opacity);
-    pointer-events: none;
+.carousel .control .indicator.active {
+    background-color: var(--primary);
 }

@@ -1,3 +1,5 @@
+import { config } from "../config.js";
+import { isHovered } from "../functions.js";
 import { preloadImages } from "../cache.js";
 
 function initializeCarousel(card, slides) {
@@ -17,6 +19,8 @@ function initializeCarousel(card, slides) {
     const control = document.createElement("div");
     const previous = document.createElement("div");
     const previousIcon = document.createElement("i");
+    const indicators = document.createElement("div");
+    let indicatorArray = [];
     const next = document.createElement("div");
     const nextIcon = document.createElement("i");
 
@@ -31,7 +35,7 @@ function initializeCarousel(card, slides) {
     button.className = "button";
     buttonIcon.className = "icon fa-solid fa-play";
     buttonText.className = "text";
-    buttonText.innerText = "Watch Now";
+    buttonText.innerText = "Watch Content";
 
     button.append(buttonIcon);
     button.append(buttonText);
@@ -42,15 +46,23 @@ function initializeCarousel(card, slides) {
     details.append(buttons);
 
     control.className = "control";
-    previous.className = "action previous";
-    previousIcon.className = "icon fa-solid fa-angle-left";
-    next.className = "action next";
-    nextIcon.className = "icon fa-solid fa-angle-right";
+    previous.className = "button secondary icon-only previous";
+    previousIcon.className = "icon fa-solid fa-arrow-left";
+    indicators.className = "indicators";
+    next.className = "button secondary icon-only next";
+    nextIcon.className = "icon fa-solid fa-arrow-right";
+
+    for (var i = 0; i < slides.length; i++) {
+        indicatorArray[i] = document.createElement("div");
+        indicatorArray[i].className = "indicator";
+        indicators.append(indicatorArray[i]);
+    }
 
     previous.append(previousIcon);
     next.append(nextIcon);
 
     control.append(previous);
+    control.append(indicators);
     control.append(next);
 
     function set(newIndex) {
@@ -59,25 +71,35 @@ function initializeCarousel(card, slides) {
         if (!slide) {
             return;
         }
-        
+
         index = newIndex;
 
         image.src = slide.image;
         title.innerText = slide.title;
-        description.innerText = slide.description.length > 250 ? slide.description.substring(0, 250).replace(/\s+\S*$/, "...") : slide.description;
+        description.innerText = slide.description.length > config.carousel.maxDescriptionLength
+            ? slide.description.substring(0, config.carousel.maxDescriptionLength).replace(/\s+\S*$/, "...")
+            : slide.description;
 
-        previous.classList[slides[index - 1] ? "remove" : "add"]("inactive");
-        next.classList[slides[index + 1] ? "remove" : "add"]("inactive");
+        indicatorArray.forEach(function (indicator, i) {
+            indicator.classList[index === i ? "add" : "remove"]("active");
+        });
     }
 
     function setPrevious() {
-        set(index - 1);
+        set(slides[index - 1] ? index - 1 : slides.length - 1);
     }
 
     function setNext() {
-        set(index + 1);
+        set(slides[index + 1] ? index + 1 : 0);
+    }
+
+    function iterate() {
+        if (!isHovered(card)) {
+            setNext();
+        }
     }
     
+    setInterval(iterate, config.carousel.switchSlideInterval);
     set(index);
 
     card.append(image);
@@ -126,7 +148,6 @@ export function initializeCarousels() {
         }
     ];
 
-    preload(movies);
     preload(movies);
     initializeCarousel(moviesCard, movies);
 

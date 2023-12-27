@@ -1,0 +1,26 @@
+.area {
+    position: relative;
+    
+    margin-top: calc(var(--large-padding) * 2.5);
+    padding: var(--large-padding);
+
+    border: var(--small-border) solid var(--lighter);
+    border-radius: var(--border-radius);
+}
+
+.area .label {
+    position: absolute;
+    padding: var(--small-padding) var(--large-padding);
+
+    font-size: 0.9rem;
+    top: calc(var(--small-padding) * -2);
+
+    background-color: var(--primary);
+    border-radius: var(--border-radius);
+
+    user-select: none;
+}
+
+.area .title .text {
+    font-weight: 600;
+}

@@ -3,12 +3,14 @@ html {
     --primary: #e43636;
     --primary-dark: #c42d2d;
     --light: #1A1A1A;
+    --lighter: #232323;
+    --lightest: #373737;
     --dark-light: #1A1A1C;
     --dark-light-rgb: 26, 26, 28;
     --dark: #0F0F0F;
     --text: #FFFFFF;
 
-    --border-radius: 10px;
+    --border-radius: 8px;
     --max-width: 75rem;
     --transition-speed: .1s;
     

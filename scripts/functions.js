@@ -3,5 +3,9 @@ export function onDocumentLoad(callback) {
 }
 
 export function getInnerText(element) {
-    return element?.textContent?.toLowerCase()?.match(/[a-z]+/g)?.join("");
+    return element?.textContent?.match(/[A-Za-z]+/g)?.join("");
+}
+
+export function isHovered(element) {
+    return element.matches(":hover");
 }

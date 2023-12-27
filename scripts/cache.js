@@ -9,7 +9,7 @@ export function initializeCache() {
     document.body.appendChild(cache);
 }
 
-export function preloadImages(images) {    
+export function preloadImages(images) {
     for (const url of images) {
         if (imageExists(url)) {
             continue;
