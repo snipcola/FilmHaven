@@ -1,3 +1,5 @@
+import { preloadImages } from "../functions.js";
+
 function initializeBigCard(card, slides) {
     let currentIndex = 0;
 
@@ -88,6 +90,13 @@ function initializeBigCard(card, slides) {
     });
 }
 
+function preload(slides) {
+    const images = slides.map((m) => m.image);
+    images.shift();
+
+    preloadImages(images);
+}
+
 export function initializeBigCards() {
     const moviesCard = document.querySelector(".section.movies .big-card");
 
@@ -95,22 +104,30 @@ export function initializeBigCards() {
         return console.error("Failed to initialize big cards.");
     }
 
-    initializeBigCard(moviesCard,
-        [
-            {
-                id: "299534",
-                type: "movie",
-                title: "Avengers: Endgame",
-                description: "With the help of remaining allies, the Avengers must assemble once more in order to undo Thanos's actions and undo the chaos to the universe, no matter what consequences may be in store, and no matter who they face... Avenge the fallen.",
-                image: "https://image.tmdb.org/t/p/w1280/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg"
-            },
-            {
-                id: "558",
-                type: "movie",
-                title: "Spider-Man 2",
-                description: "Peter Parker is going through a major identity crisis. Burned out from being Spider-Man, he decides to shelve his superhero alter ego, which leaves the city suffering in the wake of carnage left by the evil Doc Ock. In the meantime, Parker still can't act on his feelings for Mary Jane Watson, a girl he's loved since childhood. A certain anger begins to brew in his best friend Harry Osborn as well...",
-                image: "https://image.tmdb.org/t/p/w1280/aqaSgTT6jiAdx9aJ4xUI4G2MEXe.jpg"
-            }
-        ]
-    );
+    const movies = [
+        {
+            id: "299534",
+            type: "movie",
+            title: "Avengers: Endgame",
+            description: "With the help of remaining allies, the Avengers must assemble once more in order to undo Thanos's actions and undo the chaos to the universe, no matter what consequences may be in store, and no matter who they face... Avenge the fallen.",
+            image: "https://image.tmdb.org/t/p/w1280/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg"
+        },
+        {
+            id: "558",
+            type: "movie",
+            title: "Spider-Man 2",
+            description: "Peter Parker is going through a major identity crisis. Burned out from being Spider-Man, he decides to shelve his superhero alter ego, which leaves the city suffering in the wake of carnage left by the evil Doc Ock. In the meantime, Parker still can't act on his feelings for Mary Jane Watson, a girl he's loved since childhood. A certain anger begins to brew in his best friend Harry Osborn as well...",
+            image: "https://image.tmdb.org/t/p/w1280/aqaSgTT6jiAdx9aJ4xUI4G2MEXe.jpg"
+        },
+        {
+            id: "787699",
+            type: "movie",
+            title: "Wonka",
+            description: "Willy Wonka – chock-full of ideas and determined to change the world one delectable bite at a time – is proof that the best things in life begin with a dream, and if you’re lucky enough to meet Willy Wonka, anything is possible.",
+            image: "https://image.tmdb.org/t/p/w1280//qhb1qOilapbapxWQn9jtRCMwXJF.jpg"
+        }
+    ];
+
+    initializeBigCard(moviesCard, movies);
+    preload(movies);
 }
