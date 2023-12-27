@@ -1,17 +1,17 @@
 @media only screen and (max-width: 1000px) {
-    .big-card .title {
+    .carousel .title {
         margin-bottom: var(--large-padding);
     }
 
-    .big-card .description {
+    .carousel .description {
         display: none;
     }
 
-    .big-card .buttons {
+    .carousel .buttons {
         flex-direction: column;
     }
 
-    .big-card .buttons, .big-card .buttons .button:first-of-type {
+    .carousel .buttons, .carousel .buttons .button:first-of-type {
         width: 100%;
     }
 }

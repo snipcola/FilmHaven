@@ -1,6 +1,6 @@
 import { preloadImages } from "../functions.js";
 
-function initializeBigCard(card, slides) {
+function initializeCarousel(card, slides) {
     let currentIndex = 0;
 
     const image = document.createElement("img");
@@ -97,12 +97,12 @@ function preload(slides) {
     preloadImages(images);
 }
 
-export function initializeBigCards() {
-    const moviesCard = document.querySelector(".section.movies .big-card");
-    const showsCard = document.querySelector(".section.shows .big-card");
+export function initializeCarousels() {
+    const moviesCard = document.querySelector(".section.movies .carousel");
+    const showsCard = document.querySelector(".section.shows .carousel");
 
     if (!moviesCard || !showsCard) {
-        return console.error("Failed to initialize big cards.");
+        return console.error("Failed to initialize carousels.");
     }
 
     const movies = [
@@ -129,7 +129,7 @@ export function initializeBigCards() {
         }
     ];
 
-    initializeBigCard(moviesCard, movies);
+    initializeCarousel(moviesCard, movies);
     preload(movies);
 
     const shows = [
@@ -156,6 +156,6 @@ export function initializeBigCards() {
         }
     ];
 
-    initializeBigCard(showsCard, shows);
+    initializeCarousel(showsCard, shows);
     preload(shows);
 }

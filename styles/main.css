@@ -7,7 +7,7 @@
 
 @import url(./components/content.css);
 
-@import url(./components/big-card.css);
-@import url(./components/big-card.responsive.css);
+@import url(./components/carousel.css);
+@import url(./components/carousel.responsive.css);
 
 @import url(./components/button.css);

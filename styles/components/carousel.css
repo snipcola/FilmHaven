@@ -1,4 +1,4 @@
-.big-card {
+.carousel {
     position: relative;
     display: flex;
     
@@ -12,7 +12,7 @@
     overflow: hidden;
 }
 
-.big-card .image {
+.carousel .image {
     width: 100rem;
     object-fit: cover;
 
@@ -20,7 +20,7 @@
     pointer-events: none;
 }
 
-.big-card .details {
+.carousel .details {
     display: flex;
     flex-direction: column;
 
@@ -43,7 +43,7 @@
     z-index: 2;
 }
 
-.big-card .vignette {
+.carousel .vignette {
     position: absolute;
 
     top: 0;
@@ -55,23 +55,23 @@
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.5) 75%);
 }
 
-.big-card .title {
+.carousel .title {
     font-size: 1.75rem;
     font-weight: 600;
 
     margin-bottom: 0;
 }
 
-.big-card .description {
+.carousel .description {
     opacity: var(--dim-opacity);
 }
 
-.big-card .buttons {
+.carousel .buttons {
     display: flex;
     gap: var(--small-padding);
 }
 
-.big-card .control {
+.carousel .control {
     display: flex;
     position: absolute;
 
@@ -87,15 +87,15 @@
     font-size: 2rem;
 }
 
-.big-card .control .previous {
+.carousel .control .previous {
     margin-left: var(--large-padding);
 }
 
-.big-card .control .next {
+.carousel .control .next {
     margin-right: var(--large-padding);
 }
 
-.big-card .control .action {
+.carousel .control .action {
     padding: var(--small-padding);
     border-radius: var(--border-radius);
 
@@ -106,11 +106,11 @@
     opacity: var(--dim-opacity);
 }
 
-.big-card .control .action:hover {
+.carousel .control .action:hover {
     opacity: 100%;
 }
 
-.big-card .control .action.inactive {
+.carousel .control .action.inactive {
     opacity: calc(var(--dimmer-opacity) / 2);
     pointer-events: none;
 }
