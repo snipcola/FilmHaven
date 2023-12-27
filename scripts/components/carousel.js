@@ -53,7 +53,6 @@ function initializeCarousel(card, slides) {
 
     slides.forEach(function () {
         const indicator = document.createElement("div");
-
         indicator.className = "indicator";
         indicators.append(indicator);
     });
@@ -148,9 +147,6 @@ export function initializeCarousels() {
         }
     ];
 
-    preload(movies);
-    initializeCarousel(moviesCard, movies);
-
     const shows = [
         {
             id: "1396",
@@ -175,6 +171,9 @@ export function initializeCarousels() {
         }
     ];
 
+    preload(movies);
     preload(shows);
+    
+    initializeCarousel(moviesCard, movies);
     initializeCarousel(showsCard, shows);
 }
