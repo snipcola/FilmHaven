@@ -92,15 +92,16 @@ function initializeBigCard(card, slides) {
 
 function preload(slides) {
     const images = slides.map((m) => m.image);
-    images.shift();
 
+    images.shift();
     preloadImages(images);
 }
 
 export function initializeBigCards() {
     const moviesCard = document.querySelector(".section.movies .big-card");
+    const showsCard = document.querySelector(".section.shows .big-card");
 
-    if (!moviesCard) {
+    if (!moviesCard || !showsCard) {
         return console.error("Failed to initialize big cards.");
     }
 
@@ -123,11 +124,38 @@ export function initializeBigCards() {
             id: "787699",
             type: "movie",
             title: "Wonka",
-            description: "Willy Wonka – chock-full of ideas and determined to change the world one delectable bite at a time – is proof that the best things in life begin with a dream, and if you’re lucky enough to meet Willy Wonka, anything is possible.",
+            description: "Willy Wonka - chock-full of ideas and determined to change the world one delectable bite at a time - is proof that the best things in life begin with a dream, and if you're lucky enough to meet Willy Wonka, anything is possible.",
             image: "https://image.tmdb.org/t/p/w1280/yOm993lsJyPmBodlYjgpPwBjXP9.jpg"
         }
     ];
 
     initializeBigCard(moviesCard, movies);
     preload(movies);
+
+    const shows = [
+        {
+            id: "1396",
+            type: "tv",
+            title: "Breaking Bad",
+            description: "When Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting desire to secure his family's financial future at any cost as he enters the dangerous world of drugs and crime.",
+            image: "https://image.tmdb.org/t/p/w1280/9faGSFi5jam6pDWGNd0p8JcJgXQ.jpg"
+        },
+        {
+            id: "60625",
+            type: "tv",
+            title: "Rick and Morty",
+            description: "Rick is a mentally-unbalanced but scientifically gifted old man who has recently reconnected with his family. He spends most of his time involving his young grandson Morty in dangerous, outlandish adventures throughout space and alternate universes. Compounded with Morty's already unstable family life, these events cause Morty much distress at home and school.",
+            image: "https://image.tmdb.org/t/p/w1280/rBF8wVQN8hTWHspVZBlI3h7HZJ.jpg"
+        },
+        {
+            id: "387",
+            type: "tv",
+            title: "SpongeBob SquarePants",
+            description: "Deep down in the Pacific Ocean in the subterranean city of Bikini Bottom lives a square yellow sponge named SpongeBob SquarePants. SpongeBob lives in a pineapple with his pet snail, Gary, loves his job as a fry cook at the Krusty Krab, and has a knack for getting into all kinds of trouble without really trying. When he's not getting on the nerves of his cranky next door neighbor Squidward, SpongeBob can usually be found smack in the middle of all sorts of strange situations with his best buddy, the simple yet lovable starfish, Patrick, or his thrill-seeking surfer-girl squirrel pal, Sandy Cheeks.",
+            image: "https://image.tmdb.org/t/p/w1280/aasp5EmwclAQbwfGABWLTNLhjwB.jpg"
+        }
+    ];
+
+    initializeBigCard(showsCard, shows);
+    preload(shows);
 }
