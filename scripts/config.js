@@ -21,5 +21,8 @@ export const tmdb = {
         moviesAmount: 5,
         showsAmount: 5
     },
+    trending: {
+        timeWindow: "week"
+    },
     language: "en-GB"
 };

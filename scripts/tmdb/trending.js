@@ -1,9 +1,10 @@
-import { sendRequest, getImageUrl } from "./main.js";
+import { sendRequest, getImageUrl, sortByPopularity } from "./main.js";
 import { setCache, getCache } from "../cache.js";
+import { tmdb } from "../config.js";
 
 function format(obj) {
     return obj.results
-        ? obj.results.map(function (item) {
+        ? sortByPopularity(obj.results).map(function (item) {
             return {
                 id: item.id,
                 type: item.media_type,
@@ -16,12 +17,12 @@ function format(obj) {
         : [];
 }
 
-export async function getTrending(type = "movie", time_window = "day") {
+export async function getTrending(type = "movie") {
     const cacheName = `trending-${type}`;
     const cache = getCache(cacheName);
     if (cache) return cache;
     
-    const response = format(await sendRequest(`trending/${type}/${time_window}`));
+    const response = format(await sendRequest(`trending/${type}/${tmdb.trending.timeWindow}`));
     setCache(cacheName, response);
 
     return response;

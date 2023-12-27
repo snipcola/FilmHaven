@@ -8,6 +8,10 @@ export function getImageUrl(path, type = "poster") {
     return `${tmdb.image.url}/${tmdb.image[type]}${path}`;
 }
 
+export function sortByPopularity(obj) {
+    return obj.sort((a, b) => b.popularity - a.popularity);
+}
+
 export async function sendRequest(path, parameters = {}, method = "GET") {
     const apiUrl = getApiUrl();
     const url = new URL(`${apiUrl}/${path}`);
