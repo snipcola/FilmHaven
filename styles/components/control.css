@@ -1,0 +1,54 @@
+.area .control {
+    display: flex;    
+    align-items: center;
+
+    background-color: var(--dark);
+    padding: var(--small-padding);
+
+    height: fit-content;
+    gap: calc(var(--small-gap) / 3);
+
+    border-radius: var(--border-radius);
+    border: var(--small-border) solid var(--light);
+}
+
+.area .control .button {
+    background-color: var(--light);
+    border: var(--small-border) solid var(--lighter);
+    font-size: .75rem;
+}
+
+.area .control .button:hover {
+    background-color: var(--lighter);
+}
+
+.control .indicators {
+    display: flex;
+    align-items: center;
+
+    background-color: var(--dark);
+    gap: calc(var(--small-gap) / 3);
+
+    padding: calc(var(--small-padding) / 1.5);
+    border-radius: var(--border-radius);
+}
+
+.control .indicator {
+    padding: calc(var(--small-padding) / 8) calc(var(--small-padding) / 1.5);
+    background-color: var(--lighter);
+
+    border-radius: var(--border-radius);
+    transition: var(--transition-speed) background-color;
+}
+
+.control .indicator:not(.active) {
+    cursor: pointer;
+}
+
+.control .indicator:not(.active):hover {
+    background-color: var(--lightest);
+}
+
+.control .indicator.active {
+    background-color: var(--primary);
+}

@@ -21,6 +21,11 @@
     user-select: none;
 }
 
+.area .title {
+    display: flex;
+    justify-content: space-between;
+}
+
 .area .title .text {
     font-weight: 600;
 }

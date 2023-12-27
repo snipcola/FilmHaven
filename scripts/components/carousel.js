@@ -1,6 +1,7 @@
-import { config } from "../config.js";
+import { config, tmdb } from "../config.js";
 import { isHovered } from "../functions.js";
 import { preloadImages } from "../cache.js";
+import { getTrending } from "../tmdb/trending.js";
 
 function initializeCarousel(card, slides) {
     let index = 0;
@@ -73,7 +74,7 @@ function initializeCarousel(card, slides) {
 
         index = newIndex;
 
-        image.src = slide.image;
+        image.src = slide.backdrop;
         title.innerText = slide.title;
         description.innerText = slide.description.length > config.carousel.maxDescriptionLength
             ? slide.description.substring(0, config.carousel.maxDescriptionLength).replace(/\s+\S*$/, "...")
@@ -108,14 +109,20 @@ function initializeCarousel(card, slides) {
 
     previous.addEventListener("click", setPrevious);
     next.addEventListener("click", setNext);
+
+    Array.from(indicators.children).forEach(function (indicator, i) {
+        indicator.addEventListener("click", function () {
+            set(i);
+        });
+    });
 }
 
 function preload(slides) {
-    const images = slides.map((m) => m.image);
+    const images = slides.map((m) => m.backdrop);
     preloadImages(images);
 }
 
-export function initializeCarousels() {
+export async function initializeCarousels() {
     const moviesCard = document.querySelector(".section.movies .carousel");
     const showsCard = document.querySelector(".section.shows .carousel");
 
@@ -123,53 +130,11 @@ export function initializeCarousels() {
         return console.error("Failed to initialize carousels.");
     }
 
-    const movies = [
-        {
-            id: "299534",
-            type: "movie",
-            title: "Avengers: Endgame",
-            description: "With the help of remaining allies, the Avengers must assemble once more in order to undo Thanos's actions and undo the chaos to the universe, no matter what consequences may be in store, and no matter who they face... Avenge the fallen.",
-            image: "https://image.tmdb.org/t/p/w1280/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg"
-        },
-        {
-            id: "558",
-            type: "movie",
-            title: "Spider-Man 2",
-            description: "Peter Parker is going through a major identity crisis. Burned out from being Spider-Man, he decides to shelve his superhero alter ego, which leaves the city suffering in the wake of carnage left by the evil Doc Ock. In the meantime, Parker still can't act on his feelings for Mary Jane Watson, a girl he's loved since childhood. A certain anger begins to brew in his best friend Harry Osborn as well...",
-            image: "https://image.tmdb.org/t/p/w1280/aqaSgTT6jiAdx9aJ4xUI4G2MEXe.jpg"
-        },
-        {
-            id: "787699",
-            type: "movie",
-            title: "Wonka",
-            description: "Willy Wonka - chock-full of ideas and determined to change the world one delectable bite at a time - is proof that the best things in life begin with a dream, and if you're lucky enough to meet Willy Wonka, anything is possible.",
-            image: "https://image.tmdb.org/t/p/w1280/yOm993lsJyPmBodlYjgpPwBjXP9.jpg"
-        }
-    ];
+    let movies = await getTrending("movie");
+    let shows = await getTrending("tv");
 
-    const shows = [
-        {
-            id: "1396",
-            type: "tv",
-            title: "Breaking Bad",
-            description: "When Walter White, a New Mexico chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of only two years left to live. He becomes filled with a sense of fearlessness and an unrelenting desire to secure his family's financial future at any cost as he enters the dangerous world of drugs and crime.",
-            image: "https://image.tmdb.org/t/p/w1280/9faGSFi5jam6pDWGNd0p8JcJgXQ.jpg"
-        },
-        {
-            id: "60625",
-            type: "tv",
-            title: "Rick and Morty",
-            description: "Rick is a mentally-unbalanced but scientifically gifted old man who has recently reconnected with his family. He spends most of his time involving his young grandson Morty in dangerous, outlandish adventures throughout space and alternate universes. Compounded with Morty's already unstable family life, these events cause Morty much distress at home and school.",
-            image: "https://image.tmdb.org/t/p/w1280/rBF8wVQN8hTWHspVZBlI3h7HZJ.jpg"
-        },
-        {
-            id: "387",
-            type: "tv",
-            title: "SpongeBob SquarePants",
-            description: "Deep down in the Pacific Ocean in the subterranean city of Bikini Bottom lives a square yellow sponge named SpongeBob SquarePants. SpongeBob lives in a pineapple with his pet snail, Gary, loves his job as a fry cook at the Krusty Krab, and has a knack for getting into all kinds of trouble without really trying. When he's not getting on the nerves of his cranky next door neighbor Squidward, SpongeBob can usually be found smack in the middle of all sorts of strange situations with his best buddy, the simple yet lovable starfish, Patrick, or his thrill-seeking surfer-girl squirrel pal, Sandy Cheeks.",
-            image: "https://image.tmdb.org/t/p/w1280/aasp5EmwclAQbwfGABWLTNLhjwB.jpg"
-        }
-    ];
+    movies.splice(tmdb.carousel.moviesAmount, movies.length);
+    shows.splice(tmdb.carousel.showsAmount, shows.length)
 
     preload(movies);
     preload(shows);
