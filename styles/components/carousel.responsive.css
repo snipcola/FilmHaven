@@ -10,8 +10,4 @@
     .carousel .buttons {
         flex-direction: column;
     }
-
-    .carousel .buttons, .carousel .buttons .button:first-of-type {
-        width: 100%;
-    }
 }
