@@ -1,4 +1,4 @@
-import { preloadImages } from "../functions.js";
+import { preloadImages } from "../cache.js";
 
 function initializeCarousel(card, slides) {
     let currentIndex = 0;
@@ -92,8 +92,6 @@ function initializeCarousel(card, slides) {
 
 function preload(slides) {
     const images = slides.map((m) => m.image);
-
-    images.shift();
     preloadImages(images);
 }
 
@@ -129,8 +127,9 @@ export function initializeCarousels() {
         }
     ];
 
-    initializeCarousel(moviesCard, movies);
     preload(movies);
+    preload(movies);
+    initializeCarousel(moviesCard, movies);
 
     const shows = [
         {
@@ -156,6 +155,6 @@ export function initializeCarousels() {
         }
     ];
 
-    initializeCarousel(showsCard, shows);
     preload(shows);
+    initializeCarousel(showsCard, shows);
 }

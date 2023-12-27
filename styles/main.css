@@ -1,6 +1,7 @@
 @import url(./variables.css);
 @import url(./font.css);
 @import url(./body.css);
+@import url(./cache.css);
 
 @import url(./components/header.css);
 @import url(./components/header.responsive.css);

@@ -1,0 +1,9 @@
+cache {
+    position: absolute;
+    z-index: -1000;
+    opacity: 0;
+}
+
+cache image {
+    position: absolute;
+}
