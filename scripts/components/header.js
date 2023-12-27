@@ -1,3 +1,5 @@
+import { getInnerText } from "../functions.js";
+
 let links = [];
 let sections = [];
 
@@ -18,7 +20,7 @@ function setLinksInactive() {
 }
 
 function setSectionActive(link) {
-    const sectionName = link.innerText.toLowerCase();
+    const sectionName = getInnerText(link);
     const section = document.querySelector(`.content > .section.${sectionName}`);
     
     if (!section) {

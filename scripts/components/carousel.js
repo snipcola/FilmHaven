@@ -1,7 +1,7 @@
 import { preloadImages } from "../cache.js";
 
 function initializeCarousel(card, slides) {
-    let currentIndex = 0;
+    let index = 0;
 
     const image = document.createElement("img");
     const vignette = document.createElement("div");
@@ -53,41 +53,40 @@ function initializeCarousel(card, slides) {
     control.append(previous);
     control.append(next);
 
-    function get(index) {
-        return slides[index];
-    }
-
-    function set(index) {
-        const slide = get(index);
+    function set(newIndex) {
+        const slide = slides[newIndex];
 
         if (!slide) {
             return;
         }
         
-        currentIndex = index;
+        index = newIndex;
 
         image.src = slide.image;
         title.innerText = slide.title;
-        description.innerText = slide.description.length > 250 ? slide.description.substring(0, 250).replace(/\s+\S*$/, '...') : slide.description;
+        description.innerText = slide.description.length > 250 ? slide.description.substring(0, 250).replace(/\s+\S*$/, "...") : slide.description;
 
-        previous.classList[get(index - 1) ? "remove" : "add"]("inactive");
-        next.classList[get(index + 1) ? "remove" : "add"]("inactive");
+        previous.classList[slides[index - 1] ? "remove" : "add"]("inactive");
+        next.classList[slides[index + 1] ? "remove" : "add"]("inactive");
     }
 
-    set(currentIndex);
+    function setPrevious() {
+        set(index - 1);
+    }
+
+    function setNext() {
+        set(index + 1);
+    }
+    
+    set(index);
 
     card.append(image);
     card.append(vignette);
     card.append(details);
     card.append(control);
 
-    previous.addEventListener("click", function () {
-        set(currentIndex - 1);
-    });
-
-    next.addEventListener("click", function () {
-        set(currentIndex + 1);
-    });
+    previous.addEventListener("click", setPrevious);
+    next.addEventListener("click", setNext);
 }
 
 function preload(slides) {

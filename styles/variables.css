@@ -4,12 +4,13 @@ html {
     --primary-dark: #c42d2d;
     --light: #1A1A1A;
     --dark-light: #1A1A1C;
+    --dark-light-rgb: 26, 26, 28;
     --dark: #0F0F0F;
     --text: #FFFFFF;
 
     --border-radius: 10px;
     --max-width: 75rem;
-    --transition-speed: .2s;
+    --transition-speed: .1s;
     
     --dim-opacity: 75%;
     --dimmer-opacity: 50%;
