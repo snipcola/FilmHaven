@@ -20,7 +20,6 @@ function initializeCarousel(card, slides) {
     const previous = document.createElement("div");
     const previousIcon = document.createElement("i");
     const indicators = document.createElement("div");
-    let indicatorArray = [];
     const next = document.createElement("div");
     const nextIcon = document.createElement("i");
 
@@ -52,11 +51,12 @@ function initializeCarousel(card, slides) {
     next.className = "button secondary icon-only next";
     nextIcon.className = "icon fa-solid fa-arrow-right";
 
-    for (var i = 0; i < slides.length; i++) {
-        indicatorArray[i] = document.createElement("div");
-        indicatorArray[i].className = "indicator";
-        indicators.append(indicatorArray[i]);
-    }
+    slides.forEach(function () {
+        const indicator = document.createElement("div");
+
+        indicator.className = "indicator";
+        indicators.append(indicator);
+    });
 
     previous.append(previousIcon);
     next.append(nextIcon);
@@ -80,7 +80,7 @@ function initializeCarousel(card, slides) {
             ? slide.description.substring(0, config.carousel.maxDescriptionLength).replace(/\s+\S*$/, "...")
             : slide.description;
 
-        indicatorArray.forEach(function (indicator, i) {
+        Array.from(indicators.children).forEach(function (indicator, i) {
             indicator.classList[index === i ? "add" : "remove"]("active");
         });
     }
