@@ -124,7 +124,7 @@ export function initializeBigCards() {
             type: "movie",
             title: "Wonka",
             description: "Willy Wonka – chock-full of ideas and determined to change the world one delectable bite at a time – is proof that the best things in life begin with a dream, and if you’re lucky enough to meet Willy Wonka, anything is possible.",
-            image: "https://image.tmdb.org/t/p/w1280//qhb1qOilapbapxWQn9jtRCMwXJF.jpg"
+            image: "https://image.tmdb.org/t/p/w1280/yOm993lsJyPmBodlYjgpPwBjXP9.jpg"
         }
     ];
 
