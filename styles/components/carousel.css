@@ -108,6 +108,6 @@
 }
 
 .carousel .control .action.inactive {
-    opacity: 0;
+    opacity: var(--dimmer-opacity);
     pointer-events: none;
 }
