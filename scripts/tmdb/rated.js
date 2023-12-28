@@ -1,4 +1,4 @@
-import { sendRequest, getImageUrl, sortByPopularity } from "./main.js";
+import { sendRequest, getImageUrl } from "./main.js";
 import { shortenNumber } from "../functions.js";
 import { setCache, getCache } from "../cache.js";
 
@@ -18,8 +18,8 @@ function format(obj, type) {
         : null;
 }
 
-export async function getRated(type = "movie") {
-    const cacheName = `rated-${type}`;
+export async function getRated(type = "movie", genre) {
+    const cacheName = genre ? `rated-${type}-${genre}` : `rated-${type}`;
     const cache = getCache(cacheName);
 
     if (cache) return cache;
@@ -32,6 +32,7 @@ export async function getRated(type = "movie") {
     
     const response = await sendRequest(`discover/${type}`, {
         sort_by: "vote_count.desc",
+        with_genres: genre,
         "vote_average.gte": "7",
         "primary_release_date.gte": formattedDate,
         "primary_release_date.lte": formattedDateNow,

@@ -14,7 +14,7 @@
     opacity: 0;
     z-index: -10;
 
-    transition: calc(var(--transition-speed) * 2) opacity;
+    transition: var(--transition-speed) opacity;
 }
 
 body.modal-active .modal-container {
@@ -58,11 +58,15 @@ body.modal-active .modal-container {
     padding: var(--large-padding);
     border-bottom: var(--small-border) solid var(--light);
 
+    margin-left: var(--large-padding);
+    margin-right: var(--large-padding);
+    
     background-color: var(--dark);
 }
 
 .modal-container.fill .modal-header {
-    background-color: transparent;
+    border-radius: var(--border-radius);
+    margin-top: 1rem;
 }
 
 .modal-header .button.secondary {
@@ -81,4 +85,8 @@ body.modal-active .modal-container {
 
     border-bottom-left-radius: var(--border-radius);
     border-bottom-right-radius: var(--border-radius);
+}
+
+.modal-container.fill .modal-content {
+    margin-bottom: calc(var(--large-padding) * 4);
 }

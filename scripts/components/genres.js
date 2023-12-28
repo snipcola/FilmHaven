@@ -1,8 +1,14 @@
 import { config } from "../config.js";
 import { splitArray, onWindowResize } from "../functions.js";
 import { getGenres } from "../tmdb/genres.js";
+import { setModal, showModal } from "./modal.js";
+import { initializeArea } from "./area.js";
+import { preloadImages } from "../cache.js";
+import { getTrending } from "../tmdb/trending.js";
+import { getRated } from "../tmdb/rated.js";
+import { getNew } from "../tmdb/new.js";
 
-function initializeGenreArea(area, initialSlides) {
+function initializeGenreArea(area, initialSlides, type) {
     let desktop = window.innerWidth > config.genre.split.max;
     let slides = splitArray(initialSlides, desktop ? config.genre.split.desktop : config.genre.split.mobile);
     let index = 0;
@@ -52,6 +58,39 @@ function initializeGenreArea(area, initialSlides) {
         genreText.className = "text";
         genreText.innerText = info.name;
         genreIcon.className = "icon fa-solid fa-arrow-right";
+
+        genre.addEventListener("click", async function () {
+            const popularArea = document.createElement("div");
+            const ratedArea = document.createElement("div");
+            const newArea = document.createElement("div");
+
+            popularArea.className = "area";
+            ratedArea.className = "area";
+            newArea.className = "area";
+
+            let popularContent = await getTrending(type, info.id);
+            let ratedContent = await getRated(type, info.id);
+            let newContent = await getNew(type, info.id);
+        
+            if (!popularContent || !ratedContent || !newContent) {
+                return console.error(`Failed to initialize ${info.name} genre.`);
+            }
+        
+            popularContent.splice(config.area.amount, popularContent.length);
+            ratedContent.splice(config.area.amount, ratedContent.length);
+            newContent.splice(config.area.amount, newContent.length);
+        
+            preloadImages(popularContent.map((c) => c.image));
+            preloadImages(ratedContent.map((c) => c.image));
+            preloadImages(newContent.map((c) => c.image));
+
+            initializeArea(popularArea, "Popular", popularContent);
+            initializeArea(ratedArea, "Top-Rated", ratedContent);
+            initializeArea(newArea, "New", newContent);
+
+            setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true);
+            showModal();
+        });
 
         genre.append(genreText);
         genre.append(genreIcon);
@@ -151,6 +190,6 @@ export async function initializeGenres() {
         return console.error("Failed to initialize genres.");
     }
 
-    initializeGenreArea(moviesGenresArea, movieGenres);
-    initializeGenreArea(showsGenresArea, showGenres);
+    initializeGenreArea(moviesGenresArea, movieGenres, "movie");
+    initializeGenreArea(showsGenresArea, showGenres, "tv");
 }

@@ -1,9 +1,9 @@
-import { sendRequest, getImageUrl, sortByPopularity } from "./main.js";
+import { sendRequest, getImageUrl } from "./main.js";
 import { setCache, getCache } from "../cache.js";
 
 function format(obj, type) {
     return obj
-        ? sortByPopularity(obj).filter((i) => i.poster_path).map(function (item) {
+        ? obj.filter((i) => i.poster_path).map(function (item) {
             return {
                 id: item.id?.toString(),
                 type,
@@ -16,8 +16,8 @@ function format(obj, type) {
         : null;
 }
 
-export async function getNew(type = "movie") {
-    const cacheName = `new-${type}`;
+export async function getNew(type = "movie", genre) {
+    const cacheName = genre ? `new-${type}-${genre}` : `new-${type}`;
     const cache = getCache(cacheName);
 
     if (cache) return cache;
@@ -30,6 +30,7 @@ export async function getNew(type = "movie") {
     
     const response = await sendRequest(`discover/${type}`, {
         sort_by: "popularity.desc",
+        with_genres: genre,
         "primary_release_date.gte": formattedDate,
         "primary_release_date.lte": formattedDateNow,
         "first_air_date.gte": formattedDate,

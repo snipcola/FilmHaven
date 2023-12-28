@@ -5,7 +5,7 @@ import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
 
-function initializeArea(area, labelText, initialSlides) {
+export function initializeArea(area, labelText, initialSlides) {
     let desktop = window.innerWidth > config.area.split.max;
     let slides = splitArray(initialSlides, desktop ? config.area.split.desktop : config.area.split.mobile);
     let index = 0;
@@ -208,14 +208,14 @@ export async function initializeAreas() {
     const moviesNewArea = document.createElement("div");
     const showsNewArea = document.createElement("div");
 
-    moviesTrendingArea.className = "area trending";
-    showsTrendingArea.className = "area trending";
+    moviesTrendingArea.className = "area";
+    showsTrendingArea.className = "area";
 
-    moviesRatedArea.className = "area rated";
-    showsRatedArea.className = "area rated";
+    moviesRatedArea.className = "area";
+    showsRatedArea.className = "area";
 
-    moviesNewArea.className = "area new";
-    showsNewArea.className = "area new";
+    moviesNewArea.className = "area";
+    showsNewArea.className = "area";
 
     moviesSection.append(moviesTrendingArea);
     showsSection.append(showsTrendingArea);

@@ -21,13 +21,29 @@ function format(obj) {
         : null;
 }
 
-export async function getTrending(type = "movie") {
-    const cacheName = `trending-${type}`;
+export async function getTrending(type = "movie", genre) {
+    const cacheName = genre ? `trending-${type}-${genre}` : `trending-${type}`;
     const cache = getCache(cacheName);
 
     if (cache) return cache;
+
+    const date = new Date();
+    const formattedDateNow = date.toISOString().split('T')[0];
     
-    const response = await sendRequest(`trending/${type}/${tmdb.trending.timeWindow}`);
+    date.setFullYear(date.getFullYear() - 2);
+    const formattedDate = date.toISOString().split('T')[0];
+    
+    const response = genre
+        ?  await sendRequest(`discover/${type}`, {
+                sort_by: "popularity.desc",
+                with_genres: genre,
+                "primary_release_date.gte": formattedDate,
+                "primary_release_date.lte": formattedDateNow,
+                "first_air_date.gte": formattedDate,
+                "first_air_date.lte": formattedDateNow
+            })
+        : await sendRequest(`trending/${type}/${tmdb.trending.timeWindow}`);
+
     const json = format(response?.results);
 
     setCache(cacheName, json);

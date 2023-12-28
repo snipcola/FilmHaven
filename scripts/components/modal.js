@@ -10,7 +10,11 @@ export function setModal(label = "", newContent, icon = "times", fill = false) {
     content.innerHTML = "";
     
     if (newContent) {
-        content.append(newContent);
+        if (Array.isArray(newContent)) {
+            content.append(...newContent);
+        } else {
+            content.append(newContent);
+        }
     }
 }
 
