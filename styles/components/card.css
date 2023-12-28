@@ -16,8 +16,9 @@
     transition: var(--transition-speed) background-color;
 
     width: 100%;
-    user-select: none;
+    height: 100%;
 
+    user-select: none;
     border: var(--small-border) solid var(--lighter);
 }
 
@@ -57,7 +58,7 @@
 
 .card .image {
     width: 100%;
-    height: calc(100% - 2.5rem);
+    height: 100%;
     
     object-fit: cover;
     pointer-events: none;
