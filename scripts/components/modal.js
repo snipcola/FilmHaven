@@ -1,13 +1,19 @@
+import { getHash, onHashChange, removeHash } from "../hash.js";
+import { resetTitle } from "./header.js";
+
 let container;
 let headerText;
 let headerButtonIcon;
 let content;
+let hash;
 
-export function setModal(label = "", newContent, icon = "times", fill = false) {
+export function setModal(label = "", newContent, icon = "times", fill = false, newHash) {
     container.className = fill ? "modal-container fill" : "modal-container";
     headerText.innerText = label;
     headerButtonIcon.className = `icon fa-solid fa-${icon}`;
     content.innerHTML = "";
+
+    hash = newHash;
     
     if (newContent) {
         if (Array.isArray(newContent)) {
@@ -23,6 +29,10 @@ export function showModal() {
 }
 
 export function hideModal() {
+    if (hash) {
+        removeHash(hash);
+    }
+
     setModal();
     document.body.classList.remove("modal-active");
 }
@@ -59,4 +69,16 @@ export function initializeModal() {
 
     container.append(modal);
     document.body.append(container);
+
+    function handleHashChange() {
+        const modalHash = getHash("modal");
+        
+        if (!modalHash) {
+            hideModal();
+            resetTitle();
+        }
+    }
+
+    handleHashChange();
+    onHashChange(handleHashChange);
 }

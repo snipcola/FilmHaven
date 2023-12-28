@@ -6,10 +6,6 @@ import { initializeContent } from "./content.js";
 let links = [];
 let sections = [];
 
-function isActive(link) {
-    return link.classList.contains("active");
-}
-
 function setSectionsInactive() {
     for (const section of sections) {
         section.classList.remove("active");
@@ -36,10 +32,6 @@ function setSectionActive(link) {
 }
 
 function setLinkActive(link) {
-    if (isActive(link)) {
-        return;
-    }
-
     setLinksInactive();
     setSectionsInactive();
 
@@ -47,8 +39,17 @@ function setLinkActive(link) {
     link.classList.add("active");
 }
 
+export function resetTitle() {
+    const activePage = getHash("page");
+    const link = links[activePage - 1];
+
+    if (link) {
+        setLinkActive(link);
+    }
+}
+
 function initializeLinks() {
-    function handlePageChange() {
+    function handleHashChange() {
         const activePage = getHash("page");
 
         const defaultLinkIndex = links[activePage - 1] ? activePage - 1 : 0;
@@ -60,8 +61,8 @@ function initializeLinks() {
         }
     }
 
-    handlePageChange();
-    onHashChange(handlePageChange);
+    handleHashChange();
+    onHashChange(handleHashChange);
 
     for (var i = 0; i < links.length; i++) {
         const linkIndex = i;

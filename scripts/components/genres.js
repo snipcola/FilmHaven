@@ -7,6 +7,40 @@ import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
+import { getHash, onHashChange, removeHash, setHash } from "../hash.js";
+
+async function modal(info, type) {
+    const popularArea = document.createElement("div");
+    const ratedArea = document.createElement("div");
+    const newArea = document.createElement("div");
+
+    popularArea.className = "area";
+    ratedArea.className = "area";
+    newArea.className = "area";
+
+    let popularContent = await getTrending(type, info.id);
+    let ratedContent = await getRated(type, info.id);
+    let newContent = await getNew(type, info.id);
+
+    if (!popularContent || !ratedContent || !newContent) {
+        return console.error(`Failed to initialize ${info.name} genre.`);
+    }
+
+    popularContent.splice(config.area.amount, popularContent.length);
+    ratedContent.splice(config.area.amount, ratedContent.length);
+    newContent.splice(config.area.amount, newContent.length);
+
+    preloadImages(popularContent.map((c) => c.image));
+    preloadImages(ratedContent.map((c) => c.image));
+    preloadImages(newContent.map((c) => c.image));
+
+    initializeArea(popularArea, "Popular", popularContent);
+    initializeArea(ratedArea, "Top-Rated", ratedContent);
+    initializeArea(newArea, "New", newContent);
+
+    setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true, "modal");
+    showModal();
+}
 
 function initializeGenreArea(area, initialSlides, type) {
     let desktop = window.innerWidth > config.genre.split.max;
@@ -59,37 +93,8 @@ function initializeGenreArea(area, initialSlides, type) {
         genreText.innerText = info.name;
         genreIcon.className = "icon fa-solid fa-arrow-right";
 
-        genre.addEventListener("click", async function () {
-            const popularArea = document.createElement("div");
-            const ratedArea = document.createElement("div");
-            const newArea = document.createElement("div");
-
-            popularArea.className = "area";
-            ratedArea.className = "area";
-            newArea.className = "area";
-
-            let popularContent = await getTrending(type, info.id);
-            let ratedContent = await getRated(type, info.id);
-            let newContent = await getNew(type, info.id);
-        
-            if (!popularContent || !ratedContent || !newContent) {
-                return console.error(`Failed to initialize ${info.name} genre.`);
-            }
-        
-            popularContent.splice(config.area.amount, popularContent.length);
-            ratedContent.splice(config.area.amount, ratedContent.length);
-            newContent.splice(config.area.amount, newContent.length);
-        
-            preloadImages(popularContent.map((c) => c.image));
-            preloadImages(ratedContent.map((c) => c.image));
-            preloadImages(newContent.map((c) => c.image));
-
-            initializeArea(popularArea, "Popular", popularContent);
-            initializeArea(ratedArea, "Top-Rated", ratedContent);
-            initializeArea(newArea, "New", newContent);
-
-            setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true);
-            showModal();
+        genre.addEventListener("click", function () {
+            setHash("modal", `genre-${type}-${info.id}`);
         });
 
         genre.append(genreText);
@@ -189,6 +194,30 @@ export async function initializeGenres() {
     if (!movieGenres || !showGenres) {
         return console.error("Failed to initialize genres.");
     }
+
+    async function handleHashChange() {
+        const modalHash = getHash("modal");
+        
+        if (modalHash) {
+            const [modalType, type, id] = modalHash.split("-");
+
+            if (modalType === "genre") {
+                const info = type === "movie"
+                    ? movieGenres.find((g) => g.id?.toString() === id)
+                    : showGenres.find((g) => g.id?.toString() === id);
+
+                if (info) {
+                    await modal(info, type);
+                    document.title = `${type === "movie" ? "Movies" : "Shows"} - ${info.name}`;
+                } else {
+                    removeHash("modal");
+                }
+            }
+        }
+    }
+
+    handleHashChange();
+    onHashChange(handleHashChange);
 
     initializeGenreArea(moviesGenresArea, movieGenres, "movie");
     initializeGenreArea(showsGenresArea, showGenres, "tv");

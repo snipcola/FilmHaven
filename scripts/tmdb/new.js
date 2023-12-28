@@ -25,7 +25,7 @@ export async function getNew(type = "movie", genre) {
     const date = new Date();
     const formattedDateNow = date.toISOString().split('T')[0];
     
-    date.setMonth(date.getMonth() - 1);
+    date.setMonth(date.getMonth() - 2);
     const formattedDate = date.toISOString().split('T')[0];
     
     const response = await sendRequest(`discover/${type}`, {
