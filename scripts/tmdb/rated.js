@@ -8,6 +8,7 @@ function format(obj, type) {
             return {
                 id: item.id?.toString(),
                 type,
+                title: item.title || item.name,
                 description: item.overview || item.description,
                 image: getImageUrl(item.poster_path, "poster"),
                 rating: Math.round(item.vote_average / 2).toString(),

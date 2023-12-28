@@ -45,6 +45,7 @@ export const config = {
         switchSlideInterval: 10000
     },
     area: {
+        maxTitleLength: 25,
         amount: 16,
         split: {
             max: 700,

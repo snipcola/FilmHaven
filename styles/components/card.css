@@ -9,7 +9,7 @@
 
     flex-direction: column;
     
-    gap: var(--small-padding);
+    gap: calc(var(--small-padding) / 2);
     justify-content: space-between;
 
     background-color: var(--light);
@@ -69,6 +69,7 @@
     pointer-events: none;
     
     border-radius: calc(var(--border-radius) / 2);
+    margin-bottom: calc(var(--small-padding) / 2);
 }
 
 .card .footer {
@@ -79,7 +80,7 @@
     font-size: .8rem;
 }
 
-.card .footer > div {
+.card .footer > div, .card .title {
     display: flex;
     gap: calc(var(--small-gap) / 2);
 
@@ -94,6 +95,12 @@
 
     box-sizing: border-box;
     width: 100%;
+
+    text-align: center;
+}
+
+.card .title {
+    font-size: .9rem;
 }
 
 .card .footer .text, .card .footer .icon {

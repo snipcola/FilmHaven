@@ -7,6 +7,7 @@ function format(obj, type) {
             return {
                 id: item.id?.toString(),
                 type,
+                title: item.title || item.name,
                 description: item.overview || item.description,
                 image: getImageUrl(item.poster_path, "poster"),
                 date: item.release_date || item.first_air_date

@@ -49,6 +49,7 @@ function initializeArea(area, labelText, initialSlides) {
     function add(info) {
         const card = document.createElement("div");
         const image = document.createElement("img");
+        const title = document.createElement("div");
 
         const footer = document.createElement("div");
 
@@ -66,6 +67,11 @@ function initializeArea(area, labelText, initialSlides) {
         card.className = "card";
         image.className = "image";
         image.src = info.image;
+        title.className = "title";
+
+        title.innerText = info.title.length > config.area.maxTitleLength
+            ? info.title.substring(0, config.area.maxTitleLength).replace(/\s+\S*$/, "...")
+            : info.title;
 
         footer.className = "footer";
 
@@ -110,6 +116,7 @@ function initializeArea(area, labelText, initialSlides) {
         play.append(playIcon);
 
         card.append(image);
+        card.append(title);
         card.append(footer);
         card.append(play);
 
