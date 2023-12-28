@@ -5,7 +5,11 @@ import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
 
-export function initializeArea(area, labelText, initialSlides) {
+export function initializeArea(area, initialSlides, labelText) {
+    if (!initialSlides || initialSlides.length === 0) {
+        return console.error(`Failed to initialize ${labelText} area.`);
+    }
+
     let desktop = window.innerWidth > config.area.split.max;
     let slides = splitArray(initialSlides, desktop ? config.area.split.desktop : config.area.split.mobile);
     let index = 0;
@@ -242,8 +246,8 @@ export async function initializeAreas() {
     preloadImages(trendingMovies.map((m) => m.image));
     preloadImages(trendingShows.map((s) => s.image));
 
-    initializeArea(moviesTrendingArea, "Trending", trendingMovies);
-    initializeArea(showsTrendingArea, "Trending", trendingShows);
+    initializeArea(moviesTrendingArea, trendingMovies, "Trending");
+    initializeArea(showsTrendingArea, trendingShows, "Trending");
 
     let ratedMovies = await getRated("movie");
     let ratedShows = await getRated("tv");
@@ -258,8 +262,8 @@ export async function initializeAreas() {
     preloadImages(ratedMovies.map((m) => m.image));
     preloadImages(ratedShows.map((s) => s.image));
 
-    initializeArea(moviesRatedArea, "Top-Rated", ratedMovies);
-    initializeArea(showsRatedArea, "Top-Rated", ratedShows);
+    initializeArea(moviesRatedArea, ratedMovies, "Top-Rated");
+    initializeArea(showsRatedArea, ratedShows, "Top-Rated");
 
     let newMovies = await getNew("movie");
     let newShows = await getNew("tv");
@@ -274,6 +278,6 @@ export async function initializeAreas() {
     preloadImages(newMovies.map((m) => m.image));
     preloadImages(newShows.map((s) => s.image));
 
-    initializeArea(moviesNewArea, "New", newMovies);
-    initializeArea(showsNewArea, "New", newShows);
+    initializeArea(moviesNewArea, newMovies, "New");
+    initializeArea(showsNewArea, newShows, "New");
 }

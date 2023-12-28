@@ -34,15 +34,19 @@ async function modal(info, type) {
     preloadImages(ratedContent.map((c) => c.image));
     preloadImages(newContent.map((c) => c.image));
 
-    initializeArea(popularArea, "Popular", popularContent);
-    initializeArea(ratedArea, "Top-Rated", ratedContent);
-    initializeArea(newArea, "New", newContent);
+    initializeArea(popularArea, popularContent, "Popular");
+    initializeArea(ratedArea, ratedContent, "Top-Rated");
+    initializeArea(newArea, newContent, "New");
 
     setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true, "modal");
     showModal();
 }
 
 function initializeGenreArea(area, initialSlides, type) {
+    if (!initialSlides || initialSlides.length === 0) {
+        return console.error(`Failed to initialize ${type} genres.`);
+    }
+
     let desktop = window.innerWidth > config.genre.split.max;
     let slides = splitArray(initialSlides, desktop ? config.genre.split.desktop : config.genre.split.mobile);
     let index = 0;

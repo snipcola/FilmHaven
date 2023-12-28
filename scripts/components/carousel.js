@@ -4,6 +4,10 @@ import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
 
 function initializeCarousel(carousel, slides) {
+    if (!slides || slides.length === 0) {
+        return console.error("Failed to initialize carousel.");
+    }
+
     let index = 0;
 
     const image = document.createElement("img");
