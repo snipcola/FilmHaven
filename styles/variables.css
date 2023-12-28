@@ -12,7 +12,7 @@ html {
 
     --border-radius: 8px;
     --max-width: 75rem;
-    --transition-speed: .1s;
+    --transition-speed: .15s;
     
     --dim-opacity: 75%;
     --dimmer-opacity: 50%;
