@@ -50,12 +50,12 @@ function initializeLinks() {
     function handlePageChange() {
         const activePage = getHash("page");
 
-        const defaultLinkIndex = links[activePage] ? activePage : 0;
+        const defaultLinkIndex = links[activePage - 1] ? activePage - 1 : 0;
         const defaultLink = links[defaultLinkIndex];
 
         if (defaultLink) {
             setLinkActive(defaultLink);
-            setHash("page", defaultLinkIndex);
+            setHash("page", defaultLinkIndex + 1);
         }
     }
 
@@ -68,7 +68,7 @@ function initializeLinks() {
 
         link.addEventListener("click", function () {
             setLinkActive(link);
-            setHash("page", linkIndex);
+            setHash("page", linkIndex + 1);
         });
     }
 }

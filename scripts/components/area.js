@@ -2,6 +2,8 @@ import { config } from "../config.js";
 import { splitArray, onWindowResize } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
+import { getRated } from "../tmdb/rated.js";
+import { getNew } from "../tmdb/new.js";
 
 function initializeArea(area, labelText, initialSlides) {
     area.innerHTML = "";
@@ -96,8 +98,13 @@ function initializeArea(area, labelText, initialSlides) {
         rating.append(stars);
         rating.append(starsAmount);
 
-        footer.append(date);
-        footer.append(rating);
+        if (info.date) {
+            footer.append(date);
+        }
+
+        if (info.rating && info.stars) {
+            footer.append(rating);
+        }
 
         play.className = "play";
         playIcon.className = "icon fa-solid fa-play";
@@ -183,7 +190,13 @@ export async function initializeAreas() {
     const moviesTrendingArea = document.querySelector(".section.movies .area.trending");
     const showsTrendingArea = document.querySelector(".section.shows .area.trending");
 
-    if (!moviesTrendingArea || !showsTrendingArea) {
+    const moviesRatedArea = document.querySelector(".section.movies .area.rated");
+    const showsRatedArea = document.querySelector(".section.shows .area.rated");
+
+    const moviesNewArea = document.querySelector(".section.movies .area.new");
+    const showsNewArea = document.querySelector(".section.shows .area.new");
+
+    if (!moviesTrendingArea || !showsTrendingArea || !moviesRatedArea || !showsRatedArea || !moviesNewArea || !showsNewArea) {
         return console.error("Failed to initialize areas.");
     }
 
@@ -205,4 +218,36 @@ export async function initializeAreas() {
 
     initializeArea(moviesTrendingArea, "Trending", trendingMovies);
     initializeArea(showsTrendingArea, "Trending", trendingShows);
+
+    let ratedMovies = await getRated("movie");
+    let ratedShows = await getRated("tv");
+
+    if (!ratedMovies || !ratedShows) {
+        return console.error("Failed to initialize areas.");
+    }
+
+    ratedMovies.splice(config.area.amount, ratedMovies.length);
+    ratedShows.splice(config.area.amount, ratedShows.length);
+
+    preloadImages(ratedMovies.map((m) => m.image));
+    preloadImages(ratedShows.map((s) => s.image));
+
+    initializeArea(moviesRatedArea, "Top-Rated", ratedMovies);
+    initializeArea(showsRatedArea, "Top-Rated", ratedShows);
+
+    let newMovies = await getNew("movie");
+    let newShows = await getNew("tv");
+
+    if (!newMovies || !newShows) {
+        return console.error("Failed to initialize areas.");
+    }
+
+    newMovies.splice(config.area.amount, newMovies.length);
+    newShows.splice(config.area.amount, newShows.length);
+
+    preloadImages(newMovies.map((m) => m.image));
+    preloadImages(newShows.map((s) => s.image));
+
+    initializeArea(moviesNewArea, "New", newMovies);
+    initializeArea(showsNewArea, "New", newShows);
 }

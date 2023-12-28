@@ -5,7 +5,7 @@ import { tmdb } from "../config.js";
 
 function format(obj) {
     return obj
-        ? sortByPopularity(obj).map(function (item) {
+        ? sortByPopularity(obj).filter((i) => i.poster_path && i.backdrop_path).map(function (item) {
             return {
                 id: item.id?.toString(),
                 type: item.media_type,
@@ -18,7 +18,7 @@ function format(obj) {
                 stars: shortenNumber(item.vote_count)
             };
         })
-        : [];
+        : null;
 }
 
 export async function getTrending(type = "movie") {

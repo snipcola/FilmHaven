@@ -91,6 +91,9 @@
 
     border-radius: var(--border-radius);
     border: var(--small-border) solid var(--lighter);
+
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .card .footer .text, .card .footer .icon {
