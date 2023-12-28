@@ -55,6 +55,11 @@
     border: var(--small-border) solid var(--lighter);
 }
 
+body.modal-active .header-container .header .links {
+    opacity: 25%;
+    pointer-events: none;
+}
+
 .header-container .header .links .link {
     display: flex;
     align-items: center;

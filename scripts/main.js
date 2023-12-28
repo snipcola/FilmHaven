@@ -1,4 +1,5 @@
 import { initializeCache } from "./cache.js";
+import { initializeModal } from "./components/modal.js";
 import { initializeHeader } from "./components/header.js";
 import { initializeCarousels } from "./components/carousel.js";
 import { initializeGenres } from "./components/genres.js";
@@ -25,6 +26,7 @@ function initializeBody() {
 
 async function initializeAll() {
     initializeCache();
+    initializeModal();
     initializeBody();
 
     initializeHeader(wrapper);

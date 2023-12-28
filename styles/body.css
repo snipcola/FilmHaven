@@ -20,3 +20,7 @@ body > .container {
 body > .container > .wrapper {
     padding-bottom: calc(var(--footer-height) * 1.25);
 }
+
+body.modal-active {
+    overflow: hidden;
+}
