@@ -1,7 +1,15 @@
 body {
     font-family: "Open Sans", sans-serif;
+
     background-color: var(--background);
     color: var(--text);
+
+    transition: calc(var(--transition-speed) * 2) opacity;
+    opacity: 0;
+}
+
+body.active {
+    opacity: 100%;
 }
 
 body > .container {

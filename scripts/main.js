@@ -8,6 +8,10 @@ import { initializeFooter } from "./components/footer.js";
 let container;
 let wrapper;
 
+function enableBody() {
+    document.body.classList.add("active");
+}
+
 function initializeBody() {
     container = document.createElement("div");
     wrapper = document.createElement("div");
@@ -25,6 +29,7 @@ function initializeAll() {
 
     initializeHeader(wrapper);
     initializeFooter(container);
+    enableBody();
 
     initializeCarousels();
     initializeGenres();
