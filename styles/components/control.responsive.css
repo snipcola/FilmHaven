@@ -1,9 +1,3 @@
-@media only screen and (max-width: 700px) {
-    .area .control {
-        gap: var(--small-padding);
-    }
-}
-
 @media only screen and (max-width: 500px) {
     .area .control .indicators {
         display: none;

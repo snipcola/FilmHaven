@@ -11,8 +11,4 @@
     .card .footer {
         font-size: .6rem;
     }
-
-    .card .footer .rating .text, .card .footer .date .icon {
-        display: none;
-    }
 }

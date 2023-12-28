@@ -1,4 +1,4 @@
-import { config, tmdb } from "../config.js";
+import { config } from "../config.js";
 import { isHovered } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
@@ -133,8 +133,12 @@ export async function initializeCarousels() {
     let movies = await getTrending("movie");
     let shows = await getTrending("tv");
 
-    movies.splice(tmdb.carousel.amount, movies.length);
-    shows.splice(tmdb.carousel.amount, shows.length)
+    if (!movies || !shows) {
+        return console.error("Failed to initialize carousels.");
+    }
+
+    movies.splice(config.carousel.amount, movies.length);
+    shows.splice(config.carousel.amount, shows.length)
 
     preloadImages(movies.map((m) => m.backdrop));
     preloadImages(shows.map((s) => s.backdrop));

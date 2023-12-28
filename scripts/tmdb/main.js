@@ -18,6 +18,7 @@ export async function sendRequest(path, parameters = {}, method = "GET") {
 
     url.searchParams.append("api_key", tmdb.api.key);
     url.searchParams.append("language", tmdb.language);
+    url.searchParams.append("include_adult", tmdb.adult);
 
     Object.entries(parameters).forEach(([key, value]) => {
         url.searchParams.append(key, value);

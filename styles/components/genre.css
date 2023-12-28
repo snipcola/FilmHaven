@@ -1,0 +1,28 @@
+.area.genres .genres {
+    display: flex;
+    gap: var(--small-gap);
+}
+
+.area.genres .genres .genre {
+    display: flex;
+    width: 100%;
+
+    background-color: var(--light);
+    padding: calc(var(--small-padding) * 1.5) var(--large-padding);
+    
+    border-radius: var(--border-radius);
+    border: var(--small-border) solid var(--lighter);
+
+    user-select: none;
+    gap: var(--small-padding);
+
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: pointer;
+    transition: var(--transition-speed) background-color;
+}
+
+.area.genres .genres .genre:hover {
+    background-color: var(--lighter);
+}

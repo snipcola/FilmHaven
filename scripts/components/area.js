@@ -1,4 +1,4 @@
-import { tmdb } from "../config.js";
+import { config } from "../config.js";
 import { splitArray, onWindowResize } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
@@ -6,8 +6,8 @@ import { getTrending } from "../tmdb/trending.js";
 function initializeArea(area, labelText, initialSlides) {
     area.innerHTML = "";
 
-    let desktop = window.innerWidth > tmdb.area.split.max;
-    let slides = splitArray(initialSlides, desktop ? tmdb.area.split.desktop : tmdb.area.split.mobile);
+    let desktop = window.innerWidth > config.area.split.max;
+    let slides = splitArray(initialSlides, desktop ? config.area.split.desktop : config.area.split.mobile);
     let index = 0;
 
     const label = document.createElement("div");
@@ -47,7 +47,7 @@ function initializeArea(area, labelText, initialSlides) {
     cards.className = "cards";
 
     function add(info) {
-        const card = document.createElement("card");
+        const card = document.createElement("div");
         const image = document.createElement("img");
 
         const footer = document.createElement("div");
@@ -149,15 +149,15 @@ function initializeArea(area, labelText, initialSlides) {
     }
 
     function checkResize() {
-        const newDesktop = window.innerWidth > tmdb.area.split.max;
+        const newDesktop = window.innerWidth > config.area.split.max;
 
         if (desktop !== newDesktop) {
             desktop = newDesktop;
-            slides = splitArray(initialSlides, desktop ? tmdb.area.split.desktop : tmdb.area.split.mobile);
+            slides = splitArray(initialSlides, desktop ? config.area.split.desktop : config.area.split.mobile);
 
             index = index === 0 ? 0 : desktop
-                ? Math.round((index + 1) / (tmdb.area.split.desktop / tmdb.area.split.mobile)) - 1
-                : Math.round((index + 1) * (tmdb.area.split.desktop / tmdb.area.split.mobile)) - 2;
+                ? Math.round((index + 1) / (config.area.split.desktop / config.area.split.mobile)) - 1
+                : Math.round((index + 1) * (config.area.split.desktop / config.area.split.mobile)) - 2;
 
             setupIndicators();
             set(index);
@@ -190,11 +190,15 @@ export async function initializeAreas() {
     let trendingMovies = await getTrending("movie");
     let trendingShows = await getTrending("tv");
 
-    trendingMovies.splice(0, tmdb.carousel.amount);
-    trendingShows.splice(0, tmdb.carousel.amount);
+    if (!trendingMovies || !trendingShows) {
+        return console.error("Failed to initialize areas.");
+    }
 
-    trendingMovies.splice(tmdb.area.amount, trendingMovies.length);
-    trendingShows.splice(tmdb.area.amount, trendingShows.length);
+    trendingMovies.splice(0, config.carousel.amount);
+    trendingShows.splice(0, config.carousel.amount);
+
+    trendingMovies.splice(config.area.amount, trendingMovies.length);
+    trendingShows.splice(config.area.amount, trendingShows.length);
 
     preloadImages(trendingMovies.map((m) => m.image));
     preloadImages(trendingShows.map((s) => s.image));

@@ -1,3 +1,5 @@
+import { config } from "./config.js";
+
 let cache;
 
 function imageExists(url) {
@@ -26,7 +28,7 @@ export function setCache(key, value) {
     localStorage.setItem(`fhc-${key}`, JSON.stringify({ d: Date.now(), v: value }));
 }
 
-export function getCache(key, max = 7) {
+export function getCache(key, max = config.maxCacheDays) {
     const cache = localStorage.getItem(`fhc-${key}`);
 
     if (cache) {

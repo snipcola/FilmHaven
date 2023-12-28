@@ -2,9 +2,26 @@ export const config = {
     author: "Snipcola",
     name: "FilmHaven",
     carousel: {
+        amount: 4,
         maxDescriptionLength: 230,
         switchSlideInterval: 10000
-    }
+    },
+    area: {
+        amount: 16,
+        split: {
+            max: 700,
+            desktop: 4,
+            mobile: 2
+        }
+    },
+    genre: {
+        split: {
+            max: 900,
+            desktop: 5,
+            mobile: 2
+        }
+    },
+    maxCacheDays: 5
 };
 
 export const tmdb = {
@@ -18,19 +35,9 @@ export const tmdb = {
         poster: "w500",
         backdrop: "w1280"
     },
-    carousel: {
-        amount: 5
-    },
-    area: {
-        amount: 12,
-        split: {
-            max: 700,
-            desktop: 4,
-            mobile: 2
-        }
-    },
     trending: {
         timeWindow: "week"
     },
-    language: "en-GB"
+    language: "en-GB",
+    adult: false
 };
