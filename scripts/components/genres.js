@@ -3,8 +3,6 @@ import { splitArray, onWindowResize } from "../functions.js";
 import { getGenres } from "../tmdb/genres.js";
 
 function initializeGenreArea(area, initialSlides) {
-    area.innerHTML = "";
-
     let desktop = window.innerWidth > config.genre.split.max;
     let slides = splitArray(initialSlides, desktop ? config.genre.split.desktop : config.genre.split.mobile);
     let index = 0;
@@ -130,12 +128,21 @@ function initializeGenreArea(area, initialSlides) {
 }
 
 export async function initializeGenres() {
-    const moviesGenresArea = document.querySelector(".section.movies .area.genres");
-    const showsGenresArea = document.querySelector(".section.shows .area.genres");
+    const moviesSection = document.querySelector(".section.movies");
+    const showsSection = document.querySelector(".section.shows");
 
-    if (!moviesGenresArea || !showsGenresArea) {
+    if (!moviesSection || !showsSection) {
         return console.error("Failed to initialize genres.");
     }
+
+    const moviesGenresArea = document.createElement("div");
+    const showsGenresArea = document.createElement("div");
+
+    moviesGenresArea.className = "area genres";
+    showsGenresArea.className = "area genres";
+
+    moviesSection.append(moviesGenresArea);
+    showsSection.append(showsGenresArea);
 
     let movieGenres = await getGenres("movie");
     let showGenres = await getGenres("tv");

@@ -3,3 +3,12 @@ body {
     background-color: var(--background);
     color: var(--text);
 }
+
+body > .container {
+    position: relative;
+    min-height: 100vh;
+}
+
+body > .container > .wrapper {
+    padding-bottom: calc(var(--footer-height) * 1.25);
+}

@@ -8,7 +8,7 @@
     margin-left: auto;
     margin-right: auto;
 
-    margin-top: calc(var(--large-padding) * 4);
+    padding-top: calc(var(--large-padding) * 5);
 }
 
 .content > .section {
@@ -16,5 +16,5 @@
 }
 
 .content > .section.active {
-    display: inline;
+    display: inline-block;
 }

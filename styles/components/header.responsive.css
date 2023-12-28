@@ -1,16 +1,4 @@
-.header .brand.mobile {
-    display: none;
-}
-
 @media only screen and (max-width: 600px) {
-    .header .brand:not(.mobile) {
-        display: none;
-    }
-
-    .header .brand.mobile {
-        display: flex;
-    }
-
     .header .links {
         width: 100%;
     }

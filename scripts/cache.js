@@ -8,7 +8,7 @@ function imageExists(url) {
 
 export function initializeCache() {
     cache = document.createElement("cache");
-    document.body.appendChild(cache);
+    document.body.append(cache);
 }
 
 export function preloadImages(images) {

@@ -1,6 +1,44 @@
 export const config = {
     author: "Snipcola",
     name: "FilmHaven",
+    header: {
+        name: {
+            normal: {
+                text: "Film",
+                accent: "Haven"
+            },
+            mobile: {
+                text: "F",
+                accent: "H"
+            }
+        },
+        links: [
+            {
+                icon: "film",
+                text: "Movies"
+            },
+            {
+                icon: "tv",
+                text: "Shows"
+            },
+            {
+                icon: "cog",
+                text: "Settings"
+            }
+        ]
+    },
+    footer: {
+        links: [
+            {
+                icon: "youtube",
+                url: "https://youtube.com/snipcola"
+            },
+            {
+                icon: "github",
+                url: "https://github.com/snipcola"
+            }
+        ]
+    },
     carousel: {
         amount: 4,
         maxDescriptionLength: 230,
@@ -21,7 +59,8 @@ export const config = {
             mobile: 2
         }
     },
-    maxCacheDays: 5
+    maxCacheDays: 5,
+    maxMobileWidth: 600
 };
 
 export const tmdb = {

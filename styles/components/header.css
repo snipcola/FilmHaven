@@ -2,14 +2,14 @@
     position: fixed;
     width: 100vw;
 
-    z-index: 5;
+    z-index: 10;
     top: 0;
 
     background-color: var(--background);
     border-bottom: var(--small-border) solid var(--lighter);
 }
 
-.header {
+.header-container .header {
     display: flex;
     justify-content: space-between;
     
@@ -28,19 +28,21 @@
     margin-right: auto;
 }
 
-.header .brand {
+.header-container .header .brand {
     display: flex;
     align-items: center;
 
     margin: 0;
     user-select: none;
+
+    font-weight: 500;
 }
 
-.header .brand .accent {
+.header-container .header .brand .accent {
     color: var(--primary);
 }
 
-.header .links {
+.header-container .header .links {
     display: flex;
     align-items: center;
     gap: var(--small-gap);
@@ -53,7 +55,7 @@
     border: var(--small-border) solid var(--lighter);
 }
 
-.header .links .link {
+.header-container .header .links .link {
     display: flex;
     align-items: center;
     gap: var(--small-gap);
@@ -67,19 +69,19 @@
     transition: var(--transition-speed) background-color;
 }
 
-.header .links .link.active {
+.header-container .header .links .link.active {
     background-color: var(--light);
 }
 
-.header .links .link:not(.active) {
+.header-container .header .links .link:not(.active) {
     cursor: pointer;
     opacity: var(--dim-opacity);
 }
 
-.header .links .link:not(.active):hover {
+.header-container .header .links .link:not(.active):hover {
     background-color: var(--light);
 }
 
-.header .links .link .icon {
+.header-container .header .links .link .icon {
     opacity: var(--dim-opacity);
 }

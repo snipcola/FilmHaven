@@ -3,9 +3,7 @@ import { isHovered } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
 
-function initializeCarousel(card, slides) {
-    card.innerHTML = "";
-
+function initializeCarousel(carousel, slides) {
     let index = 0;
 
     const image = document.createElement("img");
@@ -103,7 +101,7 @@ function initializeCarousel(card, slides) {
     }
 
     function iterate() {
-        if (!isHovered(card)) {
+        if (!isHovered(carousel)) {
             setNext();
         }
     }
@@ -116,19 +114,28 @@ function initializeCarousel(card, slides) {
     previous.addEventListener("click", setPrevious);
     next.addEventListener("click", setNext);
 
-    card.append(image);
-    card.append(vignette);
-    card.append(details);
-    card.append(control);
+    carousel.append(image);
+    carousel.append(vignette);
+    carousel.append(details);
+    carousel.append(control);
 }
 
 export async function initializeCarousels() {
-    const moviesCard = document.querySelector(".section.movies .carousel");
-    const showsCard = document.querySelector(".section.shows .carousel");
+    const moviesSection = document.querySelector(".section.movies");
+    const showsSection = document.querySelector(".section.shows");
 
-    if (!moviesCard || !showsCard) {
+    if (!moviesSection || !showsSection) {
         return console.error("Failed to initialize carousels.");
     }
+
+    const moviesCard = document.createElement("div");
+    const showsCard = document.createElement("div");
+
+    moviesCard.className = "carousel";
+    showsCard.className = "carousel";
+
+    moviesSection.append(moviesCard);
+    showsSection.append(showsCard);
 
     let movies = await getTrending("movie");
     let shows = await getTrending("tv");

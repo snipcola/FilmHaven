@@ -6,8 +6,6 @@ import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
 
 function initializeArea(area, labelText, initialSlides) {
-    area.innerHTML = "";
-
     let desktop = window.innerWidth > config.area.split.max;
     let slides = splitArray(initialSlides, desktop ? config.area.split.desktop : config.area.split.mobile);
     let index = 0;
@@ -187,18 +185,39 @@ function initializeArea(area, labelText, initialSlides) {
 }
 
 export async function initializeAreas() {
-    const moviesTrendingArea = document.querySelector(".section.movies .area.trending");
-    const showsTrendingArea = document.querySelector(".section.shows .area.trending");
+    const moviesSection = document.querySelector(".section.movies");
+    const showsSection = document.querySelector(".section.shows");
 
-    const moviesRatedArea = document.querySelector(".section.movies .area.rated");
-    const showsRatedArea = document.querySelector(".section.shows .area.rated");
-
-    const moviesNewArea = document.querySelector(".section.movies .area.new");
-    const showsNewArea = document.querySelector(".section.shows .area.new");
-
-    if (!moviesTrendingArea || !showsTrendingArea || !moviesRatedArea || !showsRatedArea || !moviesNewArea || !showsNewArea) {
+    if (!moviesSection || !showsSection) {
         return console.error("Failed to initialize areas.");
     }
+
+    const moviesTrendingArea = document.createElement("div");
+    const showsTrendingArea = document.createElement("div");
+
+    const moviesRatedArea = document.createElement("div");
+    const showsRatedArea = document.createElement("div");
+
+    const moviesNewArea = document.createElement("div");
+    const showsNewArea = document.createElement("div");
+
+    moviesTrendingArea.className = "area trending";
+    showsTrendingArea.className = "area trending";
+
+    moviesRatedArea.className = "area rated";
+    showsRatedArea.className = "area rated";
+
+    moviesNewArea.className = "area new";
+    showsNewArea.className = "area new";
+
+    moviesSection.append(moviesTrendingArea);
+    showsSection.append(showsTrendingArea);
+
+    moviesSection.append(moviesRatedArea);
+    showsSection.append(showsRatedArea);
+
+    moviesSection.append(moviesNewArea);
+    showsSection.append(showsNewArea);
 
     let trendingMovies = await getTrending("movie");
     let trendingShows = await getTrending("tv");
