@@ -7,6 +7,8 @@
 
     position: absolute;
     bottom: 0;
+
+    box-sizing: border-box;
 }
 
 .footer-container .footer {
@@ -18,6 +20,9 @@
 
     max-width: var(--max-width);
     width: 100%;
+
+    padding: 0 var(--large-padding);
+    box-sizing: border-box;
 
     margin-left: auto;
     margin-right: auto;
