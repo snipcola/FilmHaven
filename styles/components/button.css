@@ -12,7 +12,7 @@
     cursor: pointer;
 
     transition: var(--transition-speed) background-color;
-    border: var(--small-border) solid var(--primary-dark);
+    border: var(--small-border) solid var(--primary-light);
 
     box-sizing: border-box;
     user-select: none;
@@ -22,7 +22,7 @@
 }
 
 .button:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--primary-light);
 }
 
 .button.icon-only {
