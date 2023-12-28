@@ -5,14 +5,6 @@ import { getHash, setHash, onHashChange } from "../hash.js";
 let links = [];
 let sections = [];
 
-function setPage(index) {
-    setHash("page", index);
-}
-
-function getPage() {
-    return getHash("page");
-}
-
 function isActive(link) {
     return link.classList.contains("active");
 }
@@ -56,14 +48,14 @@ function setLinkActive(link) {
 
 function initializeLinks() {
     function handlePageChange() {
-        const activePage = getPage();
+        const activePage = getHash("page");
 
         const defaultLinkIndex = links[activePage] ? activePage : 0;
         const defaultLink = links[defaultLinkIndex];
 
         if (defaultLink) {
             setLinkActive(defaultLink);
-            setPage(defaultLinkIndex);
+            setHash("page", defaultLinkIndex);
         }
     }
 
@@ -76,7 +68,7 @@ function initializeLinks() {
 
         link.addEventListener("click", function () {
             setLinkActive(link);
-            setPage(linkIndex);
+            setHash("page", linkIndex);
         });
     }
 }

@@ -5,7 +5,9 @@
     background-color: var(--dark);
     padding: var(--small-padding);
 
+    width: fit-content;
     height: fit-content;
+
     gap: calc(var(--small-gap) / 3);
 
     border-radius: var(--border-radius);
@@ -29,12 +31,12 @@
     background-color: var(--dark);
     gap: calc(var(--small-gap) / 3);
 
-    padding: calc(var(--small-padding) / 1.5);
+    padding: calc(var(--small-padding) / 1.25);
     border-radius: var(--border-radius);
 }
 
 .control .indicator {
-    padding: calc(var(--small-padding) / 8) calc(var(--small-padding) / 1.5);
+    padding: calc(var(--small-padding) / 6) calc(var(--small-padding) / 1.5);
     background-color: var(--lighter);
 
     border-radius: var(--border-radius);

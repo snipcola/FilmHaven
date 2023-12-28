@@ -4,6 +4,8 @@ import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
 
 function initializeCarousel(card, slides) {
+    card.innerHTML = "";
+
     let index = 0;
 
     const image = document.createElement("img");
@@ -52,12 +54,6 @@ function initializeCarousel(card, slides) {
     next.className = "button secondary icon-only next";
     nextIcon.className = "icon fa-solid fa-arrow-right";
 
-    slides.forEach(function () {
-        const indicator = document.createElement("div");
-        indicator.className = "indicator";
-        indicators.append(indicator);
-    });
-
     previous.append(previousIcon);
     next.append(nextIcon);
 
@@ -66,16 +62,13 @@ function initializeCarousel(card, slides) {
     control.append(next);
 
     function set(newIndex) {
+        index = slides[newIndex] ? newIndex : 0;
+
         const slide = slides[newIndex];
-
-        if (!slide) {
-            return;
-        }
-
-        index = newIndex;
 
         image.src = slide.backdrop;
         title.innerText = slide.title;
+
         description.innerText = slide.description.length > config.carousel.maxDescriptionLength
             ? slide.description.substring(0, config.carousel.maxDescriptionLength).replace(/\s+\S*$/, "...")
             : slide.description;
@@ -93,33 +86,40 @@ function initializeCarousel(card, slides) {
         set(slides[index + 1] ? index + 1 : 0);
     }
 
+    function setupIndicators() {
+        indicators.innerHTML = "";
+
+        slides.forEach(function () {
+            const indicator = document.createElement("div");
+            indicator.className = "indicator";
+            indicators.append(indicator);
+        });
+
+        Array.from(indicators.children).forEach(function (indicator, i) {
+            indicator.addEventListener("click", function () {
+                set(i);
+            });
+        });
+    }
+
     function iterate() {
         if (!isHovered(card)) {
             setNext();
         }
     }
-    
-    setInterval(iterate, config.carousel.switchSlideInterval);
+
+    setupIndicators();
     set(index);
+
+    setInterval(iterate, config.carousel.switchSlideInterval);
+
+    previous.addEventListener("click", setPrevious);
+    next.addEventListener("click", setNext);
 
     card.append(image);
     card.append(vignette);
     card.append(details);
     card.append(control);
-
-    previous.addEventListener("click", setPrevious);
-    next.addEventListener("click", setNext);
-
-    Array.from(indicators.children).forEach(function (indicator, i) {
-        indicator.addEventListener("click", function () {
-            set(i);
-        });
-    });
-}
-
-function preload(slides) {
-    const images = slides.map((m) => m.backdrop);
-    preloadImages(images);
 }
 
 export async function initializeCarousels() {
@@ -133,11 +133,11 @@ export async function initializeCarousels() {
     let movies = await getTrending("movie");
     let shows = await getTrending("tv");
 
-    movies.splice(tmdb.carousel.moviesAmount, movies.length);
-    shows.splice(tmdb.carousel.showsAmount, shows.length)
+    movies.splice(tmdb.carousel.amount, movies.length);
+    shows.splice(tmdb.carousel.amount, shows.length)
 
-    preload(movies);
-    preload(shows);
+    preloadImages(movies.map((m) => m.backdrop));
+    preloadImages(shows.map((s) => s.backdrop));
     
     initializeCarousel(moviesCard, movies);
     initializeCarousel(showsCard, shows);

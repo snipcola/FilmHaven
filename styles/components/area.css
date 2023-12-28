@@ -1,11 +1,21 @@
 .area {
+    display: none;
     position: relative;
     
     margin-top: calc(var(--large-padding) * 2.5);
     padding: var(--large-padding);
 
+    padding-top: calc(var(--large-padding) * 1.75);
+
     border: var(--small-border) solid var(--lighter);
     border-radius: var(--border-radius);
+
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.area.active {
+    display: inline-block;
 }
 
 .area .label {
@@ -21,11 +31,14 @@
     user-select: none;
 }
 
-.area .title {
-    display: flex;
-    justify-content: space-between;
+.area .control {
+    position: absolute;
+    
+    top: calc(var(--small-padding) * -2.5);
+    right: calc(var(--small-padding) * 2);
 }
 
-.area .title .text {
-    font-weight: 600;
+.area .control .button {
+    width: 1rem;
+    height: 1rem;
 }

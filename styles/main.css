@@ -17,3 +17,6 @@
 
 @import url(./components/control.css);
 @import url(./components/control.responsive.css);
+
+@import url(./components/card.css);
+@import url(./components/card.responsive.css);

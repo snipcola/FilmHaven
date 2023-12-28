@@ -1,8 +1,9 @@
 export const config = {
+    author: "Snipcola",
     name: "FilmHaven",
     carousel: {
         maxDescriptionLength: 250,
-        switchSlideInterval: 5000
+        switchSlideInterval: 10000
     }
 };
 
@@ -18,8 +19,15 @@ export const tmdb = {
         backdrop: "w1280"
     },
     carousel: {
-        moviesAmount: 5,
-        showsAmount: 5
+        amount: 5
+    },
+    area: {
+        amount: 12,
+        split: {
+            max: 700,
+            desktop: 4,
+            mobile: 2
+        }
     },
     trending: {
         timeWindow: "week"

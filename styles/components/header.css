@@ -1,6 +1,18 @@
+.header-container {
+    position: fixed;
+    width: 100vw;
+
+    z-index: 5;
+    top: 0;
+
+    background-color: var(--background);
+    border-bottom: var(--small-border) solid var(--lighter);
+}
+
 .header {
     display: flex;
     justify-content: space-between;
+    
     align-items: center;
     gap: var(--large-gap);
 
@@ -8,7 +20,9 @@
     box-sizing: border-box;
 
     max-width: var(--max-width);
+
     width: 100%;
+    height: calc(var(--large-padding) * 4);
 
     margin-left: auto;
     margin-right: auto;
