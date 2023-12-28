@@ -1,6 +1,7 @@
 .cards {
     display: flex;
     gap: var(--small-gap);
+    justify-content: center;
 }
 
 .card {
@@ -21,7 +22,7 @@
     cursor: pointer;
     transition: var(--transition-speed) background-color;
 
-    width: 100%;
+    width: calc(25% - var(--small-padding));
     user-select: none;
 
     border: var(--small-border) solid var(--lighter);
