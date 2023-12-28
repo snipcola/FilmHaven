@@ -1,7 +1,3 @@
-export function onDocumentLoad(callback) {
-    document.addEventListener("DOMContentLoaded", callback);
-}
-
 export function onWindowResize(callback) {
     window.addEventListener("resize", callback);
 }
