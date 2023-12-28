@@ -2,7 +2,7 @@ export const config = {
     author: "Snipcola",
     name: "FilmHaven",
     carousel: {
-        maxDescriptionLength: 250,
+        maxDescriptionLength: 230,
         switchSlideInterval: 10000
     }
 };

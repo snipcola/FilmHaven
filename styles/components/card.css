@@ -99,6 +99,7 @@
 
 .card .footer .stars {
     display: flex;
+    gap: calc(var(--small-gap) / 4);
 }
 
 .card .footer .star.fill {
