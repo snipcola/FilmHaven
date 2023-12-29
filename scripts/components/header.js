@@ -1,9 +1,8 @@
 import { config } from "../config.js";
 import { getInnerText, onWindowResize } from "../functions.js";
 import { getHash, setHash, onHashChange } from "../hash.js";
-import { initializeContent } from "./content.js";
 
-let activeIndex = 0;
+let activeIndex;
 let links = [];
 let sections = [];
 
@@ -78,7 +77,7 @@ function initializePageChangeCheck() {
         const index = links[activePage - 1] ? activePage - 1 : activeIndex;
         const link = links[index];
 
-        if (link) {
+        if (link && index !== activeIndex) {
             activeIndex = index;
             setLinkActive(link);
             setHash("page", index + 1);
