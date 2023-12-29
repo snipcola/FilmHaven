@@ -150,13 +150,16 @@ function initializeGenreArea(area, initialSlides, type) {
 
         if (desktop !== newDesktop) {
             desktop = newDesktop;
-            slides = splitArray(initialSlides, desktop ? config.genre.split.desktop : config.genre.split.mobile);
+            
+            if (slides && slides.length !== 0) {
+                slides = splitArray(initialSlides, desktop ? config.genre.split.desktop : config.genre.split.mobile);
 
-            index = index === 0 ? 0 : desktop
-                ? Math.round((index + 1) / (config.genre.split.desktop / config.genre.split.mobile)) - 1
-                : Math.round((index + 1) * (config.genre.split.desktop / config.genre.split.mobile)) - 2;
+                index = index === 0 ? 0 : desktop
+                    ? Math.round((index + 1) / (config.genre.split.desktop / config.genre.split.mobile)) - 1
+                    : Math.round((index + 1) * (config.genre.split.desktop / config.genre.split.mobile)) - 2;
 
-            set(index);
+                set(index);
+            }
         }
     }
 

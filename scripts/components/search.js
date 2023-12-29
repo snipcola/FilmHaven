@@ -78,8 +78,8 @@ function initializeSearch(area, type, placeholder) {
         image.src = info.image;
         title.className = "title";
 
-        title.innerText = info.title.length > config.area.maxTitleLength
-            ? info.title.substring(0, config.area.maxTitleLength).replace(/\s+\S*$/, "...")
+        title.innerText = info.title.length > (config.area.maxTitleLength * 1.75)
+            ? info.title.substring(0, (config.area.maxTitleLength * 1.75)).replace(/\s+\S*$/, "...")
             : info.title;
 
         footer.className = "footer";
@@ -172,7 +172,7 @@ function initializeSearch(area, type, placeholder) {
         if (desktop !== newDesktop) {
             desktop = newDesktop;
             
-            if (slides) {
+            if (slides && slides.length !== 0) {
                 slides = splitArray(results, desktop ? config.area.split.desktop : config.area.split.mobile);
 
                 index = index === 0 ? 0 : desktop

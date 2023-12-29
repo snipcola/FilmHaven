@@ -160,13 +160,16 @@ export function initializeArea(area, initialSlides, labelText) {
 
         if (desktop !== newDesktop) {
             desktop = newDesktop;
-            slides = splitArray(initialSlides, desktop ? config.area.split.desktop : config.area.split.mobile);
 
-            index = index === 0 ? 0 : desktop
-                ? Math.round((index + 1) / (config.area.split.desktop / config.area.split.mobile)) - 1
-                : Math.round((index + 1) * (config.area.split.desktop / config.area.split.mobile)) - 2;
+            if (slides && slides.length !== 0) {
+                slides = splitArray(initialSlides, desktop ? config.area.split.desktop : config.area.split.mobile);
 
-            set(index);
+                index = index === 0 ? 0 : desktop
+                    ? Math.round((index + 1) / (config.area.split.desktop / config.area.split.mobile)) - 1
+                    : Math.round((index + 1) * (config.area.split.desktop / config.area.split.mobile)) - 2;
+
+                set(index);
+            }
         }
     }
 
