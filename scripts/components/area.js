@@ -236,13 +236,11 @@ export async function initializeAreas() {
     trendingMovies.splice(config.area.amount, trendingMovies.length);
     trendingShows.splice(config.area.amount, trendingShows.length);
 
-    preloadImages(trendingMovies.map((i) => i.image), function () {
-        initializeArea(moviesTrendingArea, trendingMovies, "Trending");
-    }, config.area.split[desktop ? "desktop" : "mobile"]);
+    await preloadImages(trendingMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+    initializeArea(moviesTrendingArea, trendingMovies, "Trending");
 
-    preloadImages(trendingShows.map((i) => i.image), function () {
-        initializeArea(showsTrendingArea, trendingShows, "Trending");
-    }, config.area.split[desktop ? "desktop" : "mobile"]);
+    await preloadImages(trendingShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+    initializeArea(showsTrendingArea, trendingShows, "Trending");
 
     let ratedMovies = await getRated("movie");
     let ratedShows = await getRated("tv");
@@ -254,13 +252,11 @@ export async function initializeAreas() {
     ratedMovies.splice(config.area.amount, ratedMovies.length);
     ratedShows.splice(config.area.amount, ratedShows.length);
 
-    preloadImages(ratedMovies.map((i) => i.image), function () {
-        initializeArea(moviesRatedArea, ratedMovies, "Top-Rated");
-    }, config.area.split[desktop ? "desktop" : "mobile"]);
+    await preloadImages(ratedMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+    initializeArea(moviesRatedArea, ratedMovies, "Top-Rated");
     
-    preloadImages(ratedShows.map((i) => i.image), function () {
-        initializeArea(showsRatedArea, ratedShows, "Top-Rated");
-    }, config.area.split[desktop ? "desktop" : "mobile"]);
+    await preloadImages(ratedShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+    initializeArea(showsRatedArea, ratedShows, "Top-Rated");
 
     let newMovies = await getNew("movie");
     let newShows = await getNew("tv");
@@ -272,11 +268,9 @@ export async function initializeAreas() {
     newMovies.splice(config.area.amount, newMovies.length);
     newShows.splice(config.area.amount, newShows.length);
 
-    preloadImages(newMovies.map((i) => i.image), function () {
-        initializeArea(moviesNewArea, newMovies, "New");
-    }, config.area.split[desktop ? "desktop" : "mobile"]);
+    await preloadImages(newMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+    initializeArea(moviesNewArea, newMovies, "New");
 
-    preloadImages(newShows.map((i) => i.image), function () {
-        initializeArea(showsNewArea, newShows, "New");
-    }, config.area.split[desktop ? "desktop" : "mobile"]);
+    await preloadImages(newShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+    initializeArea(showsNewArea, newShows, "New");
 }

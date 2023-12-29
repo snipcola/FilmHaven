@@ -231,9 +231,8 @@ function initializeSearch(area, type, placeholder) {
                 return console.error(`Failed to search for "${query}".`);
             }
 
-            preloadImages(searchResults.map((i) => i.image), function () {
-                populate(searchResults);
-            }, config.area.split[desktop ? "desktop" : "mobile"]);
+            await preloadImages(searchResults.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+            populate(searchResults);
         }
     }
 

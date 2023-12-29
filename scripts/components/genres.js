@@ -30,9 +30,8 @@ async function modal(info, type) {
     }
 
     popularContent.splice(config.area.amount, popularContent.length);
-    preloadImages(popularContent.map((i) => i.image), function () {
-        initializeArea(popularArea, popularContent, "Popular");
-    }, config.area.split[desktop ? "desktop" : "mobile"]);
+    await preloadImages(popularContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+    initializeArea(popularArea, popularContent, "Popular");
 
     let ratedContent = await getRated(type, info.id);
 
@@ -41,9 +40,8 @@ async function modal(info, type) {
     }
 
     ratedContent.splice(config.area.amount, ratedContent.length);
-    preloadImages(ratedContent.map((i) => i.image), function () {
-        initializeArea(ratedArea, ratedContent, "Top-Rated");
-    }, config.area.split[desktop ? "desktop" : "mobile"]);
+    await preloadImages(ratedContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+    initializeArea(ratedArea, ratedContent, "Top-Rated");
 
     let newContent = await getNew(type, info.id);
 
@@ -52,9 +50,8 @@ async function modal(info, type) {
     }
 
     newContent.splice(config.area.amount, newContent.length);
-    preloadImages(newContent.map((i) => i.image), function () {
-        initializeArea(newArea, newContent, "New");
-    }, config.area.split[desktop ? "desktop" : "mobile"]);
+    await preloadImages(newContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+    initializeArea(newArea, newContent, "New");
 }
 
 function initializeGenreArea(area, initialSlides, type) {

@@ -26,6 +26,7 @@
     border: none;
     outline: none;
 
+    font-size: 1rem;
     color: var(--text);
 }
 
@@ -47,11 +48,13 @@
     box-sizing: border-box;
     cursor: pointer;
 
-    display: none;
+    opacity: 0;
+    z-index: -10;
 }
 
 .area.search .search .clear.active {
-    display: inline-block;
+    opacity: 100%;
+    z-index: 1;
 }
 
 .area.search .search .clear:hover {

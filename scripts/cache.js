@@ -11,30 +11,38 @@ export function initializeCache() {
     document.body.append(cache);
 }
 
-export function preloadImages(images, callback, onAmount) {
+export async function preloadImages(images, onAmount) {
     let count = 0;
 
-    function incrementCount() {
-        count++;
+    async function loadImage(url) {
+        return new Promise(function (resolve) {
+            function checkCount() {
+                if (count >= (onAmount || images.length)) {
+                    resolve();
+                }
+            }
 
-        if (count === (onAmount || images.length) && callback) {
-            callback();
-        }
+            function incrementCount() {
+                count++;
+                resolve();
+            }
+            
+            if (imageExists(url)) {
+                incrementCount();
+            } else {
+                const image = new Image();
+
+                image.src = url;
+                image.onload = incrementCount;
+                image.onerror = incrementCount;
+
+                cache.append(image);
+                checkCount();
+            }
+        });
     }
-
-    for (const url of images) {
-        if (imageExists(url)) {
-            incrementCount();
-            continue;
-        }
-
-        const image = new Image();
-        
-        image.src = url;
-        image.onload = incrementCount;
-
-        cache.append(image);
-    }
+    
+    await Promise.all(images.map(loadImage));
 }
 
 export function setCache(key, value) {
