@@ -39,6 +39,9 @@ export const config = {
             }
         ]
     },
+    search: {
+        debounce: 250
+    },
     carousel: {
         amount: 4,
         maxDescriptionLength: 230,

@@ -14,6 +14,10 @@
     border: var(--small-border) solid var(--light);
 }
 
+.control.inactive {
+    display: none;
+}
+
 .area .control .button {
     background-color: var(--light);
     border: var(--small-border) solid var(--lighter);
@@ -36,7 +40,7 @@
 }
 
 .control .indicator {
-    padding: calc(var(--small-padding) / 6) calc(var(--small-padding) / 1.5);
+    padding: 2px 8px;
     background-color: var(--lighter);
 
     border-radius: var(--border-radius);

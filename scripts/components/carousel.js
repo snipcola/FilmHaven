@@ -63,6 +63,21 @@ function initializeCarousel(carousel, slides) {
     control.append(indicators);
     control.append(next);
 
+    function setIndicators() {
+        indicators.innerHTML = "";
+
+        slides.forEach(function (_, i) {
+            const indicator = document.createElement("div");
+
+            indicator.className = index === i ? "indicator active" : "indicator";
+            indicator.addEventListener("click", function () {
+                set(i);
+            });
+
+            indicators.append(indicator);
+        });
+    }
+
     function set(newIndex) {
         index = slides[newIndex] ? newIndex : 0;
 
@@ -75,9 +90,7 @@ function initializeCarousel(carousel, slides) {
             ? slide.description.substring(0, config.carousel.maxDescriptionLength).replace(/\s+\S*$/, "...")
             : slide.description;
 
-        Array.from(indicators.children).forEach(function (indicator, i) {
-            indicator.classList[index === i ? "add" : "remove"]("active");
-        });
+            setIndicators();
     }
 
     function setPrevious() {
@@ -88,29 +101,12 @@ function initializeCarousel(carousel, slides) {
         set(slides[index + 1] ? index + 1 : 0);
     }
 
-    function setupIndicators() {
-        indicators.innerHTML = "";
-
-        slides.forEach(function () {
-            const indicator = document.createElement("div");
-            indicator.className = "indicator";
-            indicators.append(indicator);
-        });
-
-        Array.from(indicators.children).forEach(function (indicator, i) {
-            indicator.addEventListener("click", function () {
-                set(i);
-            });
-        });
-    }
-
     function iterate() {
         if (!isHovered(carousel)) {
             setNext();
         }
     }
 
-    setupIndicators();
     set(index);
 
     setInterval(iterate, config.carousel.switchSlideInterval);
@@ -151,8 +147,8 @@ export async function initializeCarousels() {
     movies.splice(config.carousel.amount, movies.length);
     shows.splice(config.carousel.amount, shows.length)
 
-    preloadImages(movies.map((m) => m.backdrop));
-    preloadImages(shows.map((s) => s.backdrop));
+    preloadImages(movies.map((i) => i.backdrop));
+    preloadImages(shows.map((i) => i.backdrop));
     
     initializeCarousel(moviesCard, movies);
     initializeCarousel(showsCard, shows);

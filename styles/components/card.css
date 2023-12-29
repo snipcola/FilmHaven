@@ -4,6 +4,10 @@
     justify-content: center;
 }
 
+.cards.inactive {
+    display: none;
+}
+
 .card {
     display: flex;
     position: relative;

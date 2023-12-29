@@ -1,4 +1,4 @@
-.search {
+.area.search .search {
     display: flex;
     gap: var(--small-gap);
 
@@ -15,11 +15,11 @@
     transition: var(--transition-speed) background-color;
 }
 
-.search:hover, .search:focus-within {
+.area.search .search:hover, .area.search .search:focus-within {
     background-color: var(--lighter);
 }
 
-.search .input {
+.area.search .search .input {
     width: 100%;
     background-color: transparent;
 
@@ -29,15 +29,15 @@
     color: var(--text);
 }
 
-.search .input::placeholder {
+.area.search .search .input::placeholder {
     opacity: var(--dim-opacity);
 }
 
-.search .icon {
+.area.search .search .icon {
     opacity: 25%;
 }
 
-.search .clear {
+.area.search .search .clear {
     background-color: var(--primary);
     padding: calc(var(--small-padding) / 1.75);
     
@@ -47,15 +47,17 @@
     box-sizing: border-box;
     cursor: pointer;
 
-    opacity: 0;
-    z-index: -10;
+    display: none;
 }
 
-.search .clear.active {
-    opacity: 100%;
-    z-index: 1;
+.area.search .search .clear.active {
+    display: inline-block;
 }
 
-.search .clear:hover {
+.area.search .search .clear:hover {
     opacity: var(--dim-opacity);
+}
+
+.area.search .cards {
+    margin-top: 1rem;
 }

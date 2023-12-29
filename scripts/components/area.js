@@ -35,12 +35,6 @@ export function initializeArea(area, initialSlides, labelText) {
     next.className = "button secondary icon-only next";
     nextIcon.className = "icon fa-solid fa-arrow-right";
 
-    slides.forEach(function () {
-        const indicator = document.createElement("div");
-        indicator.className = "indicator";
-        indicators.append(indicator);
-    });
-
     previous.append(previousIcon);
     next.append(nextIcon);
 
@@ -127,6 +121,21 @@ export function initializeArea(area, initialSlides, labelText) {
         cards.append(card);
     }
 
+    function setIndicators() {
+        indicators.innerHTML = "";
+
+        slides.forEach(function (_, i) {
+            const indicator = document.createElement("div");
+
+            indicator.className = index === i ? "indicator active" : "indicator";
+            indicator.addEventListener("click", function () {
+                set(i);
+            });
+
+            indicators.append(indicator);
+        });
+    }
+
     function set(newIndex) {
         index = slides[newIndex] ? newIndex : 0;
 
@@ -135,9 +144,7 @@ export function initializeArea(area, initialSlides, labelText) {
         cards.innerHTML = "";
         slide.forEach(add);
 
-        Array.from(indicators.children).forEach(function (indicator, i) {
-            indicator.classList[index === i ? "add" : "remove"]("active");
-        });
+        setIndicators();
     }
 
     function setPrevious() {
@@ -146,22 +153,6 @@ export function initializeArea(area, initialSlides, labelText) {
 
     function setNext() {
         set(slides[index + 1] ? index + 1 : 0);
-    }
-
-    function setupIndicators() {
-        indicators.innerHTML = "";
-
-        slides.forEach(function () {
-            const indicator = document.createElement("div");
-            indicator.className = "indicator";
-            indicators.append(indicator);
-        });
-
-        Array.from(indicators.children).forEach(function (indicator, i) {
-            indicator.addEventListener("click", function () {
-                set(i);
-            });
-        });
     }
 
     function checkResize() {
@@ -175,14 +166,11 @@ export function initializeArea(area, initialSlides, labelText) {
                 ? Math.round((index + 1) / (config.area.split.desktop / config.area.split.mobile)) - 1
                 : Math.round((index + 1) * (config.area.split.desktop / config.area.split.mobile)) - 2;
 
-            setupIndicators();
             set(index);
         }
     }
 
     onWindowResize(checkResize);
-
-    setupIndicators();
     set(index);
 
     previous.addEventListener("click", setPrevious);
@@ -243,8 +231,8 @@ export async function initializeAreas() {
     trendingMovies.splice(config.area.amount, trendingMovies.length);
     trendingShows.splice(config.area.amount, trendingShows.length);
 
-    preloadImages(trendingMovies.map((m) => m.image));
-    preloadImages(trendingShows.map((s) => s.image));
+    preloadImages(trendingMovies.map((i) => i.image));
+    preloadImages(trendingShows.map((i) => i.image));
 
     initializeArea(moviesTrendingArea, trendingMovies, "Trending");
     initializeArea(showsTrendingArea, trendingShows, "Trending");
@@ -259,8 +247,8 @@ export async function initializeAreas() {
     ratedMovies.splice(config.area.amount, ratedMovies.length);
     ratedShows.splice(config.area.amount, ratedShows.length);
 
-    preloadImages(ratedMovies.map((m) => m.image));
-    preloadImages(ratedShows.map((s) => s.image));
+    preloadImages(ratedMovies.map((i) => i.image));
+    preloadImages(ratedShows.map((i) => i.image));
 
     initializeArea(moviesRatedArea, ratedMovies, "Top-Rated");
     initializeArea(showsRatedArea, ratedShows, "Top-Rated");
@@ -275,8 +263,8 @@ export async function initializeAreas() {
     newMovies.splice(config.area.amount, newMovies.length);
     newShows.splice(config.area.amount, newShows.length);
 
-    preloadImages(newMovies.map((m) => m.image));
-    preloadImages(newShows.map((s) => s.image));
+    preloadImages(newMovies.map((i) => i.image));
+    preloadImages(newShows.map((i) => i.image));
 
     initializeArea(moviesNewArea, newMovies, "New");
     initializeArea(showsNewArea, newShows, "New");

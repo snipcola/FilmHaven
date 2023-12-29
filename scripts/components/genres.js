@@ -28,7 +28,7 @@ async function modal(info, type) {
     }
 
     popularContent.splice(config.area.amount, popularContent.length);
-    preloadImages(popularContent.map((c) => c.image));
+    preloadImages(popularContent.map((i) => i.image));
     initializeArea(popularArea, popularContent, "Popular");
 
     let ratedContent = await getRated(type, info.id);
@@ -38,7 +38,7 @@ async function modal(info, type) {
     }
 
     ratedContent.splice(config.area.amount, ratedContent.length);
-    preloadImages(ratedContent.map((c) => c.image));
+    preloadImages(ratedContent.map((i) => i.image));
     initializeArea(ratedArea, ratedContent, "Top-Rated");
 
     let newContent = await getNew(type, info.id);
@@ -48,7 +48,7 @@ async function modal(info, type) {
     }
 
     newContent.splice(config.area.amount, newContent.length);
-    preloadImages(newContent.map((c) => c.image));
+    preloadImages(newContent.map((i) => i.image));
     initializeArea(newArea, newContent, "New");
 }
 
@@ -82,12 +82,6 @@ function initializeGenreArea(area, initialSlides, type) {
     next.className = "button secondary icon-only next";
     nextIcon.className = "icon fa-solid fa-arrow-right";
 
-    slides.forEach(function () {
-        const indicator = document.createElement("div");
-        indicator.className = "indicator";
-        indicators.append(indicator);
-    });
-
     previous.append(previousIcon);
     next.append(nextIcon);
 
@@ -117,6 +111,21 @@ function initializeGenreArea(area, initialSlides, type) {
         genres.append(genre);
     }
 
+    function setIndicators() {
+        indicators.innerHTML = "";
+
+        slides.forEach(function (_, i) {
+            const indicator = document.createElement("div");
+
+            indicator.className = index === i ? "indicator active" : "indicator";
+            indicator.addEventListener("click", function () {
+                set(i);
+            });
+
+            indicators.append(indicator);
+        });
+    }
+
     function set(newIndex) {
         index = slides[newIndex] ? newIndex : 0;
 
@@ -125,9 +134,7 @@ function initializeGenreArea(area, initialSlides, type) {
         genres.innerHTML = "";
         slide.forEach(add);
 
-        Array.from(indicators.children).forEach(function (indicator, i) {
-            indicator.classList[index === i ? "add" : "remove"]("active");
-        });
+        setIndicators();
     }
 
     function setPrevious() {
@@ -136,22 +143,6 @@ function initializeGenreArea(area, initialSlides, type) {
 
     function setNext() {
         set(slides[index + 1] ? index + 1 : 0);
-    }
-
-    function setupIndicators() {
-        indicators.innerHTML = "";
-
-        slides.forEach(function () {
-            const indicator = document.createElement("div");
-            indicator.className = "indicator";
-            indicators.append(indicator);
-        });
-
-        Array.from(indicators.children).forEach(function (indicator, i) {
-            indicator.addEventListener("click", function () {
-                set(i);
-            });
-        });
     }
 
     function checkResize() {
@@ -165,14 +156,11 @@ function initializeGenreArea(area, initialSlides, type) {
                 ? Math.round((index + 1) / (config.genre.split.desktop / config.genre.split.mobile)) - 1
                 : Math.round((index + 1) * (config.genre.split.desktop / config.genre.split.mobile)) - 2;
 
-            setupIndicators();
             set(index);
         }
     }
 
     onWindowResize(checkResize);
-
-    setupIndicators();
     set(index);
 
     previous.addEventListener("click", setPrevious);

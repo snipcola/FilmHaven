@@ -1,3 +1,14 @@
+export function debounce(func, delay) {
+    let timeoutId;
+
+    return function (...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(function () {
+            func(...args);
+        }, delay);
+    };
+}
+
 export function onWindowResize(callback) {
     window.addEventListener("resize", callback);
 }
