@@ -212,8 +212,8 @@ function initializeSearch(area, type, placeholder) {
         cards.className = "cards";
     }
 
-    async function clearCheck(e) {
-        if (e.target.value.length > 0) {
+    async function clearCheck() {
+        if (input.value.length > 0) {
             clear.classList.add("active");
         } else {
             clear.classList.remove("active");
@@ -221,8 +221,8 @@ function initializeSearch(area, type, placeholder) {
         }
     }
 
-    async function onInput(e) {
-        const query = e.target.value;
+    async function onInput() {
+        const query = input.value;
 
         if (query.length > 0) {
             const searchResults = await getSearchResults(type, query);
