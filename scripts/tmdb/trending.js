@@ -6,6 +6,8 @@ import { tmdb } from "../config.js";
 function format(obj) {
     return obj
         ? sortByPopularity(obj).filter((i) => i.poster_path && i.backdrop_path).map(function (item) {
+            const date = new Date(item.release_date || item.first_air_date);
+
             return {
                 id: item.id?.toString(),
                 type: item.media_type,
@@ -13,7 +15,7 @@ function format(obj) {
                 description: item.overview || item.description,
                 image: getImageUrl(item.poster_path, "poster"),
                 backdrop: getImageUrl(item.backdrop_path, "backdrop"),
-                date: item.release_date || item.first_air_date,
+                date: `${date.getFullYear()}-${date.getMonth()}`,
                 rating: Math.round(item.vote_average / 2).toString(),
                 stars: shortenNumber(item.vote_count)
             };

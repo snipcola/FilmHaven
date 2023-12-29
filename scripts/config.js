@@ -81,6 +81,6 @@ export const tmdb = {
     trending: {
         timeWindow: "week"
     },
-    language: "en-GB",
+    language: "en",
     adult: false
 };
