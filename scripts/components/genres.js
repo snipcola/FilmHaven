@@ -18,28 +18,38 @@ async function modal(info, type) {
     ratedArea.className = "area";
     newArea.className = "area";
 
-    let popularContent = await getTrending(type, info.id);
-    let ratedContent = await getRated(type, info.id);
-    let newContent = await getNew(type, info.id);
+    setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true, "modal");
+    showModal();
 
-    if (!popularContent || !ratedContent || !newContent) {
+    let popularContent = await getTrending(type, info.id);
+
+    if (!popularContent) {
         return console.error(`Failed to initialize ${info.name} genre.`);
     }
 
     popularContent.splice(config.area.amount, popularContent.length);
-    ratedContent.splice(config.area.amount, ratedContent.length);
-    newContent.splice(config.area.amount, newContent.length);
-
     preloadImages(popularContent.map((c) => c.image));
-    preloadImages(ratedContent.map((c) => c.image));
-    preloadImages(newContent.map((c) => c.image));
-
     initializeArea(popularArea, popularContent, "Popular");
-    initializeArea(ratedArea, ratedContent, "Top-Rated");
-    initializeArea(newArea, newContent, "New");
 
-    setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true, "modal");
-    showModal();
+    let ratedContent = await getRated(type, info.id);
+
+    if (!ratedContent) {
+        return console.error(`Failed to initialize ${info.name} genre.`);
+    }
+
+    ratedContent.splice(config.area.amount, ratedContent.length);
+    preloadImages(ratedContent.map((c) => c.image));
+    initializeArea(ratedArea, ratedContent, "Top-Rated");
+
+    let newContent = await getNew(type, info.id);
+
+    if (!newContent) {
+        return console.error(`Failed to initialize ${info.name} genre.`);
+    }
+
+    newContent.splice(config.area.amount, newContent.length);
+    preloadImages(newContent.map((c) => c.image));
+    initializeArea(newArea, newContent, "New");
 }
 
 function initializeGenreArea(area, initialSlides, type) {
@@ -199,7 +209,7 @@ export async function initializeGenres() {
         return console.error("Failed to initialize genres.");
     }
 
-    async function handleHashChange() {
+    function handleHashChange() {
         const modalHash = getHash("modal");
         
         if (modalHash) {
@@ -211,7 +221,7 @@ export async function initializeGenres() {
                     : showGenres.find((g) => g.id?.toString() === id);
 
                 if (info) {
-                    await modal(info, type);
+                    modal(info, type);
                     document.title = `${type === "movie" ? "Movies" : "Shows"} - ${info.name}`;
                 } else {
                     removeHash("modal");

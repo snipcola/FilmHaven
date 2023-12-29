@@ -17,15 +17,15 @@ function format(obj, type) {
 }
 
 export async function getNew(type = "movie", genre) {
-    const cacheName = genre ? `new-${type}-${genre}` : `new-${type}`;
+    const cacheName = `new-${type}`;
     const cache = getCache(cacheName);
 
-    if (cache) return cache;
+    if (cache && !genre) return cache;
     
     const date = new Date();
     const formattedDateNow = date.toISOString().split('T')[0];
     
-    date.setMonth(date.getMonth() - 2);
+    date.setMonth(date.getMonth() - 5);
     const formattedDate = date.toISOString().split('T')[0];
     
     const response = await sendRequest(`discover/${type}`, {
@@ -39,6 +39,9 @@ export async function getNew(type = "movie", genre) {
     
     const json = format(response?.results, type);
 
-    setCache(cacheName, json);
+    if (!genre) {
+        setCache(cacheName, json);
+    }
+
     return json;
 }

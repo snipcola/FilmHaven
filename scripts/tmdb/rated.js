@@ -19,15 +19,15 @@ function format(obj, type) {
 }
 
 export async function getRated(type = "movie", genre) {
-    const cacheName = genre ? `rated-${type}-${genre}` : `rated-${type}`;
+    const cacheName = `rated-${type}`;
     const cache = getCache(cacheName);
 
-    if (cache) return cache;
+    if (cache && !genre) return cache;
     
     const date = new Date();
     const formattedDateNow = date.toISOString().split('T')[0];
     
-    date.setFullYear(date.getFullYear() - 2);
+    date.setFullYear(date.getFullYear() - 5);
     const formattedDate = date.toISOString().split('T')[0];
     
     const response = await sendRequest(`discover/${type}`, {
@@ -42,6 +42,9 @@ export async function getRated(type = "movie", genre) {
     
     const json = format(response?.results, type);
 
-    setCache(cacheName, json);
+    if (!genre) {
+        setCache(cacheName, json);
+    }
+
     return json;
 }
