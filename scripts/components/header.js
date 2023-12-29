@@ -80,8 +80,9 @@ function initializePageChangeCheck() {
         if (link && index !== activeIndex) {
             activeIndex = index;
             setLinkActive(link);
-            setHash("page", index + 1);
         }
+
+        setHash("page", activeIndex + 1);
     }
 
     handleHashChange();
