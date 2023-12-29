@@ -25,10 +25,10 @@ export async function getRated(type = "movie", genre) {
     if (cache && !genre) return cache;
     
     const date = new Date();
-    const formattedDateNow = date.toISOString().split('T')[0];
+    const formattedDateNow = date.toISOString().split("T")[0];
     
     date.setFullYear(date.getFullYear() - 5);
-    const formattedDate = date.toISOString().split('T')[0];
+    const formattedDate = date.toISOString().split("T")[0];
     
     const response = await sendRequest(`discover/${type}`, {
         sort_by: "vote_count.desc",

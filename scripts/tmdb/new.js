@@ -23,10 +23,10 @@ export async function getNew(type = "movie", genre) {
     if (cache && !genre) return cache;
     
     const date = new Date();
-    const formattedDateNow = date.toISOString().split('T')[0];
+    const formattedDateNow = date.toISOString().split("T")[0];
     
     date.setMonth(date.getMonth() - 5);
-    const formattedDate = date.toISOString().split('T')[0];
+    const formattedDate = date.toISOString().split("T")[0];
     
     const response = await sendRequest(`discover/${type}`, {
         sort_by: "popularity.desc",

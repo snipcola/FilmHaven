@@ -87,3 +87,14 @@ export const tmdb = {
     language: "en",
     adult: false
 };
+
+export const provider = {
+    api: {
+        movieUrl: function (id) {
+            return `https://vidsrc.to/embed/movie/${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
+        }
+    }
+};
