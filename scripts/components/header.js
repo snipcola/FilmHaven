@@ -39,6 +39,7 @@ function setSectionActive() {
         console.error(`Failed to find section "${sectionName}".`);
     } else {
         section.classList.add("active");
+        document.documentElement.scrollTo({ top: 0 });
     }
 }
 
