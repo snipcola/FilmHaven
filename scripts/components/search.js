@@ -24,20 +24,14 @@ function initializeSearch(area, type, placeholder) {
     const input = document.createElement("input");
     const clear = document.createElement("i");
 
+    const notice = document.createElement("div");
+    const noticeIcon = document.createElement("i");
+    const noticeText = document.createElement("span");
+
     const cards = document.createElement("div");
 
     label.className = "label";
     label.innerText = "Search";
-
-    search.className = "search";
-    icon.className = "icon fa-solid fa-search";
-    input.className = "input";
-    input.placeholder = placeholder;
-    clear.className = "clear fa-solid fa-delete-left";
-
-    search.append(icon);
-    search.append(input);
-    search.append(clear);
 
     control.className = "control inactive";
     previous.className = "button secondary icon-only previous";
@@ -52,6 +46,24 @@ function initializeSearch(area, type, placeholder) {
     control.append(previous);
     control.append(indicators);
     control.append(next);
+
+    search.className = "search";
+    icon.className = "icon fa-solid fa-search";
+    input.className = "input";
+    input.placeholder = placeholder;
+    clear.className = "clear fa-solid fa-delete-left";
+
+    search.append(icon);
+    search.append(input);
+    search.append(clear);
+
+    notice.className = "notice";
+    noticeIcon.className = "icon fa-solid fa-eye-slash"
+    noticeText.className = "text";
+    noticeText.innerText = "No results found";
+
+    notice.append(noticeIcon);
+    notice.append(noticeText);
 
     cards.className = "cards inactive";
 
@@ -189,6 +201,7 @@ function initializeSearch(area, type, placeholder) {
         slides = [];
         index = 0;
 
+        notice.classList.remove("active");
         control.className = "control inactive";
         cards.className = "cards inactive";
         
@@ -200,6 +213,7 @@ function initializeSearch(area, type, placeholder) {
         reset();
 
         if (newResults.length === 0) {
+            notice.classList.add("active");
             return;
         }
 
@@ -254,8 +268,9 @@ function initializeSearch(area, type, placeholder) {
     input.addEventListener("input", debouncedOnInput);
 
     area.append(label);
-    area.append(search);
     area.append(control);
+    area.append(search);
+    area.append(notice);
     area.append(cards);
 
     area.classList.add("active");
