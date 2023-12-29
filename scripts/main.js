@@ -2,6 +2,7 @@ import { initializeCache } from "./cache.js";
 import { initializeModal } from "./components/modal.js";
 import { initializeHeader } from "./components/header.js";
 import { initializeCarousels } from "./components/carousel.js";
+import { initializeSearches } from "./components/search.js";
 import { initializeGenres } from "./components/genres.js";
 import { initializeAreas } from "./components/area.js";
 import { initializeFooter } from "./components/footer.js";
@@ -34,6 +35,7 @@ async function initializeAll() {
     enableBody();
 
     await initializeCarousels();
+    initializeSearches();
     await initializeGenres();
     await initializeAreas();
 }

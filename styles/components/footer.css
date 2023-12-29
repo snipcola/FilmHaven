@@ -31,7 +31,7 @@
 }
 
 .footer-container .footer .copyright {
-    opacity: 75%;
+    opacity: var(--dim-opacity);
 }
 
 .footer-container .footer .links {
@@ -46,7 +46,7 @@
     text-decoration: none;
 
     transition: var(--transition-speed) opacity;
-    opacity: 75%;
+    opacity: var(--dim-opacity);
 }
 
 .footer-container .footer .links .link:hover {

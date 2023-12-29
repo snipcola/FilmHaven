@@ -55,9 +55,8 @@ function setLinkActive(link) {
 function initializeLinks() {
     function handleHashChange() {
         const activePage = getHash("page");
-        const modal = getHash("modal");
 
-        const index = links[activePage - 1] && !modal ? activePage - 1 : activeIndex;
+        const index = links[activePage - 1] ? activePage - 1 : activeIndex;
         const link = links[index];
 
         if (link) {
