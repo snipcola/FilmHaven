@@ -11,15 +11,28 @@ export function initializeCache() {
     document.body.append(cache);
 }
 
-export function preloadImages(images) {
+export function preloadImages(images, callback, onAmount) {
+    let count = 0;
+
+    function incrementCount() {
+        count++;
+
+        if (count === (onAmount || images.length) && callback) {
+            callback();
+        }
+    }
+
     for (const url of images) {
         if (imageExists(url)) {
+            incrementCount();
             continue;
         }
 
         const image = new Image();
         
         image.src = url;
+        image.onload = incrementCount;
+
         cache.append(image);
     }
 }

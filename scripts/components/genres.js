@@ -10,6 +10,8 @@ import { getNew } from "../tmdb/new.js";
 import { getHash, onHashChange, removeHash, setHash } from "../hash.js";
 
 async function modal(info, type) {
+    const desktop = window.innerWidth > config.area.split.max;
+
     const popularArea = document.createElement("div");
     const ratedArea = document.createElement("div");
     const newArea = document.createElement("div");
@@ -28,8 +30,9 @@ async function modal(info, type) {
     }
 
     popularContent.splice(config.area.amount, popularContent.length);
-    preloadImages(popularContent.map((i) => i.image));
-    initializeArea(popularArea, popularContent, "Popular");
+    preloadImages(popularContent.map((i) => i.image), function () {
+        initializeArea(popularArea, popularContent, "Popular");
+    }, config.area.split[desktop ? "desktop" : "mobile"]);
 
     let ratedContent = await getRated(type, info.id);
 
@@ -38,8 +41,9 @@ async function modal(info, type) {
     }
 
     ratedContent.splice(config.area.amount, ratedContent.length);
-    preloadImages(ratedContent.map((i) => i.image));
-    initializeArea(ratedArea, ratedContent, "Top-Rated");
+    preloadImages(ratedContent.map((i) => i.image), function () {
+        initializeArea(ratedArea, ratedContent, "Top-Rated");
+    }, config.area.split[desktop ? "desktop" : "mobile"]);
 
     let newContent = await getNew(type, info.id);
 
@@ -48,8 +52,9 @@ async function modal(info, type) {
     }
 
     newContent.splice(config.area.amount, newContent.length);
-    preloadImages(newContent.map((i) => i.image));
-    initializeArea(newArea, newContent, "New");
+    preloadImages(newContent.map((i) => i.image), function () {
+        initializeArea(newArea, newContent, "New");
+    }, config.area.split[desktop ? "desktop" : "mobile"]);
 }
 
 function initializeGenreArea(area, initialSlides, type) {
@@ -58,7 +63,7 @@ function initializeGenreArea(area, initialSlides, type) {
     }
 
     let desktop = window.innerWidth > config.genre.split.max;
-    let slides = splitArray(initialSlides, desktop ? config.genre.split.desktop : config.genre.split.mobile);
+    let slides = splitArray(initialSlides, config.area.split[desktop ? "desktop" : "mobile"]);
     let index = 0;
 
     const label = document.createElement("div");
@@ -152,7 +157,7 @@ function initializeGenreArea(area, initialSlides, type) {
             desktop = newDesktop;
             
             if (slides && slides.length !== 0) {
-                slides = splitArray(initialSlides, desktop ? config.genre.split.desktop : config.genre.split.mobile);
+                slides = splitArray(initialSlides, config.area.split[desktop ? "desktop" : "mobile"]);
 
                 index = index === 0 ? 0 : desktop
                     ? Math.round((index + 1) / (config.genre.split.desktop / config.genre.split.mobile)) - 1

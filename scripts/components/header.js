@@ -93,9 +93,9 @@ export function initializeHeader(element) {
 
     brand.className = "brand";
     brandText.className = "text";
-    brandText.innerText = desktop ? config.header.name.normal.text : config.header.name.mobile.text;
+    brandText.innerText = config.header.name[desktop ? "normal" : "mobile"].text;
     brandAccent.className = "accent";
-    brandAccent.innerText = desktop ? config.header.name.normal.accent : config.header.name.mobile.accent;
+    brandAccent.innerText = config.header.name[desktop ? "normal" : "mobile"].accent;
 
     brand.append(brandText);
     brand.append(brandAccent);

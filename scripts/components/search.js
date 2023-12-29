@@ -173,7 +173,7 @@ function initializeSearch(area, type, placeholder) {
             desktop = newDesktop;
             
             if (slides && slides.length !== 0) {
-                slides = splitArray(results, desktop ? config.area.split.desktop : config.area.split.mobile);
+                slides = splitArray(results, config.area.split[desktop ? "desktop" : "mobile"]);
 
                 index = index === 0 ? 0 : desktop
                     ? Math.round((index + 1) / (config.area.split.desktop / config.area.split.mobile)) - 1
@@ -204,7 +204,7 @@ function initializeSearch(area, type, placeholder) {
         }
 
         results = newResults;
-        slides = splitArray(results, desktop ? config.area.split.desktop : config.area.split.mobile);
+        slides = splitArray(results, config.area.split[desktop ? "desktop" : "mobile"]);
         
         set(index);
 
@@ -231,8 +231,9 @@ function initializeSearch(area, type, placeholder) {
                 return console.error(`Failed to search for "${query}".`);
             }
 
-            preloadImages(searchResults.map((i) => i.image));
-            populate(searchResults);
+            preloadImages(searchResults.map((i) => i.image), function () {
+                populate(searchResults);
+            }, config.area.split[desktop ? "desktop" : "mobile"]);
         }
     }
 
