@@ -6,15 +6,12 @@ let container;
 let headerText;
 let headerButtonIcon;
 let content;
-let hash;
 
-export function setModal(label = "", newContent, icon = "times", fill = false, newHash) {
+export function setModal(label = "", newContent, icon = "times", fill = false) {
     container.className = fill ? "modal-container fill" : "modal-container";
     headerText.innerText = label;
     headerButtonIcon.className = `icon fa-solid fa-${icon}`;
     content.innerHTML = "";
-
-    hash = newHash;
     
     if (newContent) {
         if (Array.isArray(newContent)) {
@@ -30,9 +27,7 @@ export function showModal() {
 }
 
 export function hideModal() {
-    if (hash) {
-        removeHash(hash);
-    }
+    removeHash("modal");
 
     setModal();
     setTitle();
