@@ -26,32 +26,32 @@ async function modal(info, type) {
     let popularContent = await getTrending(type, info.id);
 
     if (!popularContent) {
-        return console.error(`Failed to initialize ${info.name} genre.`);
+        console.error(`Failed to fetch popular content (${info.name} genre).`);
+    } else {
+        popularContent.splice(config.area.amount, popularContent.length);
+        await preloadImages(popularContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+        initializeArea(popularArea, popularContent, "Popular");
     }
-
-    popularContent.splice(config.area.amount, popularContent.length);
-    await preloadImages(popularContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-    initializeArea(popularArea, popularContent, "Popular");
 
     let ratedContent = await getRated(type, info.id);
 
     if (!ratedContent) {
-        return console.error(`Failed to initialize ${info.name} genre.`);
+        console.error(`Failed to fetch top-rated content (${info.name} genre).`);
+    } else {
+        ratedContent.splice(config.area.amount, ratedContent.length);
+        await preloadImages(ratedContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+        initializeArea(ratedArea, ratedContent, "Top-Rated");
     }
-
-    ratedContent.splice(config.area.amount, ratedContent.length);
-    await preloadImages(ratedContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-    initializeArea(ratedArea, ratedContent, "Top-Rated");
 
     let newContent = await getNew(type, info.id);
 
     if (!newContent) {
-        return console.error(`Failed to initialize ${info.name} genre.`);
+        console.error(`Failed to find new content (${info.name} genre).`);
+    } else {
+        newContent.splice(config.area.amount, newContent.length);
+        await preloadImages(newContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+        initializeArea(newArea, newContent, "New");
     }
-
-    newContent.splice(config.area.amount, newContent.length);
-    await preloadImages(newContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-    initializeArea(newArea, newContent, "New");
 }
 
 function initializeGenreArea(area, initialSlides, type) {
@@ -212,7 +212,7 @@ export async function initializeGenres() {
     const showsSection = document.querySelector(".section.shows");
 
     if (!moviesSection || !showsSection) {
-        return console.error("Failed to initialize genres.");
+        return console.error("Failed to find sections.");
     }
 
     const moviesGenresArea = document.createElement("div");
@@ -228,10 +228,10 @@ export async function initializeGenres() {
     showGenres = await getGenres("tv");
 
     if (!movieGenres || !showGenres) {
-        return console.error("Failed to initialize genres.");
+        console.error("Failed to fetch genres.");
+    } else {
+        initializeGenreModalCheck();
+        initializeGenreArea(moviesGenresArea, movieGenres, "movie");
+        initializeGenreArea(showsGenresArea, showGenres, "tv");
     }
-
-    initializeGenreModalCheck();
-    initializeGenreArea(moviesGenresArea, movieGenres, "movie");
-    initializeGenreArea(showsGenresArea, showGenres, "tv");
 }

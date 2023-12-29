@@ -36,10 +36,10 @@ function setSectionActive() {
     const section = document.querySelector(`.content > .section.${sectionName.toLowerCase()}`);
     
     if (!section) {
-        return console.error(`Failed to find section "${sectionName}".`);
+        console.error(`Failed to find section "${sectionName}".`);
+    } else {
+        section.classList.add("active");
     }
-
-    section.classList.add("active");
 }
 
 function setLinkActive(link) {
@@ -96,7 +96,7 @@ function initializeLinks() {
     });
 }
 
-export function initializeHeader(element) {
+export function initializeHeader(element, content) {
     desktop = window.innerWidth > config.maxMobileWidth;
 
     const container = document.createElement("div");
@@ -142,7 +142,7 @@ export function initializeHeader(element) {
     container.append(header);
     
     links = Array.from(linksElem.children);
-    sections = Array.from(initializeContent(element).children);
+    sections = Array.from(content.children);
 
     element.append(container);
 

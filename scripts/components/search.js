@@ -266,7 +266,7 @@ export function initializeSearches() {
     const showsSection = document.querySelector(".section.shows");
 
     if (!moviesSection || !showsSection) {
-        return console.error("Failed to initialize genres.");
+        return console.error("Failed to find sections.");
     }
 
     const moviesSearchArea = document.createElement("div");

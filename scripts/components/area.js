@@ -193,7 +193,7 @@ export async function initializeAreas() {
     const showsSection = document.querySelector(".section.shows");
 
     if (!moviesSection || !showsSection) {
-        return console.error("Failed to initialize areas.");
+        return console.error("Failed to find sections.");
     }
 
     const moviesTrendingArea = document.createElement("div");
@@ -227,50 +227,50 @@ export async function initializeAreas() {
     let trendingShows = await getTrending("tv");
 
     if (!trendingMovies || !trendingShows) {
-        return console.error("Failed to initialize areas.");
+        console.error("Failed to fetch trending content.");
+    } else {
+        trendingMovies.splice(0, config.carousel.amount);
+        trendingShows.splice(0, config.carousel.amount);
+
+        trendingMovies.splice(config.area.amount, trendingMovies.length);
+        trendingShows.splice(config.area.amount, trendingShows.length);
+
+        await preloadImages(trendingMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+        await preloadImages(trendingShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+
+        initializeArea(moviesTrendingArea, trendingMovies, "Trending");
+        initializeArea(showsTrendingArea, trendingShows, "Trending");
     }
-
-    trendingMovies.splice(0, config.carousel.amount);
-    trendingShows.splice(0, config.carousel.amount);
-
-    trendingMovies.splice(config.area.amount, trendingMovies.length);
-    trendingShows.splice(config.area.amount, trendingShows.length);
-
-    await preloadImages(trendingMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-    await preloadImages(trendingShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-
-    initializeArea(moviesTrendingArea, trendingMovies, "Trending");
-    initializeArea(showsTrendingArea, trendingShows, "Trending");
 
     let ratedMovies = await getRated("movie");
     let ratedShows = await getRated("tv");
 
     if (!ratedMovies || !ratedShows) {
-        return console.error("Failed to initialize areas.");
+        console.error("Failed to fetch top-rated content.");
+    } else {
+        ratedMovies.splice(config.area.amount, ratedMovies.length);
+        ratedShows.splice(config.area.amount, ratedShows.length);
+
+        await preloadImages(ratedMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+        await preloadImages(ratedShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+
+        initializeArea(moviesRatedArea, ratedMovies, "Top-Rated");
+        initializeArea(showsRatedArea, ratedShows, "Top-Rated");
     }
-
-    ratedMovies.splice(config.area.amount, ratedMovies.length);
-    ratedShows.splice(config.area.amount, ratedShows.length);
-
-    await preloadImages(ratedMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-    await preloadImages(ratedShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-
-    initializeArea(moviesRatedArea, ratedMovies, "Top-Rated");
-    initializeArea(showsRatedArea, ratedShows, "Top-Rated");
 
     let newMovies = await getNew("movie");
     let newShows = await getNew("tv");
 
     if (!newMovies || !newShows) {
-        return console.error("Failed to initialize areas.");
+        console.error("Failed to fetch new content.");
+    } else {
+        newMovies.splice(config.area.amount, newMovies.length);
+        newShows.splice(config.area.amount, newShows.length);
+
+        await preloadImages(newMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+        await preloadImages(newShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+        
+        initializeArea(moviesNewArea, newMovies, "New");
+        initializeArea(showsNewArea, newShows, "New");
     }
-
-    newMovies.splice(config.area.amount, newMovies.length);
-    newShows.splice(config.area.amount, newShows.length);
-
-    await preloadImages(newMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-    await preloadImages(newShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-    
-    initializeArea(moviesNewArea, newMovies, "New");
-    initializeArea(showsNewArea, newShows, "New");
 }

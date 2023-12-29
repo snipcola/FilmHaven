@@ -125,7 +125,7 @@ export async function initializeCarousels() {
     const showsSection = document.querySelector(".section.shows");
 
     if (!moviesSection || !showsSection) {
-        return console.error("Failed to initialize carousels.");
+        return console.error("Failed to find sections.");
     }
 
     const moviesCard = document.createElement("div");
@@ -141,15 +141,15 @@ export async function initializeCarousels() {
     let shows = await getTrending("tv");
 
     if (!movies || !shows) {
-        return console.error("Failed to initialize carousels.");
+        console.error("Failed to fetch trending content.");
+    } else {
+        movies.splice(config.carousel.amount, movies.length);
+        shows.splice(config.carousel.amount, shows.length)
+
+        preloadImages(movies.map((i) => i.backdrop), 1);
+        preloadImages(shows.map((i) => i.backdrop), 1);
+        
+        initializeCarousel(moviesCard, movies);
+        initializeCarousel(showsCard, shows);
     }
-
-    movies.splice(config.carousel.amount, movies.length);
-    shows.splice(config.carousel.amount, shows.length)
-
-    preloadImages(movies.map((i) => i.backdrop), 1);
-    preloadImages(shows.map((i) => i.backdrop), 1);
-    
-    initializeCarousel(moviesCard, movies);
-    initializeCarousel(showsCard, shows);
 }
