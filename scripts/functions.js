@@ -21,7 +21,7 @@ export function isHovered(element) {
     return element.matches(":hover");
 }
 
-export function shortenNumber(number) {
+export function shortenNumber(number, fixed) {
     number = number.toString().replace(/[^0-9.]/g, "");
 
     if (number < 1000) {
@@ -45,7 +45,7 @@ export function shortenNumber(number) {
         }
     }
 
-    return (number / shortIndex[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + shortIndex[index].s;
+    return (number / shortIndex[index].v).toFixed(fixed || 2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + shortIndex[index].s;
 }
 
 export function splitArray(array, amount = 1) {

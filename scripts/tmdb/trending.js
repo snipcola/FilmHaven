@@ -17,7 +17,7 @@ function format(obj) {
                 backdrop: getImageUrl(item.backdrop_path, "backdrop"),
                 date: `${date.getFullYear()}-${date.getMonth()}`,
                 rating: Math.round(item.vote_average / 2).toString(),
-                stars: shortenNumber(item.vote_count)
+                stars: shortenNumber(item.vote_count, 1)
             };
         })
         : null;
