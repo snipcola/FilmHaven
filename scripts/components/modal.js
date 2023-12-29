@@ -1,5 +1,5 @@
 import { getHash, onHashChange, removeHash } from "../hash.js";
-import { resetTitle } from "./header.js";
+import { setTitle } from "./header.js";
 
 let container;
 let headerText;
@@ -75,7 +75,7 @@ export function initializeModal() {
         
         if (!modalHash) {
             hideModal();
-            resetTitle();
+            setTitle();
         }
     }
 

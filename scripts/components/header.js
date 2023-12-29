@@ -18,11 +18,21 @@ function setLinksInactive() {
     }
 }
 
-function setSectionActive(link) {
-    const sectionName = getInnerText(link);
-    const section = document.querySelector(`.content > .section.${sectionName.toLowerCase()}`);
+function getSectionName() {
+    const link = links.find((l) => l.classList.contains("active"));
 
-    document.title = `${config.name} - ${sectionName}`;
+    if (link) {
+        return getInnerText(link);
+    }
+}
+
+export function setTitle() {
+    document.title = `${config.name} - ${getSectionName()}`;
+}
+
+function setSectionActive() {
+    const sectionName = getSectionName();
+    const section = document.querySelector(`.content > .section.${sectionName.toLowerCase()}`);
     
     if (!section) {
         return console.error(`Failed to find section "${sectionName}".`);
@@ -33,46 +43,35 @@ function setSectionActive(link) {
 
 function setLinkActive(link) {
     setLinksInactive();
-    setSectionsInactive();
-
-    setSectionActive(link);
     link.classList.add("active");
-}
+    
+    setSectionsInactive();
+    setSectionActive(link);
 
-export function resetTitle() {
-    const activePage = getHash("page");
-    const link = links[activePage - 1];
-
-    if (link) {
-        setLinkActive(link);
-    }
+    setTitle();
 }
 
 function initializeLinks() {
     function handleHashChange() {
         const activePage = getHash("page");
 
-        const defaultLinkIndex = links[activePage - 1] ? activePage - 1 : 0;
-        const defaultLink = links[defaultLinkIndex];
+        const index = links[activePage - 1] ? activePage - 1 : 0;
+        const link = links[index];
 
-        if (defaultLink) {
-            setLinkActive(defaultLink);
-            setHash("page", defaultLinkIndex + 1);
+        if (link) {
+            setLinkActive(link);
+            setHash("page", index + 1);
         }
     }
 
     handleHashChange();
     onHashChange(handleHashChange);
 
-    for (var i = 0; i < links.length; i++) {
-        const linkIndex = i;
-        const link = links[linkIndex];
-
+    links.forEach(function (link, index) {
         link.addEventListener("click", function () {
-            setLinkActive(link);
-            setHash("page", linkIndex + 1);
+            setHash("page", index + 1);
         });
-    }
+    });
 }
 
 export function initializeHeader(element) {
