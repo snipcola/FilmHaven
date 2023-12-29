@@ -39,6 +39,9 @@ export const config = {
             }
         ]
     },
+    modal: {
+        validTypes: ["genre", "watch"]
+    },
     search: {
         debounce: 250
     },

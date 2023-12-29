@@ -1,3 +1,4 @@
+import { config } from "../config.js";
 import { getHash, onHashChange, removeHash } from "../hash.js";
 import { setTitle } from "./header.js";
 
@@ -34,6 +35,8 @@ export function hideModal() {
     }
 
     setModal();
+    setTitle();
+    
     document.body.classList.remove("modal-active");
 }
 
@@ -43,7 +46,12 @@ function initializeModalChangeCheck() {
         
         if (!modalHash) {
             hideModal();
-            setTitle();
+        } else {
+            const [modalType] = modalHash.split("-");
+
+            if (!config.modal.validTypes.includes(modalType)) {
+                hideModal();
+            }
         }
     }
 
