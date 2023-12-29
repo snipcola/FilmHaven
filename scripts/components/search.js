@@ -57,6 +57,12 @@ function initializeSearch(area, type, placeholder) {
     search.append(input);
     search.append(clear);
 
+    search.addEventListener("click", function (e) {
+        if (e.target !== clear) {
+            input.focus();
+        }
+    });
+
     notice.className = "notice";
     noticeIcon.className = "icon fa-solid fa-eye-slash"
     noticeText.className = "text";
