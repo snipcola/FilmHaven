@@ -178,30 +178,10 @@ function initializeGenreArea(area, initialSlides, type) {
     area.classList.add("active");
 }
 
-export async function initializeGenres() {
-    const moviesSection = document.querySelector(".section.movies");
-    const showsSection = document.querySelector(".section.shows");
+let movieGenres;
+let showGenres;
 
-    if (!moviesSection || !showsSection) {
-        return console.error("Failed to initialize genres.");
-    }
-
-    const moviesGenresArea = document.createElement("div");
-    const showsGenresArea = document.createElement("div");
-
-    moviesGenresArea.className = "area genres";
-    showsGenresArea.className = "area genres";
-
-    moviesSection.append(moviesGenresArea);
-    showsSection.append(showsGenresArea);
-
-    let movieGenres = await getGenres("movie");
-    let showGenres = await getGenres("tv");
-
-    if (!movieGenres || !showGenres) {
-        return console.error("Failed to initialize genres.");
-    }
-
+function initializeGenreModalCheck() {
     function handleHashChange() {
         const modalHash = getHash("modal");
         
@@ -225,7 +205,33 @@ export async function initializeGenres() {
 
     handleHashChange();
     onHashChange(handleHashChange);
+}
 
+export async function initializeGenres() {
+    const moviesSection = document.querySelector(".section.movies");
+    const showsSection = document.querySelector(".section.shows");
+
+    if (!moviesSection || !showsSection) {
+        return console.error("Failed to initialize genres.");
+    }
+
+    const moviesGenresArea = document.createElement("div");
+    const showsGenresArea = document.createElement("div");
+
+    moviesGenresArea.className = "area genres";
+    showsGenresArea.className = "area genres";
+
+    moviesSection.append(moviesGenresArea);
+    showsSection.append(showsGenresArea);
+
+    movieGenres = await getGenres("movie");
+    showGenres = await getGenres("tv");
+
+    if (!movieGenres || !showGenres) {
+        return console.error("Failed to initialize genres.");
+    }
+
+    initializeGenreModalCheck();
     initializeGenreArea(moviesGenresArea, movieGenres, "movie");
     initializeGenreArea(showsGenresArea, showGenres, "tv");
 }

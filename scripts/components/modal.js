@@ -37,6 +37,20 @@ export function hideModal() {
     document.body.classList.remove("modal-active");
 }
 
+function initializeModalChangeCheck() {
+    function handleHashChange() {
+        const modalHash = getHash("modal");
+        
+        if (!modalHash) {
+            hideModal();
+            setTitle();
+        }
+    }
+
+    handleHashChange();
+    onHashChange(handleHashChange);
+}
+
 export function initializeModal() {
     container = document.createElement("div");
     const modal = document.createElement("div");
@@ -70,15 +84,5 @@ export function initializeModal() {
     container.append(modal);
     document.body.append(container);
 
-    function handleHashChange() {
-        const modalHash = getHash("modal");
-        
-        if (!modalHash) {
-            hideModal();
-            setTitle();
-        }
-    }
-
-    handleHashChange();
-    onHashChange(handleHashChange);
+    initializeModalChangeCheck();
 }

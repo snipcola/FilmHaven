@@ -52,7 +52,25 @@ function setLinkActive(link) {
     setTitle();
 }
 
-function initializeLinks() {
+let desktop;
+let brandText;
+let brandAccent;
+
+function initializeResizeCheck() {
+    function checkResize() {
+        const newDesktop = window.innerWidth > config.maxMobileWidth;
+
+        if (desktop !== newDesktop) {
+            desktop = newDesktop;
+            brandText.innerText = desktop ? config.header.name.normal.text : config.header.name.mobile.text;
+            brandAccent.innerText = desktop ? config.header.name.normal.accent : config.header.name.mobile.accent;
+        }
+    }
+    
+    onWindowResize(checkResize);
+}
+
+function initializePageChangeCheck() {
     function handleHashChange() {
         const activePage = getHash("page");
 
@@ -68,7 +86,9 @@ function initializeLinks() {
 
     handleHashChange();
     onHashChange(handleHashChange);
+}
 
+function initializeLinks() {
     links.forEach(function (link, index) {
         link.addEventListener("click", function () {
             setHash("page", index + 1);
@@ -77,14 +97,14 @@ function initializeLinks() {
 }
 
 export function initializeHeader(element) {
-    let desktop = window.innerWidth > config.maxMobileWidth;
+    desktop = window.innerWidth > config.maxMobileWidth;
 
     const container = document.createElement("div");
     const header = document.createElement("div");
 
     const brand = document.createElement("div");
-    const brandText = document.createElement("span");
-    const brandAccent = document.createElement("span");
+    brandText = document.createElement("span");
+    brandAccent = document.createElement("span");
 
     const linksElem = document.createElement("div");
 
@@ -120,22 +140,13 @@ export function initializeHeader(element) {
     header.append(brand);
     header.append(linksElem);
     container.append(header);
-
-    links = Array.from(linksElem.children);
-
-    function checkResize() {
-        const newDesktop = window.innerWidth > config.maxMobileWidth;
-
-        if (desktop !== newDesktop) {
-            desktop = newDesktop;
-            brandText.innerText = desktop ? config.header.name.normal.text : config.header.name.mobile.text;
-            brandAccent.innerText = desktop ? config.header.name.normal.accent : config.header.name.mobile.accent;
-        }
-    }
     
-    onWindowResize(checkResize);
+    links = Array.from(linksElem.children);
+    sections = Array.from(initializeContent(element).children);
+
     element.append(container);
 
-    sections = Array.from(initializeContent(element).children);
+    initializeResizeCheck();
+    initializePageChangeCheck();
     initializeLinks();
 }
