@@ -74,7 +74,7 @@ function initializePageChangeCheck() {
     function handleHashChange() {
         const activePage = getHash("page");
 
-        const index = links[activePage - 1] ? activePage - 1 : activeIndex;
+        const index = links[activePage - 1] ? activePage - 1 : activeIndex || 0;
         const link = links[index];
 
         if (link && index !== activeIndex) {
