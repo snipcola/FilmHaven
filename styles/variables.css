@@ -3,10 +3,9 @@ html {
     --primary: #e43636;
     --primary-light: #ff3b3b;
     --light: #1A1A1A;
+    --light-rgb: 26, 26, 28;
     --lighter: #232323;
     --lightest: #373737;
-    --dark-light: #1A1A1C;
-    --dark-light-rgb: 26, 26, 28;
     --dark: #0F0F0F;
     --text: #ebebeb;
 

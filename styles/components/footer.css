@@ -3,7 +3,7 @@
     height: var(--footer-height);
 
     background-color: var(--dark);
-    border-top: var(--small-border) solid var(--dark-light);
+    border-top: var(--small-border) solid var(--light);
 
     position: absolute;
     bottom: 0;

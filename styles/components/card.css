@@ -53,7 +53,7 @@
     height: 100%;
 
     z-index: 2;
-    background-color: rgba(var(--dark-light-rgb), .5);
+    background-color: rgba(var(--light-rgb), .5);
 
     opacity: 0%;
 }

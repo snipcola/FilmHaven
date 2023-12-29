@@ -8,7 +8,7 @@
     align-items: center;
     justify-content: center;
 
-    background-color: rgba(var(--dark-light-rgb), .75);
+    background-color: rgba(var(--light-rgb), .75);
     padding-top: calc(var(--large-padding) * 4);
 
     opacity: 0;

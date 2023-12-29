@@ -1,6 +1,7 @@
 @import url(./variables.css);
 @import url(./font.css);
 @import url(./body.css);
+@import url(./scrollbar.css);
 
 @import url(./components/cache.css);
 
