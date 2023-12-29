@@ -13,6 +13,8 @@
 
     box-sizing: border-box;
     transition: var(--transition-speed) background-color;
+
+    height: 3rem;
 }
 
 .area.search .search:hover, .area.search .search:focus-within {
@@ -39,6 +41,8 @@
 }
 
 .area.search .search .clear {
+    display: none;
+
     background-color: var(--primary);
     padding: calc(var(--small-padding) / 1.75);
     
@@ -47,14 +51,10 @@
 
     box-sizing: border-box;
     cursor: pointer;
-
-    opacity: 0;
-    z-index: -10;
 }
 
 .area.search .search .clear.active {
-    opacity: 100%;
-    z-index: 1;
+    display: inline-block;
 }
 
 .area.search .search .clear:hover {
