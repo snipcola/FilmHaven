@@ -147,9 +147,9 @@ export async function initializeCarousels() {
     movies.splice(config.carousel.amount, movies.length);
     shows.splice(config.carousel.amount, shows.length)
 
-    preloadImages(movies.map((i) => i.backdrop));
+    await preloadImages(movies.map((i) => i.backdrop), 1);
     initializeCarousel(moviesCard, movies);
 
-    preloadImages(shows.map((i) => i.backdrop));
+    await preloadImages(shows.map((i) => i.backdrop), 1);
     initializeCarousel(showsCard, shows);
 }

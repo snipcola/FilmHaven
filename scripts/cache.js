@@ -32,11 +32,12 @@ export async function preloadImages(images, onAmount) {
             } else {
                 const image = new Image();
 
-                image.src = url;
-                image.onload = incrementCount;
-                image.onerror = incrementCount;
+                image.addEventListener("load", incrementCount);
+                image.addEventListener("error", incrementCount);
 
+                image.src = url;
                 cache.append(image);
+
                 checkCount();
             }
         });
