@@ -9,4 +9,7 @@
     height: calc(100dvh - 14rem);
     
     width: 100%;
+    border: var(--small-border) solid var(--light);
+
+    box-sizing: border-box;
 }
