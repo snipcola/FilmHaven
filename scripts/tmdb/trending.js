@@ -10,7 +10,7 @@ function format(obj, type, genre) {
             const date = new Date(dateString);
 
             let description = item.overview || item.description;
-            description = description.length > config.maxDescriptionLength
+            if (description) description = description.length > config.maxDescriptionLength
                 ? description.substring(0, config.maxDescriptionLength).replace(/\s+\S*$/, "...")
                 : description;
 
