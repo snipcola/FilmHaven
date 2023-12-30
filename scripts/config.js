@@ -115,3 +115,12 @@ export const provider = {
         }
     }
 };
+
+export const store = {
+    names: {
+        cache: function (key) {
+            return `fhc-${key}`;
+        },
+        lastPlayed: "fh-last-played"
+    }
+};

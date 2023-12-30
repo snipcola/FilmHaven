@@ -1,11 +1,11 @@
 export function convertMinutesToText(minutes) {
-    if (minutes < 60) return `${minutes} min`;
+    if (minutes < 60) return `${minutes}m`;
     else {
         const hours = Math.floor(minutes / 60);
         const remainingMins = minutes % 60;
 
-        if (remainingMins === 0) return `${hours} hr`;
-        else return `${hours} hr ${remainingMins} min`;
+        if (remainingMins === 0) return `${hours}h`;
+        else return `${hours}h ${remainingMins}m`;
     }
 }
 

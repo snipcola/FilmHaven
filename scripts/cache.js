@@ -1,4 +1,4 @@
-import { config } from "./config.js";
+import { config, store } from "./config.js";
 
 let cache;
 
@@ -61,11 +61,11 @@ export function unloadImages(images) {
 }
 
 export function setCache(key, value) {
-    localStorage.setItem(`fhc-${key}`, JSON.stringify({ d: Date.now(), v: value }));
+    localStorage.setItem(store.names.cache(key), JSON.stringify({ d: Date.now(), v: value }));
 }
 
 export function getCache(key, max = config.maxCacheDays) {
-    const cache = localStorage.getItem(`fhc-${key}`);
+    const cache = localStorage.getItem(store.names.cache(key));
 
     if (cache) {
         let json;

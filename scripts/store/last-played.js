@@ -1,7 +1,7 @@
-const key = "fh-last-played";
+import { store } from "../config.js";
 
 function get() {
-    const lastPlayed = localStorage.getItem(key);
+    const lastPlayed = localStorage.getItem(store.names.lastPlayed);
     let json;
     
     try { json = JSON.parse(lastPlayed) }
@@ -12,7 +12,7 @@ function get() {
 
 function set(data) {
     const jsonData = JSON.stringify(data);
-    localStorage.setItem(key, jsonData);
+    localStorage.setItem(store.names.lastPlayed, jsonData);
 }
 
 export function getLastPlayed(id) {

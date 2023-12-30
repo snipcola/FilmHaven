@@ -274,8 +274,6 @@ function modal(info) {
                 
                 if (episodeInfo.time) {
                     episodeTitle.append(episodeTitleTime);
-                } else {
-                    episodeTitle.append(notice.cloneNode(true));
                 }
 
                 episodeLeft.append(episodeNumber);
