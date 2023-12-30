@@ -3,7 +3,7 @@ export function getSearchUrl(query) {
 }
 
 export function cleanText(input) {
-    return input.replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1").replace(/\r\n/g, "").replace(/[-<>]/g, "");
+    return input.replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1").replace(/\r\n/g, "").replace(/[-_<>]/g, "");
 }
 
 export function debounce(func, delay) {
