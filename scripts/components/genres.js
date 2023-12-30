@@ -245,7 +245,7 @@ function initializeGenreModalCheck() {
     onHashChange(handleHashChange);
 }
 
-export function initializeGenres() {
+export async function initializeGenres() {
     const moviesSection = document.querySelector(".section.movies");
     const showsSection = document.querySelector(".section.shows");
 
@@ -262,40 +262,32 @@ export function initializeGenres() {
     moviesSection.append(moviesGenresArea);
     showsSection.append(showsGenresArea);
 
-    let initializedCount = 0;
-
-    function checkCount() {
-        if (initializedCount == 2) {
-            initializeGenreModalCheck();
-        }
-    }
-
     async function initializeMovies() {
-        initializeGenreArea(moviesGenresArea, null, "movie");
+        const type = "movie";
+        
+        initializeGenreArea(moviesGenresArea, null, type);
         movieGenres = await getGenres("movie");
 
         if (!movieGenres) {
-            initializeGenreArea(moviesGenresArea, null, "movie", true);
+            initializeGenreArea(moviesGenresArea, null, type, true);
         } else {
-            initializedCount++;
-            initializeGenreArea(moviesGenresArea, movieGenres, "movie");
-            checkCount();
+            initializeGenreArea(moviesGenresArea, movieGenres, type);
         }
     }
 
     async function initializeShows() {
-        initializeGenreArea(showsGenresArea, null, "tv");
+        const type = "tv";
+
+        initializeGenreArea(showsGenresArea, null, type);
         showGenres = await getGenres("tv");
 
         if (!showGenres) {
-            initializeGenreArea(showsGenresArea, null, "tv", true);
+            initializeGenreArea(showsGenresArea, null, type, true);
         } else {
-            initializedCount++;
-            initializeGenreArea(showsGenresArea, showGenres, "tv");
-            checkCount();
+            initializeGenreArea(showsGenresArea, showGenres, type);
         }
     }
 
-    initializeMovies();
-    initializeShows();
+    await Promise.all([initializeMovies(), initializeShows()]);
+    initializeGenreModalCheck();
 }
