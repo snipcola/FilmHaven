@@ -66,6 +66,13 @@ export const config = {
             mobile: 2
         }
     },
+    cast: {
+        split: {
+            max: 700,
+            desktop: 10,
+            mobile: 5
+        }  
+    },
     maxCacheDays: 5,
     maxMobileWidth: 600
 };
@@ -79,7 +86,8 @@ export const tmdb = {
     image: {
         url: "https://image.tmdb.org/t/p",
         poster: "w500",
-        backdrop: "w1280"
+        backdrop: "w1280",
+        cast: "w200"
     },
     trending: {
         timeWindow: "week"

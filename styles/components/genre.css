@@ -21,6 +21,8 @@
 
     cursor: pointer;
     transition: var(--transition-speed) background-color;
+
+    box-sizing: border-box;
 }
 
 .area.genres .genres .genre:hover {

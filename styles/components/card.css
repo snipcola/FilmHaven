@@ -71,6 +71,8 @@
     height: 100%;
     
     object-fit: cover;
+
+    user-select: none;
     pointer-events: none;
     
     border-radius: calc(var(--border-radius) / 2);

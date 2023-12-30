@@ -5,11 +5,111 @@
     background-color: rgb(0, 0, 0);
     border-radius: var(--border-radius);
 
-    height: calc(100vh - 14rem);
-    height: calc(100dvh - 14rem);
+    height: calc(100vh - 12.85rem);
+    height: calc(100dvh - 12.85rem);
     
     width: 100%;
     border: var(--small-border) solid var(--light);
 
+    overflow: hidden;
     box-sizing: border-box;
+}
+
+.watch .details {
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+    margin-top: var(--large-padding);
+}
+
+.watch .container {
+    display: flex;
+    flex-direction: column;
+    
+    gap: var(--large-gap);
+}
+
+.watch .details .left {
+    width: 66.25%;
+}
+
+.watch .details .right {
+    width: 32%;
+}
+
+.watch .details .details-card {
+    background-color: var(--light);
+
+    padding: var(--large-padding);
+    box-sizing: border-box;
+
+    border: var(--small-border) solid var(--lighter);
+    border-radius: var(--border-radius);
+}
+
+.watch .details .title, .watch .details .text {
+    font-size: .9rem;
+    margin: 0;
+}
+
+.watch .details .title {
+    display: flex;
+    gap: var(--small-gap);
+
+    align-items: center;
+    margin-bottom: var(--small-padding);
+
+    user-select: none;
+}
+
+.watch .details .title .text, .watch .details .title .icon {
+    opacity: 75%;
+}
+
+.watch .details .notice {
+    background-color: var(--dark);
+    
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.watch .details .control {
+    margin-left: auto;
+}
+
+.watch .details .control {
+    background-color: transparent;
+    border: none;
+
+    padding: 0;
+    gap: calc(var(--small-gap) / 4);
+}
+
+.watch .details .control .indicators {
+    background-color: transparent;
+}
+
+.watch .details .control .button {
+    border-radius: 50%;
+}
+
+.watch .details .cast-cards {
+    display: flex;
+    gap: var(--small-gap);
+    justify-content: center;
+}
+
+.watch .details .cast-cards .cast-card {
+    background-color: var(--dark);
+    border-radius: var(--border-radius);
+
+    width: calc(10% - var(--small-padding));
+    object-fit: cover;
+
+    max-height: 4rem;
+    height: 100%;
+
+    pointer-events: none;
+    user-select: none;
 }

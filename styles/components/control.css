@@ -1,4 +1,4 @@
-.area .control {
+.area .control, .watch .details .control {
     display: flex;    
     align-items: center;
 
@@ -12,6 +12,8 @@
 
     border-radius: var(--border-radius);
     border: var(--small-border) solid var(--light);
+
+    box-sizing: border-box;
 }
 
 .control.inactive {

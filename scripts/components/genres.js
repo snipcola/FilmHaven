@@ -1,9 +1,9 @@
 import { config } from "../config.js";
-import { splitArray, onWindowResize } from "../functions.js";
+import { splitArray, onWindowResize, removeWindowResize, elementExists } from "../functions.js";
 import { getGenres } from "../tmdb/genres.js";
 import { setModal, showModal } from "./modal.js";
 import { initializeArea } from "./area.js";
-import { preloadImages } from "../cache.js";
+import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
@@ -20,8 +20,14 @@ async function modal(info, type) {
     ratedArea.className = "area";
     newArea.className = "area";
 
+    const images = [];
+
+    function cleanup() {
+        unloadImages(images);
+    }
+
     setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true);
-    showModal();
+    showModal(cleanup);
 
     async function initializePopular() {
         const label = "Popular";
@@ -33,7 +39,10 @@ async function modal(info, type) {
             initializeArea(popularArea, null, label, true);
         } else {
             popularContent.splice(config.area.amount, popularContent.length);
-            await preloadImages(popularContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+            const popularContentImages = getNonCachedImages(popularContent.map((i) => i.image));
+            images.push(...popularContentImages);
+
+            await preloadImages(popularContentImages, config.area.split[desktop ? "desktop" : "mobile"]);
             initializeArea(popularArea, popularContent, label);
         }
     }
@@ -48,7 +57,10 @@ async function modal(info, type) {
             initializeArea(ratedArea, null, label, true);
         } else {
             ratedContent.splice(config.area.amount, ratedContent.length);
-            await preloadImages(ratedContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+            const ratedContentImages = getNonCachedImages(ratedContent.map((i) => i.image));
+            images.push(...ratedContentImages);
+
+            await preloadImages(ratedContentImages, config.area.split[desktop ? "desktop" : "mobile"]);
             initializeArea(ratedArea, ratedContent, label);
         }
     }
@@ -63,7 +75,10 @@ async function modal(info, type) {
             initializeArea(newArea, null, label, true);
         } else {
             newContent.splice(config.area.amount, newContent.length);
-            await preloadImages(newContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+            const newContentImages = getNonCachedImages(newContent.map((i) => i.image));
+            images.push(...newContentImages);
+
+            await preloadImages(newContentImages, config.area.split[desktop ? "desktop" : "mobile"]);
             initializeArea(newArea, newContent, label);
         }
     }
@@ -82,7 +97,7 @@ function initializeGenreArea(area, initialSlides, type, failed) {
     let index = 0;
 
     if (initialSlides && initialSlides.length !== 0) {
-        slides = splitArray(initialSlides, config.area.split[desktop ? "desktop" : "mobile"]);
+        slides = splitArray(initialSlides, config.genre.split[desktop ? "desktop" : "mobile"]);
     }
 
     const label = document.createElement("div");
@@ -181,13 +196,14 @@ function initializeGenreArea(area, initialSlides, type, failed) {
     }
 
     function checkResize() {
+        if (!elementExists(area)) return removeWindowResize(checkResize);
         const newDesktop = window.innerWidth > config.genre.split.max;
 
         if (desktop !== newDesktop) {
             desktop = newDesktop;
             
             if (slides && slides.length !== 0) {
-                slides = splitArray(initialSlides, config.area.split[desktop ? "desktop" : "mobile"]);
+                slides = splitArray(initialSlides, config.genre.split[desktop ? "desktop" : "mobile"]);
 
                 index = index === 0 ? 0 : desktop
                     ? Math.round((index + 1) / (config.genre.split.desktop / config.genre.split.mobile)) - 1

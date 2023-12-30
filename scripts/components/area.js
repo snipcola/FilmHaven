@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import { splitArray, onWindowResize } from "../functions.js";
+import { splitArray, onWindowResize, removeWindowResize, elementExists } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
@@ -175,6 +175,7 @@ export function initializeArea(area, initialSlides, labelText, failed) {
     }
 
     function checkResize() {
+        if (!elementExists(area)) return removeWindowResize(checkResize);
         const newDesktop = window.innerWidth > config.area.split.max;
 
         if (desktop !== newDesktop) {

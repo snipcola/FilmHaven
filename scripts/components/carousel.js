@@ -149,7 +149,7 @@ export function initializeCarousels() {
 
         if (movies) {
             movies.splice(config.carousel.amount, movies.length);
-            preloadImages(movies.map((i) => i.backdrop), 1);
+            preloadImages(movies.map((i) => i.backdrop));
             initializeCarousel(moviesCard, movies);
         }
     }
@@ -160,7 +160,7 @@ export function initializeCarousels() {
 
         if (shows) {
             shows.splice(config.carousel.amount, shows.length)
-            preloadImages(shows.map((i) => i.backdrop), 1);
+            preloadImages(shows.map((i) => i.backdrop));
             initializeCarousel(showsCard, shows);
         }
     }

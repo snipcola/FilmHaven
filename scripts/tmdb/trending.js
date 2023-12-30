@@ -16,7 +16,7 @@ function format(obj, type) {
                 description: item.overview || item.description,
                 image: getImageUrl(item.poster_path, "poster"),
                 backdrop: getImageUrl(item.backdrop_path, "backdrop"),
-                date: dateString ? `${date.getFullYear()}-${date.getMonth().toString().padStart(2, "0")}` : null,
+                date: dateString ? `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}` : null,
                 rating: Math.round(item.vote_average / 2).toString(),
                 stars: shortenNumber(item.vote_count, 1)
             };

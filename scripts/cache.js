@@ -46,6 +46,20 @@ export async function preloadImages(images, onAmount) {
     await Promise.all(images.map(loadImage));
 }
 
+export function getNonCachedImages(images) {
+    return images.filter(function (url) {
+        const image = document.querySelector(`cache img[src="${url}"]`);
+        return !image;
+    });
+}
+
+export function unloadImages(images) {
+    for (const url of images) {
+        const image = document.querySelector(`cache img[src="${url}"]`);
+        if (image) image.remove();
+    }
+}
+
 export function setCache(key, value) {
     localStorage.setItem(`fhc-${key}`, JSON.stringify({ d: Date.now(), v: value }));
 }

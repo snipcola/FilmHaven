@@ -1,6 +1,6 @@
 import { config } from "../config.js";
-import { onWindowResize, splitArray, debounce } from "../functions.js";
-import { preloadImages } from "../cache.js";
+import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists } from "../functions.js";
+import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../tmdb/search.js";
 import { watchContent } from "./watch.js";
 
@@ -10,6 +10,8 @@ function initializeSearch(area, type, placeholder) {
 
     let desktop = window.innerWidth > config.area.split.max;
     let index = 0;
+
+    let images = [];
 
     const label = document.createElement("div");
 
@@ -188,6 +190,7 @@ function initializeSearch(area, type, placeholder) {
     }
 
     function checkResize() {
+        if (!elementExists(area)) return removeWindowResize(checkResize);
         const newDesktop = window.innerWidth > config.area.split.max;
 
         if (desktop !== newDesktop) {
@@ -243,6 +246,9 @@ function initializeSearch(area, type, placeholder) {
 
     async function clearCheck() {
         reset();
+        
+        unloadImages(images);
+        images = [];
 
         if (input.value.length > 0) {
             clear.classList.add("active");
@@ -262,7 +268,10 @@ function initializeSearch(area, type, placeholder) {
             if (!searchResults) {
                 notify(true, "Failed to fetch results", "warning");
             } else {
-                await preloadImages(searchResults.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                const searchImages = getNonCachedImages(searchResults.map((i) => i.image));
+                images.push(...searchImages);
+
+                await preloadImages(searchImages, config.area.split[desktop ? "desktop" : "mobile"]);
                 populate(searchResults);
             }
         }
@@ -274,6 +283,9 @@ function initializeSearch(area, type, placeholder) {
         input.value = "";
         clear.classList.remove("active");
         reset();
+
+        unloadImages(images);
+        images = [];
     }
 
     onWindowResize(checkResize);

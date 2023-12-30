@@ -9,8 +9,16 @@ export function debounce(func, delay) {
     };
 }
 
+export function elementExists(element) {
+    return document.body.contains(element);
+}
+
 export function onWindowResize(callback) {
     window.addEventListener("resize", callback);
+}
+
+export function removeWindowResize(callback) {
+    window.removeEventListener("resize", callback);
 }
 
 export function getInnerText(element) {

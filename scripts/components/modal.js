@@ -3,9 +3,19 @@ import { getHash, onHashChange, removeHash } from "../hash.js";
 import { setTitle } from "./header.js";
 
 let container;
+let modal;
 let headerText;
 let headerButtonIcon;
 let content;
+let callback;
+
+function checkCallback() {
+    if (callback && typeof callback === "function") {
+        callback();
+    }
+
+    callback = null;
+}
 
 export function setModal(label = "", newContent, icon = "times", fill = false) {
     container.className = fill ? "modal-container fill" : "modal-container";
@@ -22,7 +32,11 @@ export function setModal(label = "", newContent, icon = "times", fill = false) {
     }
 }
 
-export function showModal() {
+export function showModal(cb) {
+    checkCallback();
+    callback = cb;
+
+    modal.scrollTo({ top: 0 });
     document.body.classList.add("modal-active");
 }
 
@@ -32,6 +46,7 @@ export function hideModal() {
 
     setModal();
     setTitle();
+    checkCallback();
 }
 
 function initializeModalChangeCheck() {
@@ -55,7 +70,7 @@ function initializeModalChangeCheck() {
 
 export function initializeModal() {
     container = document.createElement("div");
-    const modal = document.createElement("div");
+    modal = document.createElement("div");
 
     const header = document.createElement("div");
     headerText = document.createElement("span");
