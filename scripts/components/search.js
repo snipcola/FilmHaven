@@ -244,11 +244,14 @@ function initializeSearch(area, type, placeholder) {
         cards.className = "cards";
     }
 
-    async function clearCheck() {
-        reset();
-        
+    function cleanup() {
         unloadImages(images);
         images = [];
+    }
+
+    async function clearCheck() {
+        reset();
+        cleanup();
 
         if (input.value.length > 0) {
             clear.classList.add("active");
@@ -282,10 +285,9 @@ function initializeSearch(area, type, placeholder) {
     function onClear() {
         input.value = "";
         clear.classList.remove("active");
-        reset();
 
-        unloadImages(images);
-        images = [];
+        reset();
+        cleanup();
     }
 
     onWindowResize(checkResize);
