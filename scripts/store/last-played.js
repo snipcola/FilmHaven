@@ -36,3 +36,7 @@ export function setLastPlayed(id, season, episode) {
 
     set(lastPlayed);
 }
+
+export function resetLastPlayed() {
+    localStorage.removeItem(store.names.lastPlayed);
+}

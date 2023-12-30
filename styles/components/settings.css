@@ -8,6 +8,14 @@
     margin-bottom: 1rem;
 }
 
+.section.settings .label:not(:first-child) {
+    margin-top: 2rem;
+}
+
+.section.settings .button:not(:first-child) {
+    margin-top: .5rem;
+}
+
 .section.settings .theme {
     display: flex;
     background-color: var(--dark);
@@ -44,4 +52,9 @@
 .section.settings .theme > div.active {
     background-color: var(--light);
     border: var(--small-border) solid var(--lighter);
+}
+
+.section.settings .button.inactive {
+    opacity: var(--dim-opacity);
+    pointer-events: none;
 }

@@ -59,3 +59,8 @@ export function removeFromContinueWatching(id, type) {
 
     set(newRecords, type);
 }
+
+export function resetContinueWatching() {
+    localStorage.removeItem(store.names.continue("movie"));
+    localStorage.removeItem(store.names.continue("tv"));
+}
