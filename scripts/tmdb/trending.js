@@ -3,7 +3,7 @@ import { shortenNumber } from "../functions.js";
 import { setCache, getCache } from "../cache.js";
 import { tmdb } from "../config.js";
 
-function format(obj) {
+function format(obj, type) {
     return obj
         ? sortByPopularity(obj).filter((i) => i.poster_path && i.backdrop_path).map(function (item) {
             const dateString = item.release_date || item.first_air_date;
@@ -11,7 +11,7 @@ function format(obj) {
 
             return {
                 id: item.id?.toString(),
-                type: item.media_type,
+                type,
                 title: item.title || item.name,
                 description: item.overview || item.description,
                 image: getImageUrl(item.poster_path, "poster"),
@@ -47,7 +47,7 @@ export async function getTrending(type = "movie", genre) {
             })
         : await sendRequest(`trending/${type}/${tmdb.trending.timeWindow}`);
 
-    const json = format(response?.results);
+    const json = format(response?.results, type);
 
     if (!genre) {
         setCache(cacheName, json);

@@ -130,7 +130,6 @@ function initializeGenreArea(area, initialSlides, type) {
 
     function set(newIndex) {
         index = slides[newIndex] ? newIndex : 0;
-
         const slide = slides[index];
 
         genres.innerHTML = "";

@@ -2,6 +2,7 @@ import { config } from "../config.js";
 import { onWindowResize, splitArray, debounce } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getSearchResults } from "../tmdb/search.js";
+import { watchContent } from "./watch.js";
 
 function initializeSearch(area, type, placeholder) {
     let results = [];
@@ -96,6 +97,10 @@ function initializeSearch(area, type, placeholder) {
         image.src = info.image;
         title.className = "title";
 
+        card.addEventListener("click", function () {
+            watchContent(info.type, info.id);
+        });
+
         title.innerText = info.title.length > (config.area.maxTitleLength * 1.75)
             ? info.title.substring(0, (config.area.maxTitleLength * 1.75)).replace(/\s+\S*$/, "...")
             : info.title;
@@ -167,7 +172,6 @@ function initializeSearch(area, type, placeholder) {
 
     function set(newIndex) {
         index = slides[newIndex] ? newIndex : 0;
-
         const slide = slides[index];
 
         cards.innerHTML = "";

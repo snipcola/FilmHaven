@@ -4,6 +4,7 @@ import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
+import { watchContent } from "./watch.js";
 
 export function initializeArea(area, initialSlides, labelText) {
     if (!initialSlides || initialSlides.length === 0) {
@@ -66,6 +67,10 @@ export function initializeArea(area, initialSlides, labelText) {
         image.className = "image";
         image.src = info.image;
         title.className = "title";
+
+        card.addEventListener("click", function () {
+            watchContent(info.type, info.id);
+        });
 
         title.innerText = info.title.length > config.area.maxTitleLength
             ? info.title.substring(0, config.area.maxTitleLength).replace(/\s+\S*$/, "...")
@@ -138,7 +143,6 @@ export function initializeArea(area, initialSlides, labelText) {
 
     function set(newIndex) {
         index = slides[newIndex] ? newIndex : 0;
-
         const slide = slides[index];
 
         cards.innerHTML = "";

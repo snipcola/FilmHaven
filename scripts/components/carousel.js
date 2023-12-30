@@ -2,6 +2,7 @@ import { config } from "../config.js";
 import { isHovered } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
+import { watchContent } from "./watch.js";
 
 function initializeCarousel(carousel, slides) {
     if (!slides || slides.length === 0) {
@@ -80,8 +81,11 @@ function initializeCarousel(carousel, slides) {
 
     function set(newIndex) {
         index = slides[newIndex] ? newIndex : 0;
+        const slide = slides[index];
 
-        const slide = slides[newIndex];
+        button.onclick = function () {
+            watchContent(slide.type, slide.id);
+        };
 
         image.src = slide.backdrop;
         title.innerText = slide.title;
@@ -90,7 +94,7 @@ function initializeCarousel(carousel, slides) {
             ? slide.description.substring(0, config.carousel.maxDescriptionLength).replace(/\s+\S*$/, "...")
             : slide.description;
 
-            setIndicators();
+        setIndicators();
     }
 
     function setPrevious() {
