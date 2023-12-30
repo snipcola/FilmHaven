@@ -368,16 +368,16 @@ function modal(info) {
     genresTitle.append(genresTitleText);
     misc.append(genresTitle);
 
-    for (const name of info.genres) {
-        const genre = document.createElement("div");
-
-        genre.className = "genre-card";
-        genre.innerText = name;
-
-        genres.append(genre);
-    }
-
     if (info.genres && info.genres.length > 0) {
+        for (const name of info.genres) {
+            const genre = document.createElement("div");
+    
+            genre.className = "genre-card";
+            genre.innerText = name;
+    
+            genres.append(genre);
+        }
+        
         misc.append(genres);
     } else {
         misc.append(notice.cloneNode(true));
@@ -465,7 +465,7 @@ function initializeWatchModalCheck() {
             if (modalType === "watch") {
                 const info = await getDetails(type, id);
 
-                if (info) {
+                if (info && info.title) {
                     if (info.cast) preloadImages(info.cast.map((p) => p.image));
 
                     modal(info);
