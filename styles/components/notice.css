@@ -16,6 +16,8 @@
 
     padding: var(--small-padding);
     box-sizing: border-box;
+
+    user-select: none;
 }
 
 .notice.active {

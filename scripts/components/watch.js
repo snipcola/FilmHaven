@@ -27,7 +27,8 @@ function modal(info) {
     }
 
     const watch = document.createElement("div");
-    const video = document.createElement("iframe");
+    const video = document.createElement("div");
+    const iframe = document.createElement("iframe");
 
     const notice = document.createElement("div");
     const noticeIcon = document.createElement("i");
@@ -88,8 +89,11 @@ function modal(info) {
     watch.className = "watch";
 
     video.className = "video";
-    video.setAttribute("allowfullscreen", true);
-    video.src = provider.api.movieUrl(info.id);
+    iframe.className = "iframe";
+    iframe.setAttribute("allowfullscreen", true);
+    iframe.src = provider.api.movieUrl(info.id);
+
+    video.append(iframe);
 
     notice.className = "notice active";
     noticeIcon.className = "icon fa-solid fa-eye-slash";
