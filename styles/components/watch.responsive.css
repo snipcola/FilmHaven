@@ -16,4 +16,8 @@
     .watch .details .cast-cards .cast-card {
         width: calc(20% - var(--small-padding));
     }
+
+    .watch .details .review-cards .review-card {
+        width: calc(100% - var(--small-padding));
+    }
 }

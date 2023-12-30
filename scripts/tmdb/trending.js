@@ -1,25 +1,36 @@
 import { sendRequest, getImageUrl, sortByPopularity } from "./main.js";
 import { shortenNumber } from "../functions.js";
 import { setCache, getCache } from "../cache.js";
-import { tmdb } from "../config.js";
+import { config, tmdb } from "../config.js";
 
 function format(obj, type) {
     return obj
-        ? sortByPopularity(obj).filter((i) => i.poster_path && i.backdrop_path).map(function (item) {
+        ? sortByPopularity(obj).filter((i) => i.poster_path && i.backdrop_path).map(function (item, index) {
             const dateString = item.release_date || item.first_air_date;
             const date = new Date(dateString);
 
-            return {
-                id: item.id?.toString(),
-                type,
-                title: item.title || item.name,
-                description: item.overview || item.description,
-                image: getImageUrl(item.poster_path, "poster"),
-                backdrop: getImageUrl(item.backdrop_path, "backdrop"),
-                date: dateString ? `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}` : null,
-                rating: Math.round(item.vote_average / 2).toString(),
-                stars: shortenNumber(item.vote_count, 1)
-            };
+            let description = item.overview || item.description;
+            description = description.length > config.maxDescriptionLength
+                ? description.substring(0, config.maxDescriptionLength).replace(/\s+\S*$/, "...")
+                : description;
+
+            return (index < config.carousel.amount)
+                ? {
+                    id: item.id?.toString(),
+                    type,
+                    title: item.title || item.name,
+                    description: description,
+                    backdrop: getImageUrl(item.backdrop_path, "backdrop")
+                }
+                : {
+                    id: item.id?.toString(),
+                    type,
+                    title: item.title || item.name,
+                    image: getImageUrl(item.poster_path, "poster"),
+                    date: dateString ? `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}` : null,
+                    rating: Math.round(item.vote_average / 2).toString(),
+                    stars: shortenNumber(item.vote_count, 1)
+                };
         })
         : null;
 }

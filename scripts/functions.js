@@ -1,3 +1,11 @@
+export function getSearchUrl(query) {
+    return `https://google.com/search?query=${query.replace(/ /g, "+")}`
+}
+
+export function cleanText(input) {
+    return input.replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1").replace(/\r\n/g, "").replace(/[-<>]/g, "");
+}
+
 export function debounce(func, delay) {
     let timeoutId;
 

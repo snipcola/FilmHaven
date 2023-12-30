@@ -1,5 +1,6 @@
 import { sendRequest, getImageUrl } from "./main.js";
-import { shortenNumber } from "../functions.js";
+import { shortenNumber, cleanText, getSearchUrl } from "../functions.js";
+import { config } from "../config.js";
 
 function format(item, type) {
     if (item && item.poster_path) {
@@ -7,8 +8,29 @@ function format(item, type) {
         const date = new Date(dateString);
 
         const cast = (item.credits?.cast || [])
-            .filter((p) => p.profile_path)
-            .map((p) => getImageUrl(p.profile_path, "cast"));
+            .filter((p) => p.name && p.profile_path)
+            .map(function (person) {
+                return {
+                    image: getImageUrl(person.profile_path, "cast"),
+                    url: getSearchUrl(person.name)
+                };
+            });
+
+        const reviews = (item.reviews?.results || [])
+            .filter((r) => r.url && r.author_details?.rating)
+            .map(function (review) {
+                let content = cleanText(review.content);
+                content = content.length > config.maxReviewContentLength
+                    ? content.substring(0, config.maxReviewContentLength).replace(/\s+\S*$/, "...")
+                    : content;
+
+                return {
+                    author: review.author,
+                    content,
+                    rating: Math.round(review.author_details.rating / 2).toString(),
+                    url: review.url
+                };
+            });
 
         return {
             id: item.id?.toString(),
@@ -20,7 +42,8 @@ function format(item, type) {
             rating: Math.round(item.vote_average / 2).toString(),
             stars: shortenNumber(item.vote_count, 1),
             fullDate: dateString,
-            cast
+            cast,
+            reviews
         };
     }
 
@@ -28,7 +51,7 @@ function format(item, type) {
 }
 
 export async function getDetails(type = "movie", id) {    
-    const response = await sendRequest(`${type}/${id}`, { append_to_response: ["credits"].join(",") });
+    const response = await sendRequest(`${type}/${id}`, { append_to_response: ["credits", "reviews"].join(",") });
     const json = format(response, type);
 
     return json;

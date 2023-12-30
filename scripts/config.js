@@ -47,7 +47,6 @@ export const config = {
     },
     carousel: {
         amount: 4,
-        maxDescriptionLength: 230,
         switchSlideInterval: 10000
     },
     area: {
@@ -73,6 +72,15 @@ export const config = {
             mobile: 5
         }  
     },
+    reviews: {
+        split: {
+            max: 700,
+            desktop: 2,
+            mobile: 1
+        }
+    },
+    maxDescriptionLength: 230,
+    maxReviewContentLength: 230,
     maxCacheDays: 5,
     maxMobileWidth: 600
 };
@@ -85,9 +93,9 @@ export const tmdb = {
     },
     image: {
         url: "https://image.tmdb.org/t/p",
-        poster: "w500",
+        poster: "w342",
         backdrop: "w1280",
-        cast: "w200"
+        cast: "w150_and_h150_face"
     },
     trending: {
         timeWindow: "week"

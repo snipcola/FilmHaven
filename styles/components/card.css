@@ -1,6 +1,7 @@
 .cards {
     display: flex;
     gap: var(--small-gap);
+    
     justify-content: center;
 }
 
@@ -88,10 +89,10 @@
     gap: var(--small-gap);
 
     justify-content: space-between;
-    font-size: .8rem;
+    font-size: 0.8rem;
 }
 
-.card .footer > div, .card .title {
+.card .footer > div, .card .title, .watch .rating {
     display: flex;
     gap: calc(var(--small-gap) / 2);
 
@@ -111,22 +112,22 @@
 }
 
 .card .title {
-    font-size: .9rem;
+    font-size: 0.9rem;
 }
 
-.card .footer .text, .card .footer .icon {
+.card .footer .text, .card .footer .icon, .watch .rating .rating-text {
     opacity: var(--dim-opacity);
 }
 
-.card .footer .stars {
+.card .footer .stars, .watch .rating .stars {
     display: flex;
     gap: calc(var(--small-gap) / 4);
 }
 
-.card .footer .star.fill {
+.card .footer .star.fill, .watch .rating .star.fill {
     color: var(--primary);
 }
 
-.card .footer .star.fill .icon {
+.card .footer .star.fill .icon, .watch .rating .star.fill .icon {
     opacity: 100%;
 }

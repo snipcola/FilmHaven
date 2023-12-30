@@ -87,10 +87,7 @@ function initializeCarousel(carousel, slides) {
 
         image.src = slide.backdrop;
         title.innerText = slide.title;
-
-        description.innerText = slide.description.length > config.carousel.maxDescriptionLength
-            ? slide.description.substring(0, config.carousel.maxDescriptionLength).replace(/\s+\S*$/, "...")
-            : slide.description;
+        description.innerText = slide.description;
 
         setIndicators();
     }

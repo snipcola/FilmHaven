@@ -81,7 +81,7 @@ body.modal-active .modal-container {
     background-color: var(--light);
     border: var(--small-border) solid var(--lighter);
 
-    font-size: .7rem;
+    font-size: 0.7rem;
 }
 
 .modal-header .button.secondary:hover {

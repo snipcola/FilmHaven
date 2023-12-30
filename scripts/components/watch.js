@@ -19,6 +19,13 @@ function modal(info) {
         castSlides = splitArray(info.cast, config.cast.split[desktop ? "desktop" : "mobile"]);
     }
 
+    let reviewSlides;
+    let reviewIndex;
+
+    if (info.reviews && info.reviews.length !== 0) {
+        reviewSlides = splitArray(info.reviews, config.reviews.split[desktop ? "desktop" : "mobile"]);
+    }
+
     const watch = document.createElement("div");
     const video = document.createElement("iframe");
 
@@ -47,6 +54,18 @@ function modal(info) {
     const castNext = document.createElement("div");
     const castNextIcon = document.createElement("i");
     const castCards = document.createElement("div");
+
+    const reviews = document.createElement("div");
+    const reviewsTitle = document.createElement("div");
+    const reviewsTitleIcon = document.createElement("i");
+    const reviewsTitleText = document.createElement("span");
+    const reviewsControl = document.createElement("div");
+    const reviewsPrevious = document.createElement("div");
+    const reviewsPreviousIcon = document.createElement("i");
+    const reviewsIndicators = document.createElement("div");
+    const reviewsNext = document.createElement("div");
+    const reviewsNextIcon = document.createElement("i");
+    const reviewCards = document.createElement("div");
 
     watch.className = "watch";
 
@@ -100,6 +119,10 @@ function modal(info) {
     castNextIcon.className = "icon fa-solid fa-arrow-right";
     castCards.className = "cast-cards";
 
+    castTitle.append(castTitleIcon);
+    castTitle.append(castTitleText);
+    cast.append(castTitle);
+
     castPrevious.append(castPreviousIcon);
     castNext.append(castNextIcon);
 
@@ -107,17 +130,21 @@ function modal(info) {
     castControl.append(castIndicators);
     castControl.append(castNext);
 
-    castTitle.append(castTitleIcon);
-    castTitle.append(castTitleText);
-    cast.append(castTitle);
+    function addCast(info) {
+        const cast = document.createElement("div");
+        const image = document.createElement("img");
 
-    function addCast(image) {
-        const castCard = document.createElement("img");
-
-        castCard.className = "cast-card";
-        castCard.src = image;
+        cast.className = "cast-card";
+        image.className = "image";
+        image.src = info.image;
         
-        castCards.append(castCard);
+        cast.append(image);
+
+        cast.addEventListener("click", function () {
+            window.open(info.url);
+        });
+
+        castCards.append(cast);
     }
 
     function setCastIndicators() {
@@ -153,6 +180,114 @@ function modal(info) {
         setCast(castSlides[castIndex + 1] ? castIndex + 1 : 0);
     }
 
+    reviews.className = "details-card";
+    reviewsTitle.className = "title";
+    reviewsTitleIcon.className = "icon fa-solid fa-ranking-star";
+    reviewsTitleText.className = "text";
+    reviewsTitleText.innerText = "Reviews";
+    reviewsControl.className = "control";
+    reviewsPrevious.className = "button secondary icon-only previous";
+    reviewsPreviousIcon.className = "icon fa-solid fa-arrow-left";
+    reviewsIndicators.className = "indicators";
+    reviewsNext.className = "button secondary icon-only next";
+    reviewsNextIcon.className = "icon fa-solid fa-arrow-right";
+    reviewCards.className = "review-cards";
+
+    reviewsTitle.append(reviewsTitleIcon);
+    reviewsTitle.append(reviewsTitleText);
+    reviews.append(reviewsTitle);
+
+    reviewsPrevious.append(reviewsPreviousIcon);
+    reviewsNext.append(reviewsNextIcon);
+
+    reviewsControl.append(reviewsPrevious);
+    reviewsControl.append(reviewsIndicators);
+    reviewsControl.append(reviewsNext);
+
+    function addReview(info) {
+        const review = document.createElement("div");
+        const title = document.createElement("div");
+        const titleText = document.createElement("span");
+
+        const rating = document.createElement("div");
+        const stars = document.createElement("div");
+        const starsAmount = document.createElement("div");
+
+        const content = document.createElement("span");
+
+        review.className = "review-card";
+        title.className = "review-title";
+        titleText.className = "author";
+        titleText.innerText = info.author;
+
+        rating.className = "rating";
+        stars.className = "stars";
+        starsAmount.className = "amount rating-text";
+        starsAmount.innerText = info.rating;
+
+        for (var i = 0; i < 5; i++) {
+            const star = document.createElement("div");
+            const starIcon = document.createElement("i");
+
+            star.className = i < info.rating ? "star fill" : "star";
+            starIcon.className = "icon fa-solid fa-star";
+
+            star.append(starIcon);
+            stars.append(star);
+        }
+
+        rating.append(stars);
+        rating.append(starsAmount);
+
+        title.append(titleText);
+        title.append(rating);
+
+        content.className = "review-content";
+        content.innerText = info.content;
+        
+        review.append(title);
+        review.append(content);
+
+        review.addEventListener("click", function () {
+            window.open(info.url);
+        });
+
+        reviewCards.append(review);
+    }
+
+    function setReviewsIndicators() {
+        reviewsIndicators.innerHTML = "";
+
+        reviewSlides.forEach(function (_, i) {
+            const indicator = document.createElement("div");
+
+            indicator.className = reviewIndex === i ? "indicator active" : "indicator";
+            indicator.addEventListener("click", function () {
+                setReviews(i);
+            });
+
+            reviewsIndicators.append(indicator);
+        });
+    }
+
+    function setReviews(newIndex) {
+        reviewIndex = reviewSlides[newIndex] ? newIndex : 0;
+        const slide = reviewSlides[reviewIndex];
+
+        reviewCards.innerHTML = "";
+        slide.forEach(addReview);
+
+        setReviewsIndicators();
+    }
+
+    function setReviewPrevious() {
+        setReviews(reviewSlides[reviewIndex - 1] ? reviewIndex - 1 : reviewSlides.length - 1);
+    }
+
+    function setReviewNext() {
+        setReviews(reviewSlides[reviewIndex + 1] ? reviewIndex + 1 : 0);
+    }
+
     function checkResize() {
         if (!elementExists(watch)) return removeWindowResize(checkResize);
         const newDesktop = window.innerWidth > config.cast.split.max;
@@ -169,30 +304,52 @@ function modal(info) {
 
                 setCast(castIndex);
             }
+
+            if (reviewSlides && reviewSlides.length !== 0) {
+                reviewSlides = splitArray(info.reviews, config.reviews.split[desktop ? "desktop" : "mobile"]);
+
+                reviewIndex = reviewIndex === 0 ? 0 : desktop
+                    ? Math.round((reviewIndex + 1) / (config.reviews.split.desktop / config.reviews.split.mobile)) - 1
+                    : Math.round((reviewIndex + 1) * (config.reviews.split.desktop / config.reviews.split.mobile)) - 2;
+
+                setReviews(reviewIndex);
+            }
         }
     }
 
     function cleanup() {
-        if (info.cast) unloadImages(info.cast);
+        if (info.cast) unloadImages(info.cast.map((p) => p.image));
     }
 
+    onWindowResize(checkResize);
+
     if (castSlides) {
-        onWindowResize(checkResize);
         setCast(castIndex);
 
         castPrevious.addEventListener("click", setCastPrevious);
         castNext.addEventListener("click", setCastNext);
-    }
 
-    if (castSlides) {
         castTitle.append(castControl);
         cast.append(castCards);
     } else {
         cast.append(notice.cloneNode(true));
     }
 
+    if (reviewSlides) {
+        setReviews(reviewIndex);
+
+        reviewsPrevious.addEventListener("click", setReviewPrevious);
+        reviewsNext.addEventListener("click", setReviewNext);
+
+        reviewsTitle.append(reviewsControl);
+        reviews.append(reviewCards);
+    } else {
+        reviews.append(notice.cloneNode(true));
+    }
+
     left.append(description);
     left.append(cast);
+    left.append(reviews);
 
     watch.append(video);
     watch.append(details);
@@ -212,7 +369,7 @@ function initializeWatchModalCheck() {
                 const info = await getDetails(type, id);
 
                 if (info) {
-                    if (info.cast) preloadImages(info.cast);
+                    if (info.cast) preloadImages(info.cast.map((p) => p.image));
 
                     modal(info);
                     document.title = info.title;

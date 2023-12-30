@@ -3,11 +3,11 @@
         flex-direction: column;
         gap: calc(var(--small-gap) / 3);
         
-        font-size: .7rem;
+        font-size: 0.7rem;
     }
 
     .card .title {
-        font-size: .8rem;
+        font-size: 0.8rem;
     }
 }
 
@@ -17,10 +17,10 @@
     }
 
     .card .footer {
-        font-size: .6rem;
+        font-size: 0.6rem;
     }
 
     .card .title {
-        font-size: .7rem;
+        font-size: 0.7rem;
     }
 }
