@@ -76,6 +76,7 @@ body.modal-active .header-container .header .links {
 
 .header-container .header .links .link.active {
     background-color: var(--light);
+    pointer-events: none;
 }
 
 .header-container .header .links .link:not(.active) {

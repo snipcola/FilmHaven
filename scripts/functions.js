@@ -1,3 +1,14 @@
+export function convertMinutesToText(minutes) {
+    if (minutes < 60) return `${minutes} min`;
+    else {
+        const hours = Math.floor(minutes / 60);
+        const remainingMins = minutes % 60;
+
+        if (remainingMins === 0) return `${hours} hr`;
+        else return `${hours} hr ${remainingMins} min`;
+    }
+}
+
 export function copyText(text) {
     window.navigator.clipboard.writeText(text);
 }

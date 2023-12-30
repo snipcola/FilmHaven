@@ -95,7 +95,8 @@ export const tmdb = {
         url: "https://image.tmdb.org/t/p",
         poster: "w342",
         backdrop: "w1280",
-        cast: "w150_and_h150_face"
+        cast: "w150_and_h150_face",
+        episode: "w185"
     },
     trending: {
         timeWindow: "week"

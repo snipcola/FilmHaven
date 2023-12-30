@@ -21,4 +21,18 @@
     .watch .details .review-cards .review-card {
         width: calc(100% - var(--small-padding));
     }
+
+    .watch .details .season-card .episodes .episode {
+        flex-direction: column-reverse;
+    }
+
+    .watch .details .season-card .episodes .episode .description {
+        display: none;
+    }
+    
+    .watch .details .season-card .episodes .episode .episode-left {
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        width: 100%;
+    }
 }

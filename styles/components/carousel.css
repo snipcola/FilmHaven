@@ -23,7 +23,7 @@
     height: 65dvh;
 }
 
-.carousel .image[src=""], .carousel .image:not([src]) {
+.carousel .image[src=""], .carousel .image[src="null"], .carousel .image:not([src]) {
     opacity: 0;
 }
 

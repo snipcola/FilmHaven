@@ -19,7 +19,7 @@ function format(obj, type, genre) {
                     id: item.id?.toString(),
                     type,
                     title: item.title || item.name,
-                    description: description,
+                    description,
                     backdrop: getImageUrl(item.backdrop_path, "backdrop")
                 }
                 : {

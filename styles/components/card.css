@@ -81,7 +81,7 @@
     margin-bottom: calc(var(--small-padding) / 2);
 }
 
-.card .image[src=""], .card .image:not([src]) {
+.card .image[src=""], .card .image[src="null"], .card .image:not([src]) {
     opacity: 0;
 }
 

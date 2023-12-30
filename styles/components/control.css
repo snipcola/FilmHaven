@@ -59,4 +59,5 @@
 
 .control .indicator.active {
     background-color: var(--primary);
+    pointer-events: none;
 }

@@ -5,7 +5,7 @@ export function getApiUrl() {
 }
 
 export function getImageUrl(path, type = "poster") {
-    return `${tmdb.image.url}/${tmdb.image[type]}${path}`;
+    return path ? `${tmdb.image.url}/${tmdb.image[type]}${path}` : null;
 }
 
 export function sortByPopularity(obj) {

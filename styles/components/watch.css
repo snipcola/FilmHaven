@@ -6,7 +6,7 @@
     height: calc(100dvh - 12.85rem);
     
     width: 100%;
-    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    mask-image: -webkit-radial-gradient(var(--light), var(--dark));
 
     overflow: hidden;
     box-sizing: border-box;
@@ -134,7 +134,7 @@
     object-fit: cover;
 }
 
-.watch .details .cast-cards .cast-card .image[src=""], .watch .details .cast-cards .cast-card .image:not([src]) {
+.watch .details .cast-cards .cast-card .image[src=""], .watch .details .cast-cards .cast-card .image[src="null"], .watch .details .cast-cards .cast-card .image:not([src]) {
     opacity: 0;
 }
 
@@ -225,4 +225,187 @@
 
     border-radius: var(--border-radius);
     font-size: 0.9rem;
+}
+
+.watch .details .season-cards {
+    display: flex;
+    flex-direction: column;
+
+    gap: var(--small-gap);
+}
+
+.watch .details .season-card {
+    background-color: var(--dark);
+    border: var(--small-border) solid var(--lighter);
+
+    padding: var(--small-padding) var(--large-padding);
+    box-sizing: border-box;
+
+    border-radius: var(--border-radius);
+}
+
+.watch .details .season-card .season-title {
+    display: flex;
+    align-items: center;
+    
+    gap: var(--small-gap);
+    user-select: none;
+}
+
+.watch .details .season-card.active .season-title {
+    margin-bottom: var(--small-padding);
+}
+
+.watch .details .season-card .season-title .button {
+    background-color: var(--light);
+    border: var(--small-border) solid var(--lighter);
+
+    border-radius: 50%;
+    margin-left: auto;
+
+    font-size: 0.8rem;
+    width: 2rem;
+    height: 2rem;
+}
+
+.watch .details .season-card .season-title .button .icon {
+    opacity: var(--dim-opacity);
+}
+
+.watch .details .season-card .season-title .button:hover {
+    background-color: var(--lighter);
+}
+
+.watch .details .season-card .season-title .name {
+    font-weight: 500;
+}
+
+.watch .details .season-card .season-title .amount {
+    font-size: 0.8rem;
+    opacity: var(--dim-opacity);
+}
+
+.watch .details .season-card .episodes {
+    display: none;
+    flex-direction: column;
+}
+
+.watch .details .season-card.active .episodes {
+    display: flex;
+    gap: var(--small-gap);
+}
+
+.watch .details .season-card .episodes .episode {
+    display: flex;
+    box-sizing: border-box;
+
+    gap: var(--small-gap);
+    align-items: center;
+
+    border-radius: var(--border-radius);
+    transition: var(--transition-speed) opacity;
+
+    padding: var(--large-padding);
+    user-select: none;
+}
+
+.watch .details .season-card .episodes .episode.active {
+    background-color: var(--light);
+    pointer-events: none;
+}
+
+.watch .details .season-card .episodes .episode:not(.active) {
+    cursor: pointer;
+}
+
+.watch .details .season-card .episodes .episode:not(.active):hover {
+    opacity: var(--dim-opacity);
+}
+
+.watch .details .season-card .episodes .episode .number {
+    font-weight: 500;
+    font-size: 1.25rem;
+
+    opacity: var(--dim-opacity);
+}
+
+.watch .details .season-card .episodes .episode .episode-left {
+    display: flex;
+
+    gap: var(--large-gap);
+    align-items: center;
+}
+
+.watch .details .season-card .episodes .episode .episode-right {
+    display: flex;
+    flex-direction: column;
+
+    gap: var(--small-gap);
+    width: 100%;
+}
+
+.watch .details .season-card .episodes .episode .preview {
+    display: flex;
+    position: relative;
+
+    align-items: center;
+    justify-content: center;
+
+    border: var(--small-border) solid var(--lighter);
+    box-sizing: border-box;
+
+    overflow: hidden;
+    border-radius: var(--border-radius);
+
+    background-color: var(--light);
+}
+
+.watch .details .season-card .episodes .episode .preview .image {
+    width: 8rem;
+    height: 5rem;
+    
+    object-fit: cover;
+
+    user-select: none;
+    pointer-events: none;
+}
+
+.watch .details .season-card .episodes .episode .preview .image[src=""], .watch .details .season-card .episodes .episode .preview .image[src="null"], .watch .details .season-card .episodes .episode .preview .image:not([src]) {
+    opacity: 0;
+}
+
+.watch .details .season-card .episodes .episode .episode-title {
+    display: flex;
+    gap: var(--small-gap);
+
+    justify-content: space-between;
+    align-items: center;
+}
+
+.watch .details .season-card .episodes .episode .episode-title .name {
+    font-weight: 500;
+}
+
+.watch .details .season-card .episodes .episode .episode-title .time {
+    display: flex;
+    gap: var(--small-gap);
+
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--light);
+    border: var(--small-border) solid var(--lighter);
+
+    padding: calc(var(--small-padding) / 2);
+    box-sizing: border-box;
+
+    border-radius: var(--border-radius);
+}
+
+.watch .details .season-card .episodes .episode .description {
+    font-size: 0.9rem;
+}
+
+.watch .details .season-card .episodes .episode .description, .watch .details .season-card .episodes .episode .episode-title .time .text, .watch .details .season-card .episodes .episode .episode-title .time .icon {
+    opacity: var(--dim-opacity);
 }
