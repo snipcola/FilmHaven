@@ -1,3 +1,4 @@
+import { initializeTheme } from "./components/theme.js";
 import { initializeCache } from "./cache.js";
 import { initializeModal } from "./components/modal.js";
 import { initializeContent } from "./components/content.js";
@@ -8,6 +9,7 @@ import { initializeCarousels } from "./components/carousel.js";
 import { initializeSearches } from "./components/search.js";
 import { initializeGenres } from "./components/genres.js";
 import { initializeAreas } from "./components/area.js";
+import { initializeSettings } from "./components/settings.js";
 
 let container;
 let wrapper;
@@ -30,6 +32,8 @@ function initializeBody() {
 }
 
 function initializeAll() {
+    initializeTheme();
+
     initializeCache();
     initializeModal();
     initializeBody();
@@ -42,6 +46,8 @@ function initializeAll() {
     initializeSearches();
     initializeGenres();
     initializeAreas();
+
+    initializeSettings();
 
     enableBody();
 }

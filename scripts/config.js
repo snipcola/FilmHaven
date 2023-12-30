@@ -118,6 +118,7 @@ export const provider = {
 
 export const store = {
     names: {
+        theme: "fh-theme",
         cache: function (key) {
             return `fhc-${key}`;
         },
