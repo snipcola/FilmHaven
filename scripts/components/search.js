@@ -246,7 +246,7 @@ function initializeSearch(area, type, placeholder) {
 
         if (input.value.length > 0) {
             clear.classList.add("active");
-            notify(true, "Waiting for text completion", "clock");
+            notify(true, "Waiting for text completion", "keyboard");
         } else {
             clear.classList.remove("active");
         }
