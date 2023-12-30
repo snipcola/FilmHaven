@@ -22,6 +22,10 @@
     object-fit: cover;
 }
 
+.carousel .image[src=""], .carousel .image:not([src]) {
+    opacity: 0;
+}
+
 .carousel .details {
     display: flex;
     flex-direction: column;

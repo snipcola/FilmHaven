@@ -5,9 +5,7 @@ import { getTrending } from "../tmdb/trending.js";
 import { watchContent } from "./watch.js";
 
 function initializeCarousel(carousel, slides) {
-    if (!slides || slides.length === 0) {
-        return console.error("Failed to initialize carousel.");
-    }
+    carousel.innerHTML = "";
 
     let index = 0;
 
@@ -111,20 +109,24 @@ function initializeCarousel(carousel, slides) {
         }
     }
 
-    set(index);
+    if (slides) {
+        set(index);
+        setInterval(iterate, config.carousel.switchSlideInterval);
 
-    setInterval(iterate, config.carousel.switchSlideInterval);
-
-    previous.addEventListener("click", setPrevious);
-    next.addEventListener("click", setNext);
+        previous.addEventListener("click", setPrevious);
+        next.addEventListener("click", setNext);
+    }
 
     carousel.append(image);
     carousel.append(vignette);
-    carousel.append(details);
-    carousel.append(control);
+
+    if (slides) {
+        carousel.append(details);
+        carousel.append(control);
+    }
 }
 
-export async function initializeCarousels() {
+export function initializeCarousels() {
     const moviesSection = document.querySelector(".section.movies");
     const showsSection = document.querySelector(".section.shows");
 
@@ -141,19 +143,28 @@ export async function initializeCarousels() {
     moviesSection.append(moviesCard);
     showsSection.append(showsCard);
 
-    let movies = await getTrending("movie");
-    let shows = await getTrending("tv");
+    async function initializeMovies() {
+        initializeCarousel(moviesCard, null);
+        let movies = await getTrending("movie");
 
-    if (!movies || !shows) {
-        console.error("Failed to fetch trending content.");
-    } else {
-        movies.splice(config.carousel.amount, movies.length);
-        shows.splice(config.carousel.amount, shows.length)
-
-        preloadImages(movies.map((i) => i.backdrop), 1);
-        preloadImages(shows.map((i) => i.backdrop), 1);
-        
-        initializeCarousel(moviesCard, movies);
-        initializeCarousel(showsCard, shows);
+        if (movies) {
+            movies.splice(config.carousel.amount, movies.length);
+            preloadImages(movies.map((i) => i.backdrop), 1);
+            initializeCarousel(moviesCard, movies);
+        }
     }
+
+    async function initializeShows() {
+        initializeCarousel(showsCard, null);
+        let shows = await getTrending("tv");
+
+        if (shows) {
+            shows.splice(config.carousel.amount, shows.length)
+            preloadImages(shows.map((i) => i.backdrop), 1);
+            initializeCarousel(showsCard, shows);
+        }
+    }
+
+    initializeMovies();
+    initializeShows();
 }

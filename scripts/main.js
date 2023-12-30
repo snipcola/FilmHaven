@@ -28,7 +28,7 @@ function initializeBody() {
     document.body.append(container);
 }
 
-async function initializeAll() {
+function initializeAll() {
     initializeCache();
     initializeModal();
     initializeBody();
@@ -37,10 +37,10 @@ async function initializeAll() {
     initializeFooter(container);
     enableBody();
 
-    await initializeCarousels();
+    initializeCarousels();
     initializeSearches();
-    await initializeGenres();
-    await initializeAreas();
+    initializeGenres();
+    initializeAreas();
 }
 
 initializeAll();

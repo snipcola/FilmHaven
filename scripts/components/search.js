@@ -67,7 +67,6 @@ function initializeSearch(area, type, placeholder) {
     notice.className = "notice";
     noticeIcon.className = "icon fa-solid fa-eye-slash"
     noticeText.className = "text";
-    noticeText.innerText = "No results found";
 
     notice.append(noticeIcon);
     notice.append(noticeText);
@@ -206,12 +205,18 @@ function initializeSearch(area, type, placeholder) {
         }
     }
 
+    function notify(toggle, label, icon) {
+        notice.classList[toggle ? "add" : "remove"]("active");
+        noticeText.innerText = label || "";
+        noticeIcon.className = `icon fa-solid fa-${icon || "eye-slash"}`;
+    }
+
     function reset() {
         results = [];
         slides = [];
         index = 0;
 
-        notice.classList.remove("active");
+        notify(false);
         control.className = "control inactive";
         cards.className = "cards inactive";
         
@@ -223,7 +228,7 @@ function initializeSearch(area, type, placeholder) {
         reset();
 
         if (newResults.length === 0) {
-            notice.classList.add("active");
+            notify(true, "No results found");
             return;
         }
 
@@ -237,11 +242,13 @@ function initializeSearch(area, type, placeholder) {
     }
 
     async function clearCheck() {
+        reset();
+
         if (input.value.length > 0) {
             clear.classList.add("active");
+            notify(true, "Waiting for text completion", "clock");
         } else {
             clear.classList.remove("active");
-            reset();
         }
     }
 
@@ -249,14 +256,15 @@ function initializeSearch(area, type, placeholder) {
         const query = input.value;
 
         if (query.length > 0) {
+            notify(true, "Fetching results", "sync");
             const searchResults = await getSearchResults(type, query);
             
             if (!searchResults) {
-                return console.error(`Failed to search for "${query}".`);
+                notify(true, "Failed to fetch results", "warning");
+            } else {
+                await preloadImages(searchResults.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                populate(searchResults);
             }
-
-            await preloadImages(searchResults.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-            populate(searchResults);
         }
     }
 
@@ -282,8 +290,6 @@ function initializeSearch(area, type, placeholder) {
     area.append(search);
     area.append(notice);
     area.append(cards);
-
-    area.classList.add("active");
 }
 
 export function initializeSearches() {

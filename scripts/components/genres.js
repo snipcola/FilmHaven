@@ -23,45 +23,67 @@ async function modal(info, type) {
     setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true, "modal");
     showModal();
 
-    let popularContent = await getTrending(type, info.id);
+    async function initializePopular() {
+        const label = "Popular";
 
-    if (!popularContent) {
-        console.error(`Failed to fetch popular content (${info.name} genre).`);
-    } else {
-        popularContent.splice(config.area.amount, popularContent.length);
-        await preloadImages(popularContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-        initializeArea(popularArea, popularContent, "Popular");
+        initializeArea(popularArea, null, label);
+        let popularContent = await getTrending(type, info.id);
+
+        if (!popularContent) {
+            initializeArea(popularArea, null, label, true);
+        } else {
+            popularContent.splice(config.area.amount, popularContent.length);
+            await preloadImages(popularContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+            initializeArea(popularArea, popularContent, label);
+        }
     }
 
-    let ratedContent = await getRated(type, info.id);
+    async function initializeTopRated() {
+        const label = "Top-Rated";
 
-    if (!ratedContent) {
-        console.error(`Failed to fetch top-rated content (${info.name} genre).`);
-    } else {
-        ratedContent.splice(config.area.amount, ratedContent.length);
-        await preloadImages(ratedContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-        initializeArea(ratedArea, ratedContent, "Top-Rated");
+        initializeArea(ratedArea, null, label);
+        let ratedContent = await getRated(type, info.id);
+
+        if (!ratedContent) {
+            initializeArea(ratedArea, null, label, true);
+        } else {
+            ratedContent.splice(config.area.amount, ratedContent.length);
+            await preloadImages(ratedContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+            initializeArea(ratedArea, ratedContent, label);
+        }
     }
 
-    let newContent = await getNew(type, info.id);
+    async function initializeNew() {
+        const label = "New";
 
-    if (!newContent) {
-        console.error(`Failed to find new content (${info.name} genre).`);
-    } else {
-        newContent.splice(config.area.amount, newContent.length);
-        await preloadImages(newContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-        initializeArea(newArea, newContent, "New");
+        initializeArea(newArea, null, label);
+        let newContent = await getNew(type, info.id);
+
+        if (!newContent) {
+            initializeArea(newArea, null, label, true);
+        } else {
+            newContent.splice(config.area.amount, newContent.length);
+            await preloadImages(newContent.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+            initializeArea(newArea, newContent, label);
+        }
     }
+
+    initializePopular();
+    initializeTopRated();
+    initializeNew();
 }
 
-function initializeGenreArea(area, initialSlides, type) {
-    if (!initialSlides || initialSlides.length === 0) {
-        return console.error(`Failed to initialize ${type} genres.`);
-    }
+function initializeGenreArea(area, initialSlides, type, failed) {
+    area.innerHTML = "";
+    const noResults = Array.isArray(initialSlides) && initialSlides.length === 0;
 
     let desktop = window.innerWidth > config.genre.split.max;
-    let slides = splitArray(initialSlides, config.area.split[desktop ? "desktop" : "mobile"]);
+    let slides;
     let index = 0;
+
+    if (initialSlides && initialSlides.length !== 0) {
+        slides = splitArray(initialSlides, config.area.split[desktop ? "desktop" : "mobile"]);
+    }
 
     const label = document.createElement("div");
 
@@ -71,6 +93,10 @@ function initializeGenreArea(area, initialSlides, type) {
     const indicators = document.createElement("div");
     const next = document.createElement("div");
     const nextIcon = document.createElement("i");
+
+    const notice = document.createElement("div");
+    const noticeIcon = document.createElement("i");
+    const noticeText = document.createElement("span");
 
     const genres = document.createElement("div");
 
@@ -90,6 +116,14 @@ function initializeGenreArea(area, initialSlides, type) {
     control.append(previous);
     control.append(indicators);
     control.append(next);
+
+    notice.className = "notice";
+    noticeIcon.className = `icon fa-solid fa-${failed ? "warning" : noResults ? "eye-slash" : "sync"}`
+    noticeText.className = "text";
+    noticeText.innerText = failed ? "Failed to fetch genres" : noResults ? "No results found" : "Fetching genres";
+
+    notice.append(noticeIcon);
+    notice.append(noticeText);
 
     genres.className = "genres";
 
@@ -164,17 +198,22 @@ function initializeGenreArea(area, initialSlides, type) {
         }
     }
 
-    onWindowResize(checkResize);
-    set(index);
+    if (slides) {
+        onWindowResize(checkResize);
+        set(index);
 
-    previous.addEventListener("click", setPrevious);
-    next.addEventListener("click", setNext);
+        previous.addEventListener("click", setPrevious);
+        next.addEventListener("click", setNext);
+    }
 
     area.append(label);
-    area.append(control);
-    area.append(genres);
     
-    area.classList.add("active");
+    if (slides) {
+        area.append(control);
+        area.append(genres);
+    } else {
+        area.append(notice);
+    }
 }
 
 let movieGenres;
@@ -189,8 +228,8 @@ function initializeGenreModalCheck() {
 
             if (modalType === "genre") {
                 const info = type === "movie"
-                    ? movieGenres.find((g) => g.id?.toString() === id)
-                    : showGenres.find((g) => g.id?.toString() === id);
+                    ? (movieGenres || []).find((g) => g.id?.toString() === id)
+                    : (showGenres || []).find((g) => g.id?.toString() === id);
 
                 if (info) {
                     modal(info, type);
@@ -206,7 +245,7 @@ function initializeGenreModalCheck() {
     onHashChange(handleHashChange);
 }
 
-export async function initializeGenres() {
+export function initializeGenres() {
     const moviesSection = document.querySelector(".section.movies");
     const showsSection = document.querySelector(".section.shows");
 
@@ -223,14 +262,40 @@ export async function initializeGenres() {
     moviesSection.append(moviesGenresArea);
     showsSection.append(showsGenresArea);
 
-    movieGenres = await getGenres("movie");
-    showGenres = await getGenres("tv");
+    let initializedCount = 0;
 
-    if (!movieGenres || !showGenres) {
-        console.error("Failed to fetch genres.");
-    } else {
-        initializeGenreModalCheck();
-        initializeGenreArea(moviesGenresArea, movieGenres, "movie");
-        initializeGenreArea(showsGenresArea, showGenres, "tv");
+    function checkCount() {
+        if (initializedCount == 2) {
+            initializeGenreModalCheck();
+        }
     }
+
+    async function initializeMovies() {
+        initializeGenreArea(moviesGenresArea, null, "movie");
+        movieGenres = await getGenres("movie");
+
+        if (!movieGenres) {
+            initializeGenreArea(moviesGenresArea, null, "movie", true);
+        } else {
+            initializedCount++;
+            initializeGenreArea(moviesGenresArea, movieGenres, "movie");
+            checkCount();
+        }
+    }
+
+    async function initializeShows() {
+        initializeGenreArea(showsGenresArea, null, "tv");
+        showGenres = await getGenres("tv");
+
+        if (!showGenres) {
+            initializeGenreArea(showsGenresArea, null, "tv", true);
+        } else {
+            initializedCount++;
+            initializeGenreArea(showsGenresArea, showGenres, "tv");
+            checkCount();
+        }
+    }
+
+    initializeMovies();
+    initializeShows();
 }

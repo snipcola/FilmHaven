@@ -43,7 +43,7 @@ export const config = {
         validTypes: ["genre", "watch"]
     },
     search: {
-        debounce: 250
+        debounce: 500
     },
     carousel: {
         amount: 4,

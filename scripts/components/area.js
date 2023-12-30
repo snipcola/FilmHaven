@@ -6,14 +6,17 @@ import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
 import { watchContent } from "./watch.js";
 
-export function initializeArea(area, initialSlides, labelText) {
-    if (!initialSlides || initialSlides.length === 0) {
-        return console.error(`Failed to initialize ${labelText} area.`);
-    }
+export function initializeArea(area, initialSlides, labelText, failed) {
+    area.innerHTML = "";
+    const noResults = Array.isArray(initialSlides) && initialSlides.length === 0;
 
     let desktop = window.innerWidth > config.area.split.max;
-    let slides = splitArray(initialSlides, config.area.split[desktop ? "desktop" : "mobile"]);
+    let slides;
     let index = 0;
+
+    if (initialSlides && initialSlides.length !== 0) {
+        slides = splitArray(initialSlides, config.area.split[desktop ? "desktop" : "mobile"]);
+    }
 
     const label = document.createElement("div");
 
@@ -23,6 +26,10 @@ export function initializeArea(area, initialSlides, labelText) {
     const indicators = document.createElement("div");
     const next = document.createElement("div");
     const nextIcon = document.createElement("i");
+
+    const notice = document.createElement("div");
+    const noticeIcon = document.createElement("i");
+    const noticeText = document.createElement("span");
 
     const cards = document.createElement("div");
 
@@ -42,6 +49,14 @@ export function initializeArea(area, initialSlides, labelText) {
     control.append(previous);
     control.append(indicators);
     control.append(next);
+
+    notice.className = "notice";
+    noticeIcon.className = `icon fa-solid fa-${failed ? "warning" : noResults ? "eye-slash" : "sync"}`
+    noticeText.className = "text";
+    noticeText.innerText = failed ? `Failed to fetch ${labelText.toLowerCase()}` : noResults ? "No results found" : `Fetching ${labelText.toLowerCase()}`;
+
+    notice.append(noticeIcon);
+    notice.append(noticeText);
 
     cards.className = "cards";
 
@@ -177,20 +192,25 @@ export function initializeArea(area, initialSlides, labelText) {
         }
     }
 
-    onWindowResize(checkResize);
-    set(index);
+    if (slides) {
+        onWindowResize(checkResize);
+        set(index);
 
-    previous.addEventListener("click", setPrevious);
-    next.addEventListener("click", setNext);
+        previous.addEventListener("click", setPrevious);
+        next.addEventListener("click", setNext);
+    }
 
     area.append(label);
-    area.append(control);
-    area.append(cards);
     
-    area.classList.add("active");
+    if (slides) {
+        area.append(control);
+        area.append(cards);
+    } else {
+        area.append(notice);
+    }
 }
 
-export async function initializeAreas() {
+export function initializeAreas() {
     const desktop = window.innerWidth > config.area.split.max;
 
     const moviesSection = document.querySelector(".section.movies");
@@ -227,54 +247,110 @@ export async function initializeAreas() {
     moviesSection.append(moviesNewArea);
     showsSection.append(showsNewArea);
 
-    let trendingMovies = await getTrending("movie");
-    let trendingShows = await getTrending("tv");
+    function initializeTrending() {
+        const label = "Trending";
 
-    if (!trendingMovies || !trendingShows) {
-        console.error("Failed to fetch trending content.");
-    } else {
-        trendingMovies.splice(0, config.carousel.amount);
-        trendingShows.splice(0, config.carousel.amount);
+        async function initializeMovies() {
+            initializeArea(moviesTrendingArea, null, label);
+            let trendingMovies = await getTrending("movie");
 
-        trendingMovies.splice(config.area.amount, trendingMovies.length);
-        trendingShows.splice(config.area.amount, trendingShows.length);
+            if (!trendingMovies) {
+                initializeArea(moviesTrendingArea, null, label, true);
+            } else {
+                trendingMovies.splice(0, config.carousel.amount);    
+                trendingMovies.splice(config.area.amount, trendingMovies.length);
+    
+                await preloadImages(trendingMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);    
+                initializeArea(moviesTrendingArea, trendingMovies, label);
+            }
+        }
 
-        await preloadImages(trendingMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-        await preloadImages(trendingShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+        async function initializeShows() {
+            initializeArea(showsTrendingArea, null, label);
+            let trendingShows = await getTrending("tv");
 
-        initializeArea(moviesTrendingArea, trendingMovies, "Trending");
-        initializeArea(showsTrendingArea, trendingShows, "Trending");
+            if (!trendingShows) {
+                initializeArea(showsTrendingArea, null, label, true);
+            } else {
+                trendingShows.splice(0, config.carousel.amount);
+                trendingShows.splice(config.area.amount, trendingShows.length);
+    
+                await preloadImages(trendingShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                initializeArea(showsTrendingArea, trendingShows, label);
+            }
+        }
+
+        initializeMovies();
+        initializeShows();
     }
 
-    let ratedMovies = await getRated("movie");
-    let ratedShows = await getRated("tv");
+    function initializeTopRated() {
+        const label = "Top-Rated";
 
-    if (!ratedMovies || !ratedShows) {
-        console.error("Failed to fetch top-rated content.");
-    } else {
-        ratedMovies.splice(config.area.amount, ratedMovies.length);
-        ratedShows.splice(config.area.amount, ratedShows.length);
+        async function initializeMovies() {
+            initializeArea(moviesRatedArea, null, label);
+            let ratedMovies = await getRated("movie");
 
-        await preloadImages(ratedMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-        await preloadImages(ratedShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+            if (!ratedMovies) {
+                initializeArea(moviesRatedArea, null, label, true);
+            } else {
+                ratedMovies.splice(config.area.amount, ratedMovies.length);
+                await preloadImages(ratedMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                initializeArea(moviesRatedArea, ratedMovies, label);
+            }
+        }
 
-        initializeArea(moviesRatedArea, ratedMovies, "Top-Rated");
-        initializeArea(showsRatedArea, ratedShows, "Top-Rated");
+        async function initializeShows() {
+            initializeArea(showsRatedArea, null, label);
+            let ratedShows = await getRated("tv");
+
+            if (!ratedShows) {
+                initializeArea(showsRatedArea, null, label, true);
+            } else {
+                ratedShows.splice(config.area.amount, ratedShows.length);
+                await preloadImages(ratedShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                initializeArea(showsRatedArea, ratedShows, label);
+            }
+        }
+
+        initializeMovies();
+        initializeShows();
     }
 
-    let newMovies = await getNew("movie");
-    let newShows = await getNew("tv");
-
-    if (!newMovies || !newShows) {
-        console.error("Failed to fetch new content.");
-    } else {
-        newMovies.splice(config.area.amount, newMovies.length);
-        newShows.splice(config.area.amount, newShows.length);
-
-        await preloadImages(newMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-        await preloadImages(newShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+    function initializeNew() {
+        const label = "New";
         
-        initializeArea(moviesNewArea, newMovies, "New");
-        initializeArea(showsNewArea, newShows, "New");
+        async function initializeMovies() {
+            initializeArea(moviesNewArea, null, label);
+            let newMovies = await getNew("movie");
+
+            if (!newMovies) {
+                initializeArea(moviesNewArea, null, label, true);
+            } else {
+                newMovies.splice(config.area.amount, newMovies.length);
+                await preloadImages(newMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                initializeArea(moviesNewArea, newMovies, label);
+            }
+        }
+
+        async function initializeShows() {
+            initializeArea(showsNewArea, null, label);
+            let newShows = await getNew("tv");
+
+            if (!newShows) {
+                initializeArea(showsNewArea, null, label, true);
+            } else {
+                newShows.splice(config.area.amount, newShows.length);
+                await preloadImages(newShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                initializeArea(showsNewArea, newShows, label);
+            }
+        }
+
+        initializeMovies();
+        initializeShows();
     }
+
+    initializeTrending();
+    initializeTopRated();
+    initializeNew();
 }

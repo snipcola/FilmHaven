@@ -77,6 +77,10 @@
     margin-bottom: calc(var(--small-padding) / 2);
 }
 
+.card .image[src=""], .card .image:not([src]) {
+    opacity: 0;
+}
+
 .card .footer {
     display: flex;
     gap: var(--small-gap);

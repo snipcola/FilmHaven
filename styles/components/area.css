@@ -1,5 +1,4 @@
 .area {
-    display: none;
     position: relative;
     
     margin-top: calc(var(--large-padding) * 2.5);
@@ -14,8 +13,9 @@
     width: 100%;
 }
 
-.area.active {
-    display: inline-block;
+.area:not(.search) .notice {
+    margin-top: 0;
+    display: flex;
 }
 
 .area .label {
