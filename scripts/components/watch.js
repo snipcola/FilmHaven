@@ -67,6 +67,24 @@ function modal(info) {
     const reviewsNextIcon = document.createElement("i");
     const reviewCards = document.createElement("div");
 
+    const misc = document.createElement("div");
+    const releasedTitle = document.createElement("div");
+    const releasedTitleIcon = document.createElement("i");
+    const releasedTitleText = document.createElement("span");
+    const releasedText = document.createElement("p");
+
+    const ratingTitle = document.createElement("div");
+    const ratingTitleIcon = document.createElement("i");
+    const ratingTitleText = document.createElement("span");
+    const ratingContainer = document.createElement("div");
+    const ratingStars = document.createElement("div");
+    const ratingStarsAmount = document.createElement("div");
+
+    const genresTitle = document.createElement("div");
+    const genresTitleIcon = document.createElement("i");
+    const genresTitleText = document.createElement("span");
+    const genres = document.createElement("div");
+
     watch.className = "watch";
 
     video.className = "video";
@@ -288,6 +306,83 @@ function modal(info) {
         setReviews(reviewSlides[reviewIndex + 1] ? reviewIndex + 1 : 0);
     }
 
+    misc.className = "details-card misc";
+    releasedTitle.className = "title";
+    releasedTitleIcon.className = "icon fa-solid fa-calendar";
+    releasedTitleText.className = "text";
+    releasedTitleText.innerText = info.type === "movie" ? "Released" : "First Aired";
+    releasedText.className = "text";
+    releasedText.innerText = info.date;
+
+    releasedTitle.append(releasedTitleIcon);
+    releasedTitle.append(releasedTitleText);
+    misc.append(releasedTitle);
+
+    if (info.date) {
+        misc.append(releasedText);
+    } else {
+        misc.append(notice.cloneNode(true));
+    }
+
+    ratingTitle.className = "title";
+    ratingTitleIcon.className = "icon fa-solid fa-star";
+    ratingTitleText.className = "text";
+    ratingTitleText.innerText = "Rating";
+
+    ratingTitle.append(ratingTitleIcon);
+    ratingTitle.append(ratingTitleText);
+    misc.append(ratingTitle);
+
+    ratingContainer.className = "rating";
+    ratingStars.className = "stars";
+    ratingStarsAmount.className = "amount rating-text";
+    ratingStarsAmount.innerText = info.stars;
+
+    for (var i = 0; i < 5; i++) {
+        const star = document.createElement("div");
+        const starIcon = document.createElement("i");
+
+        star.className = i < info.rating ? "star fill" : "star";
+        starIcon.className = "icon fa-solid fa-star";
+
+        star.append(starIcon);
+        ratingStars.append(star);
+    }
+
+    ratingContainer.append(ratingStars);
+    ratingContainer.append(ratingStarsAmount);
+
+    if (info.rating && info.stars) {
+        misc.append(ratingContainer);
+    } else {
+        misc.append(notice.cloneNode(true));
+    }
+
+    genresTitle.className = "title";
+    genresTitleIcon.className = "icon fa-solid fa-shapes";
+    genresTitleText.className = "text";
+    genresTitleText.innerText = "Genres";
+    genres.className = "genre-cards";
+
+    genresTitle.append(genresTitleIcon);
+    genresTitle.append(genresTitleText);
+    misc.append(genresTitle);
+
+    for (const name of info.genres) {
+        const genre = document.createElement("div");
+
+        genre.className = "genre-card";
+        genre.innerText = name;
+
+        genres.append(genre);
+    }
+
+    if (info.genres && info.genres.length > 0) {
+        misc.append(genres);
+    } else {
+        misc.append(notice.cloneNode(true));
+    }
+
     function checkResize() {
         if (!elementExists(watch)) return removeWindowResize(checkResize);
         const newDesktop = window.innerWidth > config.cast.split.max;
@@ -350,6 +445,8 @@ function modal(info) {
     left.append(description);
     left.append(cast);
     left.append(reviews);
+
+    right.append(misc);
 
     watch.append(video);
     watch.append(details);

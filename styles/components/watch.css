@@ -39,6 +39,11 @@
 }
 
 .watch .details .details-card {
+    display: flex;
+    flex-direction: column;
+    
+
+    gap: var(--small-gap);
     background-color: var(--light);
 
     padding: var(--large-padding);
@@ -46,6 +51,8 @@
 
     border: var(--small-border) solid var(--lighter);
     border-radius: var(--border-radius);
+
+    overflow: hidden;
 }
 
 .watch .details .title, .watch .details .text {
@@ -58,8 +65,6 @@
     gap: var(--small-gap);
 
     align-items: center;
-    margin-bottom: var(--small-padding);
-
     user-select: none;
 }
 
@@ -69,9 +74,7 @@
 
 .watch .details .notice {
     background-color: var(--dark);
-    
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
 }
 
 .watch .details .control {
@@ -154,6 +157,9 @@
     transition: var(--transition-speed) opacity;
 
     cursor: pointer;
+    overflow: hidden;
+
+    user-select: none;
 }
 
 .watch .details .review-cards .review-card:hover {
@@ -176,7 +182,38 @@
     font-size: 0.8rem;
 }
 
+.watch .details .rating .amount {
+    user-select: none;
+}
+
 .watch .details .review-content {
     opacity: var(--dim-opacity);
+    font-size: 0.9rem;
+}
+
+.watch .details .details-card.misc .title:not(:first-child) {
+    margin-top: var(--large-padding);
+}
+
+.watch .details .details-card.misc .rating {
+    background-color: var(--dark);
+    border-radius: var(--border-radius);
+}
+
+.watch .details .genre-cards {
+    display: flex;
+    gap: var(--small-gap);
+
+    flex-wrap: wrap;
+}
+
+.watch .details .genre-card {
+    background-color: var(--dark);
+    border: var(--small-border) solid var(--lighter);
+
+    padding: calc(var(--small-padding) / 2);
+    box-sizing: border-box;
+
+    border-radius: var(--border-radius);
     font-size: 0.9rem;
 }

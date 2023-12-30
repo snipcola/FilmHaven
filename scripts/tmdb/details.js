@@ -32,18 +32,22 @@ function format(item, type) {
                 };
             });
 
+        const genres = (item.genres || [])
+            .filter((g) => g.name)
+            .map((g) => g.name);
+
         return {
             id: item.id?.toString(),
             type,
             title: item.title || item.name,
             description: item.overview || item.description,
             image: getImageUrl(item.poster_path, "poster"),
-            date: dateString ? `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}` : null,
+            date: dateString ? date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : null,
             rating: Math.round(item.vote_average / 2).toString(),
             stars: shortenNumber(item.vote_count, 1),
-            fullDate: dateString,
             cast,
-            reviews
+            reviews,
+            genres
         };
     }
 
