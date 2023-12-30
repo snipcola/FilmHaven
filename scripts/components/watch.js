@@ -5,12 +5,35 @@ import { elementExists, onWindowResize, removeWindowResize, splitArray } from ".
 import { config, provider } from "../config.js";
 import { preloadImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
+import { addContinueWatching, isInContinueWatching, removeFromContinueWatching } from "../store/continue.js";
 
 export function watchContent(type, id) {
     setHash("modal", `watch-${type}-${id}`);
 }
 
 function modal(info) {
+    addContinueWatching(info.id, info.type, info.title, info.image);
+
+    if (isInContinueWatching(info.id, info.type)) {
+        const headerButtons = document.querySelector(".modal-header .header-buttons");
+
+        if (headerButtons) {
+            const button = document.createElement("div");
+            const buttonIcon = document.createElement("i");
+
+            button.className = "button secondary icon-only custom";
+            buttonIcon.className = "icon fa-solid fa-eye-slash";
+
+            button.addEventListener("click", function () {
+                removeFromContinueWatching(info.id, info.type);
+                button.remove();
+            });
+
+            button.append(buttonIcon);
+            headerButtons.prepend(button);
+        }
+    }
+
     let desktop = window.innerWidth > config.cast.split.max;
 
     let castSlides;

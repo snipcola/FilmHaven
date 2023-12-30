@@ -5,6 +5,7 @@ import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
 import { watchContent } from "./watch.js";
+import { getContinueWatching } from "../store/continue.js";
 
 export function initializeArea(area, initialSlides, labelText, failed) {
     area.innerHTML = "";
@@ -94,7 +95,7 @@ export function initializeArea(area, initialSlides, labelText, failed) {
         footer.className = "footer";
 
         date.className = "date";
-        dateIcon.className = "icon fa-solid fa-clock";
+        dateIcon.className = `icon fa-solid fa-${info.continue ? "eye" : "clock"}`;
         dateText.className = "text";
         dateText.innerText = info.date;
 
@@ -221,6 +222,9 @@ export function initializeAreas() {
         return console.error("Failed to find sections.");
     }
 
+    const moviesContinueArea = document.createElement("div");
+    const showsContinueArea = document.createElement("div");
+
     const moviesTrendingArea = document.createElement("div");
     const showsTrendingArea = document.createElement("div");
 
@@ -229,6 +233,9 @@ export function initializeAreas() {
 
     const moviesNewArea = document.createElement("div");
     const showsNewArea = document.createElement("div");
+
+    moviesContinueArea.className = "area inactive";
+    showsContinueArea.className = "area inactive";
 
     moviesTrendingArea.className = "area";
     showsTrendingArea.className = "area";
@@ -239,6 +246,9 @@ export function initializeAreas() {
     moviesNewArea.className = "area";
     showsNewArea.className = "area";
 
+    moviesSection.append(moviesContinueArea);
+    showsSection.append(showsContinueArea);
+
     moviesSection.append(moviesTrendingArea);
     showsSection.append(showsTrendingArea);
 
@@ -247,6 +257,55 @@ export function initializeAreas() {
 
     moviesSection.append(moviesNewArea);
     showsSection.append(showsNewArea);
+
+    function initializeContinueWatching() {
+        const label = "Continue";
+
+        let continueMovies;
+        let continueShows;
+        
+        async function initializeMovies() {
+            initializeArea(moviesContinueArea, null, label);
+
+            if (!continueMovies || continueMovies.length === 0) {
+                moviesContinueArea.classList.add("inactive");
+            } else {
+                await preloadImages(continueMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);    
+                initializeArea(moviesContinueArea, continueMovies, label);
+                moviesContinueArea.classList.remove("inactive");
+            }
+        }
+
+        async function initializeShows() {
+            initializeArea(showsContinueArea, null, label);
+
+            if (!continueShows || continueShows.length === 0) {
+                showsContinueArea.classList.add("inactive");
+            } else {
+                await preloadImages(continueShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);    
+                initializeArea(showsContinueArea, continueShows, label);
+                showsContinueArea.classList.remove("inactive");
+            }
+        }
+
+        function check() {
+            const newContinueMovies = getContinueWatching("movie");
+            const newContinueShows = getContinueWatching("tv");
+
+            if (!continueMovies || continueMovies.length === 0 || JSON.stringify(newContinueMovies) !== JSON.stringify(continueMovies)) {
+                continueMovies = newContinueMovies;
+                initializeMovies();
+            }
+
+            if (!continueShows || continueShows.length === 0 || JSON.stringify(newContinueShows) !== JSON.stringify(continueShows)) {
+                continueShows = newContinueShows;
+                initializeShows();
+            }
+        }
+
+        check();
+        setInterval(check, 500);
+    }
 
     function initializeTrending() {
         const label = "Trending";
@@ -351,6 +410,7 @@ export function initializeAreas() {
         initializeShows();
     }
 
+    initializeContinueWatching();
     initializeTrending();
     initializeTopRated();
     initializeNew();

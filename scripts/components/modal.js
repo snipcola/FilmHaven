@@ -6,6 +6,7 @@ import { setTitle } from "./header.js";
 let container;
 let modal;
 let headerText;
+let buttons;
 let copyButton;
 let copyButtonIcon;
 let headerButtonIcon;
@@ -50,6 +51,12 @@ export function hideModal() {
     setModal();
     setTitle();
     checkCallback();
+
+    Array.from(buttons.children).forEach(function (button) {
+        if (button.classList.contains("custom")) {
+            button.remove();
+        }
+    })
 }
 
 function initializeModalChangeCheck() {
@@ -94,7 +101,7 @@ export function initializeModal() {
 
     const header = document.createElement("div");
     headerText = document.createElement("span");
-    const buttons = document.createElement("div");
+    buttons = document.createElement("div");
     copyButton = document.createElement("div");
     copyButtonIcon = document.createElement("i");
     const headerButton = document.createElement("div");

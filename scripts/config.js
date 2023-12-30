@@ -121,6 +121,9 @@ export const store = {
         cache: function (key) {
             return `fhc-${key}`;
         },
-        lastPlayed: "fh-last-played"
+        lastPlayed: "fh-last-played",
+        continue: function (type) {
+            return `fh-continue-${type}`;
+        }
     }
 };
