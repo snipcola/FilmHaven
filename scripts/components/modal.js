@@ -28,11 +28,10 @@ export function showModal() {
 
 export function hideModal() {
     removeHash("modal");
+    document.body.classList.remove("modal-active");
 
     setModal();
     setTitle();
-    
-    document.body.classList.remove("modal-active");
 }
 
 function initializeModalChangeCheck() {

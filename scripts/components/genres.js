@@ -7,7 +7,7 @@ import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
-import { getHash, onHashChange, removeHash, setHash } from "../hash.js";
+import { getHash, onHashChange, setHash, removeHash } from "../hash.js";
 
 async function modal(info, type) {
     const desktop = window.innerWidth > config.area.split.max;
@@ -20,7 +20,7 @@ async function modal(info, type) {
     ratedArea.className = "area";
     newArea.className = "area";
 
-    setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true, "modal");
+    setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true);
     showModal();
 
     async function initializePopular() {

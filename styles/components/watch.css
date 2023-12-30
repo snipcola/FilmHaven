@@ -1,0 +1,12 @@
+.watch .video {
+    outline: none;
+    border: none;
+
+    background-color: rgb(0, 0, 0);
+    border-radius: var(--border-radius);
+
+    height: calc(100vh - 14rem);
+    height: calc(100dvh - 14rem);
+    
+    width: 100%;
+}
