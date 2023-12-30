@@ -38,7 +38,6 @@ function setSectionActive() {
         console.error(`Failed to find section "${sectionName}".`);
     } else {
         section.classList.add("active");
-        document.documentElement.scrollTo({ top: 0 });
     }
 }
 
@@ -92,7 +91,10 @@ function initializePageChangeCheck() {
 function initializeLinks() {
     links.forEach(function (link, index) {
         link.addEventListener("click", function () {
-            setHash("page", index + 1);
+            if (!link.classList.contains("active")) {
+                document.documentElement.scrollTo({ top: 0 });
+                setHash("page", index + 1);
+            }
         });
     });
 }
