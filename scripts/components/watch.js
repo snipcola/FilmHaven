@@ -4,6 +4,7 @@ import { getDetails } from "../tmdb/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray } from "../functions.js";
 import { config, provider } from "../config.js";
 import { preloadImages, unloadImages } from "../cache.js";
+import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
 
 export function watchContent(type, id) {
     setHash("modal", `watch-${type}-${id}`);
@@ -30,8 +31,10 @@ function modal(info) {
     let episodeIndex;
 
     if (info.type === "tv") {
-        seasonIndex = 0;
-        episodeIndex = 0;
+        const lastPlayed = getLastPlayed(info.id);
+
+        seasonIndex = lastPlayed.s;
+        episodeIndex = lastPlayed.e;
     }
 
     const watch = document.createElement("div");
@@ -177,6 +180,7 @@ function modal(info) {
         iframe.src = "";
         
         setTimeout(function () {
+            setLastPlayed(info.id, seasonIndex, episodeIndex);
             iframe.src = provider.api.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
             iframe.scrollIntoView({ block: "end" });
         }, 100);
