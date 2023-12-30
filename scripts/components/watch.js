@@ -183,6 +183,7 @@ function modal(info) {
 
             if (icon)  icon.className = "icon fa-solid fa-arrow-up";
             season.classList.add("active");
+            season.scrollIntoView({ block: "start" });
         }
     }
 
