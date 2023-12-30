@@ -77,11 +77,25 @@ body.modal-active .modal-container {
     margin-top: 1rem;
 }
 
+.modal-header .header-buttons {
+    display: flex;
+    gap: var(--small-gap);
+    
+    font-size: 0.7rem;
+}
+
+.modal-header .button {
+    width: 2.6rem;
+}
+
+.modal-header .copied {
+    opacity: 75%;
+    pointer-events: none;
+}
+
 .modal-header .button.secondary {
     background-color: var(--light);
     border: var(--small-border) solid var(--lighter);
-
-    font-size: 0.7rem;
 }
 
 .modal-header .button.secondary:hover {

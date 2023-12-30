@@ -1,10 +1,13 @@
 import { config } from "../config.js";
+import { copyText } from "../functions.js";
 import { getHash, onHashChange, removeHash } from "../hash.js";
 import { setTitle } from "./header.js";
 
 let container;
 let modal;
 let headerText;
+let copyButton;
+let copyButtonIcon;
 let headerButtonIcon;
 let content;
 let callback;
@@ -68,12 +71,32 @@ function initializeModalChangeCheck() {
     onHashChange(handleHashChange);
 }
 
+function copyLink() {
+    const page = getHash("page");
+    const modal = getHash("modal");
+
+    if (page && modal) {
+        copyButton.classList.add("copied");
+        copyButtonIcon.className = "icon fa-solid fa-check";
+
+        copyText(`${window.location.origin}${window.location.pathname}#page=${page},modal=${modal}`);
+        
+        setTimeout(function () {
+            copyButtonIcon.className = "icon fa-solid fa-link";
+            copyButton.classList.remove("copied");
+        }, 2000);
+    }
+}
+
 export function initializeModal() {
     container = document.createElement("div");
     modal = document.createElement("div");
 
     const header = document.createElement("div");
     headerText = document.createElement("span");
+    const buttons = document.createElement("div");
+    copyButton = document.createElement("div");
+    copyButtonIcon = document.createElement("i");
     const headerButton = document.createElement("div");
     headerButtonIcon = document.createElement("i");
     
@@ -84,14 +107,23 @@ export function initializeModal() {
 
     header.className = "modal-header";
     headerText.className = "text";
+    buttons.className = "header-buttons";
     headerButton.className = "button secondary icon-only";
     headerButtonIcon.className = "icon fa-solid fa-times";
+    copyButton.className = "button secondary icon-only";
+    copyButtonIcon.className = "icon fa-solid fa-link"
 
     headerButton.append(headerButtonIcon);
     headerButton.addEventListener("click", hideModal);
+
+    copyButton.append(copyButtonIcon);
+    copyButton.addEventListener("click", copyLink);
+
+    buttons.append(copyButton);
+    buttons.append(headerButton);
     
     header.append(headerText);
-    header.append(headerButton);
+    header.append(buttons);
 
     content.className = "modal-content";
     
