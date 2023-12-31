@@ -90,7 +90,7 @@ function copyLink() {
         copyButton.classList.add("copied");
         copyButtonIcon.className = "icon fa-solid fa-check";
 
-        copyText(`${window.location.origin}${window.location.pathname}#page=${page},modal=${modal}`);
+        copyText(`${window.location.origin}${window.location.pathname}#modal=${modal}`);
         
         setTimeout(function () {
             copyButtonIcon.className = "icon fa-solid fa-link";
