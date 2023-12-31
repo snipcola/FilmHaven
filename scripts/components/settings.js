@@ -94,6 +94,9 @@ export function initializeSettings() {
     resetButton.addEventListener("click", function () {
         localStorage.clear();
         location.reload(true);
+
+        resetButton.classList.add("inactive");
+        resetButtonIcon.className = "icon fa-solid fa-check";
     });
 
     clearContinueButton.className = "button secondary";
