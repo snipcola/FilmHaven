@@ -131,7 +131,10 @@ function modal(info) {
     video.className = "video";
     iframe.className = "iframe";
     iframe.setAttribute("allowfullscreen", true);
-    iframe.src = info.type === "movie" ? provider.api.movieUrl(info.id) : provider.api.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
+    
+    setTimeout(function () {
+        iframe.src = info.type === "movie" ? provider.api.movieUrl(info.id) : provider.api.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
+    }, 100);
 
     video.append(iframe);
 
