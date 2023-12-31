@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <?php
-            function getModalInfo() {             
+            function getModalInfo() {
                 if (isset($_GET["modal"])) {
                     $modal = explode("-", $_GET["modal"]);
                     
