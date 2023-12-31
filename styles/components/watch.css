@@ -211,7 +211,7 @@
 
 .watch .details .genre-cards {
     display: flex;
-    gap: var(--small-gap);
+    gap: calc(var(--small-gap) / 2);
 
     flex-wrap: wrap;
 }
