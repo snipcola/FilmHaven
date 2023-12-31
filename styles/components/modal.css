@@ -84,6 +84,17 @@ body.modal-active .modal-container {
     font-size: 0.7rem;
 }
 
+.modal-header .info {
+    background-color: var(--light);
+    border: var(--small-border) solid var(--lighter);
+
+    padding: calc(var(--small-padding) / 2);
+    box-sizing: border-box;
+
+    margin-left: var(--small-padding);
+    border-radius: var(--border-radius);
+}
+
 .modal-header .button {
     width: 2.6rem;
 }

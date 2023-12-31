@@ -21,6 +21,10 @@ function checkCallback() {
     callback = null;
 }
 
+export function changeHeaderText(label) {
+    headerText.innerHTML = label;
+}
+
 export function setModal(label = "", newContent, icon = "times", fill = false) {
     container.className = fill ? "modal-container fill" : "modal-container";
     headerText.innerText = label;

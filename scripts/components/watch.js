@@ -1,5 +1,5 @@
 import { getHash, onHashChange, setHash, removeHash } from "../hash.js";
-import { setModal, showModal } from "./modal.js";
+import { setModal, showModal, changeHeaderText } from "./modal.js";
 import { getDetails } from "../tmdb/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray } from "../functions.js";
 import { config, provider } from "../config.js";
@@ -131,7 +131,9 @@ function modal(info) {
     video.className = "video";
     iframe.className = "iframe";
     iframe.setAttribute("allowfullscreen", true);
-    iframe.src = info.type === "movie" ? provider.api.movieUrl(info.id) : provider.api.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
+    iframe.src = info.type === "movie"
+        ? provider.api.movieUrl(info.id)
+        : provider.api.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
 
     video.append(iframe);
 
@@ -200,11 +202,23 @@ function modal(info) {
         episode.classList.add("active");
     }
 
+    function checkCurrentlyPlaying() {
+        if (info.type === "movie") {
+            changeHeaderText(info.title);
+            document.title = info.title;
+        } else {
+            changeHeaderText(`${info.title} <span class="info">S${seasonIndex + 1} E${episodeIndex + 1}</span>`);
+            document.title = `${info.title} (S${seasonIndex + 1} E${episodeIndex + 1})`;
+        }
+    }
+
     function playSeries() {
         iframe.src = "";
         
         setTimeout(function () {
             setLastPlayed(info.id, seasonIndex, episodeIndex);
+            checkCurrentlyPlaying();
+
             iframe.src = provider.api.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
             iframe.scrollIntoView({ block: "end" });
         }, 100);
@@ -682,6 +696,7 @@ function modal(info) {
     watch.append(details);
 
     setModal(info.title, watch, "arrow-left", true);
+    checkCurrentlyPlaying();
     showModal(cleanup);
 }
 
@@ -700,7 +715,6 @@ function initializeWatchModalCheck() {
                     if (info.seasons) preloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
 
                     modal(info);
-                    document.title = info.title;
                 } else {
                     removeHash("modal");
                 }
