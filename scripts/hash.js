@@ -1,4 +1,10 @@
+import { setQuery, removeQuery, getQuery, onQueryChange } from "./query.js";
+
 export function setHash(key, value) {
+    if (window.FH_USE_QUERY) {
+        return setQuery(key, value);
+    }
+
     if (key === null || key === undefined) {
         return;
     }
@@ -24,10 +30,18 @@ export function setHash(key, value) {
 }
 
 export function removeHash(key) {
+    if (window.FH_USE_QUERY) {
+        return removeQuery(key);
+    }
+
     setHash(key, null);
 }
 
 export function getHash(key) {
+    if (window.FH_USE_QUERY) {
+        return getQuery(key);
+    }
+
     if (key === null || key === undefined) {
         return null;
     }
@@ -40,5 +54,9 @@ export function getHash(key) {
 }
 
 export function onHashChange(callback) {
+    if (window.FH_USE_QUERY) {
+        return onQueryChange(callback);
+    }
+
     window.addEventListener("hashchange", callback);
 }

@@ -1,3 +1,9 @@
+## Note
+```
+Use index.php instead of index.html only if you want better embed
+support for movies and shows.
+```
+
 ## Disclaimer
 ```
 This repository does not contain any content nor does FilmHaven host
