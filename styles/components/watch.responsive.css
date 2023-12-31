@@ -22,8 +22,13 @@
         width: calc(100% - var(--small-padding));
     }
 
+    .watch .details .season-card {
+        padding: var(--small-padding);
+    }
+
     .watch .details .season-card .episodes .episode {
         flex-direction: column-reverse;
+        padding: var(--small-padding);
     }
 
     .watch .details .season-card .episodes .episode .description {
