@@ -30,9 +30,12 @@
                 $type = $modal[1];
                 $id = $modal[2];
 
-                $response = @file_get_contents("{$tmdbURL}/{$type}/{$id}?api_key={$tmdbKey}&language={$tmdbLanguage}");
+                $ch = curl_init("{$tmdbURL}/{$type}/{$id}?api_key={$tmdbKey}&language={$tmdbLanguage}");
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
 
-                if (isset($response) && $response !== FALSE) {
+                if ($response !== false) {
                     $data = json_decode($response, true);
 
                     if (isset($data) && (isset($data["title"]) || isset($data["name"])) && (isset($data["overview"]) || isset($data["description"]))) {
