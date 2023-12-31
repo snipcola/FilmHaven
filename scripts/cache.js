@@ -27,7 +27,7 @@ export async function preloadImages(images, onAmount) {
                 resolve();
             }
             
-            if (imageExists(url)) {
+            if (imageExists(url) || url === undefined || url === null) {
                 incrementCount();
             } else {
                 const image = new Image();

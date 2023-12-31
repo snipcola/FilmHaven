@@ -273,7 +273,10 @@ function modal(info) {
                 episodeNumber.innerText = episodeInfo.numberPadded;
                 episodePreviewContainer.className = "preview";
                 episodePreviewImage.className = "image";
-                episodePreviewImage.src = episodeInfo.image;
+                
+                if (episodeInfo.image) {
+                    episodePreviewImage.src = episodeInfo.image;
+                }
                 
                 episodePreviewContainer.append(episodePreviewImage);
 
