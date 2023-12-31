@@ -83,14 +83,13 @@ function initializeModalChangeCheck() {
 }
 
 function copyLink() {
-    const page = getHash("page");
     const modal = getHash("modal");
 
-    if (page && modal) {
+    if (modal) {
         copyButton.classList.add("copied");
         copyButtonIcon.className = "icon fa-solid fa-check";
 
-        copyText(`${window.location.origin}${window.location.pathname}#modal=${modal}`);
+        copyText(`${window.location.origin}${window.location.pathname}${window.FH_USE_QUERY ? "?" : "#"}modal=${modal}`);
         
         setTimeout(function () {
             copyButtonIcon.className = "icon fa-solid fa-link";
