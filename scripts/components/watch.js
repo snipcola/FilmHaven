@@ -60,13 +60,13 @@ function modal(info) {
         episodeIndex = lastPlayed.e;
     }
 
-    const watch = document.createElement("div");
-    const video = document.createElement("div");
-    const iframe = document.createElement("iframe");
-
     const notice = document.createElement("div");
     const noticeIcon = document.createElement("i");
     const noticeText = document.createElement("span");
+
+    const watch = document.createElement("div");
+    const video = document.createElement("div");
+    const iframe = document.createElement("iframe");
 
     const details = document.createElement("div");
     const left = document.createElement("div");
@@ -128,15 +128,6 @@ function modal(info) {
 
     watch.className = "watch";
 
-    video.className = "video";
-    iframe.className = "iframe";
-    iframe.setAttribute("allowfullscreen", true);
-    iframe.src = info.type === "movie"
-        ? provider.api.movieUrl(info.id)
-        : provider.api.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
-
-    video.append(iframe);
-
     notice.className = "notice active";
     noticeIcon.className = "icon fa-solid fa-eye-slash";
     noticeText.className = "text";
@@ -144,6 +135,43 @@ function modal(info) {
 
     notice.append(noticeIcon);
     notice.append(noticeText);
+
+    const videoNoticeContainer = document.createElement("div");
+    const videoNotice = notice.cloneNode();
+    const videoNoticeIcon = noticeIcon.cloneNode();
+    const videoNoticeText = noticeText.cloneNode();
+
+    videoNoticeContainer.className = "video-notice";
+    videoNoticeIcon.className = "icon fa-solid fa-sync";
+    videoNoticeText.innerText = "Content loading";
+
+    videoNotice.append(videoNoticeIcon);
+    videoNotice.append(videoNoticeText);
+    videoNoticeContainer.append(videoNotice);
+
+    video.className = "video";
+    iframe.className = "iframe";
+    iframe.setAttribute("allowfullscreen", true);
+
+    video.append(iframe);
+
+    function playVideo() {
+        videoNoticeIcon.className = "icon fa-solid fa-sync";
+        videoNoticeText.innerText = "Content loading";
+
+        iframe.src = info.type === "movie"
+            ? provider.api.movieUrl(info.id)
+            : provider.api.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
+
+        video.append(videoNoticeContainer);
+
+        iframe.addEventListener("load", function () {
+            videoNoticeContainer.remove();
+            iframe.classList.add("active");
+        });
+    }
+
+    playVideo();
 
     details.className = "details";
     left.className = "left container";
@@ -219,7 +247,7 @@ function modal(info) {
             setLastPlayed(info.id, seasonIndex, episodeIndex);
             checkCurrentlyPlaying();
 
-            iframe.src = provider.api.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
+            playVideo();
             iframe.scrollIntoView({ block: "end" });
         }, 100);
     }
