@@ -92,7 +92,6 @@ function initializeLinks() {
     links.forEach(function (link, index) {
         link.addEventListener("click", function () {
             if (!link.classList.contains("active")) {
-                document.documentElement.scrollTo({ top: 0 });
                 setHash("page", index + 1);
             }
         });
