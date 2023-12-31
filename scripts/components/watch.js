@@ -16,6 +16,11 @@ function modal(info) {
 
     if (isInContinueWatching(info.id, info.type)) {
         const headerButtons = document.querySelector(".modal-header .header-buttons");
+        const customButtons = headerButtons.querySelector(".custom");
+
+        for (const button of Array.from(customButtons)) {
+            button.remove();
+        }
 
         if (headerButtons) {
             const button = document.createElement("div");
