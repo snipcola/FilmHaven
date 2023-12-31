@@ -84,6 +84,14 @@ body.modal-active .modal-container {
     font-size: 0.7rem;
 }
 
+.modal-header .text {
+    display: flex;
+    align-items: center;
+
+    gap: var(--small-padding);
+    flex-wrap: wrap;
+}
+
 .modal-header .info {
     background-color: var(--light);
     border: var(--small-border) solid var(--lighter);
@@ -91,7 +99,6 @@ body.modal-active .modal-container {
     padding: calc(var(--small-padding) / 2);
     box-sizing: border-box;
 
-    margin-left: var(--small-padding);
     border-radius: var(--border-radius);
 }
 
