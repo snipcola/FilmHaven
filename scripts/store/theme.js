@@ -1,5 +1,5 @@
 import { store } from "../config.js";
-import { checkTheme } from "../components/theme.js";
+import { initializeTheme } from "../components/theme.js";
 
 function get() {
     const theme = localStorage.getItem(store.names.theme);
@@ -23,5 +23,5 @@ export function getTheme() {
 
 export function setTheme(theme) {
     set(theme);
-    checkTheme();
+    initializeTheme();
 }
