@@ -31,7 +31,7 @@ export async function getRated(type = "movie", genre) {
     
     const response = await sendRequest(`discover/${type}`, {
         sort_by: "vote_count.desc",
-        with_genres: genre,
+        ...(genre && { with_genres: genre }),
         "vote_average.gte": "7",
         "primary_release_date.gte": formattedDate,
         "primary_release_date.lte": formattedDateNow,

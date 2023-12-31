@@ -24,11 +24,12 @@ export async function sendRequest(path, parameters = {}, method = "GET") {
         url.searchParams.append(key, value);
     });
 
-    const response = await fetch(url, { method, headers : { accept: "application/json" } });
+    let response;
 
-    if (response.status !== 200) {
-        return;
-    }
+    try { response = await fetch(url, { method, headers : { accept: "application/json" } }) }
+    catch { return };
+
+    if (response.status !== 200) return;
 
     let json;
 

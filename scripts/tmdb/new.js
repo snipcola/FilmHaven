@@ -29,7 +29,7 @@ export async function getNew(type = "movie", genre) {
     
     const response = await sendRequest(`discover/${type}`, {
         sort_by: "popularity.desc",
-        with_genres: genre,
+        ...(genre && { with_genres: genre }),
         "primary_release_date.gte": formattedDate,
         "primary_release_date.lte": formattedDateNow,
         "first_air_date.gte": formattedDate,
