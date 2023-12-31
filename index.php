@@ -5,7 +5,7 @@
             function getModalInfo() {
                 if (isset($_GET["modal"])) {
                     $modal = explode("-", $_GET["modal"]);
-                    
+
                     if (isset($modal[0]) && $modal[0] !== "" && isset($modal[1]) && $modal[1] !== "" && isset($modal[2]) && $modal[2] !== "") {
                         return $modal;
                     }
