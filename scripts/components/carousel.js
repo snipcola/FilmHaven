@@ -101,7 +101,7 @@ function initializeCarousel(carousel, slides) {
     }
 
     function iterate() {
-        if (!isHovered(carousel)) {
+        if (!isHovered(carousel) && !document.body.classList.contains("modal-active")) {
             setNext();
         }
     }
