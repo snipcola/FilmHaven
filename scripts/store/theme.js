@@ -22,6 +22,18 @@ export function getTheme() {
     }
 }
 
+export function getThemeAbsolute() {
+    const theme = getTheme();
+
+    if (theme === "auto") {
+        return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            ? "dark"
+            : "light";
+    } else {
+        return theme;
+    }
+}
+
 export function setTheme(theme) {
     set(theme);
     initializeTheme();

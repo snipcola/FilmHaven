@@ -15,6 +15,15 @@
 		$preferred_server = 0;
 		$player_sources_toggle_type = 2;
 
+		if (isset($_GET["t"])) {
+			$theme = $_GET["t"];
+
+			if ($theme === "light") {
+				$player_bg_color = "d8d3d3";
+				$player_font_color = "adadad";
+			}
+		}
+
 		if(isset($_GET["v"])) {
 			$id = $_GET["v"];
 			$season = 0;

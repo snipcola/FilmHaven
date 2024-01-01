@@ -7,6 +7,7 @@ import { getProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
 import { addContinueWatching, isInContinueWatching, removeFromContinueWatching } from "../store/continue.js";
+import { getThemeAbsolute } from "../store/theme.js";
 import { initializeArea } from "./area.js";
 
 export function watchContent(type, id) {
@@ -176,9 +177,17 @@ function modal(info, recommendationImages) {
         const provider = providers[providerName];
         video.className = `video ${providerName}`;
 
-        iframe.src = info.type === "movie"
-            ? provider.movieUrl(info.id)
-            : provider.showUrl(info.id, seasonIndex, episodeIndex);
+        if (provider.supportsThemes) {
+            const theme = getThemeAbsolute();
+
+            iframe.src = info.type === "movie"
+                ? provider.movieUrl(info.id, theme)
+                : provider.showUrl(info.id, seasonIndex, episodeIndex, theme);
+        } else {
+            iframe.src = info.type === "movie"
+                ? provider.movieUrl(info.id)
+                : provider.showUrl(info.id, seasonIndex, episodeIndex);
+        }
 
         video.append(videoNoticeContainer);
 
