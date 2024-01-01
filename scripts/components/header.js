@@ -1,6 +1,6 @@
 import { config } from "../config.js";
 import { getInnerText, onWindowResize } from "../functions.js";
-import { getHash, setHash, onHashChange } from "../hash.js";
+import { getQuery, setQuery, onQueryChange } from "../query.js";
 
 let activeIndex;
 let links = [];
@@ -70,8 +70,8 @@ function initializeResizeCheck() {
 }
 
 function initializePageChangeCheck() {
-    function handleHashChange() {
-        const activePage = getHash(config.hash.page);
+    function handleQueryChange() {
+        const activePage = getQuery(config.query.page);
 
         const index = links[activePage - 1] ? activePage - 1 : activeIndex || 0;
         const link = links[index];
@@ -81,18 +81,18 @@ function initializePageChangeCheck() {
             setLinkActive(link);
         }
 
-        setHash(config.hash.page, activeIndex + 1);
+        setQuery(config.query.page, activeIndex + 1);
     }
 
-    handleHashChange();
-    onHashChange(handleHashChange);
+    handleQueryChange();
+    onQueryChange(handleQueryChange);
 }
 
 function initializeLinks() {
     links.forEach(function (link, index) {
         link.addEventListener("click", function () {
             if (!link.classList.contains("active")) {
-                setHash(config.hash.page, index + 1);
+                setQuery(config.query.page, index + 1);
             }
         });
     });

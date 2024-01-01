@@ -45,6 +45,4 @@ function checkChange() {
     }
 }
 
-if (window.FH_USE_QUERY) {
-    setInterval(checkChange, 100);
-}
+setInterval(checkChange, 50);

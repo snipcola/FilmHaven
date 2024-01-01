@@ -1,4 +1,5 @@
 import { getTheme, setTheme } from "../store/theme.js";
+import { getProvider, setProvider } from "../store/provider.js";
 import { resetContinueWatching } from "../store/continue.js";
 import { resetLastPlayed } from "../store/last-played.js";
 
@@ -18,6 +19,14 @@ export function initializeSettings() {
     const dark = document.createElement("div");
     const light = document.createElement("div");
 
+    const providerLabel = document.createElement("div");
+    const providerLabelIcon = document.createElement("i");
+    const providerLabelText = document.createElement("span");
+
+    const provider = document.createElement("div");
+    const superembed = document.createElement("div");
+    const vidsrc = document.createElement("div");
+
     const dataLabel = document.createElement("div");
     const dataLabelIcon = document.createElement("i");
     const dataLabelText = document.createElement("span");
@@ -34,13 +43,6 @@ export function initializeSettings() {
     const clearLastWatchedIcon = document.createElement("i");
     const clearLastWatchedText = document.createElement("span");
 
-    function themeCheck() {
-        const activeTheme = getTheme();
-        auto.className = activeTheme === "auto" ? "active" : null;
-        dark.className = activeTheme === "dark" ? "active" : null;
-        light.className = activeTheme === "light" ? "active" : null;
-    }
-
     label.className = "label";
     labelIcon.className = "icon fa-solid fa-palette";
     labelText.className = "text";
@@ -49,10 +51,17 @@ export function initializeSettings() {
     label.append(labelIcon);
     label.append(labelText);
 
-    theme.className = "theme";
+    theme.className = "selection";
     auto.innerText = "Auto";
     dark.innerText = "Dark";
     light.innerText = "Light";
+
+    function themeCheck() {
+        const activeTheme = getTheme();
+        auto.className = activeTheme === "auto" ? "active" : null;
+        dark.className = activeTheme === "dark" ? "active" : null;
+        light.className = activeTheme === "light" ? "active" : null;
+    }
 
     themeCheck();
     
@@ -74,6 +83,39 @@ export function initializeSettings() {
     theme.append(auto);
     theme.append(dark);
     theme.append(light);
+
+    providerLabel.className = "label";
+    providerLabelIcon.className = "icon fa-solid fa-tv";
+    providerLabelText.className = "text";
+    providerLabelText.innerText = "Providers";
+
+    providerLabel.append(providerLabelIcon);
+    providerLabel.append(providerLabelText);
+
+    provider.className = "selection";
+    superembed.innerText = "SuperEmbed";
+    vidsrc.innerText = "VidSrc";
+
+    function providerCheck() {
+        const activeProvider = getProvider();
+        superembed.className = activeProvider === "superembed" ? "active" : null;
+        vidsrc.className = activeProvider === "vidsrc" ? "active" : null;
+    }
+
+    providerCheck();
+
+    superembed.addEventListener("click", function () {
+        setProvider("superembed");
+        providerCheck();
+    });
+
+    vidsrc.addEventListener("click", function () {
+        setProvider("vidsrc");
+        providerCheck();
+    });
+
+    provider.append(superembed);
+    provider.append(vidsrc);
 
     dataLabel.className = "label";
     dataLabelIcon.className = "icon fa-solid fa-box";
@@ -141,6 +183,8 @@ export function initializeSettings() {
 
     section.append(label);
     section.append(theme);
+    section.append(providerLabel);
+    section.append(provider);
     section.append(dataLabel);
     section.append(resetButton);
     section.append(clearContinueButton);

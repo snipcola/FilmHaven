@@ -1,15 +1,16 @@
-import { getHash, onHashChange, setHash, removeHash } from "../hash.js";
+import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
 import { getDetails } from "../tmdb/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray } from "../functions.js";
-import { config, provider } from "../config.js";
+import { config, providers } from "../config.js";
+import { getProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
 import { addContinueWatching, isInContinueWatching, removeFromContinueWatching } from "../store/continue.js";
 import { initializeArea } from "./area.js";
 
 export function watchContent(type, id) {
-    setHash(config.hash.modal, `${type}-${id}`);
+    setQuery(config.query.modal, `${type === "movie" ? "m" : "s"}-${id}`);
 }
 
 function modal(info, recommendationImages) {
@@ -171,9 +172,13 @@ function modal(info, recommendationImages) {
         videoNoticeIcon.className = "icon fa-solid fa-sync";
         videoNoticeText.innerText = "Content loading";
 
+        const providerName = getProvider();
+        const provider = providers[providerName];
+        video.className = `video ${providerName}`;
+
         iframe.src = info.type === "movie"
-            ? provider.api.movieUrl(info.id)
-            : provider.api.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
+            ? provider.movieUrl(info.id)
+            : provider.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
 
         video.append(videoNoticeContainer);
 
@@ -768,16 +773,16 @@ function modal(info, recommendationImages) {
 }
 
 function initializeWatchModalCheck() {
-    async function handleHashChange() {
-        const modalHash = getHash(config.hash.modal);
+    async function handleQueryChange() {
+        const modalQuery = getQuery(config.query.modal);
 
-        if (modalHash) {
-            const [type, id] = modalHash.split("-");
+        if (modalQuery) {
+            const [type, id] = modalQuery.split("-");
 
-            if (type !== "genre" && config.modal.validTypes.includes(type)) {
+            if (type !== "g" && config.modal.validTypes.includes(type)) {
                 hideModal(true);
                 
-                const info = await getDetails(type, id);
+                const info = await getDetails(type === "m" ? "movie" : "tv", id);
 
                 if (info && info.title) {
                     let recommendationImages = [];
@@ -792,14 +797,14 @@ function initializeWatchModalCheck() {
 
                     modal(info, recommendationImages);
                 } else {
-                    removeHash(config.hash.modal);
+                    removeQuery(config.query.modal);
                 }
             }
         }
     }
 
-    handleHashChange();
-    onHashChange(handleHashChange);
+    handleQueryChange();
+    onQueryChange(handleQueryChange);
 }
 
 export function initializeWatch() {

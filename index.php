@@ -6,7 +6,7 @@
                 if (isset($_GET["m"])) {
                     $modal = explode("-", $_GET["m"]);
 
-                    if (isset($modal[0]) && ($modal[0] === "movie" || $modal[0] === "tv") && isset($modal[1]) && $modal[1] !== "") {
+                    if (isset($modal[0]) && ($modal[0] === "m" || $modal[0] === "s") && isset($modal[1]) && $modal[1] !== "") {
                         return $modal;
                     }
                 }
@@ -27,7 +27,7 @@
             $tmdbURL = "{$tmdbBaseURL}/${tmdbVersion}";
 
             if (isset($modal)) {
-                $type = $modal[0];
+                $type = $modal[0] === "m" ? "movie" : "tv";
                 $id = $modal[1];
 
                 $ch = curl_init("{$tmdbURL}/{$type}/{$id}?api_key={$tmdbKey}&language={$tmdbLanguage}");
@@ -70,7 +70,6 @@
         <link rel="stylesheet" href="./external/normalize.min.css">
         <link rel="stylesheet" href="./external/fontawesome/style.min.css">
         <link rel="stylesheet" href="./styles/main.css">
-        <script>window.FH_USE_QUERY = true;</script>
         <script src="./scripts/main.js" type="module"></script>
     </head>
 </html>

@@ -1,6 +1,6 @@
 import { config } from "../config.js";
 import { copyText } from "../functions.js";
-import { getHash, onHashChange, removeHash } from "../hash.js";
+import { getQuery, onQueryChange, removeQuery } from "../query.js";
 import { setTitle } from "./header.js";
 
 let container;
@@ -49,7 +49,7 @@ export function showModal(cb) {
 }
 
 export function hideModal(ignore) {
-    if (!ignore) removeHash(config.hash.modal);
+    if (!ignore) removeQuery(config.query.modal);
     if (!ignore) document.body.classList.remove("modal-active");
 
     if (!ignore) setModal();
@@ -64,13 +64,13 @@ export function hideModal(ignore) {
 }
 
 function initializeModalChangeCheck() {
-    function handleHashChange() {
-        const modalHash = getHash(config.hash.modal);
+    function handleQueryChange() {
+        const modalQuery = getQuery(config.query.modal);
         
-        if (!modalHash) {
+        if (!modalQuery) {
             hideModal();
         } else {
-            const [modalType] = modalHash.split("-");
+            const [modalType] = modalQuery.split("-");
 
             if (!config.modal.validTypes.includes(modalType)) {
                 hideModal();
@@ -78,19 +78,19 @@ function initializeModalChangeCheck() {
         }
     }
 
-    handleHashChange();
-    onHashChange(handleHashChange);
+    handleQueryChange();
+    onQueryChange(handleQueryChange);
 }
 
 function copyLink() {
-    const page = getHash(config.hash.page);
-    const modal = getHash(config.hash.modal);
+    const page = getQuery(config.query.page);
+    const modal = getQuery(config.query.modal);
 
     if (page && modal) {
         copyButton.classList.add("copied");
         copyButtonIcon.className = "icon fa-solid fa-check";
 
-        copyText(`${window.location.origin}${window.location.pathname}${window.FH_USE_QUERY ? "?" : "#"}${config.hash.page}=${page}${window.FH_USE_QUERY ? "&" : ","}${config.hash.modal}=${modal}`);
+        copyText(`${window.location.origin}${window.location.pathname}?${config.query.page}=${page}&${config.query.modal}=${modal}`);
         
         setTimeout(function () {
             copyButtonIcon.className = "icon fa-solid fa-link";

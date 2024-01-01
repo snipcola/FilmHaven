@@ -14,6 +14,11 @@
     position: relative;
 }
 
+.watch .video.superembed {
+    background-color: var(--light);
+    border: var(--small-border) solid var(--lighter);
+}
+
 .watch .video .iframe {
     display: none;
     position: absolute;
@@ -42,6 +47,10 @@
 
 .watch .video .video-notice .notice {
     margin: 0;
+}
+
+.watch .video.superembed .video-notice .notice {
+    background-color: var(--dark);
 }
 
 .watch .details {

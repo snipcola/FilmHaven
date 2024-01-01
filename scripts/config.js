@@ -40,7 +40,7 @@ export const config = {
         ]
     },
     modal: {
-        validTypes: ["genre", "movie", "tv"]
+        validTypes: ["g", "m", "s"]
     },
     search: {
         debounce: 500
@@ -87,7 +87,7 @@ export const config = {
             mobile: 2
         }
     },
-    hash: {
+    query: {
         page: "p",
         modal: "m"
     },
@@ -117,8 +117,17 @@ export const tmdb = {
     adult: false
 };
 
-export const provider = {
-    api: {
+export const providers = {
+    default: "superembed",
+    superembed: {
+        movieUrl: function (id) {
+            return `./providers/superembed.php?video_id=${id}&tmdb=1`;
+        },
+        showUrl: function (id, season, episode) {
+            return `./providers/superembed.php?video_id=${id}&tmdb=1&s=${season}&e=${episode}`;
+        }
+    },
+    vidsrc: {
         movieUrl: function (id) {
             return `https://vidsrc.to/embed/movie/${id}`;
         },
@@ -130,10 +139,11 @@ export const provider = {
 
 export const store = {
     names: {
-        theme: "fh-theme",
         cache: function (key) {
             return `fhc-${key}`;
         },
+        theme: "fh-theme",
+        provider: "fh-provider",
         lastPlayed: "fh-last-played",
         continue: function (type) {
             return `fh-continue-${type}`;

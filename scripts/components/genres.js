@@ -7,7 +7,7 @@ import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
-import { getHash, onHashChange, setHash, removeHash } from "../hash.js";
+import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 
 async function modal(info, type) {
     const desktop = window.innerWidth > config.area.split.max;
@@ -153,7 +153,7 @@ function initializeGenreArea(area, initialSlides, type, failed) {
         genreIcon.className = "icon fa-solid fa-arrow-right";
 
         genre.addEventListener("click", function () {
-            setHash(config.hash.modal, `genre-${type}-${info.id}`);
+            setQuery(config.query.modal, `genre-${type}-${info.id}`);
         });
 
         genre.append(genreText);
@@ -236,13 +236,13 @@ let movieGenres;
 let showGenres;
 
 function initializeGenreModalCheck() {
-    function handleHashChange() {
-        const modalHash = getHash(config.hash.modal);
+    function handleQueryChange() {
+        const modalQuery = getQuery(config.query.modal);
         
-        if (modalHash) {
-            const [modalType, type, id] = modalHash.split("-");
+        if (modalQuery) {
+            const [modalType, type, id] = modalQuery.split("-");
 
-            if (modalType === "genre") {
+            if (modalType === "g") {
                 hideModal(true);
                 
                 const info = type === "movie"
@@ -253,14 +253,14 @@ function initializeGenreModalCheck() {
                     modal(info, type);
                     document.title = `${type === "movie" ? "Movies" : "Shows"} - ${info.name}`;
                 } else {
-                    removeHash(config.hash.modal);
+                    removeQuery(config.query.modal);
                 }
             }
         }
     }
 
-    handleHashChange();
-    onHashChange(handleHashChange);
+    handleQueryChange();
+    onQueryChange(handleQueryChange);
 }
 
 export async function initializeGenres() {
