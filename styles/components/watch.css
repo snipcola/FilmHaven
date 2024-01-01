@@ -437,4 +437,9 @@
 
 .watch .details .area.minimal .cards .card {
     width: calc(50% - var(--small-padding));
+    background-color: var(--dark);
+}
+
+.watch .details .area.minimal .cards .card .title {
+    background-color: var(--light);
 }
