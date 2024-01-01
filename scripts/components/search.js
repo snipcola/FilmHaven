@@ -99,9 +99,12 @@ function initializeSearch(area, type, placeholder) {
         title.className = "title";
 
         card.addEventListener("click", function () {
-            const image = images.indexOf(info.image);
-            if (image !== -1) images.splice(image, 1);
+            input.value = "";
+            clear.classList.remove("active");
 
+            reset();
+            cleanup();
+            
             watchContent(info.type, info.id);
         });
 
