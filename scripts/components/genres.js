@@ -1,7 +1,7 @@
 import { config } from "../config.js";
 import { splitArray, onWindowResize, removeWindowResize, elementExists } from "../functions.js";
 import { getGenres } from "../tmdb/genres.js";
-import { setModal, showModal } from "./modal.js";
+import { hideModal, setModal, showModal } from "./modal.js";
 import { initializeArea } from "./area.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
@@ -243,6 +243,8 @@ function initializeGenreModalCheck() {
             const [modalType, type, id] = modalHash.split("-");
 
             if (modalType === "genre") {
+                hideModal(true);
+                
                 const info = type === "movie"
                     ? (movieGenres || []).find((g) => g.id?.toString() === id)
                     : (showGenres || []).find((g) => g.id?.toString() === id);

@@ -48,8 +48,8 @@ export function showModal(cb) {
     document.body.classList.add("modal-active");
 }
 
-export function hideModal() {
-    removeHash(config.hash.modal);
+export function hideModal(ignoreHash) {
+    if (!ignoreHash) removeHash(config.hash.modal);
     document.body.classList.remove("modal-active");
 
     setModal();
@@ -124,7 +124,9 @@ export function initializeModal() {
     copyButtonIcon.className = "icon fa-solid fa-link"
 
     headerButton.append(headerButtonIcon);
-    headerButton.addEventListener("click", hideModal);
+    headerButton.addEventListener("click", function () {
+        hideModal();
+    });
 
     copyButton.append(copyButtonIcon);
     copyButton.addEventListener("click", copyLink);

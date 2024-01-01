@@ -1,5 +1,5 @@
 import { getHash, onHashChange, setHash, removeHash } from "../hash.js";
-import { setModal, showModal, changeHeaderText } from "./modal.js";
+import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
 import { getDetails } from "../tmdb/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray } from "../functions.js";
 import { config, provider } from "../config.js";
@@ -775,6 +775,8 @@ function initializeWatchModalCheck() {
             const [type, id] = modalHash.split("-");
 
             if (type !== "genre" && config.modal.validTypes.includes(type)) {
+                hideModal(true);
+                
                 const info = await getDetails(type, id);
 
                 if (info && info.title) {
