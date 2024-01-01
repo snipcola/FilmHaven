@@ -719,7 +719,7 @@ function modal(info, recommendationImages) {
     function cleanup() {
         if (info.cast) unloadImages(info.cast.map((p) => p.image));
         if (info.seasons) unloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
-        if (recommendationImages) unloadImages(recommendationImages);
+        if (recommendationImages) unloadImages(recommendationImages, true);
     }
 
     onWindowResize(checkResize);
@@ -787,7 +787,7 @@ function initializeWatchModalCheck() {
 
                     if (info.recommendations) {
                         recommendationImages = getNonCachedImages(info.recommendations.map((r) => r.image));
-                        preloadImages(recommendationImages);
+                        preloadImages(recommendationImages, null, true);
                     }
 
                     modal(info, recommendationImages);

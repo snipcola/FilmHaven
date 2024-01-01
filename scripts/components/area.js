@@ -282,7 +282,7 @@ export function initializeAreas() {
             if (!continueShows || continueShows.length === 0) {
                 showsContinueArea.classList.add("inactive");
             } else {
-                await preloadImages(continueShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);    
+                await preloadImages(continueShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
                 initializeArea(showsContinueArea, continueShows, label);
                 showsContinueArea.classList.remove("inactive");
             }
@@ -293,7 +293,6 @@ export function initializeAreas() {
             const newContinueShows = getContinueWatching("tv");
 
             if (continueMovies.length === 0 && newContinueMovies.length > 0 || JSON.stringify(newContinueMovies) !== JSON.stringify(continueMovies)) {
-                console.log("called");
                 continueMovies = newContinueMovies;
                 initializeMovies();
             }
@@ -321,7 +320,7 @@ export function initializeAreas() {
                 trendingMovies.splice(0, config.carousel.amount);    
                 trendingMovies.splice(config.area.amount, trendingMovies.length);
     
-                await preloadImages(trendingMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                await preloadImages(trendingMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
                 initializeArea(moviesTrendingArea, trendingMovies, label);
             }
         }
@@ -336,7 +335,7 @@ export function initializeAreas() {
                 trendingShows.splice(0, config.carousel.amount);
                 trendingShows.splice(config.area.amount, trendingShows.length);
     
-                await preloadImages(trendingShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                await preloadImages(trendingShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
                 initializeArea(showsTrendingArea, trendingShows, label);
             }
         }
@@ -356,7 +355,7 @@ export function initializeAreas() {
                 initializeArea(moviesRatedArea, null, label, true);
             } else {
                 ratedMovies.splice(config.area.amount, ratedMovies.length);
-                await preloadImages(ratedMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                await preloadImages(ratedMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
                 initializeArea(moviesRatedArea, ratedMovies, label);
             }
         }
@@ -369,7 +368,7 @@ export function initializeAreas() {
                 initializeArea(showsRatedArea, null, label, true);
             } else {
                 ratedShows.splice(config.area.amount, ratedShows.length);
-                await preloadImages(ratedShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                await preloadImages(ratedShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
                 initializeArea(showsRatedArea, ratedShows, label);
             }
         }
@@ -389,7 +388,7 @@ export function initializeAreas() {
                 initializeArea(moviesNewArea, null, label, true);
             } else {
                 newMovies.splice(config.area.amount, newMovies.length);
-                await preloadImages(newMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                await preloadImages(newMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
                 initializeArea(moviesNewArea, newMovies, label);
             }
         }
@@ -402,7 +401,7 @@ export function initializeAreas() {
                 initializeArea(showsNewArea, null, label, true);
             } else {
                 newShows.splice(config.area.amount, newShows.length);
-                await preloadImages(newShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
+                await preloadImages(newShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
                 initializeArea(showsNewArea, newShows, label);
             }
         }

@@ -23,7 +23,7 @@ async function modal(info, type) {
     const images = [];
 
     function cleanup() {
-        unloadImages(images);
+        unloadImages(images, true);
     }
 
     setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true);
@@ -42,7 +42,7 @@ async function modal(info, type) {
             const popularContentImages = getNonCachedImages(popularContent.map((i) => i.image));
             images.push(...popularContentImages);
 
-            await preloadImages(popularContentImages, config.area.split[desktop ? "desktop" : "mobile"]);
+            await preloadImages(popularContentImages, config.area.split[desktop ? "desktop" : "mobile"], true);
             initializeArea(popularArea, popularContent, label);
         }
     }
@@ -60,7 +60,7 @@ async function modal(info, type) {
             const ratedContentImages = getNonCachedImages(ratedContent.map((i) => i.image));
             images.push(...ratedContentImages);
 
-            await preloadImages(ratedContentImages, config.area.split[desktop ? "desktop" : "mobile"]);
+            await preloadImages(ratedContentImages, config.area.split[desktop ? "desktop" : "mobile"], true);
             initializeArea(ratedArea, ratedContent, label);
         }
     }
@@ -78,7 +78,7 @@ async function modal(info, type) {
             const newContentImages = getNonCachedImages(newContent.map((i) => i.image));
             images.push(...newContentImages);
 
-            await preloadImages(newContentImages, config.area.split[desktop ? "desktop" : "mobile"]);
+            await preloadImages(newContentImages, config.area.split[desktop ? "desktop" : "mobile"], true);
             initializeArea(newArea, newContent, label);
         }
     }

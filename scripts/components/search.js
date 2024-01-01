@@ -99,6 +99,9 @@ function initializeSearch(area, type, placeholder) {
         title.className = "title";
 
         card.addEventListener("click", function () {
+            const image = images.indexOf(info.image);
+            if (image !== -1) images.splice(image, 1);
+
             watchContent(info.type, info.id);
         });
 
@@ -245,7 +248,7 @@ function initializeSearch(area, type, placeholder) {
     }
 
     function cleanup() {
-        unloadImages(images);
+        unloadImages(images, true);
         images = [];
     }
 
@@ -274,7 +277,7 @@ function initializeSearch(area, type, placeholder) {
                 const searchImages = getNonCachedImages(searchResults.map((i) => i.image));
                 images.push(...searchImages);
 
-                await preloadImages(searchImages, config.area.split[desktop ? "desktop" : "mobile"]);
+                await preloadImages(searchImages, config.area.split[desktop ? "desktop" : "mobile"], true);
                 populate(searchResults);
             }
         }

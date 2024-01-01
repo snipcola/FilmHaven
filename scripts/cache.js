@@ -1,6 +1,7 @@
 import { config, store } from "./config.js";
 
 let cache;
+let cachedImages = [];
 
 function imageExists(url) {
     return Array.from(cache.children).some((i) => i.src == url);
@@ -11,7 +12,12 @@ export function initializeCache() {
     document.body.append(cache);
 }
 
-export async function preloadImages(images, onAmount) {
+export function isDeletable(image) {
+    return !cachedImages.includes(image);
+}
+
+export async function preloadImages(images, onAmount, save) {
+    if (save) cachedImages.push(...images);
     let count = 0;
 
     async function loadImage(url) {
@@ -53,7 +59,9 @@ export function getNonCachedImages(images) {
     });
 }
 
-export function unloadImages(images) {
+export function unloadImages(images, clean) {
+    if (clean) cachedImages = cachedImages.filter((u) => !images.includes(u));
+
     for (const url of images) {
         const image = document.querySelector(`cache img[src="${url}"]`);
         if (image) image.remove();
