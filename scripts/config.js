@@ -117,26 +117,6 @@ export const tmdb = {
     adult: false
 };
 
-export const providers = {
-    default: "superembed",
-    superembed: {
-        movieUrl: function (id) {
-            return `./providers/superembed.php?video_id=${id}&tmdb=1`;
-        },
-        showUrl: function (id, season, episode) {
-            return `./providers/superembed.php?video_id=${id}&tmdb=1&s=${season}&e=${episode}`;
-        }
-    },
-    vidsrc: {
-        movieUrl: function (id) {
-            return `https://vidsrc.to/embed/movie/${id}`;
-        },
-        showUrl: function (id, season, episode) {
-            return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
-        }
-    }
-};
-
 export const store = {
     names: {
         cache: function (key) {
@@ -147,6 +127,33 @@ export const store = {
         lastPlayed: "fh-last-played",
         continue: function (type) {
             return `fh-continue-${type}`;
+        }
+    }
+};
+
+export const themes = {
+    auto: "Auto",
+    dark: "Dark",
+    light: "Light"
+};
+
+export const providers = {
+    superembed: {
+        name: "SuperEmbed",
+        movieUrl: function (id) {
+            return `./providers/superembed.php?v=${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `./providers/superembed.php?v=${id}&s=${season}&e=${episode}`;
+        }
+    },
+    vidsrc: {
+        name: "VidSrc",
+        movieUrl: function (id) {
+            return `https://vidsrc.to/embed/movie/${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
         }
     }
 };

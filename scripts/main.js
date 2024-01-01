@@ -33,8 +33,8 @@ function initializeBody() {
 
 function initializeAll() {
     initializeTheme();
-
     initializeCache();
+
     initializeModal();
     initializeBody();
 
@@ -48,7 +48,6 @@ function initializeAll() {
     initializeAreas();
 
     initializeSettings();
-
     enableBody();
 }
 

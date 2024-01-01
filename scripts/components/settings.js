@@ -1,4 +1,5 @@
 import { getTheme, setTheme } from "../store/theme.js";
+import { providers, themes } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { resetContinueWatching } from "../store/continue.js";
 import { resetLastPlayed } from "../store/last-played.js";
@@ -10,22 +11,15 @@ export function initializeSettings() {
         return console.error("Failed to find section.");
     }
 
-    const label = document.createElement("div");
-    const labelIcon = document.createElement("i");
-    const labelText = document.createElement("span");
-
-    const theme = document.createElement("div");
-    const auto = document.createElement("div");
-    const dark = document.createElement("div");
-    const light = document.createElement("div");
+    const themeLabel = document.createElement("div");
+    const themeLabelIcon = document.createElement("i");
+    const themeLabelText = document.createElement("span");
+    const themesElem = document.createElement("div");
 
     const providerLabel = document.createElement("div");
     const providerLabelIcon = document.createElement("i");
     const providerLabelText = document.createElement("span");
-
-    const provider = document.createElement("div");
-    const superembed = document.createElement("div");
-    const vidsrc = document.createElement("div");
+    const providersElem = document.createElement("div");
 
     const dataLabel = document.createElement("div");
     const dataLabelIcon = document.createElement("i");
@@ -43,79 +37,67 @@ export function initializeSettings() {
     const clearLastWatchedIcon = document.createElement("i");
     const clearLastWatchedText = document.createElement("span");
 
-    label.className = "label";
-    labelIcon.className = "icon fa-solid fa-palette";
-    labelText.className = "text";
-    labelText.innerText = "Theme";
+    themeLabel.className = "label";
+    themeLabelIcon.className = "icon fa-solid fa-palette";
+    themeLabelText.className = "text";
+    themeLabelText.innerText = "Theme";
+    themesElem.className = "selection";
 
-    label.append(labelIcon);
-    label.append(labelText);
-
-    theme.className = "selection";
-    auto.innerText = "Auto";
-    dark.innerText = "Dark";
-    light.innerText = "Light";
+    themeLabel.append(themeLabelIcon);
+    themeLabel.append(themeLabelText);
 
     function themeCheck() {
         const activeTheme = getTheme();
-        auto.className = activeTheme === "auto" ? "active" : "";
-        dark.className = activeTheme === "dark" ? "active" : "";
-        light.className = activeTheme === "light" ? "active" : "";
+        
+        Array.from(themesElem.children).forEach(function (theme) {
+            theme.classList[activeTheme === theme.innerText.toLowerCase() ? "add" : "remove"]("active");
+        });
     }
 
+    Object.values(themes).forEach(function (themeName) {
+        const theme = document.createElement("div");
+
+        theme.innerText = themeName;
+        theme.addEventListener("click", function () {
+            setTheme(themeName.toLowerCase());
+            themeCheck();
+        });
+
+        themesElem.append(theme);
+    });
+
     themeCheck();
-    
-    auto.addEventListener("click", function () {
-        setTheme("auto");
-        themeCheck();
-    });
-
-    dark.addEventListener("click", function () {
-        setTheme("dark");
-        themeCheck();
-    });
-
-    light.addEventListener("click", function () {
-        setTheme("light");
-        themeCheck();
-    });
-
-    theme.append(auto);
-    theme.append(dark);
-    theme.append(light);
 
     providerLabel.className = "label";
     providerLabelIcon.className = "icon fa-solid fa-tv";
     providerLabelText.className = "text";
     providerLabelText.innerText = "Providers";
+    providersElem.className = "selection";
 
     providerLabel.append(providerLabelIcon);
     providerLabel.append(providerLabelText);
 
-    provider.className = "selection";
-    superembed.innerText = "SuperEmbed";
-    vidsrc.innerText = "VidSrc";
-
     function providerCheck() {
         const activeProvider = getProvider();
-        superembed.className = activeProvider === "superembed" ? "active" : "";
-        vidsrc.className = activeProvider === "vidsrc" ? "active" : "";
+        
+        Array.from(providersElem.children).forEach(function (provider) {
+            provider.classList[activeProvider === provider.innerText.toLowerCase() ? "add" : "remove"]("active");
+        });
     }
 
+    Object.values(providers).forEach(function (providerObj) {
+        const provider = document.createElement("div");
+
+        provider.innerText = providerObj.name;
+        provider.addEventListener("click", function () {
+            setProvider(providerObj.name.toLowerCase());
+            providerCheck();
+        });
+
+        providersElem.append(provider);
+    });
+
     providerCheck();
-
-    superembed.addEventListener("click", function () {
-        setProvider("superembed");
-        providerCheck();
-    });
-
-    vidsrc.addEventListener("click", function () {
-        setProvider("vidsrc");
-        providerCheck();
-    });
-
-    provider.append(superembed);
-    provider.append(vidsrc);
 
     dataLabel.className = "label";
     dataLabelIcon.className = "icon fa-solid fa-box";
@@ -181,10 +163,10 @@ export function initializeSettings() {
         }, 2500);
     });
 
-    section.append(label);
-    section.append(theme);
+    section.append(themeLabel);
+    section.append(themesElem);
     section.append(providerLabel);
-    section.append(provider);
+    section.append(providersElem);
     section.append(dataLabel);
     section.append(resetButton);
     section.append(clearContinueButton);

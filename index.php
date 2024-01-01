@@ -33,13 +33,6 @@
                 $ch = curl_init("{$tmdbURL}/{$type}/{$id}?api_key={$tmdbKey}&language={$tmdbLanguage}");
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-                /*
-                    Do not use if your server's SSL certificate works.
-
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                */
-
                 $response = curl_exec($ch);
                 curl_close($ch);
 

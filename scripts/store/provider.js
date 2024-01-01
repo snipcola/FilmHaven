@@ -15,8 +15,9 @@ export function getProvider() {
     if (provider) {
         return provider;
     } else {
-        setProvider(providers.default);
-        return providers.default;
+        const defaultProvider = Object.keys(providers)[0];
+        setProvider(defaultProvider);
+        return defaultProvider;
     }
 }
 

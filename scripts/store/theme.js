@@ -1,4 +1,4 @@
-import { store } from "../config.js";
+import { store, themes } from "../config.js";
 import { initializeTheme } from "../components/theme.js";
 
 function get() {
@@ -16,8 +16,9 @@ export function getTheme() {
     if (theme) {
         return theme;
     } else {
-        setTheme("auto");
-        return "auto";
+        const defaultTheme = Object.keys(themes)[0];
+        setTheme(defaultTheme);
+        return defaultTheme;
     }
 }
 
