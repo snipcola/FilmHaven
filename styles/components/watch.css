@@ -429,3 +429,12 @@
 .watch .details .season-card .episodes .episode .description, .watch .details .season-card .episodes .episode .episode-title .time .text, .watch .details .season-card .episodes .episode .episode-title .time .icon {
     opacity: var(--dim-opacity);
 }
+
+.watch .details .area.minimal {
+    margin: 0;
+    padding: 0;
+}
+
+.watch .details .area.minimal .cards .card {
+    width: calc(50% - var(--small-padding));
+}

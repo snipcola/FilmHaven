@@ -3,15 +3,16 @@ import { setModal, showModal, changeHeaderText } from "./modal.js";
 import { getDetails } from "../tmdb/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray } from "../functions.js";
 import { config, provider } from "../config.js";
-import { preloadImages, unloadImages } from "../cache.js";
+import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
 import { addContinueWatching, isInContinueWatching, removeFromContinueWatching } from "../store/continue.js";
+import { initializeArea } from "./area.js";
 
 export function watchContent(type, id) {
     setHash(config.hash.modal, `${type}-${id}`);
 }
 
-function modal(info) {
+function modal(info, recommendationImages) {
     addContinueWatching(info.id, info.type, info.title, info.image);
 
     if (isInContinueWatching(info.id, info.type)) {
@@ -130,6 +131,12 @@ function modal(info) {
     const genresTitleIcon = document.createElement("i");
     const genresTitleText = document.createElement("span");
     const genres = document.createElement("div");
+
+    const recommendations = document.createElement("div");
+    const recommendationsTitle = document.createElement("div");
+    const recommendationsTitleIcon = document.createElement("i");
+    const recommendationsTitleText = document.createElement("span");
+    const recommendationsArea = document.createElement("div");
 
     watch.className = "watch";
 
@@ -655,6 +662,31 @@ function modal(info) {
         misc.append(notice.cloneNode(true));
     }
 
+    recommendations.className = "details-card";
+    recommendationsTitle.className = "title";
+    recommendationsTitleIcon.className = "icon fa-solid fa-check";
+    recommendationsTitleText.className = "text";
+    recommendationsTitleText.innerText = "Recommendations";
+    recommendationsArea.className = "area minimal";
+
+    recommendationsTitle.append(recommendationsTitleIcon);
+    recommendationsTitle.append(recommendationsTitleText);
+    recommendations.append(recommendationsTitle);
+    
+    if (info.recommendations && info.recommendations.length > 0) {
+        initializeArea(recommendationsArea, info.recommendations, "", null, config.recommendations.split);
+
+        const control = recommendationsArea.querySelector(".control");
+        if (control) recommendationsTitle.append(control);
+
+        const label = recommendationsArea.querySelector(".label");
+        if (control) label.remove();
+
+        recommendations.append(recommendationsArea);
+    } else {
+        recommendations.append(notice.cloneNode(true));
+    }
+
     function checkResize() {
         if (!elementExists(watch)) return removeWindowResize(checkResize);
         const newDesktop = window.innerWidth > config.cast.split.max;
@@ -687,6 +719,7 @@ function modal(info) {
     function cleanup() {
         if (info.cast) unloadImages(info.cast.map((p) => p.image));
         if (info.seasons) unloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
+        if (recommendationImages) unloadImages(recommendationImages);
     }
 
     onWindowResize(checkResize);
@@ -724,6 +757,7 @@ function modal(info) {
     left.append(reviews);
 
     right.append(misc);
+    right.append(recommendations);
 
     watch.append(video);
     watch.append(details);
@@ -744,10 +778,17 @@ function initializeWatchModalCheck() {
                 const info = await getDetails(type, id);
 
                 if (info && info.title) {
+                    let recommendationImages = [];
+
                     if (info.cast) preloadImages(info.cast.map((p) => p.image));
                     if (info.seasons) preloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
 
-                    modal(info);
+                    if (info.recommendations) {
+                        recommendationImages = getNonCachedImages(info.recommendations.map((r) => r.image));
+                        preloadImages(recommendationImages);
+                    }
+
+                    modal(info, recommendationImages);
                 } else {
                     removeHash(config.hash.modal);
                 }

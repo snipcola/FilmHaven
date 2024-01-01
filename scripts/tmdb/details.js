@@ -1,4 +1,4 @@
-import { sendRequest, getImageUrl } from "./main.js";
+import { sendRequest, getImageUrl, sortByPopularity } from "./main.js";
 import { shortenNumber, cleanText, getSearchUrl } from "../functions.js";
 import { getSeason } from "./seasons.js";
 import { config } from "../config.js";
@@ -44,6 +44,18 @@ async function format(item, type) {
             })))
             .filter((s) => s.amount > 0);
 
+        const recommendations = sortByPopularity(item.recommendations?.results || [])
+            .filter((r) => r.poster_path && r.media_type === type)
+            .splice(0, config.recommendations.amount)
+            .map(function (recommendation) {
+                return {
+                    id: recommendation.id?.toString(),
+                    type,
+                    title: recommendation.title || recommendation.name,
+                    image: getImageUrl(recommendation.poster_path, "poster"),
+                };
+            });
+
         return {
             id: item.id?.toString(),
             type,
@@ -56,7 +68,8 @@ async function format(item, type) {
             cast,
             reviews,
             genres,
-            seasons
+            seasons,
+            recommendations
         };
     }
 
@@ -64,7 +77,7 @@ async function format(item, type) {
 }
 
 export async function getDetails(type = "movie", id) {    
-    const response = await sendRequest(`${type}/${id}`, { append_to_response: ["credits", "reviews"].join(",") });
+    const response = await sendRequest(`${type}/${id}`, { append_to_response: ["credits", "reviews", "recommendations"].join(",") });
     const json = format(response, type);
 
     return json;

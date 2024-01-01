@@ -70,13 +70,21 @@ export const config = {
             max: 700,
             desktop: 10,
             mobile: 5
-        }  
+        }
     },
     reviews: {
         split: {
             max: 700,
             desktop: 2,
             mobile: 1
+        }
+    },
+    recommendations: {
+        amount: 8,
+        split: {
+            max: 700,
+            desktop: 2,
+            mobile: 2
         }
     },
     hash: {

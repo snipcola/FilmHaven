@@ -7,16 +7,16 @@ import { getNew } from "../tmdb/new.js";
 import { watchContent } from "./watch.js";
 import { getContinueWatching } from "../store/continue.js";
 
-export function initializeArea(area, initialSlides, labelText, failed) {
+export function initializeArea(area, initialSlides, labelText, failed, customSplit) {
     area.innerHTML = "";
     const noResults = Array.isArray(initialSlides) && initialSlides.length === 0;
 
-    let desktop = window.innerWidth > config.area.split.max;
+    let desktop = window.innerWidth > (customSplit || config.area.split).max;
     let slides;
     let index = 0;
 
     if (initialSlides && initialSlides.length !== 0) {
-        slides = splitArray(initialSlides, config.area.split[desktop ? "desktop" : "mobile"]);
+        slides = splitArray(initialSlides, (customSplit || config.area.split)[desktop ? "desktop" : "mobile"]);
     }
 
     const label = document.createElement("div");
@@ -177,17 +177,17 @@ export function initializeArea(area, initialSlides, labelText, failed) {
 
     function checkResize() {
         if (!elementExists(area)) return removeWindowResize(checkResize);
-        const newDesktop = window.innerWidth > config.area.split.max;
+        const newDesktop = window.innerWidth > (customSplit || config.area.split).max;
 
         if (desktop !== newDesktop) {
             desktop = newDesktop;
 
             if (slides && slides.length !== 0) {
-                slides = splitArray(initialSlides, config.area.split[desktop ? "desktop" : "mobile"]);
+                slides = splitArray(initialSlides, (customSplit || config.area.split)[desktop ? "desktop" : "mobile"]);
 
                 index = index === 0 ? 0 : desktop
-                    ? Math.round((index + 1) / (config.area.split.desktop / config.area.split.mobile)) - 1
-                    : Math.round((index + 1) * (config.area.split.desktop / config.area.split.mobile)) - 2;
+                    ? Math.round((index + 1) / ((customSplit || config.area.split).desktop / (customSplit || config.area.split).mobile)) - 1
+                    : Math.round((index + 1) * ((customSplit || config.area.split).desktop / (customSplit || config.area.split).mobile)) - 2;
 
                 set(index);
             }
@@ -320,7 +320,7 @@ export function initializeAreas() {
                 trendingMovies.splice(0, config.carousel.amount);    
                 trendingMovies.splice(config.area.amount, trendingMovies.length);
     
-                await preloadImages(trendingMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);    
+                await preloadImages(trendingMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
                 initializeArea(moviesTrendingArea, trendingMovies, label);
             }
         }
