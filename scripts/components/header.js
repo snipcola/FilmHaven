@@ -71,7 +71,7 @@ function initializeResizeCheck() {
 
 function initializePageChangeCheck() {
     function handleHashChange() {
-        const activePage = getHash("page");
+        const activePage = getHash(config.hash.page);
 
         const index = links[activePage - 1] ? activePage - 1 : activeIndex || 0;
         const link = links[index];
@@ -81,7 +81,7 @@ function initializePageChangeCheck() {
             setLinkActive(link);
         }
 
-        setHash("page", activeIndex + 1);
+        setHash(config.hash.page, activeIndex + 1);
     }
 
     handleHashChange();
@@ -92,7 +92,7 @@ function initializeLinks() {
     links.forEach(function (link, index) {
         link.addEventListener("click", function () {
             if (!link.classList.contains("active")) {
-                setHash("page", index + 1);
+                setHash(config.hash.page, index + 1);
             }
         });
     });

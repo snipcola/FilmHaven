@@ -40,7 +40,7 @@ export const config = {
         ]
     },
     modal: {
-        validTypes: ["genre", "watch"]
+        validTypes: ["genre", "movie", "tv"]
     },
     search: {
         debounce: 500
@@ -78,6 +78,10 @@ export const config = {
             desktop: 2,
             mobile: 1
         }
+    },
+    hash: {
+        page: "p",
+        modal: "m"
     },
     maxDescriptionLength: 230,
     maxReviewContentLength: 230,

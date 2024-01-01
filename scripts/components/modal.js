@@ -49,7 +49,7 @@ export function showModal(cb) {
 }
 
 export function hideModal() {
-    removeHash("modal");
+    removeHash(config.hash.modal);
     document.body.classList.remove("modal-active");
 
     setModal();
@@ -65,7 +65,7 @@ export function hideModal() {
 
 function initializeModalChangeCheck() {
     function handleHashChange() {
-        const modalHash = getHash("modal");
+        const modalHash = getHash(config.hash.modal);
         
         if (!modalHash) {
             hideModal();
@@ -83,7 +83,7 @@ function initializeModalChangeCheck() {
 }
 
 function copyLink() {
-    const modal = getHash("modal");
+    const modal = getHash(config.hash.modal);
 
     if (modal) {
         copyButton.classList.add("copied");

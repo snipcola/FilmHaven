@@ -153,7 +153,7 @@ function initializeGenreArea(area, initialSlides, type, failed) {
         genreIcon.className = "icon fa-solid fa-arrow-right";
 
         genre.addEventListener("click", function () {
-            setHash("modal", `genre-${type}-${info.id}`);
+            setHash(config.hash.modal, `genre-${type}-${info.id}`);
         });
 
         genre.append(genreText);
@@ -237,7 +237,7 @@ let showGenres;
 
 function initializeGenreModalCheck() {
     function handleHashChange() {
-        const modalHash = getHash("modal");
+        const modalHash = getHash(config.hash.modal);
         
         if (modalHash) {
             const [modalType, type, id] = modalHash.split("-");
@@ -251,7 +251,7 @@ function initializeGenreModalCheck() {
                     modal(info, type);
                     document.title = `${type === "movie" ? "Movies" : "Shows"} - ${info.name}`;
                 } else {
-                    removeHash("modal");
+                    removeHash(config.hash.modal);
                 }
             }
         }

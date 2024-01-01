@@ -8,7 +8,7 @@ import { getLastPlayed, setLastPlayed } from "../store/last-played.js";
 import { addContinueWatching, isInContinueWatching, removeFromContinueWatching } from "../store/continue.js";
 
 export function watchContent(type, id) {
-    setHash("modal", `watch-${type}-${id}`);
+    setHash(config.hash.modal, `${type}-${id}`);
 }
 
 function modal(info) {
@@ -735,12 +735,12 @@ function modal(info) {
 
 function initializeWatchModalCheck() {
     async function handleHashChange() {
-        const modalHash = getHash("modal");
+        const modalHash = getHash(config.hash.modal);
 
         if (modalHash) {
-            const [modalType, type, id] = modalHash.split("-");
+            const [type, id] = modalHash.split("-");
 
-            if (modalType === "watch") {
+            if (type !== "genre" && config.modal.validTypes.includes(type)) {
                 const info = await getDetails(type, id);
 
                 if (info && info.title) {
@@ -749,7 +749,7 @@ function initializeWatchModalCheck() {
 
                     modal(info);
                 } else {
-                    removeHash("modal");
+                    removeHash(config.hash.modal);
                 }
             }
         }
