@@ -6,7 +6,7 @@
                 if (isset($_GET["m"])) {
                     $modal = explode("-", $_GET["m"]);
 
-                    if (isset($modal[0]) && ($modal[0] !== "" && $modal[0] !== "genre") && isset($modal[1]) && $modal[1] !== "") {
+                    if (isset($modal[0]) && ($modal[0] === "movie" || $modal[0] === "tv") && isset($modal[1]) && $modal[1] !== "") {
                         return $modal;
                     }
                 }
