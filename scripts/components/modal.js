@@ -48,12 +48,12 @@ export function showModal(cb) {
     document.body.classList.add("modal-active");
 }
 
-export function hideModal(ignoreHash) {
-    if (!ignoreHash) removeHash(config.hash.modal);
-    document.body.classList.remove("modal-active");
+export function hideModal(ignore) {
+    if (!ignore) removeHash(config.hash.modal);
+    if (!ignore) document.body.classList.remove("modal-active");
 
-    setModal();
-    setTitle();
+    if (!ignore) setModal();
+    if (!ignore) setTitle();
     checkCallback();
 
     Array.from(buttons.children).forEach(function (button) {
