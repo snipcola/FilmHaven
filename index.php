@@ -3,10 +3,10 @@
     <head>
         <?php
             function getModalInfo() {
-                if (isset($_GET["modal"])) {
-                    $modal = explode("-", $_GET["modal"]);
+                if (isset($_GET["m"])) {
+                    $modal = explode("-", $_GET["m"]);
 
-                    if (isset($modal[0]) && $modal[0] !== "" && isset($modal[1]) && $modal[1] !== "" && isset($modal[2]) && $modal[2] !== "") {
+                    if (isset($modal[0]) && ($modal[0] !== "" && $modal[0] !== "genre") && isset($modal[1]) && $modal[1] !== "") {
                         return $modal;
                     }
                 }
@@ -27,8 +27,8 @@
             $tmdbURL = "{$tmdbBaseURL}/${tmdbVersion}";
 
             if (isset($modal)) {
-                $type = $modal[1];
-                $id = $modal[2];
+                $type = $modal[0];
+                $id = $modal[1];
 
                 $ch = curl_init("{$tmdbURL}/{$type}/{$id}?api_key={$tmdbKey}&language={$tmdbLanguage}");
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
