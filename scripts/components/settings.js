@@ -58,9 +58,9 @@ export function initializeSettings() {
 
     function themeCheck() {
         const activeTheme = getTheme();
-        auto.className = activeTheme === "auto" ? "active" : null;
-        dark.className = activeTheme === "dark" ? "active" : null;
-        light.className = activeTheme === "light" ? "active" : null;
+        auto.className = activeTheme === "auto" ? "active" : "";
+        dark.className = activeTheme === "dark" ? "active" : "";
+        light.className = activeTheme === "light" ? "active" : "";
     }
 
     themeCheck();
@@ -98,8 +98,8 @@ export function initializeSettings() {
 
     function providerCheck() {
         const activeProvider = getProvider();
-        superembed.className = activeProvider === "superembed" ? "active" : null;
-        vidsrc.className = activeProvider === "vidsrc" ? "active" : null;
+        superembed.className = activeProvider === "superembed" ? "active" : "";
+        vidsrc.className = activeProvider === "vidsrc" ? "active" : "";
     }
 
     providerCheck();

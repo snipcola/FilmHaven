@@ -178,7 +178,7 @@ function modal(info, recommendationImages) {
 
         iframe.src = info.type === "movie"
             ? provider.movieUrl(info.id)
-            : provider.showUrl(info.id, seasonIndex + 1, episodeIndex + 1);
+            : provider.showUrl(info.id, seasonIndex, episodeIndex);
 
         video.append(videoNoticeContainer);
 
@@ -252,8 +252,8 @@ function modal(info, recommendationImages) {
             changeHeaderText(info.title);
             document.title = info.title;
         } else {
-            changeHeaderText(`${info.title} <span class="info">S${seasonIndex + 1} E${episodeIndex + 1}</span>`);
-            document.title = `${info.title} (S${seasonIndex + 1} E${episodeIndex + 1})`;
+            changeHeaderText(`${info.title} <span class="info">S${seasonIndex} E${episodeIndex}</span>`);
+            document.title = `${info.title} (S${seasonIndex} E${episodeIndex})`;
         }
     }
 
@@ -270,7 +270,7 @@ function modal(info, recommendationImages) {
     }
 
     if (info.seasons && info.seasons.length > 0) {
-        info.seasons.forEach(function (season, sIndex) {
+        info.seasons.forEach(function (season) {
             const card = document.createElement("div");
             const title = document.createElement("div");
             const name = document.createElement("span");
@@ -279,14 +279,14 @@ function modal(info, recommendationImages) {
             const buttonIcon = document.createElement("i");
             const episodes = document.createElement("div");
 
-            card.className = sIndex === seasonIndex ? "season-card active" : "season-card";
+            card.className = season.number === seasonIndex ? "season-card active" : "season-card";
             title.className = "season-title";
             name.className = "name";
             name.innerText = `Season ${season.numberPadded}`;
             amount.className = "amount";
             amount.innerText = `${season.episodes.length} episodes`;
             button.className = "button secondary icon-only";
-            buttonIcon.className = `icon fa-solid ${sIndex === seasonIndex ? "fa-arrow-up" : "fa-arrow-down"}`;
+            buttonIcon.className = `icon fa-solid ${season.number === seasonIndex ? "fa-arrow-up" : "fa-arrow-down"}`;
 
             button.append(buttonIcon);
 
@@ -300,7 +300,7 @@ function modal(info, recommendationImages) {
 
             episodes.className = "episodes";
 
-            season.episodes.forEach(function (episodeInfo, eIndex) {
+            season.episodes.forEach(function (episodeInfo) {
                 const episode = document.createElement("div");
                 const episodeLeft = document.createElement("div");
                 const episodeRight = document.createElement("div");
@@ -316,13 +316,13 @@ function modal(info, recommendationImages) {
                 const episodeTitleTimeText = document.createElement("span");
                 const episodeDescription = document.createElement("span");
 
-                episode.className = (sIndex === seasonIndex && eIndex === episodeIndex) ? "episode active" : "episode";
+                episode.className = (season.number === seasonIndex && episodeInfo.number === episodeIndex) ? "episode active" : "episode";
                 episodeLeft.className = "episode-left";
                 episodeRight.className = "episode-right";
 
                 episode.addEventListener("click", function () {
-                    seasonIndex = sIndex;
-                    episodeIndex = eIndex;
+                    seasonIndex = season.number;
+                    episodeIndex = episodeInfo.number;
 
                     setEpisode(episode);
                     playSeries();

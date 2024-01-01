@@ -22,8 +22,8 @@ export function getLastPlayed(id) {
     if (record) {
         return record;
     } else {
-        setLastPlayed(id, 0, 0);
-        return { s: 0, e: 0 };
+        setLastPlayed(id, 1, 1);
+        return { s: 1, e: 1 };
     }
 }
 

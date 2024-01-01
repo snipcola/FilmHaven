@@ -31,6 +31,8 @@
 
     transition: var(--transition-speed) background-color;
     user-select: none;
+
+    flex-wrap: wrap;
 }
 
 .section.settings .selection > div {
