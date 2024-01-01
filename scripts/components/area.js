@@ -261,8 +261,8 @@ export function initializeAreas() {
     function initializeContinueWatching() {
         const label = "Continue";
 
-        let continueMovies;
-        let continueShows;
+        let continueMovies = [];
+        let continueShows = [];
         
         async function initializeMovies() {
             initializeArea(moviesContinueArea, null, label);
@@ -292,12 +292,13 @@ export function initializeAreas() {
             const newContinueMovies = getContinueWatching("movie");
             const newContinueShows = getContinueWatching("tv");
 
-            if (!continueMovies || continueMovies.length === 0 || JSON.stringify(newContinueMovies) !== JSON.stringify(continueMovies)) {
+            if (continueMovies.length === 0 && newContinueMovies.length > 0 || JSON.stringify(newContinueMovies) !== JSON.stringify(continueMovies)) {
+                console.log("called");
                 continueMovies = newContinueMovies;
                 initializeMovies();
             }
 
-            if (!continueShows || continueShows.length === 0 || JSON.stringify(newContinueShows) !== JSON.stringify(continueShows)) {
+            if (continueShows.length === 0 && newContinueMovies.length > 0 || JSON.stringify(newContinueShows) !== JSON.stringify(continueShows)) {
                 continueShows = newContinueShows;
                 initializeShows();
             }
