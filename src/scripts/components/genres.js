@@ -26,7 +26,7 @@ async function modal(info, type) {
         unloadImages(images, true);
     }
 
-    setModal(info.name, [popularArea, ratedArea, newArea], "arrow-left", true);
+    setModal(info.name, null, [popularArea, ratedArea, newArea], "arrow-left", true);
     showModal(cleanup);
 
     async function initializePopular() {

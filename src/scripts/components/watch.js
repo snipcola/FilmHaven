@@ -272,7 +272,7 @@ function modal(info, recommendationImages) {
             changeHeaderText(info.title);
             document.title = info.title;
         } else {
-            changeHeaderText(`${info.title} <span class="info">S${seasonNumber} E${episodeNumber}</span>`);
+            changeHeaderText(info.title, `S${seasonNumber} E${episodeNumber}`);
             document.title = `${info.title} (S${seasonNumber} E${episodeNumber})`;
         }
     }
@@ -934,7 +934,7 @@ function modal(info, recommendationImages) {
     if (videoActive) watch.append(video);
     if ((left.childElementCount + right.childElementCount) !== 0) watch.append(details);
 
-    setModal(info.title, watch, "arrow-left", true);
+    setModal(info.title, null, watch, "arrow-left", true);
     checkCurrentlyPlaying();
     showModal(cleanup);
 }

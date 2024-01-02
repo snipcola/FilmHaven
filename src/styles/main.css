@@ -25,8 +25,10 @@
 @import url(./components/card.css);
 @import url(./components/card.responsive.css);
 
-@import url(./components/genre.css);
 @import url(./components/modal.css);
+@import url(./components/modal.responsive.css);
+
+@import url(./components/genre.css);
 @import url(./components/search.css);
 @import url(./components/notice.css);
 

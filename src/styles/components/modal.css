@@ -53,7 +53,7 @@ body.modal-active .modal-container {
 
 .modal-header {
     display: flex;
-    gap: calc(var(--large-gap) * 3);
+    gap: var(--large-gap);
 
     justify-content: space-between;
     align-items: center;
@@ -84,22 +84,36 @@ body.modal-active .modal-container {
     font-size: 0.7rem;
 }
 
-.modal-header .text {
+.modal-header .text-container {
     display: flex;
     align-items: center;
 
     gap: var(--small-padding);
-    flex-wrap: wrap;
+}
+
+.modal-header .text {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    overflow: hidden;
+    max-width: 20vw;
 }
 
 .modal-header .info {
+    display: none;
+
     background-color: var(--light);
     border: var(--small-border) solid var(--lighter);
 
     padding: calc(var(--small-padding) / 2);
     box-sizing: border-box;
 
+    text-align: center;
     border-radius: var(--border-radius);
+}
+
+.modal-header .info.active {
+    display: inline-block;
 }
 
 .modal-header .button {

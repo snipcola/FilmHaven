@@ -6,6 +6,7 @@ import { setTitle } from "./header.js";
 let container;
 let modal;
 let headerText;
+let headerInfo;
 let buttons;
 let copyButton;
 let copyButtonIcon;
@@ -21,13 +22,17 @@ function checkCallback() {
     callback = null;
 }
 
-export function changeHeaderText(label) {
-    headerText.innerHTML = label;
+export function changeHeaderText(label, info) {
+    headerText.innerText = label;
+    headerInfo.innerText = info || "";
+    headerInfo.className = info ? "info active" : "info";
 }
 
-export function setModal(label = "", newContent, icon = "times", fill = false) {
+export function setModal(label = "", info, newContent, icon = "times", fill = false) {
     container.className = fill ? "modal-container fill" : "modal-container";
     headerText.innerText = label;
+    headerInfo.innerText = info || "";
+    headerInfo.className = info ? "info active" : "info";
     headerButtonIcon.className = `icon icon-${icon}`;
     content.innerHTML = "";
     
@@ -104,7 +109,9 @@ export function initializeModal() {
     modal = document.createElement("div");
 
     const header = document.createElement("div");
+    const headerTextContainer = document.createElement("div");
     headerText = document.createElement("span");
+    headerInfo = document.createElement("span");
     buttons = document.createElement("div");
     copyButton = document.createElement("div");
     copyButtonIcon = document.createElement("i");
@@ -117,12 +124,17 @@ export function initializeModal() {
     modal.className = "modal";
 
     header.className = "modal-header";
+    headerTextContainer.className = "text-container";
     headerText.className = "text";
+    headerInfo.className = "info";
     buttons.className = "header-buttons";
     headerButton.className = "button secondary icon-only";
     headerButtonIcon.className = "icon icon-times";
     copyButton.className = "button secondary icon-only";
-    copyButtonIcon.className = "icon icon-link"
+    copyButtonIcon.className = "icon icon-link";
+
+    headerTextContainer.append(headerText);
+    headerTextContainer.append(headerInfo);
 
     headerButton.append(headerButtonIcon);
     headerButton.addEventListener("click", function () {
@@ -135,7 +147,7 @@ export function initializeModal() {
     buttons.append(copyButton);
     buttons.append(headerButton);
     
-    header.append(headerText);
+    header.append(headerTextContainer);
     header.append(buttons);
 
     content.className = "modal-content";
