@@ -6,7 +6,7 @@
         font-size: 0.7rem;
     }
 
-    .card .title {
+    .card .title, .card .season-info {
         font-size: 0.8rem;
     }
 }
@@ -24,7 +24,7 @@
         font-size: 0.6rem;
     }
 
-    .card .title {
+    .card .title, .card .season-info {
         font-size: 0.7rem;
     }
 }
