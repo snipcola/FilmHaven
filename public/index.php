@@ -72,4 +72,5 @@
         <link rel="stylesheet" href="<?= "/dist/{$manifest["styles.css"]}" ?>">
         <script src="<?= "/dist/{$manifest["main.js"]}" ?>" defer></script>
     </head>
+    <body></body>
 </html>
