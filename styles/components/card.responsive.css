@@ -16,6 +16,10 @@
         width: calc(50% - var(--small-padding));
     }
 
+    .card .image {
+        max-height: 25rem;
+    }
+
     .card .footer {
         font-size: 0.6rem;
     }
