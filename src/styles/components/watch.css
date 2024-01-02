@@ -281,10 +281,6 @@
     user-select: none;
 }
 
-.watch .details .season-card.active .season-title {
-    margin-bottom: var(--small-padding);
-}
-
 .watch .details .season-card .season-title .button {
     background-color: var(--light);
     border: var(--small-border) solid var(--lighter);
@@ -292,9 +288,10 @@
     border-radius: 50%;
     margin-left: auto;
 
-    font-size: 0.8rem;
     width: 2rem;
     height: 2rem;
+
+    font-size: 0.8rem;
 }
 
 .watch .details .season-card .season-title .button .icon {
@@ -317,6 +314,9 @@
 .watch .details .season-card .episodes {
     display: none;
     flex-direction: column;
+
+    padding: var(--small-padding) 0;
+    box-sizing: border-box;
 }
 
 .watch .details .season-card.active .episodes {
