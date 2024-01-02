@@ -142,10 +142,10 @@ export const providers = {
         name: "SuperEmbed",
         supportsThemes: true,
         movieUrl: function (id, theme) {
-            return `./providers/superembed.php?v=${id}&t=${theme}`;
+            return `/providers/superembed.php?v=${id}&t=${theme}`;
         },
         showUrl: function (id, season, episode, theme) {
-            return `./providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
+            return `/providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
         }
     },
     vidsrc: {
