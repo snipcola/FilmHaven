@@ -168,10 +168,12 @@ function modal(info, recommendationImages) {
     iframe.setAttribute("allowfullscreen", true);
 
     video.append(iframe);
+    video.append(videoNoticeContainer);
 
     function playVideo() {
         videoNoticeIcon.className = "icon icon-sync";
         videoNoticeText.innerText = "Content loading";
+        iframe.classList.remove("active");
 
         const providerName = getProvider();
         const provider = providers[providerName];
@@ -189,10 +191,10 @@ function modal(info, recommendationImages) {
                 : provider.showUrl(info.id, seasonNumber, episodeNumber);
         }
 
-        video.append(videoNoticeContainer);
+        videoNoticeContainer.classList.add("active");
 
         iframe.addEventListener("load", function () {
-            videoNoticeContainer.remove();
+            videoNoticeContainer.classList.remove("active");
             iframe.classList.add("active");
         });
     }
@@ -266,16 +268,12 @@ function modal(info, recommendationImages) {
         }
     }
 
-    function playSeries() {
-        iframe.src = "";
-        
-        setTimeout(function () {
-            setLastPlayed(info.id, seasonNumber, episodeNumber);
-            checkCurrentlyPlaying();
+    function playSeries() {        
+        setLastPlayed(info.id, seasonNumber, episodeNumber);
+        checkCurrentlyPlaying();
 
-            playVideo();
-            iframe.scrollIntoView({ block: "end" });
-        }, 100);
+        playVideo();
+        video.scrollIntoView({ block: "end" });
     }
 
     let playEpisodeCallbacks = [];

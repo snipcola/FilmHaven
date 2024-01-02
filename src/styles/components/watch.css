@@ -35,7 +35,7 @@
 }
 
 .watch .video .video-notice {
-    display: flex;
+    display: none;
     position: absolute;
 
     align-items: center;
@@ -43,6 +43,10 @@
 
     width: 100%;
     height: 100%;
+}
+
+.watch .video .video-notice.active {
+    display: flex;
 }
 
 .watch .video .video-notice .notice {
