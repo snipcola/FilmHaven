@@ -268,19 +268,19 @@ function modal(info, recommendationImages) {
         }
     }
 
-    function playSeries() {
+    function playSeries(dontScroll) {
         setLastPlayed(info.id, seasonNumber, episodeNumber);
         checkCurrentlyPlaying();
 
         playVideo();
-        video.scrollIntoView({ block: "end" });
+        if (!dontScroll) video.scrollIntoView({ block: "end" });
     }
 
     let playEpisodeCallbacks = [];
     let playEpisodeLock = false;
     let playEpisodeEpisode;
 
-    function playEpisode(sNumber, eNumber, episode) {
+    function playEpisode(sNumber, eNumber, episode, dontScroll) {
         seasonNumber = sNumber;
         episodeNumber = eNumber;
         playEpisodeEpisode = episode;
@@ -298,7 +298,7 @@ function modal(info, recommendationImages) {
                 playEpisodeEpisode = null;
             }
 
-            playSeries();
+            playSeries(dontScroll);
 
             for (const callback of playEpisodeCallbacks) {
                 callback();
@@ -499,7 +499,7 @@ function modal(info, recommendationImages) {
                     const episodeCard = seasonCardEpisodes ? Array.from(seasonCardEpisodes.children)[episode.eIndex] : null;
 
                     if (episodeCard) {
-                        playEpisode(episode.s, episode.e, episodeCard);
+                        playEpisode(episode.s, episode.e, episodeCard, true);
 
                         hideSeasons();
                         seasonCard.classList.add("active");
