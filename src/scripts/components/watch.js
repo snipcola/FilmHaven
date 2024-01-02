@@ -230,16 +230,16 @@ function modal(info, recommendationImages) {
         }
     }
 
-    function showSeason(season, dontScroll) {
+    function showSeason(season) {
         const isActive = season.classList.contains("active");
         hideSeasons();
 
         if (!isActive) {
             const icon = season.querySelector(".fa-arrow-down");
 
-            if (icon)  icon.className = "icon icon-arrow-up";
+            if (icon) icon.className = "icon icon-arrow-up";
             season.classList.add("active");
-            if (!dontScroll) season.scrollIntoView({ block: "start" });
+            season.scrollIntoView({ block: "start" });
         }
     }
 
@@ -485,8 +485,13 @@ function modal(info, recommendationImages) {
                     const episodeCard = seasonCardEpisodes ? Array.from(seasonCardEpisodes.children)[episode.eIndex] : null;
 
                     if (episodeCard) {
-                        showSeason(seasonCard, true);
                         playEpisode(episode.s, episode.e, episodeCard);
+
+                        hideSeasons();
+                        seasonCard.classList.add("active");
+
+                        const seasonCardIcon = seasonCard.querySelector(".fa-arrow-down");
+                        if (seasonCardIcon) seasonCardIcon.className = "icon icon-arrow-up";
                     }
                 }
 
