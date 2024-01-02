@@ -43,6 +43,10 @@
 
 .area.search .search .clear {
     display: none;
+    width: 1.8rem;
+
+    align-items: center;
+    justify-content: center;
 
     background-color: var(--primary);
     padding: calc(var(--small-padding) / 1.75);
@@ -55,7 +59,7 @@
 }
 
 .area.search .search .clear.active {
-    display: inline-block;
+    display: flex;
 }
 
 .area.search .search .clear:hover {
