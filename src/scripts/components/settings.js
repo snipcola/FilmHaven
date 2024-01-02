@@ -2,6 +2,7 @@ import { getTheme, setTheme } from "../store/theme.js";
 import { providers, themes } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { getSections, getSection, setSection } from "../store/sections.js";
+import { getWatchSections, getWatchSection, setWatchSection } from "../store/watch-sections.js";
 import { resetContinueWatching } from "../store/continue.js";
 import { resetLastPlayed } from "../store/last-played.js";
 
@@ -26,6 +27,11 @@ export function initializeSettings() {
     const sectionsLabelIcon = document.createElement("i");
     const sectionsLabelText = document.createElement("span");
     const sectionsElem = document.createElement("div");
+
+    const watchSectionsLabel = document.createElement("div");
+    const watchSectionsLabelIcon = document.createElement("i");
+    const watchSectionsLabelText = document.createElement("span");
+    const watchSectionsElem = document.createElement("div");
 
     const dataLabel = document.createElement("div");
     const dataLabelIcon = document.createElement("i");
@@ -134,6 +140,35 @@ export function initializeSettings() {
 
     sectionsCheck();
 
+    watchSectionsLabel.className = "label";
+    watchSectionsLabelIcon.className = "icon icon-play";
+    watchSectionsLabelText.className = "text";
+    watchSectionsLabelText.innerText = "Watch Sections (requires refresh)";
+    watchSectionsElem.className = "selection multi";
+
+    watchSectionsLabel.append(watchSectionsLabelIcon);
+    watchSectionsLabel.append(watchSectionsLabelText);
+
+    function watchSectionsCheck() {
+        Array.from(watchSectionsElem.children).forEach(function (watchSection) {
+            watchSection.classList[getWatchSection(watchSection.innerText) ? "add" : "remove"]("active");
+        });
+    }
+
+    Object.keys(getWatchSections()).forEach(function (watchSectionName) {
+        const watchSection = document.createElement("div");
+
+        watchSection.innerText = watchSectionName;
+        watchSection.addEventListener("click", function () {
+            setWatchSection(watchSectionName, !getWatchSection(watchSectionName));
+            watchSectionsCheck();
+        });
+
+        watchSectionsElem.append(watchSection);
+    });
+
+    watchSectionsCheck();
+
     dataLabel.className = "label";
     dataLabelIcon.className = "icon icon-box";
     dataLabelText.className = "text";
@@ -204,6 +239,8 @@ export function initializeSettings() {
     section.append(providersElem);
     section.append(sectionsLabel);
     section.append(sectionsElem);
+    section.append(watchSectionsLabel);
+    section.append(watchSectionsElem);
     section.append(dataLabel);
     section.append(resetButton);
     section.append(clearContinueButton);

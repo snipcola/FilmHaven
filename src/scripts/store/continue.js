@@ -73,7 +73,7 @@ export function removeFromContinueWatching(id, type) {
 }
 
 export function resetContinueWatching() {
-    for (const record of [...getContinueWatching("movie", ...getContinueWatching("tv"))]) {
+    for (const record of [...getContinueWatching("movie"), ...getContinueWatching("tv")]) {
         cleanup(record);
     }
 

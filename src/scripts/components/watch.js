@@ -7,6 +7,7 @@ import { getProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
 import { addContinueWatching, isInContinueWatching, removeFromContinueWatching } from "../store/continue.js";
+import { getWatchSection } from "../store/watch-sections.js";
 import { getThemeAbsolute } from "../store/theme.js";
 import { initializeArea } from "./area.js";
 
@@ -42,19 +43,27 @@ function modal(info, recommendationImages) {
         }
     }
 
+    const videoActive = getWatchSection("Video");
+    const seasonsActive = getWatchSection("Seasons");
+    const descriptionActive = getWatchSection("Description");
+    const castActive = getWatchSection("Cast");
+    const reviewsActive = getWatchSection("Reviews");
+    const miscActive = getWatchSection("Misc");
+    const recommendationsActive = getWatchSection("Recommendations");
+
     let desktop = window.innerWidth > config.cast.split.max;
 
     let castSlides;
     let castIndex = 0;
 
-    if (info.cast && info.cast.length !== 0) {
+    if (castActive && info.cast && info.cast.length !== 0) {
         castSlides = splitArray(info.cast, config.cast.split[desktop ? "desktop" : "mobile"]);
     }
 
     let reviewSlides;
     let reviewIndex;
 
-    if (info.reviews && info.reviews.length !== 0) {
+    if (reviewsActive && info.reviews && info.reviews.length !== 0) {
         reviewSlides = splitArray(info.reviews, config.reviews.split[desktop ? "desktop" : "mobile"]);
     }
 
@@ -199,9 +208,9 @@ function modal(info, recommendationImages) {
         });
     }
 
-    playVideo();
+    if (videoActive) playVideo();
 
-    details.className = "details";
+    details.className = videoActive ? "details" : "details no-video";
     left.className = "left container";
     right.className = "right container";
 
@@ -259,7 +268,7 @@ function modal(info, recommendationImages) {
     }
 
     function checkCurrentlyPlaying() {
-        if (info.type === "movie") {
+        if (info.type === "movie" || info.type === "tv" && !videoActive) {
             changeHeaderText(info.title);
             document.title = info.title;
         } else {
@@ -281,9 +290,11 @@ function modal(info, recommendationImages) {
     let playEpisodeEpisode;
 
     function playEpisode(sNumber, eNumber, episode, dontScroll) {
+        if (!videoActive) return;
+
         seasonNumber = sNumber;
         episodeNumber = eNumber;
-        playEpisodeEpisode = episode;
+        if (episode) playEpisodeEpisode = episode;
 
         if (playEpisodeLock) return;
         playEpisodeLock = true;
@@ -353,7 +364,7 @@ function modal(info, recommendationImages) {
         return { s: nextSeasonNumber, e: nextEpisodeNumber, sIndex: nextSeasonIndex, eIndex: nextEpisodeIndex };
     }
 
-    if (info.seasons && info.seasons.length > 0) {
+    if (seasonsActive && info.seasons && info.seasons.length > 0) {
         info.seasons.forEach(function (season) {
             const card = document.createElement("div");
             const title = document.createElement("div");
@@ -363,14 +374,14 @@ function modal(info, recommendationImages) {
             const buttonIcon = document.createElement("i");
             const episodes = document.createElement("div");
 
-            card.className = season.number === seasonNumber ? "season-card active" : "season-card";
+            card.className = (videoActive && season.number === seasonNumber) ? "season-card active" : "season-card";
             title.className = "season-title";
             name.className = "name";
             name.innerText = `Season ${season.numberPadded}`;
             amount.className = "amount";
             amount.innerText = `${season.episodes.length} episodes`;
             button.className = "button secondary icon-only";
-            buttonIcon.className = `icon icon-${season.number === seasonNumber ? "arrow-up" : "arrow-down"}`;
+            buttonIcon.className = `icon icon-${(videoActive && season.number === seasonNumber) ? "arrow-up" : "arrow-down"}`;
 
             button.append(buttonIcon);
 
@@ -400,12 +411,12 @@ function modal(info, recommendationImages) {
                 const episodeTitleTimeText = document.createElement("span");
                 const episodeDescription = document.createElement("span");
 
-                episode.className = (season.number === seasonNumber && episodeInfo.number === episodeNumber) ? "episode active" : "episode";
+                episode.className = (videoActive && season.number === seasonNumber && episodeInfo.number === episodeNumber) ? "episode active" : "episode";
                 episodeLeft.className = "episode-left";
                 episodeRight.className = "episode-right";
 
                 episode.addEventListener("click", function () {
-                    playEpisode(season.number, episodeInfo.number, episode);
+                    if (videoActive) playEpisode(season.number, episodeInfo.number, episode);
                 });
 
                 episodeNumberText.className = "number";
@@ -466,34 +477,38 @@ function modal(info, recommendationImages) {
         });
 
         seasons.append(seasonCards);
+    } else {
+        seasons.append(notice.cloneNode(true));
+    }
 
-        if (info.type === "tv") {
-            const showControl = document.createElement("div");
-            const buttonPrevious = document.createElement("div");
-            const buttonPreviousIcon = document.createElement("i");
-            const buttonNext = document.createElement("div");
-            const buttonNextIcon = document.createElement("i");
-    
-            showControl.className = "show-control";
-            buttonPrevious.className = getPreviousEpisode() ? "button secondary icon-only" : "button secondary icon-only inactive";
-            buttonPreviousIcon.className = "icon icon-arrow-left";
-            buttonNext.className = getNextEpisode() ? "button secondary icon-only" : "button secondary icon-only inactive";
-            buttonNextIcon.className = "icon icon-arrow-right";
+    if (info.type === "tv" && videoActive) {
+        const showControl = document.createElement("div");
+        const buttonPrevious = document.createElement("div");
+        const buttonPreviousIcon = document.createElement("i");
+        const buttonNext = document.createElement("div");
+        const buttonNextIcon = document.createElement("i");
 
-            function checkShowControl() {
-                const previous = getPreviousEpisode();
-                const next = getNextEpisode();
+        showControl.className = "show-control";
+        buttonPrevious.className = getPreviousEpisode() ? "button secondary icon-only" : "button secondary icon-only inactive";
+        buttonPreviousIcon.className = "icon icon-arrow-left";
+        buttonNext.className = getNextEpisode() ? "button secondary icon-only" : "button secondary icon-only inactive";
+        buttonNextIcon.className = "icon icon-arrow-right";
 
-                buttonPrevious.classList[previous ? "remove" : "add"]("inactive");
-                buttonNext.classList[next ? "remove" : "add"]("inactive");
-            }
+        function checkShowControl() {
+            const previous = getPreviousEpisode();
+            const next = getNextEpisode();
 
-            playEpisodeCallbacks.push(checkShowControl);
+            buttonPrevious.classList[previous ? "remove" : "add"]("inactive");
+            buttonNext.classList[next ? "remove" : "add"]("inactive");
+        }
 
-            function showControlChange(next) {
-                const episode = next ? getNextEpisode() : getPreviousEpisode();
+        playEpisodeCallbacks.push(checkShowControl);
 
-                if (episode) {
+        function showControlChange(next) {
+            const episode = next ? getNextEpisode() : getPreviousEpisode();
+
+            if (episode) {
+                if (seasonsActive) {
                     const seasonCard = Array.from(seasonCards.children)[episode.sIndex];
                     const seasonCardEpisodes = seasonCard ? seasonCard.querySelector(".episodes") : null;
                     const episodeCard = seasonCardEpisodes ? Array.from(seasonCardEpisodes.children)[episode.eIndex] : null;
@@ -507,29 +522,29 @@ function modal(info, recommendationImages) {
                         const seasonCardIcon = seasonCard.querySelector(".fa-arrow-down");
                         if (seasonCardIcon) seasonCardIcon.className = "icon icon-arrow-up";
                     }
+                } else {
+                    playEpisode(episode.s, episode.e, null, true);
                 }
-
-                checkShowControl();
             }
 
-            buttonPrevious.addEventListener("click", function () {
-                showControlChange(false);
-            });
-
-            buttonNext.addEventListener("click", function () {
-                showControlChange(true);
-            });
-    
-            buttonPrevious.append(buttonPreviousIcon);
-            buttonNext.append(buttonNextIcon);
-    
-            showControl.append(buttonPrevious);
-            showControl.append(buttonNext);
-    
-            video.append(showControl);
+            checkShowControl();
         }
-    } else {
-        seasons.append(notice.cloneNode(true));
+
+        buttonPrevious.addEventListener("click", function () {
+            showControlChange(false);
+        });
+
+        buttonNext.addEventListener("click", function () {
+            showControlChange(true);
+        });
+
+        buttonPrevious.append(buttonPreviousIcon);
+        buttonNext.append(buttonNextIcon);
+
+        showControl.append(buttonPrevious);
+        showControl.append(buttonNext);
+
+        video.append(showControl);
     }
 
     description.className = "details-card";
@@ -544,7 +559,7 @@ function modal(info, recommendationImages) {
     descriptionTitle.append(descriptionTitleText);
     description.append(descriptionTitle);
     
-    if (info.description) {
+    if (info.description && descriptionActive) {
         description.append(descriptionText);
     } else {
         description.append(notice.cloneNode(true));
@@ -744,7 +759,7 @@ function modal(info, recommendationImages) {
     releasedTitle.append(releasedTitleText);
     misc.append(releasedTitle);
 
-    if (info.date) {
+    if (miscActive && info.date) {
         misc.append(releasedText);
     } else {
         misc.append(notice.cloneNode(true));
@@ -778,7 +793,7 @@ function modal(info, recommendationImages) {
     ratingContainer.append(ratingStars);
     ratingContainer.append(ratingStarsAmount);
 
-    if (info.rating && info.stars) {
+    if (miscActive && info.rating && info.stars) {
         misc.append(ratingContainer);
     } else {
         misc.append(notice.cloneNode(true));
@@ -794,7 +809,7 @@ function modal(info, recommendationImages) {
     genresTitle.append(genresTitleText);
     misc.append(genresTitle);
 
-    if (info.genres && info.genres.length > 0) {
+    if (miscActive && info.genres && info.genres.length > 0) {
         for (const name of info.genres) {
             const genre = document.createElement("div");
     
@@ -820,7 +835,7 @@ function modal(info, recommendationImages) {
     recommendationsTitle.append(recommendationsTitleText);
     recommendations.append(recommendationsTitle);
     
-    if (info.recommendations && info.recommendations.length > 0) {
+    if (recommendationsActive && info.recommendations && info.recommendations.length > 0) {
         initializeArea(recommendationsArea, info.recommendations, "", null, config.recommendations.split);
 
         const control = recommendationsArea.querySelector(".control");
@@ -841,7 +856,7 @@ function modal(info, recommendationImages) {
         if (desktop !== newDesktop) {
             desktop = newDesktop;
             
-            if (castSlides && castSlides.length !== 0) {
+            if (castActive && castSlides && castSlides.length !== 0) {
                 castSlides = splitArray(info.cast, config.cast.split[desktop ? "desktop" : "mobile"]);
 
                 castIndex = castIndex === 0 ? 0 : desktop
@@ -851,7 +866,7 @@ function modal(info, recommendationImages) {
                 setCast(castIndex);
             }
 
-            if (reviewSlides && reviewSlides.length !== 0) {
+            if (reviewsActive && reviewSlides && reviewSlides.length !== 0) {
                 reviewSlides = splitArray(info.reviews, config.reviews.split[desktop ? "desktop" : "mobile"]);
 
                 reviewIndex = reviewIndex === 0 ? 0 : desktop
@@ -864,14 +879,14 @@ function modal(info, recommendationImages) {
     }
 
     function cleanup() {
-        if (info.cast) unloadImages(info.cast.map((p) => p.image));
-        if (info.seasons) unloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
-        if (recommendationImages) unloadImages(recommendationImages, true);
+        if (seasonsActive && info.seasons) unloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
+        if (castActive && info.cast) unloadImages(info.cast.map((p) => p.image));
+        if (recommendationsActive && recommendationImages) unloadImages(recommendationImages, true);
     }
 
     onWindowResize(checkResize);
 
-    if (castSlides) {
+    if (castActive && castSlides) {
         setCast(castIndex);
 
         castPrevious.addEventListener("click", setCastPrevious);
@@ -883,7 +898,7 @@ function modal(info, recommendationImages) {
         cast.append(notice.cloneNode(true));
     }
 
-    if (reviewSlides) {
+    if (reviewsActive && reviewSlides) {
         setReviews(reviewIndex);
 
         reviewsPrevious.addEventListener("click", setReviewPrevious);
@@ -895,19 +910,29 @@ function modal(info, recommendationImages) {
         reviews.append(notice.cloneNode(true));
     }
 
-    if (info.type === "tv") {
+    if (info.type === "tv" && seasonsActive) {
         left.append(seasons);
     }
 
-    left.append(description);
-    left.append(cast);
-    left.append(reviews);
+    if (descriptionActive) left.append(description);
+    if (castActive) left.append(cast);
+    if (reviewsActive) left.append(reviews);
 
-    right.append(misc);
-    right.append(recommendations);
+    if (left.childElementCount === 0) {
+        right.classList.add("full-width");
+        left.remove();
+    }
 
-    watch.append(video);
-    watch.append(details);
+    if (miscActive) right.append(misc);
+    if (recommendationsActive) right.append(recommendations);
+
+    if (right.childElementCount === 0) {
+        if (left) left.classList.add("full-width");
+        right.remove();
+    }
+
+    if (videoActive) watch.append(video);
+    if ((left.childElementCount + right.childElementCount) !== 0) watch.append(details);
 
     setModal(info.title, watch, "arrow-left", true);
     checkCurrentlyPlaying();
@@ -929,10 +954,10 @@ function initializeWatchModalCheck() {
                 if (info && info.title) {
                     let recommendationImages = [];
 
-                    if (info.cast) preloadImages(info.cast.map((p) => p.image));
-                    if (info.seasons) preloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
+                    if (info.seasons && getWatchSection("Seasons")) preloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
+                    if (info.cast && getWatchSection("Cast")) preloadImages(info.cast.map((p) => p.image));
 
-                    if (info.recommendations) {
+                    if (info.recommendations && getWatchSection("Recommendations")) {
                         recommendationImages = getNonCachedImages(info.recommendations.map((r) => r.image));
                         preloadImages(recommendationImages, null, true);
                     }

@@ -2,6 +2,7 @@ import { sendRequest, getImageUrl, sortByPopularity } from "./main.js";
 import { shortenNumber, cleanText, getSearchUrl } from "../functions.js";
 import { getSeason } from "./seasons.js";
 import { config } from "../config.js";
+import { getWatchSection } from "../store/watch-sections.js";
 
 async function format(item, type) {
     if (item && item.poster_path) {
@@ -37,7 +38,9 @@ async function format(item, type) {
             .filter((g) => g.name)
             .map((g) => g.name);
 
-        const seasons = (await Promise.all((item.seasons || [])
+        let seasons;
+        
+        if (getWatchSection("Video") || getWatchSection("Seasons")) seasons = (await Promise.all((item.seasons || [])
             .filter((s) => s.season_number > 0)
             .map(async function (season) {
                 return getSeason(item.id, season.season_number);
@@ -77,7 +80,13 @@ async function format(item, type) {
 }
 
 export async function getDetails(type = "movie", id) {    
-    const response = await sendRequest(`${type}/${id}`, { append_to_response: ["credits", "reviews", "recommendations"].join(",") });
+    let append_to_response = [];
+
+    if (getWatchSection("Cast")) append_to_response.push("credits");
+    if (getWatchSection("Reviews")) append_to_response.push("reviews");
+    if (getWatchSection("Recommendations")) append_to_response.push("recommendations");
+
+    const response = await sendRequest(`${type}/${id}`, append_to_response.length > 0 ? { append_to_response: append_to_response.join(",") } : undefined);
     const json = format(response, type);
 
     return json;

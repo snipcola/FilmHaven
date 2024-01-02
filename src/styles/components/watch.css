@@ -65,6 +65,10 @@
     margin-top: var(--large-padding);
 }
 
+.watch .details.no-video {
+    margin-top: 0;
+}
+
 .watch .container {
     display: flex;
     flex-direction: column;
@@ -76,8 +80,22 @@
     width: 66.25%;
 }
 
+.watch .details .left.full-width {
+    width: 100%;
+}
+
 .watch .details .right {
     width: 32%;
+}
+
+.watch .details .right.full-width {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.watch .details .right.full-width .details-card {
+    height: fit-content;
 }
 
 .watch .details .details-card {
@@ -351,7 +369,7 @@
     cursor: pointer;
 }
 
-.watch .details .season-card .episodes .episode:not(.active):hover {
+.watch .details:not(.no-video) .season-card .episodes .episode:not(.active):hover {
     opacity: var(--dim-opacity);
 }
 

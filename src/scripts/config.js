@@ -126,6 +126,7 @@ export const store = {
         provider: "fh-provider",
         lastPlayed: "fh-last-played",
         sections: "fh-sections",
+        watchSections: "fh-watch-sections",
         continue: function (type) {
             return `fh-continue-${type}`;
         }
@@ -168,4 +169,14 @@ export const sections = {
     Trending: true,
     "Top-Rated": true,
     New: true
+};
+
+export const watchSections = {
+    Video: true,
+    Seasons: true,
+    Description: true,
+    Cast: true,
+    Reviews: true,
+    Misc: true,
+    Recommendations: true
 };

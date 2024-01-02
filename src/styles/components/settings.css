@@ -41,6 +41,8 @@
     
     box-sizing: border-box;
     border: var(--small-border) solid transparent;
+
+    opacity: var(--dim-opacity);
 }
 
 .section.settings .selection > div:not(.active), .section.settings .selection.multi > div {
@@ -54,6 +56,8 @@
 .section.settings .selection > div.active {
     background-color: var(--light);
     border: var(--small-border) solid var(--lighter);
+
+    opacity: 100%;
 }
 
 .section.settings .button.inactive {
