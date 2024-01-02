@@ -87,6 +87,22 @@
     opacity: 0;
 }
 
+.card .season-info {
+    position: absolute;
+
+    background-color: var(--lighter);
+    border: var(--small-border) solid var(--lightest);
+
+    padding: calc(var(--small-padding) / 2);
+    box-sizing: border-box;
+
+    top: calc(var(--small-padding) * 1.25);
+    right: calc(var(--small-padding) * 1.25);
+    
+    border-radius: calc(var(--border-radius) / 1.5);
+    opacity: var(--dim-opacity);
+}
+
 .card .footer {
     display: flex;
     gap: var(--small-gap);

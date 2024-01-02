@@ -7,6 +7,7 @@ import { getNew } from "../tmdb/new.js";
 import { watchContent } from "./watch.js";
 import { getContinueWatching } from "../store/continue.js";
 import { getSection } from "../store/sections.js";
+import { getLastPlayed } from "../store/last-played.js";
 
 export function initializeArea(area, initialSlides, labelText, failed, customSplit) {
     area.innerHTML = "";
@@ -84,6 +85,26 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
         image.className = "image";
         image.src = info.image;
         title.className = "title";
+
+        if (info.type === "tv" && info.continue) {
+            let lastPlayed = getLastPlayed(info.id);
+            const seasonInfo = document.createElement("div");
+
+            seasonInfo.className = "season-info";
+            seasonInfo.innerText = `S${lastPlayed.s} E${lastPlayed.e}`;
+
+            const checkInterval = setInterval(function () {
+                if (!elementExists(card)) return clearInterval(checkInterval);
+                const newLastPlayed = getLastPlayed(info.id);
+
+                if (JSON.stringify(newLastPlayed) !== JSON.stringify(lastPlayed)) {
+                    lastPlayed = newLastPlayed;
+                    seasonInfo.innerText = `S${lastPlayed.s} E${lastPlayed.e}`;
+                }
+            }, 1000);
+
+            card.append(seasonInfo);
+        }
 
         card.addEventListener("click", function () {
             watchContent(info.type, info.id);

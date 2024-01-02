@@ -464,7 +464,6 @@
 
 .watch .show-control {
     position: absolute;
-    z-index: 5;
 
     top: calc(var(--small-padding) / 2);
     right: calc(var(--small-padding) / 2);
