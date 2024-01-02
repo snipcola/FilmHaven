@@ -934,7 +934,7 @@ function modal(info, recommendationImages) {
     if (videoActive) watch.append(video);
     if ((left.childElementCount + right.childElementCount) !== 0) watch.append(details);
 
-    setModal(info.title, null, watch, "arrow-left", true);
+    setModal(info.title, null, watch, "times", true);
     checkCurrentlyPlaying();
     showModal(cleanup);
 }
