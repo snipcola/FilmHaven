@@ -1,6 +1,7 @@
 import { getTheme, setTheme } from "../store/theme.js";
 import { providers, themes } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
+import { getSections, getSection, setSection } from "../store/sections.js";
 import { resetContinueWatching } from "../store/continue.js";
 import { resetLastPlayed } from "../store/last-played.js";
 
@@ -20,6 +21,11 @@ export function initializeSettings() {
     const providerLabelIcon = document.createElement("i");
     const providerLabelText = document.createElement("span");
     const providersElem = document.createElement("div");
+
+    const sectionsLabel = document.createElement("div");
+    const sectionsLabelIcon = document.createElement("i");
+    const sectionsLabelText = document.createElement("span");
+    const sectionsElem = document.createElement("div");
 
     const dataLabel = document.createElement("div");
     const dataLabelIcon = document.createElement("i");
@@ -99,6 +105,35 @@ export function initializeSettings() {
 
     providerCheck();
 
+    sectionsLabel.className = "label";
+    sectionsLabelIcon.className = "icon icon-tags";
+    sectionsLabelText.className = "text";
+    sectionsLabelText.innerText = "Sections (requires refresh)";
+    sectionsElem.className = "selection multi";
+
+    sectionsLabel.append(sectionsLabelIcon);
+    sectionsLabel.append(sectionsLabelText);
+
+    function sectionsCheck() {
+        Array.from(sectionsElem.children).forEach(function (section) {
+            section.classList[getSection(section.innerText) ? "add" : "remove"]("active");
+        });
+    }
+
+    Object.keys(getSections()).forEach(function (sectionName) {
+        const section = document.createElement("div");
+
+        section.innerText = sectionName;
+        section.addEventListener("click", function () {
+            setSection(sectionName, !getSection(sectionName));
+            sectionsCheck();
+        });
+
+        sectionsElem.append(section);
+    });
+
+    sectionsCheck();
+
     dataLabel.className = "label";
     dataLabelIcon.className = "icon icon-box";
     dataLabelText.className = "text";
@@ -167,6 +202,8 @@ export function initializeSettings() {
     section.append(themesElem);
     section.append(providerLabel);
     section.append(providersElem);
+    section.append(sectionsLabel);
+    section.append(sectionsElem);
     section.append(dataLabel);
     section.append(resetButton);
     section.append(clearContinueButton);

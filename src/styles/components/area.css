@@ -13,6 +13,10 @@
     width: 100%;
 }
 
+.content.no-carousel > .section .area:first-child {
+    margin-top: var(--large-padding);
+}
+
 .area.minimal {
     border: none;
     border-radius: 0;

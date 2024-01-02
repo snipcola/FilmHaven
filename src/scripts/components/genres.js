@@ -153,7 +153,7 @@ function initializeGenreArea(area, initialSlides, type, failed) {
         genreIcon.className = "icon icon-arrow-right";
 
         genre.addEventListener("click", function () {
-            setQuery(config.query.modal, `genre-${type}-${info.id}`);
+            setQuery(config.query.modal, `g-${type}-${info.id}`);
         });
 
         genre.append(genreText);

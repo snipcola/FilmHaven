@@ -43,7 +43,7 @@
     border: var(--small-border) solid transparent;
 }
 
-.section.settings .selection > div:not(.active) {
+.section.settings .selection > div:not(.active), .section.settings .selection.multi > div {
     cursor: pointer;
 }
 

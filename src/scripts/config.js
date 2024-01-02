@@ -125,6 +125,7 @@ export const store = {
         theme: "fh-theme",
         provider: "fh-provider",
         lastPlayed: "fh-last-played",
+        sections: "fh-sections",
         continue: function (type) {
             return `fh-continue-${type}`;
         }
@@ -157,4 +158,14 @@ export const providers = {
             return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
         }
     }
+};
+
+export const sections = {
+    Carousel: true,
+    Search: true,
+    Genres: true,
+    Continue: true,
+    Trending: true,
+    "Top-Rated": true,
+    New: true
 };

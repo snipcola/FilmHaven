@@ -10,6 +10,7 @@ import { initializeSearches } from "./components/search.js";
 import { initializeGenres } from "./components/genres.js";
 import { initializeAreas } from "./components/area.js";
 import { initializeSettings } from "./components/settings.js";
+import { getSection } from "./store/sections.js";
 
 let container;
 let wrapper;
@@ -42,9 +43,11 @@ function initializeAll() {
     initializeFooter(container);
     initializeWatch();
 
-    initializeCarousels();
-    initializeSearches();
-    initializeGenres();
+    if (getSection("Carousel")) initializeCarousels();
+    else content.classList.add("no-carousel");
+
+    if (getSection("Search")) initializeSearches();
+    if (getSection("Genres")) initializeGenres();
     initializeAreas();
 
     initializeSettings();

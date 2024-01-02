@@ -6,6 +6,7 @@ import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
 import { watchContent } from "./watch.js";
 import { getContinueWatching } from "../store/continue.js";
+import { getSection } from "../store/sections.js";
 
 export function initializeArea(area, initialSlides, labelText, failed, customSplit) {
     area.innerHTML = "";
@@ -246,17 +247,30 @@ export function initializeAreas() {
     moviesNewArea.className = "area";
     showsNewArea.className = "area";
 
-    moviesSection.append(moviesContinueArea);
-    showsSection.append(showsContinueArea);
+    const continueActive = getSection("Continue");
+    const trendingActive = getSection("Trending");
+    const ratedActive = getSection("Top-Rated");
+    const newActive = getSection("New");
 
-    moviesSection.append(moviesTrendingArea);
-    showsSection.append(showsTrendingArea);
+    if (continueActive) {
+        moviesSection.append(moviesContinueArea);
+        showsSection.append(showsContinueArea);
+    }
 
-    moviesSection.append(moviesRatedArea);
-    showsSection.append(showsRatedArea);
+    if (trendingActive) {
+        moviesSection.append(moviesTrendingArea);
+        showsSection.append(showsTrendingArea);
+    }
 
-    moviesSection.append(moviesNewArea);
-    showsSection.append(showsNewArea);
+    if (ratedActive) {
+        moviesSection.append(moviesRatedArea);
+        showsSection.append(showsRatedArea);
+    }
+
+    if (newActive) {
+        moviesSection.append(moviesNewArea);
+        showsSection.append(showsNewArea);
+    }
 
     function initializeContinueWatching() {
         const label = "Continue";
@@ -410,8 +424,8 @@ export function initializeAreas() {
         initializeShows();
     }
 
-    initializeContinueWatching();
-    initializeTrending();
-    initializeTopRated();
-    initializeNew();
+    if (continueActive) initializeContinueWatching();
+    if (trendingActive) initializeTrending();
+    if (ratedActive) initializeTopRated();
+    if (newActive) initializeNew();
 }
