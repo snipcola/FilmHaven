@@ -268,7 +268,7 @@ function modal(info, recommendationImages) {
         }
     }
 
-    function playSeries() {        
+    function playSeries() {
         setLastPlayed(info.id, seasonNumber, episodeNumber);
         checkCurrentlyPlaying();
 
@@ -277,17 +277,33 @@ function modal(info, recommendationImages) {
     }
 
     let playEpisodeCallbacks = [];
+    let playEpisodeLock = false;
+    let playEpisodeEpisode;
 
     function playEpisode(sNumber, eNumber, episode) {
         seasonNumber = sNumber;
         episodeNumber = eNumber;
+        playEpisodeEpisode = episode;
 
-        setEpisode(episode);
-        playSeries();
+        if (playEpisodeLock) return;
+        playEpisodeLock = true;
 
-        for (const callback of playEpisodeCallbacks) {
-            callback();
-        }
+        iframe.src = "";
+
+        setTimeout(function () {
+            playEpisodeLock = false;
+
+            if (playEpisodeEpisode) {
+                setEpisode(playEpisodeEpisode);
+                playEpisodeEpisode = null;
+            }
+
+            playSeries();
+
+            for (const callback of playEpisodeCallbacks) {
+                callback();
+            }
+        }, 10);
     }
 
     function getNextEpisode() {
