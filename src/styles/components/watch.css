@@ -431,6 +431,11 @@
     border-radius: var(--border-radius);
 }
 
+.watch .details .season-card .episodes .episode.active .episode-title .time {
+    background-color: var(--lighter);
+    border: var(--small-border) solid var(--lightest);
+}
+
 .watch .details .season-card .episodes .episode .description {
     font-size: 0.9rem;
 }
@@ -451,4 +456,41 @@
 
 .watch .details .area.minimal .cards .card .title {
     background-color: var(--light);
+}
+
+.watch .show-control {
+    position: absolute;
+    z-index: 5;
+
+    top: calc(var(--small-padding) / 2);
+    right: calc(var(--small-padding) / 2);
+    
+    display: flex;
+    background-color: var(--dark);
+
+    padding: calc(var(--small-padding) / 2);
+    box-sizing: border-box;
+
+    border-radius: var(--border-radius);
+    gap: calc(var(--small-padding) / 2);
+
+    opacity: var(--dimmer-opacity);
+    transition: var(--transition-speed) opacity;
+}
+
+.watch .show-control:hover {
+    opacity: 100%;
+}
+
+.watch .show-control .button {
+    background-color: var(--light);
+}
+
+.watch .show-control .button.inactive {
+    opacity: var(--dimmer-opacity);
+    pointer-events: none;
+}
+
+.watch .show-control .button:hover {
+    background-color: var(--lighter);
 }

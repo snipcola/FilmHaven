@@ -107,7 +107,7 @@ body.modal-active .modal-container {
 }
 
 .modal-header .copied {
-    opacity: 75%;
+    opacity: var(--dim-opacity);
     pointer-events: none;
 }
 

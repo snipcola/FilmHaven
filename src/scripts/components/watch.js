@@ -58,14 +58,14 @@ function modal(info, recommendationImages) {
         reviewSlides = splitArray(info.reviews, config.reviews.split[desktop ? "desktop" : "mobile"]);
     }
 
-    let seasonIndex;
-    let episodeIndex;
+    let seasonNumber;
+    let episodeNumber;
 
     if (info.type === "tv") {
         const lastPlayed = getLastPlayed(info.id);
 
-        seasonIndex = lastPlayed.s;
-        episodeIndex = lastPlayed.e;
+        seasonNumber = lastPlayed.s;
+        episodeNumber = lastPlayed.e;
     }
 
     const notice = document.createElement("div");
@@ -182,11 +182,11 @@ function modal(info, recommendationImages) {
 
             iframe.src = info.type === "movie"
                 ? provider.movieUrl(info.id, theme)
-                : provider.showUrl(info.id, seasonIndex, episodeIndex, theme);
+                : provider.showUrl(info.id, seasonNumber, episodeNumber, theme);
         } else {
             iframe.src = info.type === "movie"
                 ? provider.movieUrl(info.id)
-                : provider.showUrl(info.id, seasonIndex, episodeIndex);
+                : provider.showUrl(info.id, seasonNumber, episodeNumber);
         }
 
         video.append(videoNoticeContainer);
@@ -230,7 +230,7 @@ function modal(info, recommendationImages) {
         }
     }
 
-    function showSeason(season) {
+    function showSeason(season, dontScroll) {
         const isActive = season.classList.contains("active");
         hideSeasons();
 
@@ -239,7 +239,7 @@ function modal(info, recommendationImages) {
 
             if (icon)  icon.className = "icon icon-arrow-up";
             season.classList.add("active");
-            season.scrollIntoView({ block: "start" });
+            if (!dontScroll) season.scrollIntoView({ block: "start" });
         }
     }
 
@@ -261,8 +261,8 @@ function modal(info, recommendationImages) {
             changeHeaderText(info.title);
             document.title = info.title;
         } else {
-            changeHeaderText(`${info.title} <span class="info">S${seasonIndex} E${episodeIndex}</span>`);
-            document.title = `${info.title} (S${seasonIndex} E${episodeIndex})`;
+            changeHeaderText(`${info.title} <span class="info">S${seasonNumber} E${episodeNumber}</span>`);
+            document.title = `${info.title} (S${seasonNumber} E${episodeNumber})`;
         }
     }
 
@@ -270,12 +270,73 @@ function modal(info, recommendationImages) {
         iframe.src = "";
         
         setTimeout(function () {
-            setLastPlayed(info.id, seasonIndex, episodeIndex);
+            setLastPlayed(info.id, seasonNumber, episodeNumber);
             checkCurrentlyPlaying();
 
             playVideo();
             iframe.scrollIntoView({ block: "end" });
         }, 100);
+    }
+
+    let playEpisodeCallbacks = [];
+
+    function playEpisode(sNumber, eNumber, episode) {
+        seasonNumber = sNumber;
+        episodeNumber = eNumber;
+
+        setEpisode(episode);
+        playSeries();
+
+        for (const callback of playEpisodeCallbacks) {
+            callback();
+        }
+    }
+
+    function getNextEpisode() {
+        const seasonIndex = info.seasons.findIndex((s) => s.number === seasonNumber);
+        if (seasonIndex === -1) return;
+
+        const episodeIndex = info.seasons[seasonIndex].episodes.findIndex((e) => e.number === episodeNumber);
+        if (episodeIndex === -1) return;
+
+        let nextSeasonIndex = seasonIndex;
+        let nextEpisodeIndex = episodeIndex + 1;
+
+        if (nextEpisodeIndex >= info.seasons[seasonIndex].episodes.length) {
+            nextSeasonIndex = seasonIndex + 1;
+            nextEpisodeIndex = 0;
+        }
+
+        if (nextSeasonIndex >= info.seasons.length) return;
+
+        const nextSeasonNumber = info.seasons[nextSeasonIndex].number;
+        const nextEpisodeNumber = info.seasons[nextSeasonIndex].episodes[nextEpisodeIndex].number;
+
+        return { s: nextSeasonNumber, e: nextEpisodeNumber, sIndex: nextSeasonIndex, eIndex: nextEpisodeIndex };
+    }
+
+    function getPreviousEpisode() {
+        const seasonIndex = info.seasons.findIndex((s) => s.number === seasonNumber);
+        if (seasonIndex === -1) return;
+
+        const episodeIndex = info.seasons[seasonIndex].episodes.findIndex((e) => e.number === episodeNumber);
+        if (episodeIndex === -1) return;
+
+        let nextSeasonIndex = seasonIndex;
+        let nextEpisodeIndex = episodeIndex - 1;
+
+        if (nextEpisodeIndex < 0) {
+            nextSeasonIndex = seasonIndex - 1;
+            if (!info.seasons[nextSeasonIndex]) return;
+
+            nextEpisodeIndex = info.seasons[nextSeasonIndex].episodes.length - 1;
+            if (!info.seasons[nextSeasonIndex].episodes[nextEpisodeIndex]) return;
+        }
+
+        const nextSeasonNumber = info.seasons[nextSeasonIndex].number;
+        const nextEpisodeNumber = info.seasons[nextSeasonIndex].episodes[nextEpisodeIndex].number;
+
+        return { s: nextSeasonNumber, e: nextEpisodeNumber, sIndex: nextSeasonIndex, eIndex: nextEpisodeIndex };
     }
 
     if (info.seasons && info.seasons.length > 0) {
@@ -288,14 +349,14 @@ function modal(info, recommendationImages) {
             const buttonIcon = document.createElement("i");
             const episodes = document.createElement("div");
 
-            card.className = season.number === seasonIndex ? "season-card active" : "season-card";
+            card.className = season.number === seasonNumber ? "season-card active" : "season-card";
             title.className = "season-title";
             name.className = "name";
             name.innerText = `Season ${season.numberPadded}`;
             amount.className = "amount";
             amount.innerText = `${season.episodes.length} episodes`;
             button.className = "button secondary icon-only";
-            buttonIcon.className = `icon icon-${season.number === seasonIndex ? "arrow-up" : "arrow-down"}`;
+            buttonIcon.className = `icon icon-${season.number === seasonNumber ? "arrow-up" : "arrow-down"}`;
 
             button.append(buttonIcon);
 
@@ -314,7 +375,7 @@ function modal(info, recommendationImages) {
                 const episodeLeft = document.createElement("div");
                 const episodeRight = document.createElement("div");
 
-                const episodeNumber = document.createElement("span");
+                const episodeNumberText = document.createElement("span");
                 const episodePreviewContainer = document.createElement("div");
                 const episodePreviewImage = document.createElement("img");
 
@@ -325,20 +386,16 @@ function modal(info, recommendationImages) {
                 const episodeTitleTimeText = document.createElement("span");
                 const episodeDescription = document.createElement("span");
 
-                episode.className = (season.number === seasonIndex && episodeInfo.number === episodeIndex) ? "episode active" : "episode";
+                episode.className = (season.number === seasonNumber && episodeInfo.number === episodeNumber) ? "episode active" : "episode";
                 episodeLeft.className = "episode-left";
                 episodeRight.className = "episode-right";
 
                 episode.addEventListener("click", function () {
-                    seasonIndex = season.number;
-                    episodeIndex = episodeInfo.number;
-
-                    setEpisode(episode);
-                    playSeries();
+                    playEpisode(season.number, episodeInfo.number, episode);
                 });
 
-                episodeNumber.className = "number";
-                episodeNumber.innerText = episodeInfo.numberPadded;
+                episodeNumberText.className = "number";
+                episodeNumberText.innerText = episodeInfo.numberPadded;
                 episodePreviewContainer.className = "preview";
                 episodePreviewImage.className = "image";
                 
@@ -371,7 +428,7 @@ function modal(info, recommendationImages) {
                     episodeTitle.append(episodeTitleTime);
                 }
 
-                episodeLeft.append(episodeNumber);
+                episodeLeft.append(episodeNumberText);
                 episodeLeft.append(episodePreviewContainer);
 
                 episodeRight.append(episodeTitle);
@@ -395,6 +452,63 @@ function modal(info, recommendationImages) {
         });
 
         seasons.append(seasonCards);
+
+        if (info.type === "tv") {
+            const showControl = document.createElement("div");
+            const buttonPrevious = document.createElement("div");
+            const buttonPreviousIcon = document.createElement("i");
+            const buttonNext = document.createElement("div");
+            const buttonNextIcon = document.createElement("i");
+    
+            showControl.className = "show-control";
+            buttonPrevious.className = getPreviousEpisode() ? "button secondary icon-only" : "button secondary icon-only inactive";
+            buttonPreviousIcon.className = "icon icon-arrow-left";
+            buttonNext.className = getNextEpisode() ? "button secondary icon-only" : "button secondary icon-only inactive";
+            buttonNextIcon.className = "icon icon-arrow-right";
+
+            function checkShowControl() {
+                const previous = getPreviousEpisode();
+                const next = getNextEpisode();
+
+                buttonPrevious.classList[previous ? "remove" : "add"]("inactive");
+                buttonNext.classList[next ? "remove" : "add"]("inactive");
+            }
+
+            playEpisodeCallbacks.push(checkShowControl);
+
+            function showControlChange(next) {
+                const episode = next ? getNextEpisode() : getPreviousEpisode();
+
+                if (episode) {
+                    const seasonCard = Array.from(seasonCards.children)[episode.sIndex];
+                    const seasonCardEpisodes = seasonCard ? seasonCard.querySelector(".episodes") : null;
+                    const episodeCard = seasonCardEpisodes ? Array.from(seasonCardEpisodes.children)[episode.eIndex] : null;
+
+                    if (episodeCard) {
+                        showSeason(seasonCard, true);
+                        playEpisode(episode.s, episode.e, episodeCard);
+                    }
+                }
+
+                checkShowControl();
+            }
+
+            buttonPrevious.addEventListener("click", function () {
+                showControlChange(false);
+            });
+
+            buttonNext.addEventListener("click", function () {
+                showControlChange(true);
+            });
+    
+            buttonPrevious.append(buttonPreviousIcon);
+            buttonNext.append(buttonNextIcon);
+    
+            showControl.append(buttonPrevious);
+            showControl.append(buttonNext);
+    
+            video.append(showControl);
+        }
     } else {
         seasons.append(notice.cloneNode(true));
     }
