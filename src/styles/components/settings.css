@@ -12,10 +12,6 @@
     margin-top: 2rem;
 }
 
-.section.settings .button:not(:first-child) {
-    margin-top: .5rem;
-}
-
 .section.settings .selection {
     display: flex;
     background-color: var(--dark);
@@ -63,4 +59,12 @@
 .section.settings .button.inactive {
     opacity: var(--dim-opacity);
     pointer-events: none;
+}
+
+.section.settings .buttons {
+    display: flex;
+    gap: var(--small-gap);
+
+    align-items: center;
+    flex-wrap: wrap;
 }

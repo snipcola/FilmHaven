@@ -3,4 +3,12 @@
         flex-direction: column;
         width: 100%;
     }
+
+    .section.settings .buttons {
+        flex-direction: column;
+    }
+
+    .section.settings .buttons .button {
+        width: 100%;
+    }
 }

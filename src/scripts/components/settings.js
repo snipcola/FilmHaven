@@ -18,6 +18,11 @@ export function initializeSettings() {
     const themeLabelText = document.createElement("span");
     const themesElem = document.createElement("div");
 
+    const presetsLabel = document.createElement("div");
+    const presetsLabelIcon = document.createElement("i");
+    const presetsLabelText = document.createElement("span");
+    const presetsElem = document.createElement("div");
+
     const providerLabel = document.createElement("div");
     const providerLabelIcon = document.createElement("i");
     const providerLabelText = document.createElement("span");
@@ -36,6 +41,7 @@ export function initializeSettings() {
     const dataLabel = document.createElement("div");
     const dataLabelIcon = document.createElement("i");
     const dataLabelText = document.createElement("span");
+    const dataButtons = document.createElement("div");
 
     const resetButton = document.createElement("div");
     const resetButtonIcon = document.createElement("i");
@@ -79,6 +85,52 @@ export function initializeSettings() {
     });
 
     themeCheck();
+
+    presetsLabel.className = "label";
+    presetsLabelIcon.className = "icon icon-list";
+    presetsLabelText.className = "text";
+    presetsLabelText.innerText = "Presets";
+    presetsElem.className = "selection";
+
+    presetsLabel.append(presetsLabelIcon);
+    presetsLabel.append(presetsLabelText);
+
+    ["Full", "Minimal"].forEach(function (presetName) {
+        const preset = document.createElement("div");
+
+        preset.innerText = presetName;
+        preset.addEventListener("click", function () {
+            if (presetName === "Full") {
+                setProvider("superembed");
+                
+                Object.keys(getSections()).forEach(function (sectionName) {
+                    setSection(sectionName, true);
+                });
+
+                Object.keys(getWatchSections()).forEach(function (watchSectionName) {
+                    setWatchSection(watchSectionName, true);
+                });
+            } else if (presetName === "Minimal") {
+                setProvider("vidsrc");
+
+                Object.keys(getSections()).forEach(function (sectionName) {
+                    setSection(sectionName, ["Search", "Continue"].includes(sectionName) ? true : false);
+                });
+
+                Object.keys(getWatchSections()).forEach(function (watchSectionName) {
+                    setWatchSection(watchSectionName, ["Video"].includes(watchSectionName) ? true : false);
+                });
+            }
+
+            providerCheck();
+            sectionsCheck();
+            watchSectionsCheck();
+
+            window.location.reload();
+        });
+
+        presetsElem.append(preset);
+    });
 
     providerLabel.className = "label";
     providerLabelIcon.className = "icon icon-tv";
@@ -173,6 +225,7 @@ export function initializeSettings() {
     dataLabelIcon.className = "icon icon-box";
     dataLabelText.className = "text";
     dataLabelText.innerText = "Data";
+    dataButtons.className = "buttons";
 
     dataLabel.append(dataLabelIcon);
     dataLabel.append(dataLabelText);
@@ -184,6 +237,7 @@ export function initializeSettings() {
 
     resetButton.append(resetButtonIcon);
     resetButton.append(resetButtonText);
+    dataButtons.append(resetButton);
 
     resetButton.addEventListener("click", function () {
         localStorage.clear();
@@ -200,6 +254,7 @@ export function initializeSettings() {
 
     clearContinueButton.append(clearContinueButtonIcon);
     clearContinueButton.append(clearContinueButtonText);
+    dataButtons.append(clearContinueButton);
 
     clearContinueButton.addEventListener("click", function () {
         resetContinueWatching();
@@ -220,6 +275,7 @@ export function initializeSettings() {
 
     clearLastWatched.append(clearLastWatchedIcon);
     clearLastWatched.append(clearLastWatchedText);
+    dataButtons.append(clearLastWatched);
 
     clearLastWatched.addEventListener("click", function () {
         resetLastPlayed();
@@ -235,6 +291,8 @@ export function initializeSettings() {
 
     section.append(themeLabel);
     section.append(themesElem);
+    section.append(presetsLabel);
+    section.append(presetsElem);
     section.append(providerLabel);
     section.append(providersElem);
     section.append(sectionsLabel);
@@ -242,7 +300,5 @@ export function initializeSettings() {
     section.append(watchSectionsLabel);
     section.append(watchSectionsElem);
     section.append(dataLabel);
-    section.append(resetButton);
-    section.append(clearContinueButton);
-    section.append(clearLastWatched);
+    section.append(dataButtons);
 }
