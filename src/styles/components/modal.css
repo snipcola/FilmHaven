@@ -92,10 +92,6 @@ body.modal-active .modal-container {
     gap: var(--small-padding);
 }
 
-.modal-header .text-container:has(.info.active) {
-    background-color: red;
-}
-
 .modal-header .text {
     white-space: nowrap;
     text-overflow: ellipsis;

@@ -16,6 +16,12 @@
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any maskable"
+        },
+        {
+            "src": "/assets/favicon-maskable-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ],
     "background_color": "#141414",
