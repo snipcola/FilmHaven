@@ -11,18 +11,17 @@
     border-radius: var(--border-radius);
     cursor: pointer;
 
-    transition: var(--transition-speed) background-color;
-    border: var(--small-border) solid var(--primary-light);
-
     box-sizing: border-box;
     user-select: none;
 
     width: fit-content;
     font-size: 0.9rem;
+
+    transition: var(--transition-speed) opacity;
 }
 
 .button:hover {
-    background-color: var(--primary-light);
+    opacity: var(--dim-opacity);
 }
 
 .button.icon-only {

@@ -8,9 +8,9 @@
 
 	$player_font = "Open+Sans";
 	$player_bg_color = "1A1A1A";
-	$player_font_color = "ebebeb";
-	$player_primary_color = "e43636";
-	$player_secondary_color = "e43636";
+	$player_font_color = "fafafa";
+	$player_primary_color = "e12323";
+	$player_secondary_color = "e12323";
 	$player_loader = 3;
 	$preferred_server = 0;
 	$player_sources_toggle_type = 2;
@@ -19,6 +19,8 @@
 		$theme = $_GET["t"];
 
 		if ($theme === "light") {
+			$player_primary_color = "ee2020";
+			$player_secondary_color = "ee2020";
 			$player_bg_color = "d8d3d3";
 			$player_font_color = "adadad";
 		}
