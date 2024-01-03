@@ -1,4 +1,3 @@
-import { registerServiceWorker } from "./functions.js";
 import { initializeTheme } from "./components/theme.js";
 import { initializeCache } from "./cache.js";
 import { initializeModal } from "./components/modal.js";
@@ -34,8 +33,6 @@ function initializeBody() {
 }
 
 function initializeAll() {
-    registerServiceWorker("/sw.js");
-
     initializeTheme();
     initializeCache();
 
