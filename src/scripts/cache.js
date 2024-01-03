@@ -36,14 +36,15 @@ export async function preloadImages(images, onAmount, save) {
             if (imageExists(url) || url === undefined || url === null) {
                 incrementCount();
             } else {
-                const image = new Image();
+                const image = document.createElement("img");
 
                 image.addEventListener("load", incrementCount);
                 image.addEventListener("error", incrementCount);
 
                 image.src = url;
-                cache.append(image);
+                image.alt = "cache";
 
+                cache.append(image);
                 checkCount();
             }
         });
