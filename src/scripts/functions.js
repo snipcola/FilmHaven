@@ -1,3 +1,9 @@
+export function registerServiceWorker(path) {
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register(path);
+    }
+}
+
 export function convertMinutesToText(minutes) {
     if (minutes < 60) return `${minutes}m`;
     else {
