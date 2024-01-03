@@ -3,6 +3,7 @@
     display: flex;
 
     width: 100vw;
+    width: 100dvw;
 
     height: 100vh;
     height: 100dvh;
@@ -81,7 +82,7 @@ body.modal-active .modal-container {
     display: flex;
     gap: var(--small-gap);
     
-    font-size: 0.7rem;
+    font-size: var(--min-font);
 }
 
 .modal-header .text-container {
@@ -91,12 +92,23 @@ body.modal-active .modal-container {
     gap: var(--small-padding);
 }
 
+.modal-header .text-container:has(.info.active) {
+    background-color: red;
+}
+
 .modal-header .text {
     white-space: nowrap;
     text-overflow: ellipsis;
 
+    max-width: 40vw;
+    max-width: 40dvw;
+
     overflow: hidden;
-    max-width: 20vw;
+}
+
+.modal-header .text.tv {
+    max-width: 25vw;
+    max-width: 25dvw;
 }
 
 .modal-header .info {

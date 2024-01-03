@@ -22,15 +22,17 @@ function checkCallback() {
     callback = null;
 }
 
-export function changeHeaderText(label, info) {
+export function changeHeaderText(label, info, titleClass) {
     headerText.innerText = label;
+    headerText.className = titleClass ? `text ${titleClass}` : "text";
     headerInfo.innerText = info || "";
     headerInfo.className = info ? "info active" : "info";
 }
 
-export function setModal(label = "", info, newContent, icon = "times", fill = false) {
+export function setModal(label = "", info, newContent, icon = "times", fill = false, titleClass) {
     container.className = fill ? "modal-container fill" : "modal-container";
     headerText.innerText = label;
+    headerText.className = titleClass ? `text ${titleClass}` : "text";
     headerInfo.innerText = info || "";
     headerInfo.className = info ? "info active" : "info";
     headerButtonIcon.className = `icon icon-${icon}`;

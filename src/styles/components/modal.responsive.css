@@ -3,7 +3,12 @@
         padding: var(--small-padding);
     }
 
-    .modal-header .text-container {
-        font-size: .8rem;
+    .modal-header .text-container .text, .modal-header .text-container .info, .modal-header .header-buttons {
+        font-size: var(--small-font);
+    }
+
+    .modal-header .header-buttons .button {
+        padding: var(--small-padding);
+        width: 2.3rem;
     }
 }

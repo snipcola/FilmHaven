@@ -5,7 +5,7 @@
     }
 
     .card .title, .card .season-info, .card .footer {
-        font-size: 12px;
+        font-size: var(--min-font);
     }
 }
 

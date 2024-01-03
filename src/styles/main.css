@@ -29,7 +29,11 @@
 @import url(./components/modal.responsive.css);
 
 @import url(./components/genre.css);
+@import url(./components/genre.responsive.css);
+
 @import url(./components/search.css);
+@import url(./components/search.responsive.css);
+
 @import url(./components/notice.css);
 
 @import url(./components/watch.css);

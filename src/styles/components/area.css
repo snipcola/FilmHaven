@@ -35,7 +35,7 @@
     position: absolute;
     padding: var(--small-padding) var(--large-padding);
 
-    font-size: 0.9rem;
+    font-size: var(--large-font);
     top: calc(var(--small-padding) * -2);
 
     background-color: var(--primary);

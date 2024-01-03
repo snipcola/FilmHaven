@@ -15,7 +15,7 @@
     user-select: none;
 
     width: fit-content;
-    font-size: 0.9rem;
+    font-size: var(--large-font);
 
     transition: var(--transition-speed) opacity;
 }

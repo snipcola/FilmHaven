@@ -23,7 +23,7 @@
 .area .control .button {
     background-color: var(--light);
     border: var(--small-border) solid var(--lighter);
-    font-size: .75rem;
+    font-size: var(--min-font);
 }
 
 .area .control .button:hover {

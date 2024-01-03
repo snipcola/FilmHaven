@@ -63,7 +63,7 @@
 }
 
 .carousel .title {
-    font-size: 1.75rem;
+    font-size: calc(var(--max-font) * 1.25);
     font-weight: 600;
 
     margin-bottom: 0;

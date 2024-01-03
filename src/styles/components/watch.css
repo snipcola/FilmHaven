@@ -116,7 +116,7 @@
 }
 
 .watch .details .title, .watch .details .text {
-    font-size: 0.9rem;
+    font-size: var(--large-font);
     margin: 0;
 }
 
@@ -239,7 +239,7 @@
     border-radius: 5rem;
 
     width: fit-content;
-    font-size: 0.8rem;
+    font-size: var(--small-font);
 }
 
 .watch .details .rating .amount {
@@ -248,7 +248,7 @@
 
 .watch .details .review-content {
     opacity: var(--dim-opacity);
-    font-size: 0.9rem;
+    font-size: var(--large-font);
 }
 
 .watch .details .details-card.misc .title:not(:first-child) {
@@ -275,7 +275,7 @@
     box-sizing: border-box;
 
     border-radius: var(--border-radius);
-    font-size: 0.9rem;
+    font-size: var(--large-font);
 }
 
 .watch .details .season-cards {
@@ -313,7 +313,7 @@
     width: 2rem;
     height: 2rem;
 
-    font-size: 0.8rem;
+    font-size: var(--small-font);
 }
 
 .watch .details .season-card .season-title .button .icon {
@@ -329,7 +329,7 @@
 }
 
 .watch .details .season-card .season-title .amount {
-    font-size: 0.8rem;
+    font-size: var(--small-font);
     opacity: var(--dim-opacity);
 }
 
@@ -375,7 +375,7 @@
 
 .watch .details .season-card .episodes .episode .number {
     font-weight: 500;
-    font-size: 1.25rem;
+    font-size: var(--max-font);
 
     opacity: var(--dim-opacity);
 }
@@ -459,7 +459,7 @@
 }
 
 .watch .details .season-card .episodes .episode .description {
-    font-size: 0.9rem;
+    font-size: var(--large-font);
 }
 
 .watch .details .season-card .episodes .episode .description, .watch .details .season-card .episodes .episode .episode-title .time .text, .watch .details .season-card .episodes .episode .episode-title .time .icon {

@@ -15,8 +15,10 @@ html {
     --small-padding: 10px;
     --large-padding: 20px;
 
-    --small-font: 0.8rem;
-    --large-font: 1.2rem;
+    --min-font: 13px;
+    --small-font: 14px;
+    --large-font: 15px;
+    --max-font: 17px;
 
     --footer-height: 4rem;
 }

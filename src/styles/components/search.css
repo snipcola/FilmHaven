@@ -29,7 +29,7 @@
     border: none;
     outline: none;
 
-    font-size: 1rem;
+    font-size: var(--large-font);
     color: var(--text);
 }
 

@@ -269,10 +269,10 @@ function modal(info, recommendationImages) {
 
     function checkCurrentlyPlaying() {
         if (info.type === "movie" || info.type === "tv" && !videoActive) {
-            changeHeaderText(info.title);
+            changeHeaderText(info.title, null, info.type);
             document.title = info.title;
         } else {
-            changeHeaderText(info.title, `S${seasonNumber} E${episodeNumber}`);
+            changeHeaderText(info.title, `S${seasonNumber} E${episodeNumber}`, info.type);
             document.title = `${info.title} (S${seasonNumber} E${episodeNumber})`;
         }
     }
@@ -938,7 +938,7 @@ function modal(info, recommendationImages) {
     if (videoActive) watch.append(video);
     if ((left.childElementCount + right.childElementCount) !== 0) watch.append(details);
 
-    setModal(info.title, null, watch, "times", true);
+    setModal(info.title, null, watch, "times", true, info.type);
     checkCurrentlyPlaying();
     showModal(cleanup);
 }

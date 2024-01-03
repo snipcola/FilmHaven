@@ -61,7 +61,7 @@
 }
 
 .card .play .icon {
-    font-size: 2rem;
+    font-size: var(--max-font);
 }
 
 .card:hover .play {
@@ -108,7 +108,7 @@
     gap: var(--small-gap);
 
     justify-content: space-between;
-    font-size: 14px;
+    font-size: var(--small-font);
 }
 
 .card .footer > div, .card .title, .watch .rating {
@@ -131,7 +131,7 @@
 }
 
 .card .title {
-    font-size: 0.9rem;
+    font-size: var(--large-font);
 }
 
 .card .footer .text, .card .footer .icon, .watch .rating .rating-text {
