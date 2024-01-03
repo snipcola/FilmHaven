@@ -2,12 +2,10 @@
     .card .footer {
         flex-direction: column;
         gap: calc(var(--small-gap) / 3);
-        
-        font-size: 0.7rem;
     }
 
-    .card .title, .card .season-info {
-        font-size: 0.8rem;
+    .card .title, .card .season-info, .card .footer {
+        font-size: 12px;
     }
 }
 
@@ -18,13 +16,5 @@
 
     .card .image {
         max-height: 25rem;
-    }
-
-    .card .footer {
-        font-size: 0.6rem;
-    }
-
-    .card .title, .card .season-info {
-        font-size: 0.7rem;
     }
 }

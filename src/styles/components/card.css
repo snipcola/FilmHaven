@@ -108,7 +108,7 @@
     gap: var(--small-gap);
 
     justify-content: space-between;
-    font-size: 0.8rem;
+    font-size: 14px;
 }
 
 .card .footer > div, .card .title, .watch .rating {
