@@ -31,11 +31,13 @@ export const config = {
         links: [
             {
                 icon: "youtube",
-                url: "https://youtube.com/snipcola"
+                url: "https://youtube.com/snipcola",
+                label: "YouTube"
             },
             {
                 icon: "github",
-                url: "https://github.com/snipcola"
+                url: "https://github.com/snipcola",
+                label: "GitHub"
             }
         ]
     },

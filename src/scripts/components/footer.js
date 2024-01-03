@@ -21,6 +21,7 @@ export function initializeFooter(element) {
         link.className = "link";
         link.href = item.url;
         link.target = "_blank";
+        link.ariaLabel = item.label;
         linkIcon.className = `icon icon-${item.icon}`;
 
         link.append(linkIcon);

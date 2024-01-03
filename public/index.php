@@ -60,6 +60,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <title><?= isset($ogTitle) ? $ogTitle : "FilmHaven" ?></title>
+        <meta name="description" content="<?= isset($ogDescription) ? $ogDescription : "A catalog of thousands of movies & shows, at your fingertips." ?>">
         <meta property="og:title" content="<?= isset($ogTitle) ? $ogTitle : "FilmHaven" ?>">
         <meta property="og:description" content="<?= isset($ogDescription) ? $ogDescription : "A catalog of thousands of movies & shows, at your fingertips." ?>">
         <meta property="og:image" content="<?= isset($ogImage) ? $ogImage : "" ?>">
