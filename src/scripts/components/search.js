@@ -96,6 +96,7 @@ function initializeSearch(area, type, placeholder) {
         card.className = "card";
         image.className = "image";
         image.src = info.image;
+        image.alt = info.title;
         title.className = "title";
 
         card.addEventListener("click", function () {

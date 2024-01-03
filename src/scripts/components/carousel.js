@@ -86,6 +86,7 @@ function initializeCarousel(carousel, slides) {
         };
 
         image.src = slide.backdrop;
+        image.alt = slide.title;
         title.innerText = slide.title;
         description.innerText = slide.description;
 

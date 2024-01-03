@@ -13,6 +13,7 @@ async function format(item, type) {
             .filter((p) => p.name && p.profile_path)
             .map(function (person) {
                 return {
+                    name: person.name,
                     image: getImageUrl(person.profile_path, "cast"),
                     url: getSearchUrl(person.name)
                 };

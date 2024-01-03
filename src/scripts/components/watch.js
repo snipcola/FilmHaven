@@ -427,6 +427,10 @@ function modal(info, recommendationImages) {
                 if (episodeInfo.image) {
                     episodePreviewImage.src = episodeInfo.image;
                 }
+
+                if (episodeInfo.name) {
+                    episodePreviewImage.alt = episodeInfo.name;
+                }
                 
                 episodePreviewContainer.append(episodePreviewImage);
 
@@ -596,9 +600,9 @@ function modal(info, recommendationImages) {
         cast.className = "cast-card";
         image.className = "image";
         image.src = info.image;
+        image.alt = info.name;
         
         cast.append(image);
-
         cast.addEventListener("click", function () {
             window.open(info.url);
         });

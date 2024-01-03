@@ -84,6 +84,7 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
         card.className = "card";
         image.className = "image";
         image.src = info.image;
+        image.alt = info.title;
         title.className = "title";
 
         if (info.type === "tv" && info.continue) {
