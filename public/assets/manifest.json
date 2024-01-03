@@ -1,0 +1,24 @@
+{
+    "name": "FilmHaven",
+    "icons": [
+        {
+            "src": "/assets/favicon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/favicon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/assets/favicon-maskable-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "background_color": "#141414",
+    "theme_color": "#e12323",
+    "display": "standalone"
+}

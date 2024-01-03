@@ -64,13 +64,15 @@
         <meta name="description" content="<?= isset($ogDescription) ? $ogDescription : "A catalog of thousands of movies & shows, at your fingertips." ?>">
         <meta property="og:title" content="<?= isset($ogTitle) ? $ogTitle : "FilmHaven" ?>">
         <meta property="og:description" content="<?= isset($ogDescription) ? $ogDescription : "A catalog of thousands of movies & shows, at your fingertips." ?>">
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#e12323">
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ee2020">
         <meta property="og:image" content="<?= isset($ogImage) ? $ogImage : "" ?>">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
-        <link rel="manifest" href="/assets/site.webmanifest">
+        <link rel="manifest" href="/assets/manifest.json">
         <link rel="stylesheet" href="<?= "/dist/{$manifest["styles.css"]}" ?>">
         <script src="<?= "/dist/{$manifest["main.js"]}" ?>" defer></script>
     </head>
