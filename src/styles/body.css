@@ -33,3 +33,7 @@ body > .container > .wrapper {
 body.modal-active {
     overflow: hidden;
 }
+
+img {
+    font-size: 0;
+}
