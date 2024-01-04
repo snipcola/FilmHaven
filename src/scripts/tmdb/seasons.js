@@ -24,7 +24,6 @@ function format(item) {
         return {
             number: item.season_number,
             numberPadded: item.season_number.toString().padStart(2, "0"),
-            amount: episodes.length,
             episodes
         };
     } else {

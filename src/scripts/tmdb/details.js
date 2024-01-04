@@ -39,14 +39,13 @@ async function format(item, type) {
             .filter((g) => g.name)
             .map((g) => g.name);
 
-        let seasons;
+        let seasons = [];
         
-        if (getWatchSection("Video") || getWatchSection("Seasons")) seasons = (await Promise.all((item.seasons || [])
-            .filter((s) => s.season_number > 0)
+        if (getWatchSection("Video") || getWatchSection("Seasons")) seasons = await Promise.all((item.seasons || [])
+            .filter((s) => s.season_number > 0 && s.episode_count > 0)
             .map(async function (season) {
                 return getSeason(item.id, season.season_number);
-            })))
-            .filter((s) => s.amount > 0);
+            }));
 
         const recommendations = sortByPopularity(item.recommendations?.results || [])
             .filter((r) => r.poster_path && r.media_type === type)
