@@ -156,6 +156,7 @@
 }
 
 .watch .details .control .button {
+    width: 2.6rem;
     border-radius: 50%;
 }
 
@@ -489,15 +490,15 @@
     right: calc(var(--small-padding) / 2);
     
     display: flex;
-    background-color: var(--dark);
+    background-color: var(--light);
 
-    padding: calc(var(--small-padding) / 2);
+    padding: calc(var(--small-padding) / 5);
     box-sizing: border-box;
 
-    border-radius: var(--border-radius);
-    gap: calc(var(--small-padding) / 2);
+    border-radius: 5rem;
+    gap: calc(var(--small-padding) / 5);
 
-    opacity: var(--dimmer-opacity);
+    opacity: calc(var(--dimmer-opacity) / 2);
     transition: var(--transition-speed) opacity;
 }
 
@@ -506,14 +507,10 @@
 }
 
 .watch .show-control .button {
-    background-color: var(--light);
+    width: 2.6rem;
+    border-radius: 50%;
 }
 
 .watch .show-control .button.inactive {
-    opacity: var(--dimmer-opacity);
-    pointer-events: none;
-}
-
-.watch .show-control .button:hover {
-    background-color: var(--lighter);
+    display: none;
 }
