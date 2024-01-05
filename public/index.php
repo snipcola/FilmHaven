@@ -64,9 +64,9 @@
         <meta name="description" content="<?= isset($ogDescription) ? $ogDescription : "A catalog of thousands of movies & shows, at your fingertips." ?>">
         <meta property="og:title" content="<?= isset($ogTitle) ? $ogTitle : "FilmHaven" ?>">
         <meta property="og:description" content="<?= isset($ogDescription) ? $ogDescription : "A catalog of thousands of movies & shows, at your fingertips." ?>">
+        <meta property="og:image" content="<?= isset($ogImage) ? $ogImage : "" ?>">
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0F0F0F">
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ece6e6">
-        <meta property="og:image" content="<?= isset($ogImage) ? $ogImage : "" ?>">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
