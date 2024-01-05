@@ -35,6 +35,10 @@ body.modal-active {
     overflow: hidden;
 }
 
+body.modal-active > .container {
+    user-select: none;
+}
+
 img {
     font-size: 0;
 }
