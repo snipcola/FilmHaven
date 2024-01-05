@@ -27,7 +27,7 @@ body > .container {
 }
 
 body > .container > .wrapper {
-    padding-bottom: calc(var(--footer-height) * 1.25);
+    padding-bottom: var(--footer-height);
 }
 
 body.modal-active {
