@@ -511,6 +511,6 @@
     border-radius: 50%;
 }
 
-.watch .show-control .button.inactive {
+.watch .show-control.inactive, .watch .show-control .button.inactive {
     display: none;
 }
