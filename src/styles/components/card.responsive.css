@@ -13,8 +13,4 @@
     .card {
         width: calc(50% - var(--small-padding));
     }
-
-    .card .image {
-        max-height: 25rem;
-    }
 }
