@@ -7,6 +7,7 @@ import { initializeFooter } from "./components/footer.js";
 import { initializeWatch } from "./components/watch.js";
 import { initializeCarousels } from "./components/carousel.js";
 import { initializeSearches } from "./components/search.js";
+import { initializeContinue } from "./components/continue.js";
 import { initializeGenres } from "./components/genres.js";
 import { initializeAreas } from "./components/area.js";
 import { initializeSettings } from "./components/settings.js";
@@ -47,6 +48,7 @@ function initializeAll() {
     else content.classList.add("no-carousel");
 
     if (getSection("Search")) initializeSearches();
+    if (getSection("Continue")) initializeContinue();
     if (getSection("Genres")) initializeGenres();
     initializeAreas();
 
