@@ -505,7 +505,7 @@ function modal(info, recommendationImages) {
             buttonPrevious.classList[previous ? "remove" : "add"]("inactive");
             buttonNext.classList[next ? "remove" : "add"]("inactive");
 
-            showControl.classList[(previous && next) ? "remove" : "add"]("inactive");
+            showControl.classList[(previous || next) ? "remove" : "add"]("inactive");
         }
 
         playEpisodeCallbacks.push(checkShowControl);
