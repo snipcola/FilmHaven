@@ -19,6 +19,8 @@
 
     box-sizing: border-box;
     transition: var(--transition-speed) opacity;
+
+    overflow: auto;
 }
 
 body.modal-active .modal-container {
@@ -38,8 +40,6 @@ body.modal-active .modal-container {
 
     background-color: var(--background);
     border-radius: var(--border-radius);
-
-    overflow: auto;
 }
 
 .modal-container.fill .modal {
