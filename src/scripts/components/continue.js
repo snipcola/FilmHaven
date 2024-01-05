@@ -1,6 +1,7 @@
 import { config } from "../config.js";
 import { initializeArea } from "./area.js";
 import { getContinueWatching } from "../store/continue.js";
+import { preloadImages } from "../cache.js";
 
 export function initializeContinue() {
     const desktop = window.innerWidth > config.area.split.max;
