@@ -1,5 +1,6 @@
 * {
     -webkit-tap-highlight-color: transparent;
+    -webkit-user-drag: none;
 }
 
 body {
