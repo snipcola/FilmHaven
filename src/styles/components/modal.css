@@ -89,7 +89,6 @@ body.modal-active .modal-container {
     align-items: center;
 
     gap: var(--small-padding);
-    user-select: none;
 }
 
 .modal-header .text {
