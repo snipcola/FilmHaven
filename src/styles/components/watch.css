@@ -126,7 +126,6 @@
     gap: var(--small-gap);
 
     align-items: center;
-    user-select: none;
 }
 
 .watch .details .title .text, .watch .details .title .icon {
@@ -244,10 +243,6 @@
     font-size: var(--small-font);
 }
 
-.watch .details .rating .amount {
-    user-select: none;
-}
-
 .watch .details .review-content {
     opacity: var(--dim-opacity);
     font-size: var(--large-font);
@@ -302,7 +297,6 @@
     align-items: center;
     
     gap: var(--small-gap);
-    user-select: none;
 }
 
 .watch .details .season-card .season-title .button {

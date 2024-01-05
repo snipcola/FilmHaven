@@ -1,5 +1,6 @@
 cache {
     position: absolute;
+    user-select: none;
 
     top: 0;
     left: 0;
