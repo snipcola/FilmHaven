@@ -11,15 +11,13 @@
     align-items: center;
     justify-content: center;
 
-    background-color: rgba(var(--light-rgb), .75);
-    margin-top: calc(var(--large-padding) * 4);
-
     opacity: 0;
     z-index: -10;
 
     box-sizing: border-box;
     transition: var(--transition-speed) opacity;
 
+    background-color: rgba(var(--light-rgb), .75);
     overflow: auto;
 }
 
