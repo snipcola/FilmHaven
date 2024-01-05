@@ -35,6 +35,7 @@
 
 .area.search .search .input::placeholder {
     opacity: var(--dim-opacity);
+    user-select: none;
 }
 
 .area.search .search .icon {

@@ -40,8 +40,6 @@
 
     background-color: var(--primary);
     border-radius: var(--border-radius);
-
-    user-select: none;
 }
 
 .area.minimal .label {

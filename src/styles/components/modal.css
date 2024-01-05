@@ -68,7 +68,6 @@ body.modal-active .modal-container {
     margin-right: var(--large-padding);
     
     background-color: var(--dark);
-    user-select: none;
 }
 
 .modal-container.fill .modal-header {
@@ -90,6 +89,7 @@ body.modal-active .modal-container {
     align-items: center;
 
     gap: var(--small-padding);
+    user-select: none;
 }
 
 .modal-header .text {
