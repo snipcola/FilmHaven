@@ -3,7 +3,7 @@ import { initializeArea } from "./area.js";
 import { getContinueWatching } from "../store/continue.js";
 import { preloadImages } from "../cache.js";
 
-export function initializeContinue() {
+export async function initializeContinue() {
     const desktop = window.innerWidth > config.area.split.max;
     const label = "Continue";
 
@@ -50,21 +50,21 @@ export function initializeContinue() {
         }
     }
 
-    function check() {
+    async function check() {
         const newContinueMovies = getContinueWatching("movie");
         const newContinueShows = getContinueWatching("tv");
 
         if (continueMovies.length === 0 && newContinueMovies.length > 0 || JSON.stringify(newContinueMovies) !== JSON.stringify(continueMovies)) {
             continueMovies = newContinueMovies;
-            initializeMovies();
+            await initializeMovies();
         }
 
         if (continueShows.length === 0 && newContinueMovies.length > 0 || JSON.stringify(newContinueShows) !== JSON.stringify(continueShows)) {
             continueShows = newContinueShows;
-            initializeShows();
+            await initializeShows();
         }
     }
 
-    check();
+    await check();
     setInterval(check, 500);
 }
