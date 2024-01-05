@@ -4,7 +4,6 @@ import { getQuery, onQueryChange, removeQuery } from "../query.js";
 import { setTitle } from "./header.js";
 
 let container;
-let modal;
 let headerText;
 let headerInfo;
 let buttons;
@@ -51,7 +50,7 @@ export function showModal(cb) {
     checkCallback();
     callback = cb;
 
-    modal.scrollTo({ top: 0 });
+    container.scrollTo({ top: 0 });
     document.body.classList.add("modal-active");
 }
 
@@ -108,7 +107,7 @@ function copyLink() {
 
 export function initializeModal() {
     container = document.createElement("div");
-    modal = document.createElement("div");
+    const modal = document.createElement("div");
 
     const header = document.createElement("div");
     const headerTextContainer = document.createElement("div");
