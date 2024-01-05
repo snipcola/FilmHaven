@@ -166,8 +166,8 @@ export const providers = {
 export const sections = {
     Carousel: true,
     Search: true,
-    Genres: true,
     Continue: true,
+    Genres: true,
     Trending: true,
     "Top-Rated": true,
     New: true
