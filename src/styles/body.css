@@ -28,6 +28,7 @@ body > .container {
 }
 
 body > .container > .wrapper {
+    margin-top: calc(var(--large-padding) * 4);
     padding-bottom: var(--footer-height);
 }
 

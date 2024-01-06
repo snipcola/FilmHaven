@@ -40,7 +40,7 @@ function initializeAll() {
     initializeModal();
     initializeBody();
 
-    initializeHeader(wrapper, content);
+    initializeHeader(container, content);
     initializeFooter(container);
     initializeWatch();
 
