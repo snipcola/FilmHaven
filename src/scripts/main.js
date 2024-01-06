@@ -14,7 +14,7 @@ import { initializeSettings } from "./components/settings.js";
 import { getSection } from "./store/sections.js";
 
 let container;
-let wrapper;
+let contentContainer;
 let content;
 
 function enableBody() {
@@ -23,13 +23,13 @@ function enableBody() {
 
 function initializeBody() {
     container = document.createElement("div");
-    wrapper = document.createElement("div");
-    content = initializeContent(wrapper);
+    contentContainer = document.createElement("div");
+    content = initializeContent(contentContainer);
 
     container.className = "container";
-    wrapper.className = "wrapper";
+    contentContainer.className = "content-container";
     
-    container.append(wrapper);
+    container.append(contentContainer);
     document.body.append(container);
 }
 

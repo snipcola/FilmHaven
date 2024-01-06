@@ -27,7 +27,7 @@ body > .container {
     min-height: calc(100dvh - (var(--large-padding) * 4));
 }
 
-body > .container > .wrapper {
+body > .container > .content-container {
     margin-top: calc(var(--large-padding) * 4);
     padding-bottom: var(--footer-height);
 }
