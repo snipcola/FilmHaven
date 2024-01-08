@@ -110,6 +110,7 @@ export const tmdb = {
         poster: "w342",
         backdrop: "w1280",
         cast: "w150_and_h150_face",
+        avatar: "w150_and_h150_face",
         episode: "w185"
     },
     trending: {

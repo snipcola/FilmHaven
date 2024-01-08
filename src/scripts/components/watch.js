@@ -672,6 +672,9 @@ function modal(info, recommendationImages) {
     function addReview(info) {
         const review = document.createElement("div");
         const title = document.createElement("div");
+        const titleContainer = document.createElement("div");
+        const titleAvatar = document.createElement("div");
+        const titleAvatarImage = document.createElement("img");
         const titleText = document.createElement("span");
 
         const rating = document.createElement("div");
@@ -682,6 +685,14 @@ function modal(info, recommendationImages) {
 
         review.className = "review-card";
         title.className = "review-title";
+        titleContainer.className = "title-container";
+
+        if (info.avatar) {
+            titleAvatar.className = "avatar";
+            titleAvatarImage.className = "image";
+            titleAvatarImage.src = info.avatar;
+        }
+
         titleText.className = "author";
         titleText.innerText = info.author;
 
@@ -704,7 +715,13 @@ function modal(info, recommendationImages) {
         rating.append(stars);
         rating.append(starsAmount);
 
-        title.append(titleText);
+        if (info.avatar) {
+            titleAvatar.append(titleAvatarImage);
+            titleContainer.append(titleAvatar);
+        }
+
+        titleContainer.append(titleText);
+        title.append(titleContainer);
         title.append(rating);
 
         content.className = "review-content";
@@ -887,6 +904,7 @@ function modal(info, recommendationImages) {
     function cleanup() {
         if (seasonsActive && info.seasons) unloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
         if (castActive && info.cast) unloadImages(info.cast.map((p) => p.image));
+        if (reviewsActive && info.reviews) unloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
         if (recommendationsActive && recommendationImages) unloadImages(recommendationImages, true);
     }
 
@@ -962,6 +980,7 @@ function initializeWatchModalCheck() {
 
                     if (info.seasons && getWatchSection("Seasons")) preloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
                     if (info.cast && getWatchSection("Cast")) preloadImages(info.cast.map((p) => p.image));
+                    if (info.reviews && getWatchSection("Reviews")) preloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
 
                     if (info.recommendations && getWatchSection("Recommendations")) {
                         recommendationImages = getNonCachedImages(info.recommendations.map((r) => r.image));

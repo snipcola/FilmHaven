@@ -235,6 +235,43 @@
     justify-content: space-between;
 }
 
+.watch .details .review-title .title-container {
+    display: flex;
+    gap: var(--small-gap);
+
+    align-items: center;
+}
+
+.watch .details .review-title .title-container .avatar {
+    display: flex;
+    position: relative;
+
+    align-items: center;
+    justify-content: center;
+
+    border: var(--small-border) solid var(--lighter);
+    box-sizing: border-box;
+
+    overflow: hidden;
+    border-radius: 5rem;
+    
+    background-color: var(--light);
+}
+
+.watch .details .review-title .title-container .avatar .image {
+    width: 1.75rem;
+    height: 1.75rem;
+
+    object-fit: cover;
+
+    user-select: none;
+    pointer-events: none;
+}
+
+.watch .details .review-title .title-container .avatar .image[src=""], .watch .details .review-title .title-container .avatar .image[src="null"], .watch .details .review-title .title-container .avatar .image:not([src]) {
+    opacity: 0;
+}
+
 .watch .details .rating {
     background-color: var(--light);
     border-radius: 5rem;

@@ -29,6 +29,7 @@ async function format(item, type) {
 
                 return {
                     author: review.author,
+                    avatar: review.author_details?.avatar_path ? getImageUrl(review.author_details.avatar_path, "avatar") : null,
                     content,
                     rating: Math.round(review.author_details.rating / 2).toString(),
                     url: review.url
