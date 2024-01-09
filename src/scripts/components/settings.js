@@ -100,9 +100,7 @@ export function initializeSettings() {
 
         preset.innerText = presetName;
         preset.addEventListener("click", function () {
-            if (presetName === "Full") {
-                setProvider("superembed");
-                
+            if (presetName === "Full") {                
                 Object.keys(getSections()).forEach(function (sectionName) {
                     setSection(sectionName, true);
                 });
@@ -111,8 +109,6 @@ export function initializeSettings() {
                     setWatchSection(watchSectionName, true);
                 });
             } else if (presetName === "Minimal") {
-                setProvider("vidsrc");
-
                 Object.keys(getSections()).forEach(function (sectionName) {
                     setSection(sectionName, ["Search", "Continue"].includes(sectionName) ? true : false);
                 });

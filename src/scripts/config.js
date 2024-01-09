@@ -143,6 +143,15 @@ export const themes = {
 };
 
 export const providers = {
+    vidsrc: {
+        name: "VidSrc",
+        movieUrl: function (id) {
+            return `https://vidsrc.to/embed/movie/${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
+        }
+    },
     superembed: {
         name: "SuperEmbed",
         supportsThemes: true,
@@ -151,15 +160,6 @@ export const providers = {
         },
         showUrl: function (id, season, episode, theme) {
             return `/providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
-        }
-    },
-    vidsrc: {
-        name: "VidSrc",
-        movieUrl: function (id) {
-            return `https://vidsrc.to/embed/movie/${id}`;
-        },
-        showUrl: function (id, season, episode) {
-            return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
         }
     }
 };
