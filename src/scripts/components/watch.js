@@ -184,11 +184,10 @@ function modal(info, recommendationImages) {
         videoNoticeText.innerText = "Content loading";
         iframe.classList.remove("active");
 
-        const providerName = getProvider();
-        const provider = providers[providerName];
-        video.className = `video ${providerName}`;
+        const provider = providers[getProvider()];
+        const supportsThemes = provider.supportsThemes;
 
-        if (provider.supportsThemes) {
+        if (supportsThemes) {
             const theme = getThemeAbsolute();
 
             iframe.src = info.type === "movie"
@@ -200,6 +199,7 @@ function modal(info, recommendationImages) {
                 : provider.showUrl(info.id, seasonNumber, episodeNumber);
         }
 
+        video.classList[supportsThemes ? "add" : "remove"]("theme");
         videoNoticeContainer.classList.add("active");
 
         iframe.addEventListener("load", function () {

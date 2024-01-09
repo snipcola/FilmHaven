@@ -161,6 +161,24 @@ export const providers = {
         showUrl: function (id, season, episode, theme) {
             return `/providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
         }
+    },
+    moviesapi: {
+        name: "MoviesApi",
+        movieUrl: function (id) {
+            return `https://moviesapi.club/movie/${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
+        }
+    },
+    smashystream: {
+        name: "SmashyStream",
+        movieUrl: function (id) {
+            return `https://embed.smashystream.com/playere.php?tmdb=${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://embed.smashystream.com/playere.php?tmdb=${id}&season=${season}&episode=${episode}`;
+        } 
     }
 };
 

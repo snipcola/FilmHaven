@@ -15,7 +15,7 @@
     user-select: none;
 }
 
-.watch .video.superembed {
+.watch .video.theme {
     background-color: var(--light);
     border: var(--small-border) solid var(--lighter);
 }
@@ -54,7 +54,7 @@
     margin: 0;
 }
 
-.watch .video.superembed .video-notice .notice {
+.watch .video.theme .video-notice .notice {
     background-color: var(--dark);
 }
 
