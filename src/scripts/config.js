@@ -163,7 +163,7 @@ export const providers = {
         }
     },
     moviesapi: {
-        name: "MoviesApi",
+        name: "MoviesAPI",
         movieUrl: function (id) {
             return `https://moviesapi.club/movie/${id}`;
         },
