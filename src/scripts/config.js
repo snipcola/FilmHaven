@@ -143,6 +143,15 @@ export const themes = {
 };
 
 export const providers = {
+    moviesapi: {
+        name: "MoviesAPI",
+        movieUrl: function (id) {
+            return `https://moviesapi.club/movie/${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
+        }
+    },
     vidsrc: {
         name: "VidSrc",
         movieUrl: function (id) {
@@ -160,15 +169,6 @@ export const providers = {
         },
         showUrl: function (id, season, episode, theme) {
             return `/providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
-        }
-    },
-    moviesapi: {
-        name: "MoviesAPI",
-        movieUrl: function (id) {
-            return `https://moviesapi.club/movie/${id}`;
-        },
-        showUrl: function (id, season, episode) {
-            return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
         }
     },
     smashystream: {
