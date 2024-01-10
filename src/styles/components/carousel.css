@@ -21,6 +21,8 @@
 
     height: 65vh;
     height: 65dvh;
+
+    max-height: calc(var(--max-width) / 1.5);
 }
 
 .carousel .image[src=""], .carousel .image[src="null"], .carousel .image:not([src]) {

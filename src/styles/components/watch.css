@@ -6,6 +6,8 @@
     height: calc(100dvh - 12.85rem);
     
     width: 100%;
+    max-height: var(--max-width);
+
     mask-image: -webkit-radial-gradient(var(--light), var(--dark));
 
     overflow: hidden;
