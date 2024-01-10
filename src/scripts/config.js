@@ -152,7 +152,7 @@ export const providers = {
             return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
         }
     },
-    vidsrcto: {
+    "vidsrc.to": {
         name: "VidSrc.to",
         movieUrl: function (id) {
             return `https://vidsrc.to/embed/movie/${id}`;
@@ -161,7 +161,7 @@ export const providers = {
             return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
         }
     },
-    vidsrcme: {
+    "vidsrc.me": {
         name: "VidSrc.me",
         movieUrl: function (id) {
             return `https://vidsrc.me/embed/movie?tmdb=${id}`;
