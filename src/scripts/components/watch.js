@@ -131,6 +131,11 @@ function modal(info, recommendationImages) {
     const releasedTitleText = document.createElement("span");
     const releasedText = document.createElement("p");
 
+    const languageTitle = document.createElement("div");
+    const languageTitleIcon = document.createElement("i");
+    const languageTitleText = document.createElement("span");
+    const languageText = document.createElement("p");
+
     const ratingTitle = document.createElement("div");
     const ratingTitleIcon = document.createElement("i");
     const ratingTitleText = document.createElement("span");
@@ -784,6 +789,23 @@ function modal(info, recommendationImages) {
 
     if (miscActive && info.date) {
         misc.append(releasedText);
+    } else {
+        misc.append(notice.cloneNode(true));
+    }
+
+    languageTitle.className = "title";
+    languageTitleIcon.className = "icon icon-language";
+    languageTitleText.className = "text";
+    languageTitleText.innerText = "Language";
+    languageText.className = "text";
+    languageText.innerText = info.language;
+
+    languageTitle.append(languageTitleIcon);
+    languageTitle.append(languageTitleText);
+    misc.append(languageTitle);
+
+    if (miscActive && info.language) {
+        misc.append(languageText);
     } else {
         misc.append(notice.cloneNode(true));
     }

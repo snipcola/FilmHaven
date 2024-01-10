@@ -59,7 +59,7 @@ async function format(item, type) {
                     image: getImageUrl(recommendation.poster_path, "poster"),
                 };
             });
-
+        
         return {
             id: item.id?.toString(),
             type,
@@ -67,6 +67,7 @@ async function format(item, type) {
             description: item.overview || item.description,
             image: getImageUrl(item.poster_path, "poster"),
             date: dateString ? date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : null,
+            language: item.spoken_languages?.find((l) => l?.iso_639_1 === item.original_language)?.english_name,
             rating: Math.round(item.vote_average / 2).toString(),
             stars: shortenNumber(item.vote_count, 1),
             cast,

@@ -90,12 +90,8 @@
     content: "\f0c0";
 }
 
-.icon-chain:before {
-    content: "\f0c1";
-}
-
 .icon-link:before {
-content: "\f0c1";
+    content: "\f0c1";
 }
 
 .icon-calendar:before {
@@ -136,4 +132,8 @@ content: "\f0c1";
 
 .icon-keyboard:before {
     content: "\f11c";
+}
+
+.icon-language:before {
+    content: "\f1ab";
 }
