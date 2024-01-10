@@ -152,13 +152,22 @@ export const providers = {
             return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
         }
     },
-    vidsrc: {
-        name: "VidSrc",
+    vidsrcto: {
+        name: "VidSrc.to",
         movieUrl: function (id) {
             return `https://vidsrc.to/embed/movie/${id}`;
         },
         showUrl: function (id, season, episode) {
             return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
+        }
+    },
+    vidsrcme: {
+        name: "VidSrc.me",
+        movieUrl: function (id) {
+            return `https://vidsrc.me/embed/movie?tmdb=${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
         }
     },
     superembed: {
