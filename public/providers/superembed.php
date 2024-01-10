@@ -59,9 +59,9 @@
 		} else {
 			// Fallback
 			if (isset($_GET["s"]) && isset($_GET["e"])) {
-				$location = "https://vidsrc.to/embed/tv/{$id}/{$season}/{$episode}";
+				$location = "https://moviesapi.club/tv/{$id}-{$season}-{$episode}";
 			} else {
-				$location = "https://vidsrc.to/embed/movie/{$id}";
+				$location = "https://moviesapi.club/movie/{$id}";
 			}
 		}
 
