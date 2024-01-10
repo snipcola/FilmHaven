@@ -458,6 +458,11 @@
     opacity: 0;
 }
 
+.watch .details .season-card .episodes .episode .preview .notice {
+    position: absolute;
+    background-color: var(--light);
+}
+
 .watch .details .season-card .episodes .episode .episode-title {
     display: flex;
     gap: var(--small-gap);

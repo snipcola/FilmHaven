@@ -431,6 +431,8 @@ function modal(info, recommendationImages) {
                 
                 if (episodeInfo.image) {
                     episodePreviewImage.src = episodeInfo.image;
+                } else {
+                    episodePreviewContainer.append(notice.cloneNode(true));
                 }
 
                 if (episodeInfo.name) {
