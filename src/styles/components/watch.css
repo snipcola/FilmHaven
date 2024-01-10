@@ -534,7 +534,7 @@
     padding: calc(var(--small-padding) / 5);
     box-sizing: border-box;
 
-    border-radius: 5rem;
+    border-radius: var(--border-radius);
     gap: calc(var(--small-padding) / 5);
 
     opacity: calc(var(--dimmer-opacity) / 2);
@@ -546,8 +546,8 @@
 }
 
 .watch .show-control .button {
-    width: 2.6rem;
-    border-radius: 50%;
+    font-size: var(--small-font);
+    width: 2.4rem;
 }
 
 .watch .show-control.inactive, .watch .show-control .button.inactive {
