@@ -69,12 +69,12 @@
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ece6e6">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
-        <link rel="manifest" href="/assets/manifest.json">
-        <link rel="stylesheet" href="<?= "/dist/{$manifest["styles.css"]}" ?>">
-        <script src="<?= "/dist/{$manifest["main.js"]}" ?>" defer></script>
+        <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+        <link rel="manifest" href="./assets/manifest.json">
+        <link rel="stylesheet" href="<?= "./dist/{$manifest["styles.css"]}" ?>">
+        <script src="<?= "./dist/{$manifest["main.js"]}" ?>" defer></script>
     </head>
     <body></body>
 </html>
