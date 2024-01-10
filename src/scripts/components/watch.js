@@ -251,7 +251,7 @@ function modal(info, recommendationImages) {
         hideSeasons();
 
         if (!isActive) {
-            const icon = season.querySelector(".fa-arrow-down");
+            const icon = season.querySelector(".icon-arrow-down");
 
             if (icon) icon.className = "icon icon-arrow-up";
             season.classList.add("active");
@@ -532,7 +532,7 @@ function modal(info, recommendationImages) {
                         hideSeasons();
                         seasonCard.classList.add("active");
 
-                        const seasonCardIcon = seasonCard.querySelector(".fa-arrow-down");
+                        const seasonCardIcon = seasonCard.querySelector(".icon-arrow-down");
                         if (seasonCardIcon) seasonCardIcon.className = "icon icon-arrow-up";
                     }
                 } else {
