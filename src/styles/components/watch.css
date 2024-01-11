@@ -4,10 +4,11 @@
 
     height: calc(100vh - 12.85rem);
     height: calc(100dvh - 12.85rem);
+
+    max-height: var(--max-width);
+    min-height: calc(var(--max-width) / 25);
     
     width: 100%;
-    max-height: var(--max-width);
-
     mask-image: -webkit-radial-gradient(var(--light), var(--dark));
 
     overflow: hidden;
