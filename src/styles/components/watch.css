@@ -290,6 +290,7 @@
 
 .watch .details .details-card.misc {
     flex-direction: row;
+    gap: var(--large-gap);
 }
 
 .watch .details .details-card.misc > div {
