@@ -320,7 +320,7 @@
     background-color: var(--dark);
     border: var(--small-border) solid var(--lighter);
 
-    padding: calc(var(--small-padding) / 2);
+    padding: calc(var(--small-padding) / 1.5);
     box-sizing: border-box;
 
     border-radius: var(--border-radius);
