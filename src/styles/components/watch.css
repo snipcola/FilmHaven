@@ -288,6 +288,17 @@
     font-size: var(--large-font);
 }
 
+.watch .details .details-card.misc {
+    flex-direction: row;
+}
+
+.watch .details .details-card.misc > div {
+    display: flex;
+    flex-direction: column;
+
+    gap: var(--small-gap);
+}
+
 .watch .details .details-card.misc .title:not(:first-child) {
     margin-top: var(--large-padding);
 }

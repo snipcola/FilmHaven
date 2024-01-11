@@ -126,6 +126,9 @@ function modal(info, recommendationImages) {
     const reviewCards = document.createElement("div");
 
     const misc = document.createElement("div");
+    const miscLeft = document.createElement("div");
+    const miscRight = document.createElement("div");
+
     const releasedTitle = document.createElement("div");
     const releasedTitleIcon = document.createElement("i");
     const releasedTitleText = document.createElement("span");
@@ -778,6 +781,9 @@ function modal(info, recommendationImages) {
     }
 
     misc.className = "details-card misc";
+    misc.append(miscLeft);
+    misc.append(miscRight);
+    
     releasedTitle.className = "title";
     releasedTitleIcon.className = "icon icon-calendar";
     releasedTitleText.className = "text";
@@ -787,12 +793,12 @@ function modal(info, recommendationImages) {
 
     releasedTitle.append(releasedTitleIcon);
     releasedTitle.append(releasedTitleText);
-    misc.append(releasedTitle);
+    miscLeft.append(releasedTitle);
 
     if (miscActive && info.date) {
-        misc.append(releasedText);
+        miscLeft.append(releasedText);
     } else {
-        misc.append(notice.cloneNode(true));
+        miscLeft.append(notice.cloneNode(true));
     }
 
     languageTitle.className = "title";
@@ -804,12 +810,12 @@ function modal(info, recommendationImages) {
 
     languageTitle.append(languageTitleIcon);
     languageTitle.append(languageTitleText);
-    misc.append(languageTitle);
+    miscRight.append(languageTitle);
 
     if (miscActive && info.language) {
-        misc.append(languageText);
+        miscRight.append(languageText);
     } else {
-        misc.append(notice.cloneNode(true));
+        miscRight.append(notice.cloneNode(true));
     }
 
     ratingTitle.className = "title";
@@ -819,7 +825,7 @@ function modal(info, recommendationImages) {
 
     ratingTitle.append(ratingTitleIcon);
     ratingTitle.append(ratingTitleText);
-    misc.append(ratingTitle);
+    miscLeft.append(ratingTitle);
 
     ratingContainer.className = "rating";
     ratingStars.className = "stars";
@@ -841,9 +847,9 @@ function modal(info, recommendationImages) {
     ratingContainer.append(ratingStarsAmount);
 
     if (miscActive && info.rating && info.stars) {
-        misc.append(ratingContainer);
+        miscLeft.append(ratingContainer);
     } else {
-        misc.append(notice.cloneNode(true));
+        miscLeft.append(notice.cloneNode(true));
     }
 
     genresTitle.className = "title";
@@ -854,7 +860,7 @@ function modal(info, recommendationImages) {
 
     genresTitle.append(genresTitleIcon);
     genresTitle.append(genresTitleText);
-    misc.append(genresTitle);
+    miscRight.append(genresTitle);
 
     if (miscActive && info.genres && info.genres.length > 0) {
         for (const name of info.genres) {
@@ -866,9 +872,9 @@ function modal(info, recommendationImages) {
             genres.append(genre);
         }
         
-        misc.append(genres);
+        miscRight.append(genres);
     } else {
-        misc.append(notice.cloneNode(true));
+        miscRight.append(notice.cloneNode(true));
     }
 
     recommendations.className = "details-card";
