@@ -783,23 +783,6 @@ function modal(info, recommendationImages) {
     misc.className = "details-card misc";
     misc.append(miscLeft);
     misc.append(miscRight);
-    
-    releasedTitle.className = "title";
-    releasedTitleIcon.className = "icon icon-calendar";
-    releasedTitleText.className = "text";
-    releasedTitleText.innerText = info.type === "movie" ? "Released" : "First Aired";
-    releasedText.className = "text";
-    releasedText.innerText = info.date;
-
-    releasedTitle.append(releasedTitleIcon);
-    releasedTitle.append(releasedTitleText);
-    miscLeft.append(releasedTitle);
-
-    if (miscActive && info.date) {
-        miscLeft.append(releasedText);
-    } else {
-        miscLeft.append(notice.cloneNode(true));
-    }
 
     languageTitle.className = "title";
     languageTitleIcon.className = "icon icon-language";
@@ -810,10 +793,27 @@ function modal(info, recommendationImages) {
 
     languageTitle.append(languageTitleIcon);
     languageTitle.append(languageTitleText);
-    miscRight.append(languageTitle);
+    miscLeft.append(languageTitle);
 
     if (miscActive && info.language) {
-        miscRight.append(languageText);
+        miscLeft.append(languageText);
+    } else {
+        miscLeft.append(notice.cloneNode(true));
+    }
+    
+    releasedTitle.className = "title";
+    releasedTitleIcon.className = "icon icon-calendar";
+    releasedTitleText.className = "text";
+    releasedTitleText.innerText = info.type === "movie" ? "Released" : "First Aired";
+    releasedText.className = "text";
+    releasedText.innerText = info.date;
+
+    releasedTitle.append(releasedTitleIcon);
+    releasedTitle.append(releasedTitleText);
+    miscRight.append(releasedTitle);
+
+    if (miscActive && info.date) {
+        miscRight.append(releasedText);
     } else {
         miscRight.append(notice.cloneNode(true));
     }
