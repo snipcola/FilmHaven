@@ -132,6 +132,7 @@
 }
 
 .card .title {
+    font-weight: 500;
     font-size: var(--large-font);
 }
 

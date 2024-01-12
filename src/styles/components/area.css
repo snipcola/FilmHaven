@@ -40,6 +40,8 @@
 
     background-color: var(--primary);
     border-radius: var(--border-radius);
+
+    font-weight: 500;
 }
 
 .area.minimal .label {

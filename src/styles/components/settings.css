@@ -6,6 +6,7 @@
     opacity: var(--dim-opacity);
 
     margin-bottom: 1rem;
+    font-weight: 500;
 }
 
 .section.settings .label:not(:first-child) {

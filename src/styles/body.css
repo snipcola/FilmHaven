@@ -5,6 +5,7 @@
 
 body {
     font-family: "Open Sans", sans-serif !important;
+    font-weight: 300;
     
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

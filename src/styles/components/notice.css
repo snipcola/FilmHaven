@@ -14,7 +14,7 @@
     background-color: var(--light);
     border-radius: var(--border-radius);
 
-    padding: var(--small-padding);
+    padding: calc(var(--small-padding) / 1.5);
     box-sizing: border-box;
 }
 

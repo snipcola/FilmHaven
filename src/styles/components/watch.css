@@ -128,6 +128,7 @@
     display: flex;
     gap: var(--small-gap);
 
+    font-weight: 500;
     align-items: center;
 }
 
@@ -236,6 +237,8 @@
 
     align-items: center;
     justify-content: space-between;
+
+    font-weight: 500;
 }
 
 .watch .details .review-title .title-container {
@@ -349,6 +352,7 @@
     align-items: center;
     
     gap: var(--small-gap);
+    font-weight: 500;
 }
 
 .watch .details .season-card .season-title .button {
@@ -488,6 +492,8 @@
 
     justify-content: space-between;
     align-items: center;
+
+    font-weight: 500;
 }
 
 .watch .details .season-card .episodes .episode .episode-title .name {
