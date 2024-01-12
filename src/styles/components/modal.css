@@ -87,6 +87,7 @@ body.modal-active .modal-container {
     align-items: center;
 
     gap: var(--small-padding);
+    font-weight: 500;
 }
 
 .modal-header .text {
