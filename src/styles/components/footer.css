@@ -33,6 +33,8 @@
 .footer-container .footer .copyright {
     opacity: var(--dim-opacity);
     user-select: none;
+
+    font-weight: 500;
 }
 
 .footer-container .footer .links {
