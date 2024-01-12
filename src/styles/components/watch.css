@@ -405,7 +405,7 @@
     pointer-events: none;
 }
 
-.watch .details .season-card .episodes .episode:not(.active) {
+.watch .details:not(.no-video) .season-card .episodes .episode:not(.active) {
     cursor: pointer;
 }
 

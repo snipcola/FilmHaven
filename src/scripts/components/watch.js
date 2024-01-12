@@ -276,12 +276,12 @@ function modal(info, recommendationImages) {
     }
 
     function checkCurrentlyPlaying() {
+        if (document.title !== info.title) document.title = info.title;
+        
         if (info.type === "movie" || info.type === "tv" && !videoActive) {
             changeHeaderText(info.title, null, info.type);
-            document.title = info.title;
         } else {
             changeHeaderText(info.title, `S${seasonNumber} E${episodeNumber}`, info.type);
-            document.title = `${info.title} (S${seasonNumber} E${episodeNumber})`;
         }
     }
 
