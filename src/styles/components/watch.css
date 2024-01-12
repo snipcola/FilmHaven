@@ -546,8 +546,8 @@
 .watch .show-control {
     position: absolute;
 
-    top: calc(var(--small-padding) / 2);
-    right: calc(var(--small-padding) / 2);
+    top: var(--small-padding);
+    right: var(--small-padding);
     
     display: flex;
     background-color: var(--light);
