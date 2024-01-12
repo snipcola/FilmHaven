@@ -153,7 +153,7 @@ function initializeGenreArea(area, initialSlides, type, failed) {
         genreIcon.className = "icon icon-arrow-right";
 
         genre.addEventListener("click", function () {
-            setQuery(config.query.modal, `g-${type}-${info.id}`);
+            setQuery(config.query.modal, `g-${type === "movie" ? "m" : "s"}-${info.id}`);
         });
 
         genre.append(genreText);
@@ -245,13 +245,13 @@ function initializeGenreModalCheck() {
             if (modalType === "g") {
                 hideModal(true);
                 
-                const info = type === "movie"
+                const info = type === "m"
                     ? (movieGenres || []).find((g) => g.id?.toString() === id)
                     : (showGenres || []).find((g) => g.id?.toString() === id);
 
                 if (info) {
-                    modal(info, type);
-                    document.title = `${type === "movie" ? "Movies" : "Shows"} - ${info.name}`;
+                    modal(info, type === "m" ? "movie" : "tv");
+                    document.title = `${type === "m" ? "Movies" : "Shows"} - ${info.name}`;
                 } else {
                     removeQuery(config.query.modal);
                 }
