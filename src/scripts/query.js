@@ -11,7 +11,10 @@ export function setQuery(key, value) {
         params.delete(key);
     }
 
-    window.history.replaceState({}, "", `${window.location.pathname}?${params.toString()}`);
+    const currentPath = `${window.location.pathname}${window.location.search}`;
+    const newPath = `${window.location.pathname}?${params.toString()}`;
+
+    if (currentPath !== newPath) window.history.pushState({}, "", newPath);
 }
 
 export function removeQuery(key) {
