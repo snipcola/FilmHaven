@@ -571,6 +571,11 @@
     width: 2.4rem;
 }
 
-.watch .show-control.inactive, .watch .show-control .button.inactive {
+.watch .show-control .button.inactive {
+    opacity: calc(var(--dimmer-opacity) / 2);
+    pointer-events: none;
+}
+
+.watch .show-control.inactive {
     display: none;
 }

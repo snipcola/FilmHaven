@@ -503,9 +503,9 @@ function modal(info, recommendationImages) {
         const buttonNextIcon = document.createElement("i");
 
         showControl.className = "show-control";
-        buttonPrevious.className = getPreviousEpisode() ? "button secondary icon-only" : "button secondary icon-only inactive";
+        buttonPrevious.className = "button secondary icon-only";
         buttonPreviousIcon.className = "icon icon-arrow-left";
-        buttonNext.className = getNextEpisode() ? "button secondary icon-only" : "button secondary icon-only inactive";
+        buttonNext.className = "button secondary icon-only";
         buttonNextIcon.className = "icon icon-arrow-right";
 
         function checkShowControl() {
@@ -519,6 +519,7 @@ function modal(info, recommendationImages) {
         }
 
         playEpisodeCallbacks.push(checkShowControl);
+        checkShowControl();
 
         function showControlChange(next) {
             const episode = next ? getNextEpisode() : getPreviousEpisode();
