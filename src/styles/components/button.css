@@ -20,10 +20,6 @@
     transition: var(--transition-speed) opacity;
 }
 
-.button:hover {
-    opacity: var(--dim-opacity);
-}
-
 .button.icon-only {
     padding: calc(var(--small-padding) * 1.25);
 }
@@ -33,6 +29,12 @@
     border: var(--small-border) solid var(--lighter);
 }
 
-.button.secondary:hover {
-    background-color: var(--light);
+@media (hover: hover) {
+    .button:hover {
+        opacity: var(--dim-opacity);
+    }
+    
+    .button.secondary:hover {
+        background-color: var(--light);
+    }
 }

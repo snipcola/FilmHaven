@@ -194,10 +194,6 @@
     opacity: 0;
 }
 
-.watch .details .cast-cards .cast-card:hover {
-    opacity: var(--dim-opacity);
-}
-
 .watch .details .review-cards {
     display: flex;
     gap: var(--small-gap);
@@ -225,10 +221,6 @@
     overflow: hidden;
 
     user-select: none;
-}
-
-.watch .details .review-cards .review-card:hover {
-    opacity: var(--dim-opacity);
 }
 
 .watch .details .review-title {
@@ -372,10 +364,6 @@
     opacity: var(--dim-opacity);
 }
 
-.watch .details .season-card .season-title .button:hover {
-    background-color: var(--lighter);
-}
-
 .watch .details .season-card .season-title .name {
     font-weight: 500;
 }
@@ -419,10 +407,6 @@
 
 .watch .details .season-card .episodes .episode:not(.active) {
     cursor: pointer;
-}
-
-.watch .details:not(.no-video) .season-card .episodes .episode:not(.active):hover {
-    opacity: var(--dim-opacity);
 }
 
 .watch .details .season-card .episodes .episode .number {
@@ -562,10 +546,6 @@
     transition: var(--transition-speed) opacity;
 }
 
-.watch .show-control:hover {
-    opacity: 100%;
-}
-
 .watch .show-control .button {
     font-size: var(--small-font);
     width: 2.4rem;
@@ -578,4 +558,26 @@
 
 .watch .show-control.inactive {
     display: none;
+}
+
+@media (hover: hover) {
+    .watch .details .cast-cards .cast-card:hover {
+        opacity: var(--dim-opacity);
+    }
+
+    .watch .details .review-cards .review-card:hover {
+        opacity: var(--dim-opacity);
+    }
+
+    .watch .details .season-card .season-title .button:hover {
+        background-color: var(--lighter);
+    }
+
+    .watch .details:not(.no-video) .season-card .episodes .episode:not(.active):hover {
+        opacity: var(--dim-opacity);
+    }
+
+    .watch .show-control:hover {
+        opacity: 100%;
+    }
 }

@@ -136,8 +136,10 @@ body.modal-active .modal-container {
     border: var(--small-border) solid var(--lighter);
 }
 
-.modal-header .button.secondary:hover {
-    background-color: var(--lighter);
+@media (hover: hover) {
+    .modal-header .button.secondary:hover {
+        background-color: var(--lighter);
+    }
 }
 
 .modal-content {

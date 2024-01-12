@@ -25,6 +25,8 @@
     box-sizing: border-box;
 }
 
-.area.genres .genres .genre:hover {
-    background-color: var(--lighter);
+@media (hover: hover) {
+    .area.genres .genres .genre:hover {
+        background-color: var(--lighter);
+    }
 }

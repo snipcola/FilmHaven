@@ -34,8 +34,10 @@
     overflow: hidden;
 }
 
-.card:hover {
-    background-color: var(--lighter);
+@media (hover: hover) {
+    .card:hover {
+        background-color: var(--lighter);
+    }
 }
 
 .card .play {

@@ -50,6 +50,8 @@
     opacity: var(--dim-opacity);
 }
 
-.footer-container .footer .links .link:hover {
-    opacity: 100%;
+@media (hover: hover) {
+    .footer-container .footer .links .link:hover {
+        opacity: 100%;
+    }
 }

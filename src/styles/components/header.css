@@ -86,9 +86,11 @@ body.modal-active .header-container .header .links {
     opacity: var(--dim-opacity);
 }
 
-.header-container .header .links .link:not(.active):hover {
-    background-color: var(--light);
-    opacity: 100%;
+@media (hover: hover) {
+    .header-container .header .links .link:not(.active):hover {
+        background-color: var(--light);
+        opacity: 100%;
+    }
 }
 
 .header-container .header .links .link .icon {

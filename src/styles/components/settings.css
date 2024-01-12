@@ -46,8 +46,10 @@
     cursor: pointer;
 }
 
-.section.settings .selection > div:not(.active):hover {
-    background-color: var(--light);
+@media (hover: hover) {
+    .section.settings .selection > div:not(.active):hover {
+        background-color: var(--light);
+    }
 }
 
 .section.settings .selection > div.active {
