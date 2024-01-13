@@ -99,6 +99,11 @@ function modal(info, recommendationImages) {
     const seasonsTitle = document.createElement("div");
     const seasonsTitleIcon = document.createElement("i");
     const seasonsTitleText = document.createElement("span");
+    const seasonsControl = document.createElement("div");
+    const seasonsPrevious = document.createElement("div");
+    const seasonsPreviousIcon = document.createElement("i");
+    const seasonsNext = document.createElement("div");
+    const seasonsNextIcon = document.createElement("i");
     const seasonCards = document.createElement("div");
 
     const description = document.createElement("div");
@@ -275,11 +280,22 @@ function modal(info, recommendationImages) {
     seasonsTitleIcon.className = "icon icon-list";
     seasonsTitleText.className = "text";
     seasonsTitleText.innerText = "Seasons";
+    seasonsControl.className = "control season-control";
+    seasonsPrevious.className = "button secondary icon-only previous";
+    seasonsPreviousIcon.className = "icon icon-arrow-left";
+    seasonsNext.className = "button secondary icon-only next";
+    seasonsNextIcon.className = "icon icon-arrow-right";
     seasonCards.className = "season-cards";
 
     seasonsTitle.append(seasonsTitleIcon);
     seasonsTitle.append(seasonsTitleText);
     seasons.append(seasonsTitle);
+
+    seasonsPrevious.append(seasonsPreviousIcon);
+    seasonsNext.append(seasonsNextIcon);
+
+    seasonsControl.append(seasonsPrevious);
+    seasonsControl.append(seasonsNext);
     
     function hideSeasons() {
         const seasons = seasonCards.querySelectorAll(".season-card.active");
@@ -330,19 +346,19 @@ function modal(info, recommendationImages) {
         }
     }
 
-    function playSeries(dontScroll) {
+    function playSeries() {
         setLastPlayed(info.id, seasonNumber, episodeNumber);
         checkCurrentlyPlaying();
 
         playVideo();
-        if (!dontScroll) video.scrollIntoView({ block: "end" });
+        video.scrollIntoView({ block: "end" });
     }
 
     let playEpisodeCallbacks = [];
     let playEpisodeLock = false;
     let playEpisodeEpisode;
 
-    function playEpisode(sNumber, eNumber, episode, dontScroll) {
+    function playEpisode(sNumber, eNumber, episode) {
         if (!videoActive) return;
 
         seasonNumber = sNumber;
@@ -362,7 +378,7 @@ function modal(info, recommendationImages) {
                 playEpisodeEpisode = null;
             }
 
-            playSeries(dontScroll);
+            playSeries();
 
             for (const callback of playEpisodeCallbacks) {
                 callback();
@@ -536,77 +552,59 @@ function modal(info, recommendationImages) {
         });
 
         seasons.append(seasonCards);
-    } else {
-        seasons.append(notice.cloneNode(true));
-    }
-
-    if (info.type === "tv" && videoActive) {
-        const showControl = document.createElement("div");
-        const buttonPrevious = document.createElement("div");
-        const buttonPreviousIcon = document.createElement("i");
-        const buttonNext = document.createElement("div");
-        const buttonNextIcon = document.createElement("i");
-
-        showControl.className = "show-control";
-        buttonPrevious.className = "button secondary icon-only";
-        buttonPreviousIcon.className = "icon icon-arrow-left";
-        buttonNext.className = "button secondary icon-only";
-        buttonNextIcon.className = "icon icon-arrow-right";
-
-        function checkShowControl() {
-            const previous = getPreviousEpisode();
-            const next = getNextEpisode();
-
-            buttonPrevious.classList[previous ? "remove" : "add"]("inactive");
-            buttonNext.classList[next ? "remove" : "add"]("inactive");
-
-            showControl.classList[(previous || next) ? "remove" : "add"]("inactive");
-        }
-
-        playEpisodeCallbacks.push(checkShowControl);
-        checkShowControl();
-
-        function showControlChange(next) {
-            const episode = next ? getNextEpisode() : getPreviousEpisode();
-
-            if (episode) {
-                if (seasonsActive) {
-                    const seasonCard = Array.from(seasonCards.children)[episode.sIndex];
-                    const seasonCardEpisodes = seasonCard ? seasonCard.querySelector(".episodes") : null;
-                    const episodeCard = seasonCardEpisodes ? Array.from(seasonCardEpisodes.children)[episode.eIndex] : null;
-
-                    if (episodeCard) {
-                        playEpisode(episode.s, episode.e, episodeCard, true);
-
-                        hideSeasons();
-                        seasonCard.classList.add("active");
-
-                        const seasonCardIcon = seasonCard.querySelector(".icon-arrow-down");
-                        if (seasonCardIcon) seasonCardIcon.className = "icon icon-arrow-up";
-                    }
-                } else {
-                    playEpisode(episode.s, episode.e, null, true);
-                }
+        
+        if (videoActive) {
+            function checkSeasonControl() {
+                const previous = getPreviousEpisode();
+                const next = getNextEpisode();
+    
+                seasonsPrevious.classList[previous ? "remove" : "add"]("inactive");
+                seasonsNext.classList[next ? "remove" : "add"]("inactive");
+    
+                seasonsControl.classList[(previous || next) ? "remove" : "add"]("inactive");
             }
 
-            checkShowControl();
+            playEpisodeCallbacks.push(checkSeasonControl);
+            checkSeasonControl();
+
+            function seasonControlChange(next) {
+                const episode = next ? getNextEpisode() : getPreviousEpisode();
+
+                if (episode) {
+                    if (seasonsActive) {
+                        const seasonCard = Array.from(seasonCards.children)[episode.sIndex];
+                        const seasonCardEpisodes = seasonCard ? seasonCard.querySelector(".episodes") : null;
+                        const episodeCard = seasonCardEpisodes ? Array.from(seasonCardEpisodes.children)[episode.eIndex] : null;
+
+                        if (episodeCard) {
+                            playEpisode(episode.s, episode.e, episodeCard);
+
+                            hideSeasons();
+                            seasonCard.classList.add("active");
+
+                            const seasonCardIcon = seasonCard.querySelector(".icon-arrow-down");
+                            if (seasonCardIcon) seasonCardIcon.className = "icon icon-arrow-up";
+                        }
+                    } else {
+                        playEpisode(episode.s, episode.e);
+                    }
+                }
+
+                checkSeasonControl();
+            }
+
+            seasonsPrevious.addEventListener("click", function () {
+                seasonControlChange(false);
+            });
+
+            seasonsNext.addEventListener("click", function () {
+                seasonControlChange(true);
+            });
+
+            seasonsTitle.append(seasonsControl);
         }
-
-        buttonPrevious.addEventListener("click", function () {
-            showControlChange(false);
-        });
-
-        buttonNext.addEventListener("click", function () {
-            showControlChange(true);
-        });
-
-        buttonPrevious.append(buttonPreviousIcon);
-        buttonNext.append(buttonNextIcon);
-
-        showControl.append(buttonPrevious);
-        showControl.append(buttonNext);
-
-        video.append(showControl);
+    } else {
+        seasons.append(notice.cloneNode(true));
     }
 
     description.className = "details-card";
