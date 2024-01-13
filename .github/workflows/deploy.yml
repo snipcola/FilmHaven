@@ -1,21 +1,21 @@
-name: Build and Deploy
+name: Deploy Website
 on:
   push:
     branches:
       - main
 jobs:
-  build:
+  deploy:
     runs-on: self-hosted
     steps:
     - name: Checkout
       uses: actions/checkout@v2
     - name: Building
       run: |
-      npm install
-      npm run prod
+        npm install
+        npm run prod
     - name: Deploying
       run: |
-      DIRECTORY=/var/www/fh.snipcola.com
-      SITE_DIRECTORY=./public
-      sudo rm -rf $DIRECTORY/*
-      sudo mv $SITE_DIRECTORY/* $DIRECTORY
+        DIRECTORY=/var/www/fh.snipcola.com
+        SITE_DIRECTORY=./public
+        sudo rm -rf $DIRECTORY/*
+        sudo mv $SITE_DIRECTORY/* $DIRECTORY
