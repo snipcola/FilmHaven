@@ -79,6 +79,7 @@ function initializePageChangeCheck() {
         if (link && index !== activeIndex) {
             activeIndex = index;
             setLinkActive(link);
+            document.documentElement.scrollTo({ top: 0 });
         }
 
         setQuery(config.query.page, activeIndex + 1);
