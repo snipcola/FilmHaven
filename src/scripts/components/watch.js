@@ -3,7 +3,7 @@ import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
 import { getDetails } from "../tmdb/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray } from "../functions.js";
 import { config, providers } from "../config.js";
-import { getProvider } from "../store/provider.js";
+import { getProvider, setProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
 import { addContinueWatching, isInContinueWatching, removeFromContinueWatching } from "../store/continue.js";
@@ -88,6 +88,12 @@ function modal(info, recommendationImages) {
     const details = document.createElement("div");
     const left = document.createElement("div");
     const right = document.createElement("div");
+
+    const providersElem = document.createElement("div");
+    const providersTitle = document.createElement("div");
+    const providersTitleIcon = document.createElement("i");
+    const providersTitleText = document.createElement("span");
+    const providerCards = document.createElement("div");
 
     const seasons = document.createElement("div");
     const seasonsTitle = document.createElement("div");
@@ -224,6 +230,45 @@ function modal(info, recommendationImages) {
 
     details.append(left);
     details.append(right);
+
+    providersElem.className = "details-card";
+    providersTitle.className = "title";
+    providersTitleIcon.className = "icon icon-tv";
+    providersTitleText.className = "text";
+    providersTitleText.innerText = "Providers";
+    providerCards.className = "provider-cards";
+
+    providersTitle.append(providersTitleIcon);
+    providersTitle.append(providersTitleText);
+    providersElem.append(providersTitle);
+    providersElem.append(providerCards);
+
+    if (videoActive) {
+        function providerCheck() {
+            const activeProvider = getProvider();
+            
+            Array.from(providerCards.children).forEach(function (provider) {
+                provider.classList[activeProvider === provider.innerText.toLowerCase() ? "add" : "remove"]("active");
+            });
+        }
+    
+        Object.values(providers).forEach(function (providerObj) {
+            const provider = document.createElement("div");
+    
+            provider.innerText = providerObj.name;
+            provider.addEventListener("click", function () {
+                setProvider(providerObj.name.toLowerCase());
+                providerCheck();
+
+                playVideo();
+                video.scrollIntoView({ block: "end" });
+            });
+    
+            providerCards.append(provider);
+        });
+    
+        providerCheck();
+    }
 
     seasons.className = "details-card";
     seasonsTitle.className = "title";
@@ -963,6 +1008,10 @@ function modal(info, recommendationImages) {
         reviews.append(reviewCards);
     } else {
         reviews.append(notice.cloneNode(true));
+    }
+
+    if (videoActive) {
+        left.append(providersElem);
     }
 
     if (info.type === "tv" && seasonsActive) {

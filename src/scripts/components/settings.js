@@ -1,6 +1,5 @@
 import { getTheme, setTheme } from "../store/theme.js";
-import { providers, themes } from "../config.js";
-import { getProvider, setProvider } from "../store/provider.js";
+import { themes } from "../config.js";
 import { getSections, getSection, setSection } from "../store/sections.js";
 import { getWatchSections, getWatchSection, setWatchSection } from "../store/watch-sections.js";
 import { resetContinueWatching } from "../store/continue.js";
@@ -22,11 +21,6 @@ export function initializeSettings() {
     const presetsLabelIcon = document.createElement("i");
     const presetsLabelText = document.createElement("span");
     const presetsElem = document.createElement("div");
-
-    const providerLabel = document.createElement("div");
-    const providerLabelIcon = document.createElement("i");
-    const providerLabelText = document.createElement("span");
-    const providersElem = document.createElement("div");
 
     const sectionsLabel = document.createElement("div");
     const sectionsLabelIcon = document.createElement("i");
@@ -118,7 +112,6 @@ export function initializeSettings() {
                 });
             }
 
-            providerCheck();
             sectionsCheck();
             watchSectionsCheck();
 
@@ -127,37 +120,6 @@ export function initializeSettings() {
 
         presetsElem.append(preset);
     });
-
-    providerLabel.className = "label";
-    providerLabelIcon.className = "icon icon-tv";
-    providerLabelText.className = "text";
-    providerLabelText.innerText = "Providers";
-    providersElem.className = "selection";
-
-    providerLabel.append(providerLabelIcon);
-    providerLabel.append(providerLabelText);
-
-    function providerCheck() {
-        const activeProvider = getProvider();
-        
-        Array.from(providersElem.children).forEach(function (provider) {
-            provider.classList[activeProvider === provider.innerText.toLowerCase() ? "add" : "remove"]("active");
-        });
-    }
-
-    Object.values(providers).forEach(function (providerObj) {
-        const provider = document.createElement("div");
-
-        provider.innerText = providerObj.name;
-        provider.addEventListener("click", function () {
-            setProvider(providerObj.name.toLowerCase());
-            providerCheck();
-        });
-
-        providersElem.append(provider);
-    });
-
-    providerCheck();
 
     sectionsLabel.className = "label";
     sectionsLabelIcon.className = "icon icon-tags";
@@ -289,8 +251,6 @@ export function initializeSettings() {
     section.append(themesElem);
     section.append(presetsLabel);
     section.append(presetsElem);
-    section.append(providerLabel);
-    section.append(providersElem);
     section.append(sectionsLabel);
     section.append(sectionsElem);
     section.append(watchSectionsLabel);
