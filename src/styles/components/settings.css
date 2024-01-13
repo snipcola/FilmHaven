@@ -57,6 +57,7 @@
     border: var(--small-border) solid var(--lighter);
 
     opacity: 100%;
+    pointer-events: none;
 }
 
 .section.settings .button.inactive {
