@@ -8,7 +8,7 @@ jobs:
     runs-on: self-hosted
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Building
       run: |
         npm install
@@ -17,5 +17,5 @@ jobs:
       run: |
         DIRECTORY=/var/www/fh.snipcola.com
         SITE_DIRECTORY=./public
-        sudo rm -rf $DIRECTORY/*
-        sudo mv $SITE_DIRECTORY/* $DIRECTORY
+        rm -rf $DIRECTORY/*
+        mv $SITE_DIRECTORY/* $DIRECTORY
