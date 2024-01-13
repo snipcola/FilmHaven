@@ -93,6 +93,9 @@ function modal(info, recommendationImages) {
     const providersTitle = document.createElement("div");
     const providersTitleIcon = document.createElement("i");
     const providersTitleText = document.createElement("span");
+    const providersControl = document.createElement("div");
+    const providersRefresh = document.createElement("div");
+    const providersRefreshIcon = document.createElement("i");
     const providerCards = document.createElement("div");
 
     const seasons = document.createElement("div");
@@ -241,12 +244,18 @@ function modal(info, recommendationImages) {
     providersTitleIcon.className = "icon icon-tv";
     providersTitleText.className = "text";
     providersTitleText.innerText = "Providers";
+    providersControl.className = "control";
+    providersRefresh.className = "button secondary icon-only";
+    providersRefreshIcon.className = "icon icon-sync";
     providerCards.className = "provider-cards";
 
     providersTitle.append(providersTitleIcon);
     providersTitle.append(providersTitleText);
     providersElem.append(providersTitle);
     providersElem.append(providerCards);
+
+    providersRefresh.append(providersRefreshIcon);
+    providersControl.append(providersRefresh);
 
     if (videoActive) {
         function providerCheck() {
@@ -271,7 +280,13 @@ function modal(info, recommendationImages) {
     
             providerCards.append(provider);
         });
-    
+        
+        providersRefresh.addEventListener("click", function () {
+            playVideo();
+            video.scrollIntoView({ block: "end" });
+        });
+
+        providersTitle.append(providersControl);
         providerCheck();
     }
 
