@@ -44,6 +44,7 @@ function modal(info, recommendationImages) {
     }
 
     const videoActive = getWatchSection("Video");
+    const providersActive = getWatchSection("Providers");
     const seasonsActive = getWatchSection("Seasons");
     const descriptionActive = getWatchSection("Description");
     const castActive = getWatchSection("Cast");
@@ -568,7 +569,7 @@ function modal(info, recommendationImages) {
 
         seasons.append(seasonCards);
         
-        if (videoActive) {
+        if (videoActive && providersActive) {
             function checkSeasonControl() {
                 const previous = getPreviousEpisode();
                 const next = getNextEpisode();
@@ -586,22 +587,18 @@ function modal(info, recommendationImages) {
                 const episode = next ? getNextEpisode() : getPreviousEpisode();
 
                 if (episode) {
-                    if (seasonsActive) {
-                        const seasonCard = Array.from(seasonCards.children)[episode.sIndex];
-                        const seasonCardEpisodes = seasonCard ? seasonCard.querySelector(".episodes") : null;
-                        const episodeCard = seasonCardEpisodes ? Array.from(seasonCardEpisodes.children)[episode.eIndex] : null;
+                    const seasonCard = Array.from(seasonCards.children)[episode.sIndex];
+                    const seasonCardEpisodes = seasonCard ? seasonCard.querySelector(".episodes") : null;
+                    const episodeCard = seasonCardEpisodes ? Array.from(seasonCardEpisodes.children)[episode.eIndex] : null;
 
-                        if (episodeCard) {
-                            playEpisode(episode.s, episode.e, episodeCard);
+                    if (episodeCard) {
+                        playEpisode(episode.s, episode.e, episodeCard);
 
-                            hideSeasons();
-                            seasonCard.classList.add("active");
+                        hideSeasons();
+                        seasonCard.classList.add("active");
 
-                            const seasonCardIcon = seasonCard.querySelector(".icon-arrow-down");
-                            if (seasonCardIcon) seasonCardIcon.className = "icon icon-arrow-up";
-                        }
-                    } else {
-                        playEpisode(episode.s, episode.e);
+                        const seasonCardIcon = seasonCard.querySelector(".icon-arrow-down");
+                        if (seasonCardIcon) seasonCardIcon.className = "icon icon-arrow-up";
                     }
                 }
 
@@ -1023,7 +1020,7 @@ function modal(info, recommendationImages) {
         reviews.append(notice.cloneNode(true));
     }
 
-    if (videoActive) {
+    if (videoActive && providersActive) {
         left.append(providersElem);
     }
 

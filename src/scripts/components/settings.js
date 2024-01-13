@@ -108,7 +108,7 @@ export function initializeSettings() {
                 });
 
                 Object.keys(getWatchSections()).forEach(function (watchSectionName) {
-                    setWatchSection(watchSectionName, ["Video"].includes(watchSectionName) ? true : false);
+                    setWatchSection(watchSectionName, ["Video", "Providers", "Seasons"].includes(watchSectionName) ? true : false);
                 });
             }
 

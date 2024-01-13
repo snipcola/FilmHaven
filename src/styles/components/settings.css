@@ -57,6 +57,9 @@
     border: var(--small-border) solid var(--lighter);
 
     opacity: 100%;
+}
+
+.section.settings .selection:not(.multi) > div.active {
     pointer-events: none;
 }
 

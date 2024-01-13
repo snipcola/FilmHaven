@@ -203,6 +203,7 @@ export const sections = {
 
 export const watchSections = {
     Video: true,
+    Providers: true,
     Seasons: true,
     Description: true,
     Cast: true,
