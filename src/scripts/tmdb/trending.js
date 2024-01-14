@@ -28,7 +28,7 @@ function format(obj, type, genre) {
                     title: item.title || item.name,
                     image: getImageUrl(item.poster_path, "poster"),
                     date: dateString ? `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}` : null,
-                    rating: Math.round(item.vote_average / 2).toString(),
+                    rating: (Math.round(item.vote_average) / 2).toString(),
                     stars: shortenNumber(item.vote_count, 1)
                 };
         })

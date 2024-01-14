@@ -138,7 +138,7 @@
     font-size: var(--large-font);
 }
 
-.card .footer .text, .card .footer .icon, .watch .rating .rating-text {
+.card .footer .text, .card .footer .icon, .watch .rating .rating-text, .watch .rating .icon {
     opacity: var(--dim-opacity);
 }
 
@@ -151,6 +151,14 @@
     color: var(--primary);
 }
 
-.card .footer .star.fill .icon, .watch .rating .star.fill .icon {
+.card .footer .star.half-fill, .watch .rating .star.half-fill {
+    background: linear-gradient(to right, var(--primary) 50%, rgba(255, 255, 255, 0.75) 50%);
+    color: transparent;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+.card .footer .star.fill .icon, .watch .rating .star.fill .icon, .card .footer .star.half-fill .icon, .watch .rating .star.half-fill .icon {
     opacity: 100%;
 }

@@ -132,7 +132,13 @@ function initializeSearch(area, type, placeholder) {
             const star = document.createElement("div");
             const starIcon = document.createElement("i");
 
-            star.className = i < info.rating ? "star fill" : "star";
+            const floored = Math.floor(info.rating);
+            const decimal = info.rating - floored;
+
+            if (i < floored) star.className = "star fill";
+            else if (decimal >= 0.5 && i === floored) star.className = "star half-fill"
+            else star.className = "star";
+            
             starIcon.className = "icon icon-star";
 
             star.append(starIcon);

@@ -10,7 +10,7 @@ function format(obj, type) {
                 type,
                 title: item.title || item.name,
                 image: getImageUrl(item.poster_path, "poster"),
-                rating: Math.round(item.vote_average / 2).toString(),
+                rating: (Math.round(item.vote_average) / 2).toString(),
                 stars: shortenNumber(item.vote_count)
             };
         })
