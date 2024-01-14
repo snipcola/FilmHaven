@@ -56,7 +56,7 @@ function modal(info, recommendationImages) {
 
     let castSlides;
     let castIndex = 0;
-    
+
     if (castActive && info.cast && info.cast.length !== 0) {
         castSlides = splitArray(info.cast, config.cast.split[desktop ? "desktop" : "mobile"]);
     }
