@@ -67,9 +67,4 @@
         height: calc(100vh - 12.2rem);
         height: calc(100dvh - 12.2rem);
     }
-
-    .provider-cards {
-        flex-direction: column;
-        width: 100%;
-    }
 }
