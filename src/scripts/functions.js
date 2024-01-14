@@ -14,7 +14,7 @@ export function copyText(text) {
 }
 
 export function getSearchUrl(query) {
-    return `https://google.com/search?query=${query.replace(/ /g, "+")}`
+    return `https://duckduckgo.com/?q=${query.replace(/ /g, "+")}`
 }
 
 export function cleanText(input) {
