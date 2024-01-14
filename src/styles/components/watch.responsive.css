@@ -35,7 +35,7 @@
     }
 
     .watch .details .review-cards .review-card .rating {
-        width: 1.8rem;
+        padding: var(--small-padding) var(--large-padding);
     }
 
     .watch .details .season-card {

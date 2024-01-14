@@ -816,7 +816,6 @@ function modal(info, recommendationImages) {
         
         review.append(title);
         review.append(content);
-
         review.addEventListener("click", function () {
             window.open(info.url);
         });
