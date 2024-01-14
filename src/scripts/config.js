@@ -70,8 +70,8 @@ export const config = {
     cast: {
         split: {
             max: 700,
-            desktop: 10,
-            mobile: 5
+            desktop: 3,
+            mobile: 2
         }
     },
     reviews: {
@@ -189,15 +189,6 @@ export const providers = {
             return `https://blackvid.space/embed?tmdb=${id}&season=${season}&episode=${episode}`;
         } 
     },
-    "2embed.cc": {
-        name: "2Embed.cc",
-        movieUrl: function (id) {
-            return `https://www.2embed.cc/embed/${id}`;
-        },
-        showUrl: function (id, season, episode) {
-            return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
-        } 
-    },
     "2embed.me": {
         name: "2Embed.me",
         movieImdb: true,
@@ -206,6 +197,15 @@ export const providers = {
         },
         showUrl: function (id, season, episode) {
             return `https://2embed.me/tv/${id}/S${season}/E${episode}`;
+        } 
+    },
+    "2embed.cc": {
+        name: "2Embed.cc",
+        movieUrl: function (id) {
+            return `https://www.2embed.cc/embed/${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
         } 
     },
     smashystream: {

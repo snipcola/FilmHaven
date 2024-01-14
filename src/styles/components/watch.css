@@ -170,23 +170,53 @@
 }
 
 .watch .details .cast-cards .cast-card {
-    background-color: var(--dark);
-    border-radius: var(--border-radius);
+    display: flex;
 
-    width: calc(10% - var(--small-padding));
+    padding: var(--small-padding);
+    box-sizing: border-box;
+
+    background-color: var(--dark);
+    border: var(--small-border) solid var(--lighter);
+
+    border-radius: var(--border-radius);
+    width: calc(33.33% - var(--small-padding));
+
+    gap: var(--small-gap);
     transition: var(--transition-speed) opacity;
 
-    overflow: hidden;
     cursor: pointer;
+    overflow: hidden;
+
+    justify-content: center;
+    user-select: none;
+}
+
+.watch .details .cast-cards .cast-card .text {
+    display: flex;
+    flex-direction: column;
+
+    gap: calc(var(--small-gap) / 3);
+    font-size: var(--small-font);
+
+    justify-content: center;
+}
+
+.watch .details .cast-cards .cast-card .text .cast-name {
+    font-weight: 500;
+}
+
+.watch .details .cast-cards .cast-card .text .cast-character {
+    opacity: var(--dim-opacity);
 }
 
 .watch .details .cast-cards .cast-card .image {
-    width: 100%;
-    height: 100%;
+    width: 3rem;
+    height: 3rem;
 
     pointer-events: none;
     user-select: none;
 
+    border-radius: 50%;
     object-fit: cover;
 }
 

@@ -56,7 +56,7 @@ function modal(info, recommendationImages) {
 
     let castSlides;
     let castIndex = 0;
-
+    
     if (castActive && info.cast && info.cast.length !== 0) {
         castSlides = splitArray(info.cast, config.cast.split[desktop ? "desktop" : "mobile"]);
     }
@@ -667,13 +667,25 @@ function modal(info, recommendationImages) {
     function addCast(info) {
         const cast = document.createElement("div");
         const image = document.createElement("img");
+        const text = document.createElement("div");
+        const name = document.createElement("span");
+        const character = document.createElement("span");
 
         cast.className = "cast-card";
         image.className = "image";
         image.src = info.image;
         image.alt = info.name;
+        text.className = "text";
+        name.className = "cast-name";
+        name.innerText = info.name;
+        character.className = "cast-character";
+        character.innerText = info.character;
+
+        text.append(name);
+        text.append(character);
         
         cast.append(image);
+        cast.append(text);
         cast.addEventListener("click", function () {
             window.open(info.url);
         });

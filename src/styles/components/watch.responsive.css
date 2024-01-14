@@ -23,7 +23,7 @@
 
 @media only screen and (max-width: 700px) {
     .watch .details .cast-cards .cast-card {
-        width: calc(20% - var(--small-padding));
+        width: calc(50% - var(--small-padding));
     }
 
     .watch .details .review-cards .review-card {
