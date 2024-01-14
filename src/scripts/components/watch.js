@@ -210,16 +210,19 @@ function modal(info, recommendationImages) {
         const provider = providers[getProvider()];
         const supportsThemes = provider.supportsThemes;
 
+        const movieId = provider.movieImdb ? info.imdbId : info.id;
+        const showId = provider.showImdb ? info.imdbId : info.id;
+
         if (supportsThemes) {
             const theme = getThemeAbsolute();
 
             iframe.src = info.type === "movie"
-                ? provider.movieUrl(info.id, theme)
-                : provider.showUrl(info.id, seasonNumber, episodeNumber, theme);
+                ? provider.movieUrl(movieId, theme)
+                : provider.showUrl(showId, seasonNumber, episodeNumber, theme);
         } else {
             iframe.src = info.type === "movie"
-                ? provider.movieUrl(info.id)
-                : provider.showUrl(info.id, seasonNumber, episodeNumber);
+                ? provider.movieUrl(movieId)
+                : provider.showUrl(showId, seasonNumber, episodeNumber);
         }
 
         video.classList[supportsThemes ? "add" : "remove"]("theme");

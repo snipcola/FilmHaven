@@ -552,6 +552,7 @@
     transition: var(--transition-speed) background-color;
     user-select: none;
 
+    justify-content: center;
     flex-wrap: wrap;
 }
 

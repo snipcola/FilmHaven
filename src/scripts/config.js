@@ -180,6 +180,34 @@ export const providers = {
             return `./providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
         }
     },
+    blackvid: {
+        name: "BlackVid",
+        movieUrl: function (id) {
+            return `https://blackvid.space/embed?tmdb=${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://blackvid.space/embed?tmdb=${id}&season=${season}&episode=${episode}`;
+        } 
+    },
+    "2embed.cc": {
+        name: "2Embed.cc",
+        movieUrl: function (id) {
+            return `https://www.2embed.cc/embed/${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
+        } 
+    },
+    "2embed.me": {
+        name: "2Embed.me",
+        movieImdb: true,
+        movieUrl: function (id) {
+            return `https://2embed.me/movie/${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://2embed.me/tv/${id}/S${season}/E${episode}`;
+        } 
+    },
     smashystream: {
         name: "SmashyStream",
         movieUrl: function (id) {
@@ -187,6 +215,15 @@ export const providers = {
         },
         showUrl: function (id, season, episode) {
             return `https://embed.smashystream.com/playere.php?tmdb=${id}&season=${season}&episode=${episode}`;
+        } 
+    },
+    tvembed: {
+        name: "TVEmbed",
+        movieUrl: function (id) {
+            return `https://tvembed.cc/movie/${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://tvembed.cc/tv/${id}/${season}/${episode}`;
         } 
     }
 };
