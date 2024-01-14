@@ -70,7 +70,7 @@ export const config = {
     cast: {
         split: {
             max: 700,
-            desktop: 3,
+            desktop: 4,
             mobile: 2
         }
     },

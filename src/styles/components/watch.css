@@ -179,7 +179,7 @@
     border: var(--small-border) solid var(--lighter);
 
     border-radius: var(--border-radius);
-    width: calc(33.33% - var(--small-padding));
+    width: calc(25% - var(--small-padding));
 
     gap: var(--small-gap);
     transition: var(--transition-speed) opacity;
@@ -187,7 +187,9 @@
     cursor: pointer;
     overflow: hidden;
 
+    align-items: center;
     justify-content: center;
+
     user-select: none;
 }
 
@@ -210,7 +212,6 @@
 }
 
 .watch .details .cast-cards .cast-card .image {
-    width: 3rem;
     height: 3rem;
 
     pointer-events: none;
