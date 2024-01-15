@@ -1,4 +1,4 @@
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
     .header .links {
         width: 100%;
     }
@@ -9,8 +9,18 @@
     }
 }
 
-@media only screen and (max-width: 425px) {
+@media only screen and (max-width: 550px) {
     .header .links .link .text {
         display: none;
+    }
+}
+
+@media only screen and (max-width: 350px) {
+    .header .links {
+        width: fit-content;
+    }
+
+    .header .links .link {
+        width: 0.5rem;
     }
 }

@@ -90,7 +90,7 @@
     opacity: 0;
 }
 
-.card .season-info {
+.card .season-info, .card .type-info {
     position: absolute;
 
     background-color: var(--lighter);
@@ -104,6 +104,11 @@
     
     border-radius: calc(var(--border-radius) / 1.5);
     opacity: var(--dim-opacity);
+}
+
+.card .type-info {
+    right: initial !important;
+    left: calc(var(--small-padding) * 1.25);
 }
 
 .card .footer {

@@ -104,7 +104,7 @@ export function initializeSettings() {
                 });
             } else if (presetName === "Minimal") {
                 Object.keys(getSections()).forEach(function (sectionName) {
-                    setSection(sectionName, ["Search", "Continue"].includes(sectionName) ? true : false);
+                    setSection(sectionName, ["Search", "Continue", "Carousel", "Genres"].includes(sectionName) ? true : false);
                 });
 
                 Object.keys(getWatchSections()).forEach(function (watchSectionName) {

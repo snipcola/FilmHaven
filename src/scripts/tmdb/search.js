@@ -1,7 +1,7 @@
 import { sendRequest, getImageUrl, sortByPopularity } from "./main.js";
 import { shortenNumber } from "../functions.js";
 
-function format(obj, type, query) {
+function format(obj, query) {
     let result = obj
         ? sortByPopularity(obj).filter((i) => i.poster_path).map(function (item) {
             const dateString = item.release_date || item.first_air_date;
@@ -9,7 +9,7 @@ function format(obj, type, query) {
 
             return {
                 id: item.id?.toString(),
-                type,
+                type: item.type,
                 title: item.title || item.name,
                 image: getImageUrl(item.poster_path, "poster"),
                 date: dateString ? `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}` : null,
@@ -31,9 +31,18 @@ function format(obj, type, query) {
     return result;
 }
 
-export async function getSearchResults(type = "movie", query) {
-    const response = await sendRequest(`search/${type}`, { query });
-    const json = format(response?.results, type, query);
+export async function getSearchResults(query) {
+    const movieResponse = await sendRequest(`search/movie`, { query });
+    const showResponse = await sendRequest(`search/tv`, { query });
+
+    let movieResults = movieResponse?.results;
+    let showResults = showResponse?.results;
+
+    if (movieResults) movieResults = movieResults.map((r) => ({ ...r, type: "movie" }));
+    if (showResults) showResults = showResults.map((r) => ({ ...r, type: "tv" }));
+
+    const results = (movieResults && showResults) ? [...movieResults, ...showResults] : movieResults ? movieResults : showResults ? showResults : null;
+    const json = format(results, query);
 
     return json;
 }

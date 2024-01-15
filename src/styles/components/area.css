@@ -13,7 +13,7 @@
     width: 100%;
 }
 
-.content.no-carousel > .section .area:first-child {
+.content.no-carousel > .section .area:first-child, .section.home .area:first-child {
     margin-top: var(--large-padding);
 }
 

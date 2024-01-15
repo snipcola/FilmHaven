@@ -14,6 +14,10 @@ export const config = {
         },
         links: [
             {
+                icon: "home",
+                text: "Home"
+            },
+            {
                 icon: "film",
                 text: "Movies"
             },
@@ -96,7 +100,7 @@ export const config = {
     maxDescriptionLength: 230,
     maxReviewContentLength: 230,
     maxCacheDays: 5,
-    maxMobileWidth: 600
+    maxMobileWidth: 700
 };
 
 export const tmdb = {
@@ -130,9 +134,7 @@ export const store = {
         lastPlayed: "fh-last-played",
         sections: "fh-sections",
         watchSections: "fh-watch-sections",
-        continue: function (type) {
-            return `fh-continue-${type}`;
-        }
+        continue: "fh-continue"
     }
 };
 
@@ -239,9 +241,9 @@ export const providers = {
 };
 
 export const sections = {
-    Carousel: true,
     Search: true,
     Continue: true,
+    Carousel: true,
     Genres: true,
     Trending: true,
     "Top-Rated": true,

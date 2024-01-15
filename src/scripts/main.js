@@ -44,11 +44,11 @@ function initializeAll() {
     initializeFooter(container);
     initializeWatch();
 
-    if (getSection("Carousel")) initializeCarousels();
-    else content.classList.add("no-carousel");
-
     if (getSection("Search")) initializeSearches();
     if (getSection("Continue")) initializeContinue();
+
+    if (getSection("Carousel")) initializeCarousels();
+    else content.classList.add("no-carousel");
     if (getSection("Genres")) initializeGenres();
     initializeAreas();
 

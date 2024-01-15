@@ -86,6 +86,15 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
         image.alt = info.title;
         title.className = "title";
 
+        if (info.continue) {
+            const typeInfo = document.createElement("div");
+
+            typeInfo.className = "type-info";
+            typeInfo.innerText = info.type?.toUpperCase();
+
+            card.append(typeInfo);
+        }
+
         if (info.type === "tv" && info.continue) {
             let lastPlayed = getLastPlayed(info.id);
             const seasonInfo = document.createElement("div");

@@ -96,7 +96,7 @@ function copyLink() {
         copyButton.classList.add("copied");
         copyButtonIcon.className = "icon icon-check";
 
-        copyText(`${window.location.origin}${window.location.pathname}?${config.query.page}=${page}&${config.query.modal}=${modal}`);
+        copyText(`${window.location.origin}${window.location.pathname}?${config.query.modal}=${modal}`);
         
         setTimeout(function () {
             copyButtonIcon.className = "icon icon-link";

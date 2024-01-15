@@ -4,7 +4,7 @@ import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../tmdb/search.js";
 import { watchContent } from "./watch.js";
 
-function initializeSearch(area, type, placeholder) {
+function initializeSearch(area, placeholder) {
     let results = [];
     let slides = [];
 
@@ -79,6 +79,7 @@ function initializeSearch(area, type, placeholder) {
         const card = document.createElement("div");
         const image = document.createElement("img");
         const title = document.createElement("div");
+        const typeInfo = document.createElement("div");
 
         const footer = document.createElement("div");
 
@@ -98,6 +99,8 @@ function initializeSearch(area, type, placeholder) {
         image.src = info.image;
         image.alt = info.title;
         title.className = "title";
+        typeInfo.className = "type-info";
+        typeInfo.innerText = info.type?.toUpperCase();
 
         card.addEventListener("click", function () {
             input.value = "";
@@ -163,6 +166,7 @@ function initializeSearch(area, type, placeholder) {
 
         card.append(image);
         card.append(title);
+        card.append(typeInfo);
         card.append(footer);
         card.append(play);
 
@@ -283,7 +287,7 @@ function initializeSearch(area, type, placeholder) {
 
         if (query.length > 0) {
             notify(true, "Fetching results", "sync");
-            const searchResults = await getSearchResults(type, query);
+            const searchResults = await getSearchResults(query);
             
             if (!searchResults) {
                 notify(true, "Failed to fetch results", "warning");
@@ -325,22 +329,16 @@ function initializeSearch(area, type, placeholder) {
 }
 
 export function initializeSearches() {
-    const moviesSection = document.querySelector(".section.movies");
-    const showsSection = document.querySelector(".section.shows");
+    const homeSection = document.querySelector(".section.home");
 
-    if (!moviesSection || !showsSection) {
+    if (!homeSection) {
         return console.error("Failed to find sections.");
     }
 
-    const moviesSearchArea = document.createElement("div");
-    const showsSearchArea = document.createElement("div");
+    const homeSearchArea = document.createElement("div");
 
-    moviesSearchArea.className = "area search";
-    showsSearchArea.className = "area search";
+    homeSearchArea.className = "area search";
+    homeSection.append(homeSearchArea);
 
-    moviesSection.append(moviesSearchArea);
-    showsSection.append(showsSearchArea);
-
-    initializeSearch(moviesSearchArea, "movie", "Search for movies...");
-    initializeSearch(showsSearchArea, "tv", "Search for shows...");
+    initializeSearch(homeSearchArea, "Search for movies & shows...");
 }

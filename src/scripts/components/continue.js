@@ -7,61 +7,36 @@ export async function initializeContinue() {
     const desktop = window.innerWidth > config.area.split.max;
     const label = "Continue";
 
-    const moviesSection = document.querySelector(".section.movies");
-    const showsSection = document.querySelector(".section.shows");
+    const homeSection = document.querySelector(".section.home");
 
-    if (!moviesSection || !showsSection) {
+    if (!homeSection) {
         return console.error("Failed to find sections.");
     }
 
-    const moviesContinueArea = document.createElement("div");
-    const showsContinueArea = document.createElement("div");
+    const homeContinueArea = document.createElement("div");
+    homeContinueArea.className = "area inactive";
+    homeSection.append(homeContinueArea);
 
-    moviesContinueArea.className = "area inactive";
-    showsContinueArea.className = "area inactive";
+    let continueWatching = [];
 
-    moviesSection.append(moviesContinueArea);
-    showsSection.append(showsContinueArea);
+    async function initializeContinueWatching() {
+        initializeArea(homeContinueArea, null, label);
 
-    let continueMovies = [];
-    let continueShows = [];
-
-    async function initializeMovies() {
-        initializeArea(moviesContinueArea, null, label);
-
-        if (!continueMovies || continueMovies.length === 0) {
-            moviesContinueArea.classList.add("inactive");
+        if (!continueWatching || continueWatching.length === 0) {
+            homeContinueArea.classList.add("inactive");
         } else {
-            await preloadImages(continueMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);    
-            initializeArea(moviesContinueArea, continueMovies, label);
-            moviesContinueArea.classList.remove("inactive");
-        }
-    }
-
-    async function initializeShows() {
-        initializeArea(showsContinueArea, null, label);
-
-        if (!continueShows || continueShows.length === 0) {
-            showsContinueArea.classList.add("inactive");
-        } else {
-            await preloadImages(continueShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);
-            initializeArea(showsContinueArea, continueShows, label);
-            showsContinueArea.classList.remove("inactive");
+            await preloadImages(continueWatching.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);    
+            initializeArea(homeContinueArea, continueWatching, label);
+            homeContinueArea.classList.remove("inactive");
         }
     }
 
     async function check() {
-        const newContinueMovies = getContinueWatching("movie");
-        const newContinueShows = getContinueWatching("tv");
+        const newContinueWatching = getContinueWatching();
 
-        if (continueMovies.length === 0 && newContinueMovies.length > 0 || JSON.stringify(newContinueMovies) !== JSON.stringify(continueMovies)) {
-            continueMovies = newContinueMovies;
-            await initializeMovies();
-        }
-
-        if (continueShows.length === 0 && newContinueMovies.length > 0 || JSON.stringify(newContinueShows) !== JSON.stringify(continueShows)) {
-            continueShows = newContinueShows;
-            await initializeShows();
+        if (continueWatching.length === 0 && newContinueWatching.length > 0 || JSON.stringify(newContinueWatching) !== JSON.stringify(continueWatching)) {
+            continueWatching = newContinueWatching;
+            await initializeContinueWatching();
         }
     }
 
