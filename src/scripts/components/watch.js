@@ -214,20 +214,11 @@ function modal(info, recommendationImages) {
         const provider = providers[getProvider()];
         const supportsThemes = provider.supportsThemes;
 
-        const movieId = provider.movieImdb ? info.imdbId : info.id;
-        const showId = provider.showImdb ? info.imdbId : info.id;
+        const theme = getThemeAbsolute();
 
-        if (supportsThemes) {
-            const theme = getThemeAbsolute();
-
-            currentIframe.src = info.type === "movie"
-                ? provider.movieUrl(movieId, theme)
-                : provider.showUrl(showId, seasonNumber, episodeNumber, theme);
-        } else {
-            currentIframe.src = info.type === "movie"
-                ? provider.movieUrl(movieId)
-                : provider.showUrl(showId, seasonNumber, episodeNumber);
-        }
+        currentIframe.src = info.type === "movie"
+            ? provider.movieUrl({ id: info.id, imdbId: info.imdbId, theme })
+            : provider.showUrl({ id: info.id, season: seasonNumber, episode: episodeNumber, theme });
 
         video.classList[supportsThemes ? "add" : "remove"]("theme");
         videoNoticeContainer.classList.add("active");

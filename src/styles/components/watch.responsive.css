@@ -70,6 +70,7 @@
 
     .provider-cards > div {
         width: calc(50% - var(--small-padding));
+        text-align: center;
     }
 }
 

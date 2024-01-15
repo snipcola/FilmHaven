@@ -148,94 +148,109 @@ export const themes = {
 export const providers = {
     moviesapi: {
         name: "MoviesAPI",
-        movieUrl: function (id) {
+        movieUrl: function ({ id }) {
             return `https://moviesapi.club/movie/${id}`;
         },
-        showUrl: function (id, season, episode) {
+        showUrl: function ({ id, season, episode }) {
             return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
         }
     },
     "vidsrc.to": {
         name: "VidSrc.to",
-        movieUrl: function (id) {
+        movieUrl: function ({ id }) {
             return `https://vidsrc.to/embed/movie/${id}`;
         },
-        showUrl: function (id, season, episode) {
+        showUrl: function ({ id, season, episode }) {
             return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
         }
     },
     "vidsrc.me": {
         name: "VidSrc.me",
-        movieUrl: function (id) {
+        movieUrl: function ({ id }) {
             return `https://vidsrc.me/embed/movie?tmdb=${id}`;
         },
-        showUrl: function (id, season, episode) {
+        showUrl: function ({ id, season, episode }) {
             return `https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
         }
     },
     superembed: {
         name: "SuperEmbed",
-        supportsThemes: true,
-        movieUrl: function (id, theme) {
+        movieUrl: function ({ id, theme }) {
             return `./providers/superembed.php?v=${id}&t=${theme}`;
         },
-        showUrl: function (id, season, episode, theme) {
+        showUrl: function ({ id, season, episode, theme }) {
             return `./providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
         }
     },
     "2embed.me": {
         name: "2Embed.me",
-        movieImdb: true,
-        movieUrl: function (id) {
-            return `https://2embed.me/movie/${id}`;
+        movieUrl: function ({ imdbId }) {
+            return `https://2embed.me/movie/${imdbId}`;
         },
-        showUrl: function (id, season, episode) {
+        showUrl: function ({ id, season, episode }) {
             return `https://2embed.me/tv/${id}/S${season}/E${episode}`;
         } 
     },
     "2embed.cc": {
         name: "2Embed.cc",
-        movieUrl: function (id) {
+        movieUrl: function ({ id }) {
             return `https://www.2embed.cc/embed/${id}`;
         },
-        showUrl: function (id, season, episode) {
+        showUrl: function ({ id, season, episode }) {
             return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
         } 
     },
     onionplay: {
         name: "OnionPlay",
-        movieImdb: true,
-        movieUrl: function (id) {
-            return `https://flixon.lol/${id}`;
+        movieUrl: function ({ imdbId }) {
+            return `https://flixon.lol/${imdbId}`;
         },
-        showUrl: function (id, season, episode) {
+        showUrl: function ({ id, season, episode }) {
             return `https://flixon.lol/${id}-${season}-${episode}`;
         } 
     },
-    blackvid: {
-        name: "BlackVid",
-        movieUrl: function (id) {
-            return `https://blackvid.space/embed?tmdb=${id}`;
+    gdrive: {
+        name: "GDrive",
+        movieUrl: function ({ id }) {
+            return `https://databasegdriveplayer.xyz/player.php?tmdb=${id}`;
         },
-        showUrl: function (id, season, episode) {
-            return `https://blackvid.space/embed?tmdb=${id}&season=${season}&episode=${episode}`;
+        showUrl: function ({ id, season, episode }) {
+            return `https://databasegdriveplayer.xyz/player.php?type=series&tmdb=${id}&season=${season}&episode=${episode}`;
+        } 
+    },
+    primewire: {
+        name: "PrimeWire",
+        movieUrl: function ({ id }) {
+            return `https://www.primewire.tf/embed/movie?tmdb=${id}`;
+        },
+        showUrl: function ({ id, season, episode }) {
+            return `https://www.primewire.tf/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
+        } 
+    },
+    remotestream: {
+        name: "RemoteStream",
+        movieUrl: function ({ id }) {
+            return `https://remotestre.am/e/?tmdb=${id}`;
+        },
+        showUrl: function ({ id, season, episode }) {
+            return `https://remotestre.am/e/?tmdb=${id}&s=${season}&e=${episode}`;
         } 
     },
     smashystream: {
         name: "SmashyStream",
-        movieUrl: function (id) {
+        movieUrl: function ({ id }) {
             return `https://embed.smashystream.com/playere.php?tmdb=${id}`;
         },
-        showUrl: function (id, season, episode) {
+        showUrl: function ({ id, season, episode }) {
             return `https://embed.smashystream.com/playere.php?tmdb=${id}&season=${season}&episode=${episode}`;
         } 
     },
     tvembed: {
         name: "TVEmbed",
-        movieUrl: function (id) {
+        movieUrl: function ({ id }) {
             return `https://tvembed.cc/movie/${id}`;
         },
-        showUrl: function (id, season, episode) {
+        showUrl: function ({ id, season, episode }) {
             return `https://tvembed.cc/tv/${id}/${season}/${episode}`;
         } 
     }
