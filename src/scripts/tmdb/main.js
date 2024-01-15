@@ -1,4 +1,5 @@
 import { tmdb } from "../config.js";
+import { getAdult } from "../store/adult.js";
 
 export function getApiUrl() {
     return `${tmdb.api.url}/${tmdb.api.version}`;
@@ -18,7 +19,7 @@ export async function sendRequest(path, parameters = {}, method = "GET") {
 
     url.searchParams.append("api_key", tmdb.api.key);
     url.searchParams.append("language", tmdb.language);
-    url.searchParams.append("include_adult", tmdb.adult);
+    url.searchParams.append("include_adult", getAdult());
 
     Object.entries(parameters).forEach(([key, value]) => {
         url.searchParams.append(key, value);

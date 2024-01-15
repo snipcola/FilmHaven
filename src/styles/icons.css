@@ -141,3 +141,7 @@
 .icon-home:before {
     content: "\f015";
 }
+
+.icon-censor:before {
+    content: "\f05e";
+}

@@ -5,6 +5,7 @@ import { getSections, getSection, setSection } from "../store/sections.js";
 import { getWatchSections, getWatchSection, setWatchSection } from "../store/watch-sections.js";
 import { resetContinueWatching } from "../store/continue.js";
 import { resetLastPlayed } from "../store/last-played.js";
+import { getAdult, setAdult } from "../store/adult.js";
 
 export function initializeSettings() {
     const section = document.querySelector(".section.settings");
@@ -17,6 +18,11 @@ export function initializeSettings() {
     const themeLabelIcon = document.createElement("i");
     const themeLabelText = document.createElement("span");
     const themesElem = document.createElement("div");
+
+    const adultLabel = document.createElement("div");
+    const adultLabelIcon = document.createElement("i");
+    const adultLabelText = document.createElement("span");
+    const adultElem = document.createElement("div");
 
     const presetsLabel = document.createElement("div");
     const presetsLabelIcon = document.createElement("i");
@@ -85,6 +91,39 @@ export function initializeSettings() {
     });
 
     themeCheck();
+
+    adultLabel.className = "label";
+    adultLabelIcon.className = "icon icon-censor";
+    adultLabelText.className = "text";
+    adultLabelText.innerText = "Adult Content";
+    adultElem.className = "selection";
+
+    adultLabel.append(adultLabelIcon);
+    adultLabel.append(adultLabelText);
+
+    const adultToggles = ["Hide", "Show"];
+
+    function adultCheck() {
+        const adult = getAdult() === "true" ? "show" : "hide";
+        
+        Array.from(adultElem.children).forEach(function (toggle) {
+            toggle.classList[adult === toggle.innerText.toLowerCase() ? "add" : "remove"]("active");
+        });
+    }
+
+    adultToggles.forEach(function (toggleName) {
+        const toggle = document.createElement("div");
+
+        toggle.innerText = toggleName;
+        toggle.addEventListener("click", function () {
+            setAdult((toggleName === "Show").toString());
+            adultCheck();
+        });
+
+        adultElem.append(toggle);
+    });
+
+    adultCheck();
 
     presetsLabel.className = "label";
     presetsLabelIcon.className = "icon icon-list";
@@ -293,6 +332,8 @@ export function initializeSettings() {
 
     section.append(themeLabel);
     section.append(themesElem);
+    section.append(adultLabel);
+    section.append(adultElem);
     section.append(presetsLabel);
     section.append(presetsElem);
     section.append(pagesLabel);

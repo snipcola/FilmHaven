@@ -120,8 +120,7 @@ export const tmdb = {
     trending: {
         timeWindow: "week"
     },
-    language: "en",
-    adult: false
+    language: "en"
 };
 
 export const store = {
@@ -130,6 +129,7 @@ export const store = {
             return `fhc-${key}`;
         },
         theme: "fh-theme",
+        adult: "fh-adult",
         provider: "fh-provider",
         lastPlayed: "fh-last-played",
         pages: "fh-pages",
