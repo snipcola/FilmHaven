@@ -198,7 +198,7 @@
     flex-direction: column;
 
     gap: calc(var(--small-gap) / 3);
-    font-size: var(--small-font);
+    font-size: calc(var(--min-font) * 1.05);
 
     justify-content: center;
 }
@@ -209,6 +209,7 @@
 
 .watch .details .cast-cards .cast-card .text .cast-character {
     opacity: var(--dim-opacity);
+    font-size: var(--min-font);
 }
 
 .watch .details .cast-cards .cast-card .image {
