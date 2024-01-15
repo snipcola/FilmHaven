@@ -1,5 +1,6 @@
 import { getTheme, setTheme } from "../store/theme.js";
-import { themes } from "../config.js";
+import { config, themes } from "../config.js";
+import { getPages, getPage, setPage } from "../store/pages.js";
 import { getSections, getSection, setSection } from "../store/sections.js";
 import { getWatchSections, getWatchSection, setWatchSection } from "../store/watch-sections.js";
 import { resetContinueWatching } from "../store/continue.js";
@@ -21,6 +22,11 @@ export function initializeSettings() {
     const presetsLabelIcon = document.createElement("i");
     const presetsLabelText = document.createElement("span");
     const presetsElem = document.createElement("div");
+
+    const pagesLabel = document.createElement("div");
+    const pagesLabelIcon = document.createElement("i");
+    const pagesLabelText = document.createElement("span");
+    const pagesElem = document.createElement("div");
 
     const sectionsLabel = document.createElement("div");
     const sectionsLabelIcon = document.createElement("i");
@@ -94,7 +100,11 @@ export function initializeSettings() {
 
         preset.innerText = presetName;
         preset.addEventListener("click", function () {
-            if (presetName === "Full") {                
+            if (presetName === "Full") {
+                Object.keys(getPages()).forEach(function (pageName) {
+                    setPage(pageName, true);
+                });
+                
                 Object.keys(getSections()).forEach(function (sectionName) {
                     setSection(sectionName, true);
                 });
@@ -103,6 +113,10 @@ export function initializeSettings() {
                     setWatchSection(watchSectionName, true);
                 });
             } else if (presetName === "Minimal") {
+                Object.keys(getPages()).forEach(function (pageName) {
+                    setPage(pageName, ["Home"].includes(pageName) ? true : false);
+                });
+
                 Object.keys(getSections()).forEach(function (sectionName) {
                     setSection(sectionName, ["Search", "Continue", "Carousel", "Genres"].includes(sectionName) ? true : false);
                 });
@@ -112,14 +126,44 @@ export function initializeSettings() {
                 });
             }
 
+            pagesCheck();
             sectionsCheck();
             watchSectionsCheck();
 
-            window.location.reload();
+            window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=${presetName === "Full" ? 4 : 2}`;
         });
 
         presetsElem.append(preset);
     });
+
+    pagesLabel.className = "label";
+    pagesLabelIcon.className = "icon icon-file";
+    pagesLabelText.className = "text";
+    pagesLabelText.innerText = "Pages (requires refresh)";
+    pagesElem.className = "selection multi";
+
+    pagesLabel.append(pagesLabelIcon);
+    pagesLabel.append(pagesLabelText);
+
+    function pagesCheck() {
+        Array.from(pagesElem.children).forEach(function (page) {
+            page.classList[getPage(page.innerText) ? "add" : "remove"]("active");
+        });
+    }
+
+    Object.keys(getPages()).forEach(function (pageName) {
+        const page = document.createElement("div");
+
+        page.innerText = pageName;
+        page.addEventListener("click", function () {
+            setPage(pageName, !getPage(pageName));
+            pagesCheck();
+        });
+
+        pagesElem.append(page);
+    });
+
+    pagesCheck();
 
     sectionsLabel.className = "label";
     sectionsLabelIcon.className = "icon icon-tags";
@@ -251,6 +295,8 @@ export function initializeSettings() {
     section.append(themesElem);
     section.append(presetsLabel);
     section.append(presetsElem);
+    section.append(pagesLabel);
+    section.append(pagesElem);
     section.append(sectionsLabel);
     section.append(sectionsElem);
     section.append(watchSectionsLabel);

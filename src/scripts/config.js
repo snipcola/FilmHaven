@@ -132,6 +132,7 @@ export const store = {
         theme: "fh-theme",
         provider: "fh-provider",
         lastPlayed: "fh-last-played",
+        pages: "fh-pages",
         sections: "fh-sections",
         watchSections: "fh-watch-sections",
         continue: "fh-continue"

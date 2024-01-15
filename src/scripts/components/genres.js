@@ -8,6 +8,7 @@ import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
 import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
+import { getPage } from "../store/pages.js";
 
 async function modal(info, type) {
     const desktop = window.innerWidth > config.area.split.max;
@@ -264,24 +265,17 @@ function initializeGenreModalCheck() {
 }
 
 export async function initializeGenres() {
-    const moviesSection = document.querySelector(".section.movies");
-    const showsSection = document.querySelector(".section.shows");
-
-    if (!moviesSection || !showsSection) {
-        return console.error("Failed to find sections.");
-    }
-
-    const moviesGenresArea = document.createElement("div");
-    const showsGenresArea = document.createElement("div");
-
-    moviesGenresArea.className = "area genres";
-    showsGenresArea.className = "area genres";
-
-    moviesSection.append(moviesGenresArea);
-    showsSection.append(showsGenresArea);
-
     async function initializeMovies() {
         const type = "movie";
+        const moviesSection = document.querySelector(".section.movies");
+
+        if (!moviesSection) {
+            return console.error("Failed to find movies section.");
+        }
+
+        const moviesGenresArea = document.createElement("div");
+        moviesGenresArea.className = "area genres";
+        moviesSection.append(moviesGenresArea);
         
         initializeGenreArea(moviesGenresArea, null, type);
         movieGenres = await getGenres("movie");
@@ -295,6 +289,15 @@ export async function initializeGenres() {
 
     async function initializeShows() {
         const type = "tv";
+        const showsSection = document.querySelector(".section.shows");
+
+        if (!showsSection) {
+            return console.error("Failed to find shows section.");
+        }
+
+        const showsGenresArea = document.createElement("div");
+        showsGenresArea.className = "area genres";
+        showsSection.append(showsGenresArea);
 
         initializeGenreArea(showsGenresArea, null, type);
         showGenres = await getGenres("tv");
@@ -306,6 +309,11 @@ export async function initializeGenres() {
         }
     }
 
-    await Promise.all([initializeMovies(), initializeShows()]);
+    const promises = [];
+
+    if (getPage("Movies")) promises.push(initializeMovies());
+    if (getPage("Shows")) promises.push(initializeShows());
+
+    await Promise.all(promises);
     initializeGenreModalCheck();
 }

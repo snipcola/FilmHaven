@@ -10,7 +10,7 @@ export async function initializeContinue() {
     const homeSection = document.querySelector(".section.home");
 
     if (!homeSection) {
-        return console.error("Failed to find sections.");
+        return console.error("Failed to find home section.");
     }
 
     const homeContinueArea = document.createElement("div");

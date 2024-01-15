@@ -5,6 +5,7 @@ import { getTrending } from "../tmdb/trending.js";
 import { getRated } from "../tmdb/rated.js";
 import { getNew } from "../tmdb/new.js";
 import { watchContent } from "./watch.js";
+import { getPage } from "../store/pages.js";
 import { getSection } from "../store/sections.js";
 import { getLastPlayed } from "../store/last-played.js";
 
@@ -252,54 +253,27 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
 export function initializeAreas() {
     const desktop = window.innerWidth > config.area.split.max;
 
-    const moviesSection = document.querySelector(".section.movies");
-    const showsSection = document.querySelector(".section.shows");
-
-    if (!moviesSection || !showsSection) {
-        return console.error("Failed to find sections.");
-    }
-
-    const moviesTrendingArea = document.createElement("div");
-    const showsTrendingArea = document.createElement("div");
-
-    const moviesRatedArea = document.createElement("div");
-    const showsRatedArea = document.createElement("div");
-
-    const moviesNewArea = document.createElement("div");
-    const showsNewArea = document.createElement("div");
-
-    moviesTrendingArea.className = "area";
-    showsTrendingArea.className = "area";
-
-    moviesRatedArea.className = "area";
-    showsRatedArea.className = "area";
-
-    moviesNewArea.className = "area";
-    showsNewArea.className = "area";
+    const moviesActive = getPage("Movies");
+    const showsActive = getPage("Shows");
 
     const trendingActive = getSection("Trending");
     const ratedActive = getSection("Top-Rated");
     const newActive = getSection("New");
 
-    if (trendingActive) {
-        moviesSection.append(moviesTrendingArea);
-        showsSection.append(showsTrendingArea);
-    }
-
-    if (ratedActive) {
-        moviesSection.append(moviesRatedArea);
-        showsSection.append(showsRatedArea);
-    }
-
-    if (newActive) {
-        moviesSection.append(moviesNewArea);
-        showsSection.append(showsNewArea);
-    }
-
     function initializeTrending() {
         const label = "Trending";
 
         async function initializeMovies() {
+            const moviesSection = document.querySelector(".section.movies");
+
+            if (!moviesSection) {
+                return console.error("Failed to find movies section.");
+            }
+
+            const moviesTrendingArea = document.createElement("div");
+            moviesTrendingArea.className = "area";
+            moviesSection.append(moviesTrendingArea);
+
             initializeArea(moviesTrendingArea, null, label);
             let trendingMovies = await getTrending("movie");
 
@@ -315,6 +289,16 @@ export function initializeAreas() {
         }
 
         async function initializeShows() {
+            const showsSection = document.querySelector(".section.shows");
+
+            if (!showsSection) {
+                return console.error("Failed to find shows section.");
+            }
+
+            const showsTrendingArea = document.createElement("div");
+            showsTrendingArea.className = "area";
+            showsSection.append(showsTrendingArea);
+
             initializeArea(showsTrendingArea, null, label);
             let trendingShows = await getTrending("tv");
 
@@ -329,14 +313,24 @@ export function initializeAreas() {
             }
         }
 
-        initializeMovies();
-        initializeShows();
+        if (moviesActive) initializeMovies();
+        if (showsActive) initializeShows();
     }
 
     function initializeTopRated() {
         const label = "Top-Rated";
 
         async function initializeMovies() {
+            const moviesSection = document.querySelector(".section.movies");
+
+            if (!moviesSection) {
+                return console.error("Failed to find movies section.");
+            }
+
+            const moviesRatedArea = document.createElement("div");
+            moviesRatedArea.className = "area";
+            moviesSection.append(moviesRatedArea);
+
             initializeArea(moviesRatedArea, null, label);
             let ratedMovies = await getRated("movie");
 
@@ -350,6 +344,16 @@ export function initializeAreas() {
         }
 
         async function initializeShows() {
+            const showsSection = document.querySelector(".section.shows");
+
+            if (!showsSection) {
+                return console.error("Failed to find shows section.");
+            }
+
+            const showsRatedArea = document.createElement("div");
+            showsRatedArea.className = "area";
+            showsSection.append(showsRatedArea);
+
             initializeArea(showsRatedArea, null, label);
             let ratedShows = await getRated("tv");
 
@@ -362,14 +366,24 @@ export function initializeAreas() {
             }
         }
 
-        initializeMovies();
-        initializeShows();
+        if (moviesActive) initializeMovies();
+        if (showsActive) initializeShows();
     }
 
     function initializeNew() {
         const label = "New";
         
         async function initializeMovies() {
+            const moviesSection = document.querySelector(".section.movies");
+
+            if (!moviesSection) {
+                return console.error("Failed to find movies section.");
+            }
+
+            const moviesNewArea = document.createElement("div");
+            moviesNewArea.className = "area";
+            moviesSection.append(moviesNewArea);
+            
             initializeArea(moviesNewArea, null, label);
             let newMovies = await getNew("movie");
 
@@ -383,6 +397,16 @@ export function initializeAreas() {
         }
 
         async function initializeShows() {
+            const showsSection = document.querySelector(".section.shows");
+
+            if (!showsSection) {
+                return console.error("Failed to find shows section.");
+            }
+
+            const showsNewArea = document.createElement("div");
+            showsNewArea.className = "area";
+            showsSection.append(showsNewArea);
+            
             initializeArea(showsNewArea, null, label);
             let newShows = await getNew("tv");
 
@@ -395,8 +419,8 @@ export function initializeAreas() {
             }
         }
 
-        initializeMovies();
-        initializeShows();
+        if (moviesActive) initializeMovies();
+        if (showsActive) initializeShows();
     }
 
     if (trendingActive) initializeTrending();

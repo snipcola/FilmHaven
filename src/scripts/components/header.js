@@ -1,6 +1,7 @@
 import { config } from "../config.js";
 import { getInnerText, onWindowResize } from "../functions.js";
 import { getQuery, setQuery, onQueryChange } from "../query.js";
+import { getPage } from "../store/pages.js";
 
 let activeIndex;
 let links = [];
@@ -126,6 +127,8 @@ export function initializeHeader(element, content) {
     linksElem.className = "links";
 
     for (const item of config.header.links) {
+         if (getPage(item.text) === false) continue;
+
         const link = document.createElement("div");
         const linkIcon = document.createElement("i");
         const linkText = document.createElement("span");

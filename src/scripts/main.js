@@ -11,6 +11,8 @@ import { initializeContinue } from "./components/continue.js";
 import { initializeGenres } from "./components/genres.js";
 import { initializeAreas } from "./components/area.js";
 import { initializeSettings } from "./components/settings.js";
+
+import { getPage } from "./store/pages.js";
 import { getSection } from "./store/sections.js";
 
 let container;
@@ -44,8 +46,8 @@ function initializeAll() {
     initializeFooter(container);
     initializeWatch();
 
-    if (getSection("Search")) initializeSearches();
-    if (getSection("Continue")) initializeContinue();
+    if (getPage("Home") && getSection("Search")) initializeSearches();
+    if (getPage("Home") && getSection("Continue")) initializeContinue();
 
     if (getSection("Carousel")) initializeCarousels();
     else content.classList.add("no-carousel");

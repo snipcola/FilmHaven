@@ -3,6 +3,7 @@ import { isHovered } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getTrending } from "../tmdb/trending.js";
 import { watchContent } from "./watch.js";
+import { getPage } from "../store/pages.js";
 
 function initializeCarousel(carousel, slides) {
     carousel.innerHTML = "";
@@ -125,23 +126,17 @@ function initializeCarousel(carousel, slides) {
 }
 
 export function initializeCarousels() {
-    const moviesSection = document.querySelector(".section.movies");
-    const showsSection = document.querySelector(".section.shows");
-
-    if (!moviesSection || !showsSection) {
-        return console.error("Failed to find sections.");
-    }
-
-    const moviesCard = document.createElement("div");
-    const showsCard = document.createElement("div");
-
-    moviesCard.className = "carousel";
-    showsCard.className = "carousel";
-
-    moviesSection.append(moviesCard);
-    showsSection.append(showsCard);
-
     async function initializeMovies() {
+        const moviesSection = document.querySelector(".section.movies");
+
+        if (!moviesSection) {
+            return console.error("Failed to find movie section.");
+        }
+
+        const moviesCard = document.createElement("div");
+        moviesCard.className = "carousel";
+        moviesSection.append(moviesCard);
+
         initializeCarousel(moviesCard, null);
         let movies = await getTrending("movie");
 
@@ -153,6 +148,16 @@ export function initializeCarousels() {
     }
 
     async function initializeShows() {
+        const showsSection = document.querySelector(".section.shows");
+
+        if (!showsSection) {
+            return console.error("Failed to find show section.");
+        }
+
+        const showsCard = document.createElement("div");
+        showsCard.className = "carousel";
+        showsSection.append(showsCard);
+        
         initializeCarousel(showsCard, null);
         let shows = await getTrending("tv");
 
@@ -163,6 +168,6 @@ export function initializeCarousels() {
         }
     }
 
-    initializeMovies();
-    initializeShows();
+    if (getPage("Movies")) initializeMovies();
+    if (getPage("Shows")) initializeShows();
 }
