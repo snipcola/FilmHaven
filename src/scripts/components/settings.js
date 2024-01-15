@@ -6,6 +6,7 @@ import { getWatchSections, getWatchSection, setWatchSection } from "../store/wat
 import { resetContinueWatching } from "../store/continue.js";
 import { resetLastPlayed } from "../store/last-played.js";
 import { getAdult, setAdult } from "../store/adult.js";
+import { resetCache } from "../cache.js";
 
 export function initializeSettings() {
     const section = document.querySelector(".section.settings");
@@ -52,6 +53,10 @@ export function initializeSettings() {
     const resetButton = document.createElement("div");
     const resetButtonIcon = document.createElement("i");
     const resetButtonText = document.createElement("span");
+
+    const clearCacheButton = document.createElement("div");
+    const clearCacheButtonIcon = document.createElement("i");
+    const clearCacheButtonText = document.createElement("span");
 
     const clearContinueButton = document.createElement("div");
     const clearContinueButtonIcon = document.createElement("i");
@@ -286,6 +291,23 @@ export function initializeSettings() {
 
         resetButton.classList.add("inactive");
         resetButtonIcon.className = "icon icon-check";
+    });
+
+    clearCacheButton.className = "button";
+    clearCacheButtonIcon.className = "icon icon-sync";
+    clearCacheButtonText.className = "text";
+    clearCacheButtonText.innerText = "Clear Cache";
+
+    clearCacheButton.append(clearCacheButtonIcon);
+    clearCacheButton.append(clearCacheButtonText);
+    dataButtons.append(clearCacheButton);
+
+    clearCacheButton.addEventListener("click", function () {
+        resetCache();
+        location.reload(true);
+
+        clearCacheButton.classList.add("inactive");
+        clearCacheButtonIcon.className = "icon icon-check";
     });
 
     clearContinueButton.className = "button secondary";
