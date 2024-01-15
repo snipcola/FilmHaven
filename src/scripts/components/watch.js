@@ -198,14 +198,18 @@ function modal(info, recommendationImages) {
     video.className = "video";
     iframe.className = "iframe";
     iframe.setAttribute("allowfullscreen", true);
-
-    video.append(iframe);
     video.append(videoNoticeContainer);
 
+    let currentIframe;
+
     function playVideo() {
+        if (currentIframe) currentIframe.remove();
+        
+        currentIframe = iframe.cloneNode();
+        video.append(currentIframe);
+
         videoNoticeIcon.className = "icon icon-sync";
         videoNoticeText.innerText = "Content loading";
-        iframe.classList.remove("active");
 
         const provider = providers[getProvider()];
         const supportsThemes = provider.supportsThemes;
@@ -216,11 +220,11 @@ function modal(info, recommendationImages) {
         if (supportsThemes) {
             const theme = getThemeAbsolute();
 
-            iframe.src = info.type === "movie"
+            currentIframe.src = info.type === "movie"
                 ? provider.movieUrl(movieId, theme)
                 : provider.showUrl(showId, seasonNumber, episodeNumber, theme);
         } else {
-            iframe.src = info.type === "movie"
+            currentIframe.src = info.type === "movie"
                 ? provider.movieUrl(movieId)
                 : provider.showUrl(showId, seasonNumber, episodeNumber);
         }
@@ -228,9 +232,9 @@ function modal(info, recommendationImages) {
         video.classList[supportsThemes ? "add" : "remove"]("theme");
         videoNoticeContainer.classList.add("active");
 
-        iframe.addEventListener("load", function () {
+        currentIframe.addEventListener("load", function () {
             videoNoticeContainer.classList.remove("active");
-            iframe.classList.add("active");
+            currentIframe.classList.add("active");
         });
     }
 
@@ -374,35 +378,19 @@ function modal(info, recommendationImages) {
     }
 
     let playEpisodeCallbacks = [];
-    let playEpisodeLock = false;
-    let playEpisodeEpisode;
 
     function playEpisode(sNumber, eNumber, episode) {
         if (!videoActive) return;
 
         seasonNumber = sNumber;
         episodeNumber = eNumber;
-        if (episode) playEpisodeEpisode = episode;
 
-        if (playEpisodeLock) return;
-        playEpisodeLock = true;
+        if (episode) setEpisode(episode);
+        playSeries();
 
-        iframe.src = "";
-
-        setTimeout(function () {
-            playEpisodeLock = false;
-
-            if (playEpisodeEpisode) {
-                setEpisode(playEpisodeEpisode);
-                playEpisodeEpisode = null;
-            }
-
-            playSeries();
-
-            for (const callback of playEpisodeCallbacks) {
-                callback();
-            }
-        }, 10);
+        for (const callback of playEpisodeCallbacks) {
+            callback();
+        }
     }
 
     function getNextEpisode() {
