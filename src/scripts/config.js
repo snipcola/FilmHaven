@@ -199,6 +199,16 @@ export const providers = {
             return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
         } 
     },
+    onionplay: {
+        name: "OnionPlay",
+        movieImdb: true,
+        movieUrl: function (id) {
+            return `https://flixon.lol/${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://flixon.lol/${id}-${season}-${episode}`;
+        } 
+    },
     blackvid: {
         name: "BlackVid",
         movieUrl: function (id) {
