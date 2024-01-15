@@ -68,8 +68,18 @@
         height: calc(100dvh - 12.2rem);
     }
 
+    .provider-cards > div {
+        width: calc(50% - var(--small-padding));
+    }
+}
+
+@media only screen and (max-width: 350px) {
     .provider-cards {
         flex-direction: column;
+        width: 100%;
+    }
+
+    .provider-cards > div {
         width: 100%;
     }
 }
