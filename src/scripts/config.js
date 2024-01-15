@@ -155,6 +155,15 @@ export const providers = {
             return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
         }
     },
+    onionplay: {
+        name: "OnionPlay",
+        movieUrl: function ({ imdbId }) {
+            return `https://flixon.lol/${imdbId}`;
+        },
+        showUrl: function ({ id, season, episode }) {
+            return `https://flixon.lol/${id}-${season}-${episode}`;
+        } 
+    },
     "vidsrc.to": {
         name: "VidSrc.to",
         movieUrl: function ({ id }) {
@@ -198,15 +207,6 @@ export const providers = {
         },
         showUrl: function ({ id, season, episode }) {
             return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
-        } 
-    },
-    onionplay: {
-        name: "OnionPlay",
-        movieUrl: function ({ imdbId }) {
-            return `https://flixon.lol/${imdbId}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://flixon.lol/${id}-${season}-${episode}`;
         } 
     },
     gdrive: {
