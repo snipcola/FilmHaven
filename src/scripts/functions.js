@@ -1,3 +1,12 @@
+export function scrollToElement(element, offset = 0) {
+    const bodyTop = document.body?.getBoundingClientRect()?.top;
+    const elementTop = element?.getBoundingClientRect()?.top;
+
+    if (bodyTop && elementTop) {
+        window.scrollTo({ top: (elementTop - bodyTop) + offset });
+    }
+}
+
 export function convertMinutesToText(minutes) {
     if (minutes < 60) return `${minutes}m`;
     else {

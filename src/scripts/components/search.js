@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists } from "../functions.js";
+import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists, scrollToElement } from "../functions.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../tmdb/search.js";
 import { watchContent } from "./watch.js";
@@ -263,7 +263,7 @@ function initializeSearch(area, type, placeholder) {
     }
 
     function onFocus() {
-        window.scrollTo({ top: (area.getBoundingClientRect().top + window.scrollY) - 110 })
+        scrollToElement(area, -30);
     }
 
     function clearCheck() {
