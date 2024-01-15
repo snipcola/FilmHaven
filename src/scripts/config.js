@@ -180,15 +180,6 @@ export const providers = {
             return `./providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
         }
     },
-    blackvid: {
-        name: "BlackVid",
-        movieUrl: function (id) {
-            return `https://blackvid.space/embed?tmdb=${id}`;
-        },
-        showUrl: function (id, season, episode) {
-            return `https://blackvid.space/embed?tmdb=${id}&season=${season}&episode=${episode}`;
-        } 
-    },
     "2embed.me": {
         name: "2Embed.me",
         movieImdb: true,
@@ -206,6 +197,15 @@ export const providers = {
         },
         showUrl: function (id, season, episode) {
             return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
+        } 
+    },
+    blackvid: {
+        name: "BlackVid",
+        movieUrl: function (id) {
+            return `https://blackvid.space/embed?tmdb=${id}`;
+        },
+        showUrl: function (id, season, episode) {
+            return `https://blackvid.space/embed?tmdb=${id}&season=${season}&episode=${episode}`;
         } 
     },
     smashystream: {
