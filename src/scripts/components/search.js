@@ -262,7 +262,11 @@ function initializeSearch(area, type, placeholder) {
         images = [];
     }
 
-    async function clearCheck() {
+    function onFocus() {
+        window.scrollTo({ top: (area.getBoundingClientRect().top + window.scrollY) - 110 })
+    }
+
+    function clearCheck() {
         reset();
         cleanup();
 
@@ -311,6 +315,7 @@ function initializeSearch(area, type, placeholder) {
     clear.addEventListener("click", onClear);
     input.addEventListener("input", clearCheck);
     input.addEventListener("input", debouncedOnInput);
+    input.addEventListener("focusin", onFocus);
 
     area.append(label);
     area.append(control);
