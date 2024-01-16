@@ -1097,7 +1097,17 @@ function modal(info, recommendationImages) {
     checkCurrentlyPlaying();
     showModal(cleanup);
 
-    video.scrollIntoView({ block: "center" });
+    if (videoActive) {
+        function checkVideoResize() {
+            if (!elementExists(watch)) return removeWindowResize(checkResize);
+            video.style.marginLeft = `calc(-100vw / 2 + ${video.parentElement?.clientWidth}px / 2)`;
+        }
+        
+        onWindowResize(checkVideoResize);
+        checkVideoResize();
+
+        video.scrollIntoView({ block: "center" });
+    }
 }
 
 function initializeWatchModalCheck() {

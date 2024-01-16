@@ -1,11 +1,8 @@
 .watch .video {
     background-color: rgb(0, 0, 0);
-    border-radius: var(--border-radius);
 
-    height: calc(100vh - var(--small-gap));
-    height: calc(100dvh - var(--small-gap));
-
-    max-height: var(--max-width);
+    height: 100vh;
+    height: 100dvh;
     min-height: calc(var(--max-width) / 25);
 
     -webkit-mask-image: -webkit-radial-gradient(var(--light), var(--dark));
@@ -14,9 +11,10 @@
     overflow: hidden;
     box-sizing: border-box;
 
-    width: 100%;
-    position: relative;
+    width: calc(100vw - 4px);
+    width: calc(100dvw - 4px);
 
+    position: relative;
     user-select: none;
 }
 
