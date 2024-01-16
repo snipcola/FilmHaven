@@ -68,6 +68,7 @@ body.modal-active .modal-container {
     margin-left: var(--large-padding);
     margin-right: var(--large-padding);
     
+    height: calc(var(--small-padding) * 6);
     background-color: var(--dark);
 }
 
