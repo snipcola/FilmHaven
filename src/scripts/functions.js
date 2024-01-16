@@ -1,3 +1,23 @@
+export function getCenteringDirection(element) {
+    const rect = element.getBoundingClientRect();
+    
+    if (rect) {
+        const windowHeight = window.innerHeight;
+        const verticalCenter = windowHeight / 2;
+        const distanceFromCenter = (rect.top + (rect.height / 2)) - verticalCenter;
+
+        if (Math.abs(distanceFromCenter) < windowHeight / 500) {
+            return;
+        } else if (distanceFromCenter < 0) {
+            return "up";
+        } else {
+            return "down";
+        }
+    }
+
+    return;
+}
+
 export function scrollToElement(element, offset = 0) {
     const bodyTop = document.body?.getBoundingClientRect()?.top;
     const elementTop = element?.getBoundingClientRect()?.top;

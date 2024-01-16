@@ -5,8 +5,8 @@
     width: 100vw;
     width: 100dvw;
 
-    height: calc(100vh - (var(--large-padding) * 4));
-    height: calc(100dvh - (var(--large-padding) * 4));
+    height: 100vh;
+    height: 100dvh;
 
     align-items: center;
     justify-content: center;
@@ -19,11 +19,14 @@
 
     background-color: rgba(var(--light-rgb), .75);
     overflow: auto;
+
+    top: 0;
+    left: 0;
 }
 
 body.modal-active .modal-container {
     opacity: 100%;
-    z-index: 5;
+    z-index: 4;
 }
 
 .modal-container.fill {

@@ -1,7 +1,7 @@
 import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
 import { getDetails } from "../tmdb/details.js";
-import { elementExists, onWindowResize, removeWindowResize, splitArray } from "../functions.js";
+import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection } from "../functions.js";
 import { config, providers } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
@@ -199,6 +199,46 @@ function modal(info, recommendationImages) {
     iframe.className = "iframe";
     iframe.setAttribute("allowfullscreen", true);
     video.append(videoNoticeContainer);
+    
+    if (videoActive) {
+        const up = document.createElement("i");
+        const down = document.createElement("i");
+
+        up.className = "scroll up icon-arrow-up";
+        down.className = "scroll down icon-arrow-down";
+        
+        function onClick() {
+            video.scrollIntoView({ block: "center" });
+            up.classList.remove("active");
+            down.classList.remove("active");
+        }
+
+        up.addEventListener("click", onClick);
+        down.addEventListener("click", onClick);
+
+        const interval = setInterval(function () {
+            if (!elementExists(watch)) return clearInterval(interval);
+
+            const direction = getCenteringDirection(video);
+
+            switch (direction) {
+                case "up":
+                    up.classList.add("active");
+                    down.classList.remove("active");
+                    break
+                case "down":
+                    up.classList.remove("active");
+                    down.classList.add("active");
+                    break
+                default:
+                    up.classList.remove("active");
+                    down.classList.remove("active");
+                    break
+            }
+        }, 250);
+
+        video.append(up, down);
+    }
 
     let currentIframe;
 
@@ -274,7 +314,7 @@ function modal(info, recommendationImages) {
                 providerCheck();
 
                 playVideo();
-                video.scrollIntoView({ block: "end" });
+                video.scrollIntoView({ block: "center" });
             });
     
             providerCards.append(provider);
@@ -282,7 +322,7 @@ function modal(info, recommendationImages) {
         
         providersRefresh.addEventListener("click", function () {
             playVideo();
-            video.scrollIntoView({ block: "end" });
+            video.scrollIntoView({ block: "center" });
         });
 
         providersTitle.append(providersControl);
@@ -365,7 +405,7 @@ function modal(info, recommendationImages) {
         checkCurrentlyPlaying();
 
         playVideo();
-        video.scrollIntoView({ block: "end" });
+        video.scrollIntoView({ block: "center" });
     }
 
     let playEpisodeCallbacks = [];
@@ -1056,6 +1096,8 @@ function modal(info, recommendationImages) {
     setModal(info.title, null, watch, "times", true, info.type);
     checkCurrentlyPlaying();
     showModal(cleanup);
+
+    video.scrollIntoView({ block: "center" });
 }
 
 function initializeWatchModalCheck() {

@@ -63,11 +63,6 @@
 }
 
 @media only screen and (max-width: 600px) {
-    .watch .video {
-        height: calc(100vh - 12.2rem);
-        height: calc(100dvh - 12.2rem);
-    }
-
     .provider-cards > div {
         width: calc(50% - var(--small-padding));
         text-align: center;

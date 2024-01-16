@@ -2,8 +2,8 @@
     background-color: rgb(0, 0, 0);
     border-radius: var(--border-radius);
 
-    height: calc(100vh - 12.85rem);
-    height: calc(100dvh - 12.85rem);
+    height: calc(100vh - var(--small-gap));
+    height: calc(100dvh - var(--small-gap));
 
     max-height: var(--max-width);
     min-height: calc(var(--max-width) / 25);
@@ -59,6 +59,43 @@
 
 .watch .video.theme .video-notice .notice {
     background-color: var(--dark);
+}
+
+.watch .video .scroll {
+    position: fixed;
+    transform: translate(-50%, 0);
+
+    top: var(--small-padding);
+    left: 50%;
+
+    background-color: var(--dark);
+    border: var(--small-border) solid var(--lighter);
+
+    box-sizing: border-box;
+    padding: var(--small-padding);
+
+    border-radius: 50%;
+    opacity: 0;
+
+    transition: var(--transition-speed) opacity;
+    cursor: pointer;
+
+    width: 2.3rem;
+    z-index: -10;
+}
+
+.watch .video .scroll.active {
+    opacity: calc(var(--dimmer-opacity) / 2);
+    z-index: 3;
+}
+
+.watch .video .scroll:hover {
+    opacity: var(--dim-opacity);
+}
+
+.watch .video .scroll.down {
+    top: initial;
+    bottom: var(--small-padding);
 }
 
 .watch .details {
