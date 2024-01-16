@@ -7,14 +7,16 @@
 
     max-height: var(--max-width);
     min-height: calc(var(--max-width) / 25);
-    
-    width: 100%;
+
+    -webkit-mask-image: -webkit-radial-gradient(var(--light), var(--dark));
     mask-image: -webkit-radial-gradient(var(--light), var(--dark));
 
     overflow: hidden;
     box-sizing: border-box;
 
+    width: 100%;
     position: relative;
+
     user-select: none;
 }
 
@@ -68,8 +70,8 @@
     top: var(--small-padding);
     left: 50%;
 
-    background-color: var(--dark);
-    border: var(--small-border) solid var(--lighter);
+    background-color: var(--lighter);
+    border: var(--small-border) solid var(--lightest);
 
     box-sizing: border-box;
     padding: var(--small-padding);
@@ -80,7 +82,6 @@
     transition: var(--transition-speed) opacity;
     cursor: pointer;
 
-    width: 2.3rem;
     z-index: -10;
 }
 
