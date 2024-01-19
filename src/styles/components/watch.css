@@ -158,6 +158,8 @@
 .watch .details .title, .watch .details .text {
     font-size: var(--large-font);
     margin: 0;
+
+    overflow-wrap: anywhere;
 }
 
 .watch .details .title {
@@ -237,6 +239,7 @@
     font-size: calc(var(--min-font) * 1.05);
 
     justify-content: center;
+    overflow-wrap: anywhere;
 }
 
 .watch .details .cast-cards .cast-card .text .cast-name {
@@ -308,6 +311,10 @@
     align-items: center;
 }
 
+.watch .details .review-title .title-container .author {
+    overflow-wrap: anywhere;
+}
+
 .watch .details .review-title .title-container .avatar {
     display: flex;
     position: relative;
@@ -349,6 +356,8 @@
 .watch .details .review-content {
     opacity: var(--dim-opacity);
     font-size: var(--large-font);
+
+    overflow-wrap: anywhere;
 }
 
 .watch .details .details-card.misc {
@@ -388,6 +397,8 @@
 
     border-radius: var(--border-radius);
     font-size: var(--large-font);
+
+    overflow-wrap: anywhere;
 }
 
 .watch .details .season-cards {
