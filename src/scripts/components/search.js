@@ -3,6 +3,8 @@ import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../tmdb/search.js";
 import { watchContent } from "./watch.js";
+import { hideModal } from "./modal.js";
+import { setQuery } from "../query.js";
 
 function initializeSearch(area, placeholder) {
     let results = [];
@@ -341,4 +343,16 @@ export function initializeSearches() {
     homeSection.append(homeSearchArea);
 
     initializeSearch(homeSearchArea, "Search for movies & shows...");
+
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "/") {
+            e.preventDefault();
+
+            hideModal();
+            setQuery(config.query.page, "home");
+            
+            scrollToElement(homeSearchArea, -30);
+            homeSearchArea.querySelector(".input")?.focus();
+        }
+    });
 }
