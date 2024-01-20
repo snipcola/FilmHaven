@@ -19,15 +19,15 @@ export async function initializeContinue() {
     homeSection.append(homeContinueArea);
 
     const control = document.createElement("div");
-    const controlButton = document.createElement("div");
-    const controlButtonIcon = document.createElement("i");
+    const deleteButton = document.createElement("div");
+    const deleteButtonIcon = document.createElement("i");
 
     control.className = "control continue";
-    controlButton.className = "button secondary icon-only previous";
-    controlButtonIcon.className = "icon icon-trash";
+    deleteButton.className = "button secondary icon-only previous";
+    deleteButtonIcon.className = "icon icon-trash";
 
-    controlButton.append(controlButtonIcon);
-    control.append(controlButton);
+    deleteButton.append(deleteButtonIcon);
+    control.append(deleteButton);
 
     let controlActive = false;
     let continueWatching = [];
@@ -56,9 +56,9 @@ export async function initializeContinue() {
         }
     }
 
-    controlButton.addEventListener("click", function () {
+    deleteButton.addEventListener("click", function () {
         controlActive = !controlActive;
-        controlButton.classList[controlActive ? "add" : "remove"]("active");
+        deleteButton.classList[controlActive ? "add" : "remove"]("active");
         checkCards();
     });
 
@@ -88,7 +88,7 @@ export async function initializeContinue() {
 
         if (controlActive && !isHovered(homeContinueArea)) {
             controlActive = false;
-            controlButton.classList[controlActive ? "add" : "remove"]("active");
+            deleteButton.classList[controlActive ? "add" : "remove"]("active");
             checkCards();
         }
     }
