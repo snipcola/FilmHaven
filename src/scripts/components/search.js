@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists, scrollToElement } from "../functions.js";
+import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists, scrollToElement, onKeyPress } from "../functions.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../tmdb/search.js";
 import { watchContent } from "./watch.js";
@@ -349,15 +349,19 @@ export function initializeSearches() {
 
     initializeSearch(homeSearchArea, "Search for movies & shows...");
 
-    document.addEventListener("keydown", function (e) {
-        if (e.key === "/") {
-            e.preventDefault();
+    const homeInput = homeSearchArea.querySelector(".input");
 
+    if (homeInput) {
+        function focus() {
             hideModal();
-            setQuery(config.query.page, "home");
-            
-            scrollToElement(homeSearchArea, -30);
-            homeSearchArea.querySelector(".input")?.focus();
+            setQuery(config.query.page, 1);
+
+            setTimeout(function () {
+                scrollToElement(homeSearchArea, -30);
+                homeInput.focus();
+            }, 100);
         }
-    });
+
+        onKeyPress("/", true, homeInput, null, focus);
+    }
 }

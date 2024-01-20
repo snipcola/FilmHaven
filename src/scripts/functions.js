@@ -1,3 +1,19 @@
+export function onKeyPress(key, prevent, active, depends, callback) {
+    function listener(e) {
+        if (depends && !elementExists(depends)) {
+            document.removeEventListener("keypress", listener);
+            return;
+        }
+
+        if (e.key === key && (!active || document.activeElement !== active)) {
+            if (prevent) e.preventDefault();
+            if (callback) callback();
+        }
+    }
+
+    document.addEventListener("keypress", listener);
+}
+
 export function getCenteringDirection(element) {
     const rect = element.getBoundingClientRect();
     
