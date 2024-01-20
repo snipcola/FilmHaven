@@ -1,7 +1,7 @@
 import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
 import { getDetails } from "../tmdb/details.js";
-import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection } from "../functions.js";
+import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress } from "../functions.js";
 import { config, providers } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
@@ -626,14 +626,20 @@ function modal(info, recommendationImages) {
 
                 checkSeasonControl();
             }
-
-            seasonsPrevious.addEventListener("click", function () {
-                seasonControlChange(false);
-            });
-
-            seasonsNext.addEventListener("click", function () {
+            
+            function nextEpisode() {
                 seasonControlChange(true);
-            });
+            }
+
+            function previousEpisode() {
+                seasonControlChange(false);
+            }
+
+            seasonsNext.addEventListener("click", nextEpisode);
+            seasonsPrevious.addEventListener("click", previousEpisode);
+
+            onKeyPress("]", true, null, watch, nextEpisode);
+            onKeyPress("[", true, null, watch, previousEpisode);
 
             seasonsTitle.append(seasonsControl);
         }
