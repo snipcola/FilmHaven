@@ -4,3 +4,11 @@ package-lock.json
 
 # Webpack
 public/dist
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Other
+fiveserver.config.js

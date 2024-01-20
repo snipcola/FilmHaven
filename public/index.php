@@ -25,7 +25,7 @@
     $tmdbLanguage = "en";
     $tmdbImageURL = "https://image.tmdb.org/t/p";
     $tmdbImageSize = "w342";
-    $tmdbURL = "{$tmdbBaseURL}/${tmdbVersion}";
+    $tmdbURL = "{$tmdbBaseURL}/{$tmdbVersion}";
 
     $modal = getModalInfo();
 
