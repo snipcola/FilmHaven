@@ -32,11 +32,12 @@ export async function initializeContinue() {
     let controlActive = false;
     let continueWatching = [];
 
-    function checkCards() {
-        const continueControl = homeContinueArea.querySelector(".control:not(.continue");
-        if (continueControl) continueControl.onclick = checkCards;
-        
+    function checkControlActive() {
         const cards = Array.from(homeContinueArea.querySelectorAll(".card"));
+        const continueControl = homeContinueArea.querySelector(".control:not(.continue");
+
+        deleteButton.classList[controlActive ? "add" : "remove"]("active");
+        if (continueControl) continueControl.onclick = checkControlActive;
 
         for (const card of cards) {
             const icon = card.querySelector(".play .icon");
@@ -58,8 +59,7 @@ export async function initializeContinue() {
 
     deleteButton.addEventListener("click", function () {
         controlActive = !controlActive;
-        deleteButton.classList[controlActive ? "add" : "remove"]("active");
-        checkCards();
+        checkControlActive();
     });
 
     async function initializeContinueWatching() {
@@ -67,15 +67,16 @@ export async function initializeContinue() {
 
         if (!continueWatching || continueWatching.length === 0) {
             homeContinueArea.classList.add("inactive");
+            controlActive = false;
             control.remove();
         } else {
             await preloadImages(continueWatching.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);    
             initializeArea(homeContinueArea, continueWatching, label);
             homeContinueArea.classList.remove("inactive");
-
             homeContinueArea.append(control);
-            checkCards();
         }
+
+        checkControlActive();
     }
 
     async function check() {
@@ -88,8 +89,7 @@ export async function initializeContinue() {
 
         if (controlActive && !isHovered(homeContinueArea)) {
             controlActive = false;
-            deleteButton.classList[controlActive ? "add" : "remove"]("active");
-            checkCards();
+            checkControlActive();
         }
     }
 
