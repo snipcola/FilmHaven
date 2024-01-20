@@ -1,6 +1,6 @@
 <?php
     // Manifest
-    $manifest = json_decode(file_get_contents("dist/_manifest.json"), true);
+    $manifest = json_decode(file_get_contents(__DIR__ . "/dist/_manifest.json"), true);
 
     // OpenGraph
     $ogTitle;
