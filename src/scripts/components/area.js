@@ -81,6 +81,9 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
         const play = document.createElement("div");
         const playIcon = document.createElement("i");
 
+        if (info.id) card.setAttribute("data-id", info.id);
+        if (info.type) card.setAttribute("data-type", info.type);
+
         card.className = "card";
         image.className = "image";
         image.src = info.image;
@@ -117,7 +120,9 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
         }
 
         card.addEventListener("click", function () {
-            watchContent(info.type, info.id);
+            if (!card.classList.contains("disabled")) {
+                watchContent(info.type, info.id);
+            }
         });
 
         title.innerText = info.title.length > config.area.maxTitleLength

@@ -63,7 +63,7 @@
 }
 
 .card .play .icon {
-    font-size: var(--max-font);
+    font-size: calc(var(--max-font) * 1.5);
 }
 
 .card:hover .play {

@@ -6,7 +6,7 @@ import { config, providers } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
-import { addContinueWatching, isInContinueWatching, removeFromContinueWatching } from "../store/continue.js";
+import { addContinueWatching } from "../store/continue.js";
 import { getWatchSection } from "../store/watch-sections.js";
 import { getThemeAbsolute } from "../store/theme.js";
 import { initializeArea } from "./area.js";
@@ -17,31 +17,6 @@ export function watchContent(type, id) {
 
 function modal(info, recommendationImages) {
     addContinueWatching(info.id, info.type, info.title, info.image);
-
-    if (isInContinueWatching(info.id, info.type)) {
-        const headerButtons = document.querySelector(".modal-header .header-buttons");
-        const customButtons = headerButtons.querySelectorAll(".custom");
-
-        for (const button of Array.from(customButtons)) {
-            button.remove();
-        }
-
-        if (headerButtons) {
-            const button = document.createElement("div");
-            const buttonIcon = document.createElement("i");
-
-            button.className = "button secondary icon-only custom";
-            buttonIcon.className = "icon icon-eye-slash";
-
-            button.addEventListener("click", function () {
-                removeFromContinueWatching(info.id, info.type);
-                button.remove();
-            });
-
-            button.append(buttonIcon);
-            headerButtons.prepend(button);
-        }
-    }
 
     const videoActive = getWatchSection("Video");
     const providersActive = getWatchSection("Providers");

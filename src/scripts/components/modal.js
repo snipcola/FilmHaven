@@ -61,12 +61,6 @@ export function hideModal(ignore) {
     if (!ignore) setModal();
     if (!ignore) setTitle();
     checkCallback();
-
-    Array.from(buttons.children).forEach(function (button) {
-        if (button.classList.contains("custom")) {
-            button.remove();
-        }
-    })
 }
 
 function initializeModalChangeCheck() {
