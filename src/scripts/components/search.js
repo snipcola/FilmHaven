@@ -298,7 +298,12 @@ function initializeSearch(area, placeholder) {
                 images.push(...searchImages);
 
                 await preloadImages(searchImages, config.area.split[desktop ? "desktop" : "mobile"], true);
-                populate(searchResults);
+
+                if (input.value.length === 0) {
+                    cleanup();
+                } else {
+                    populate(searchResults);
+                }
             }
         }
     }
