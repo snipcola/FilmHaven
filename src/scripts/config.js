@@ -1,3 +1,12 @@
+import { getTheme, setTheme } from "./store/theme.js";
+import { getAdult, setAdult } from "./store/adult.js";
+import { getPages, getPage, setPage } from "./store/pages.js";
+import { getSections, getSection, setSection } from "./store/sections.js";
+import { getWatchSections, getWatchSection, setWatchSection } from "./store/watch-sections.js";
+import { resetCache } from "./cache.js";
+import { resetContinueWatching } from "./store/continue.js";
+import { resetLastPlayed } from "./store/last-played.js";
+
 export const config = {
     author: "Snipcola",
     name: "FilmHaven",
@@ -143,6 +152,11 @@ export const themes = {
     light: "Light"
 };
 
+export const adult = {
+    show: "Show",
+    hide: "Hide"
+};
+
 export const providers = {
     moviesapi: {
         name: "MoviesAPI",
@@ -274,3 +288,236 @@ export const watchSections = {
     Misc: true,
     Recommendations: true
 };
+
+export const settings = [
+    {
+        label: {
+            icon: "paint-brush",
+            text: "Theme"
+        },
+        items: function () {
+            const currentTheme = getTheme();
+            const themeItems = Object.values(themes);
+            
+            return themeItems.map((t) => ({
+                label: t,
+                value: t.toLowerCase(),
+                active: t.toLowerCase() === currentTheme
+            }));
+        },
+        onClick: setTheme,
+        type: "select"
+    },
+    {
+        label: {
+            icon: "censor",
+            text: "Adult Content"
+        },
+        items: function () {
+            const currentAdult = getAdult();
+            const adultItems = Object.values(adult);
+
+            return adultItems.map((a) => ({
+                label: a,
+                value: a.toLowerCase(),
+                active: a.toLowerCase() === currentAdult
+            }));
+        },
+        onClick: setAdult,
+        type: "select"
+    },
+    {
+        label: {
+            icon: "file",
+            text: "Pages (refresh)"
+        },
+        items: function () {
+            const pages = getPages();
+
+            return Object.entries(pages).map(([p, a]) => ({
+                label: p,
+                value: p,
+                active: a
+            }));
+        },
+        onClick: function (p) {
+            setPage(p, !getPage(p));
+        },
+        type: "select",
+        multi: true
+    },
+    {
+        label: {
+            icon: "tags",
+            text: "Sections (refresh)"
+        },
+        items: function () {
+            const sections = getSections();
+
+            return Object.entries(sections).map(([s, a]) => ({
+                label: s,
+                value: s,
+                active: a
+            }));
+        },
+        onClick: function (s) {
+            setSection(s, !getSection(s));
+        },
+        type: "select",
+        multi: true
+    },
+    {
+        label: {
+            icon: "play",
+            text: "Watch Sections"
+        },
+        items: function () {
+            const watchSections = getWatchSections();
+
+            return Object.entries(watchSections).map(([w, a]) => ({
+                label: w,
+                value: w,
+                active: a
+            }));
+        },
+        onClick: function (w) {
+            setWatchSection(w, !getWatchSection(w));
+        },
+        type: "select",
+        multi: true
+    },
+    {
+        label: {
+            icon: "box",
+            text: "Data"
+        },
+        items: function () {
+            return [
+                {
+                    label: {
+                        icon: "sync",
+                        text: "Clear Everything"
+                    },
+                    onClick: function (self) {
+                        localStorage.clear();
+                        window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
+
+                        self.classList.add("inactive");
+                        self.querySelector(".icon").className = "icon icon-check";
+                    }
+                },
+                {
+                    label: {
+                        icon: "sync",
+                        text: "Clear Cache"
+                    },
+                    onClick: function (self) {
+                        resetCache();
+                        window.location.reload();
+
+                        self.classList.add("inactive");
+                        self.querySelector(".icon").className = "icon icon-check";
+                    }
+                },
+                {
+                    label: {
+                        icon: "eye-slash",
+                        text: "Clear Continue Watching"
+                    },
+                    class: "secondary",
+                    onClick: function (self) {
+                        resetContinueWatching();
+
+                        self.classList.add("inactive");
+                        self.querySelector(".icon").className = "icon icon-check";
+
+                        setTimeout(function () {
+                            self.querySelector(".icon").className = "icon icon-eye-slash";
+                            self.classList.remove("inactive");
+                        }, 2500);
+                    }
+                },
+                {
+                    label: {
+                        icon: "eye-slash",
+                        text: "Clear Last Watched"
+                    },
+                    class: "secondary",
+                    onClick: function (self) {
+                        resetLastPlayed();
+
+                        self.classList.add("inactive");
+                        self.querySelector(".icon").className = "icon icon-check";
+
+                        setTimeout(function () {
+                            self.querySelector(".icon").className = "icon icon-eye-slash";
+                            self.classList.remove("inactive");
+                        }, 2500);
+                    }
+                }
+            ];
+        },
+        type: "buttons"
+    },
+    {
+        label: {
+            icon: "list",
+            text: "Presets"
+        },
+        items: function () {
+            return [
+                {
+                    label: {
+                        text: "Full"
+                    },
+                    class: "secondary",
+                    onClick: function () {
+                        const pages = getPages();
+                        const sections = getSections();
+                        const watchSections = getWatchSections();
+
+                        for (const page of Object.keys(pages)) {
+                            setPage(page, true);
+                        }
+
+                        for (const section of Object.keys(sections)) {
+                            setSection(section, true);
+                        }
+
+                        for (const watchSection of Object.keys(watchSections)) {
+                            setWatchSection(watchSection, true);
+                        }
+
+                        window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
+                    }
+                },
+                {
+                    label: {
+                        text: "Minimal"
+                    },
+                    class: "secondary",
+                    onClick: function (self) {
+                        const pages = getPages();
+                        const sections = getSections();
+                        const watchSections = getWatchSections();
+
+                        for (const page of Object.keys(pages)) {
+                            setPage(page, ["Home"].includes(page));
+                        }
+
+                        for (const section of Object.keys(sections)) {
+                            setSection(section, ["Search", "Continue", "Carousel", "Genres"].includes(section));
+                        }
+
+                        for (const watchSection of Object.keys(watchSections)) {
+                            setWatchSection(watchSection, ["Video", "Providers", "Seasons"].includes(watchSection));
+                        }
+
+                        window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=2`;
+                    }
+                }
+            ];
+        },
+        type: "buttons"
+    }
+];

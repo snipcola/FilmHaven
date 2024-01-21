@@ -1,4 +1,4 @@
-import { store } from "../config.js";
+import { store, adult as adults } from "../config.js";
 
 function get() {
     const adult = localStorage.getItem(store.names.adult);
@@ -15,8 +15,9 @@ export function getAdult() {
     if (adult) {
         return adult;
     } else {
-        setAdult("false");
-        return "false";
+        const defaultAdult = Object.keys(adults)[0];
+        setAdult(defaultAdult);
+        return defaultAdult;
     }
 }
 

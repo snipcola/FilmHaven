@@ -19,7 +19,7 @@ export async function sendRequest(path, parameters = {}, method = "GET") {
 
     url.searchParams.append("api_key", api.key);
     url.searchParams.append("language", api.language);
-    url.searchParams.append("include_adult", getAdult());
+    url.searchParams.append("include_adult", getAdult() === "show");
 
     Object.entries(parameters).forEach(([key, value]) => {
         url.searchParams.append(key, value);

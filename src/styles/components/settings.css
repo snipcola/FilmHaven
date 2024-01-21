@@ -1,16 +1,29 @@
+.section.settings.active {
+    display: flex;
+    gap: var(--large-gap);
+
+    justify-content: center;
+    flex-wrap: wrap;
+
+    width: 100%;
+}
+
+.section.settings .container {
+    display: flex;
+    flex-direction: column;
+    
+    gap: var(--large-gap);
+}
+
 .section.settings .label {
     display: flex;
     gap: var(--small-gap);
 
+    justify-content: center;
     align-items: center;
+    
     opacity: var(--dim-opacity);
-
-    margin-bottom: 1rem;
     font-weight: 500;
-}
-
-.section.settings .label:not(:first-child) {
-    margin-top: 2rem;
 }
 
 .section.settings .selection {
@@ -29,6 +42,7 @@
     transition: var(--transition-speed) background-color;
     user-select: none;
 
+    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -73,5 +87,7 @@
     gap: var(--small-gap);
 
     align-items: center;
+    justify-content: center;
+    
     flex-wrap: wrap;
 }
