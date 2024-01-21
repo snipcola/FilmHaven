@@ -62,19 +62,7 @@
     opacity: 0%;
 }
 
-.card .play .icon.icon-trash {
-    background-color: var(--primary);
-    border-color: transparent;
-}
-
 .card .play .icon {
-    background-color: var(--light);
-    border: var(--small-border) solid var(--lighter);
-    
-    padding: calc(var(--small-padding) * 1.25);
-    box-sizing: border-box;
-
-    border-radius: var(--border-radius);
     font-size: calc(var(--max-font) * 1.5);
 }
 
