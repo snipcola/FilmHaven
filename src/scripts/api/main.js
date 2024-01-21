@@ -1,12 +1,12 @@
-import { tmdb } from "../config.js";
+import { api } from "../config.js";
 import { getAdult } from "../store/adult.js";
 
 export function getApiUrl() {
-    return `${tmdb.api.url}/${tmdb.api.version}`;
+    return `${api.api.url}/${api.api.version}`;
 }
 
 export function getImageUrl(path, type = "poster") {
-    return path ? `${tmdb.image.url}/${tmdb.image[type]}${path}` : null;
+    return path ? `${api.image.url}/${api.image[type]}${path}` : null;
 }
 
 export function sortByPopularity(obj) {
@@ -17,8 +17,8 @@ export async function sendRequest(path, parameters = {}, method = "GET") {
     const apiUrl = getApiUrl();
     const url = new URL(`${apiUrl}/${path}`);
 
-    url.searchParams.append("api_key", tmdb.api.key);
-    url.searchParams.append("language", tmdb.language);
+    url.searchParams.append("api_key", api.api.key);
+    url.searchParams.append("language", api.language);
     url.searchParams.append("include_adult", getAdult());
 
     Object.entries(parameters).forEach(([key, value]) => {

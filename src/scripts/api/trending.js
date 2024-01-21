@@ -1,7 +1,7 @@
 import { sendRequest, getImageUrl, sortByPopularity } from "./main.js";
 import { shortenNumber } from "../functions.js";
 import { setCache, getCache } from "../cache.js";
-import { config, tmdb } from "../config.js";
+import { config, api } from "../config.js";
 
 function format(obj, type, genre) {
     return obj
@@ -56,7 +56,7 @@ export async function getTrending(type = "movie", genre) {
                 "first_air_date.gte": formattedDate,
                 "first_air_date.lte": formattedDateNow
             })
-        : await sendRequest(`trending/${type}/${tmdb.trending.timeWindow}`);
+        : await sendRequest(`trending/${type}/${api.trending.timeWindow}`);
 
     const json = format(response?.results, type, genre);
 
