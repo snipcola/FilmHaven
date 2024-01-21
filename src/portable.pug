@@ -1,0 +1,13 @@
+doctype html 
+html(lang = "en")
+  head
+    title FilmHaven
+    meta(name = "description", content = "A catalog of thousands of movies & shows, at your fingertips.")
+    meta(charset = "UTF-8")
+    meta(name = "viewport", content = "width=device-width, initial-scale=1.0")
+    script window.fhPortable = true;
+    each cssFile in htmlWebpackPlugin.files.css
+      style !{compilation.assets[cssFile.substr(htmlWebpackPlugin.files.publicPath.length)].source()}
+  body
+    each jsFile in htmlWebpackPlugin.files.js
+      script !{compilation.assets[jsFile.substr(htmlWebpackPlugin.files.publicPath.length)].source()}

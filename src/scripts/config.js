@@ -176,15 +176,17 @@ export const providers = {
             return `https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
         }
     },
-    moviesapi: {
-        name: "MoviesAPI",
-        movieUrl: function ({ id }) {
-            return `https://moviesapi.club/movie/${id}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
+    ...(!window.fhPortable ? {
+        moviesapi: {
+            name: "MoviesAPI",
+            movieUrl: function ({ id }) {
+                return `https://moviesapi.club/movie/${id}`;
+            },
+            showUrl: function ({ id, season, episode }) {
+                return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
+            }
         }
-    },
+    } : {}),
     onionplay: {
         name: "OnionPlay",
         movieUrl: function ({ imdbId }) {
@@ -194,15 +196,27 @@ export const providers = {
             return `https://flixon.lol/${id}-${season}-${episode}`;
         } 
     },
-    superembed: {
-        name: "SuperEmbed",
-        movieUrl: function ({ id, theme }) {
-            return `./providers/superembed.php?v=${id}&t=${theme}`;
-        },
-        showUrl: function ({ id, season, episode, theme }) {
-            return `./providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
+    ...(!window.fhPortable ? {
+        superembed: {
+            name: "SuperEmbed",
+            movieUrl: function ({ id, theme }) {
+                return `./providers/superembed.php?v=${id}&t=${theme}`;
+            },
+            showUrl: function ({ id, season, episode, theme }) {
+                return `./providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
+            }
         }
-    },
+    } : {
+        superembed: {
+            name: "SuperEmbed",
+            movieUrl: function ({ id }) {
+                return `https://multiembed.mov/directstream.php?tmdb=1&video_id=${id}`;
+            },
+            showUrl: function ({ id, season, episode }) {
+                return `https://multiembed.mov/directstream.php?tmdb=1&video_id=${id}&s=${season}&e=${episode}`;
+            }
+        }
+    }),
     "2embed.me": {
         name: "2Embed.me",
         movieUrl: function ({ imdbId }) {
@@ -239,15 +253,17 @@ export const providers = {
             return `https://www.primewire.tf/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
         } 
     },
-    remotestream: {
-        name: "RemoteStream",
-        movieUrl: function ({ id }) {
-            return `https://remotestre.am/e/?tmdb=${id}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://remotestre.am/e/?tmdb=${id}&s=${season}&e=${episode}`;
-        } 
-    },
+    ...(!window.fhPortable ? {
+        remotestream: {
+            name: "RemoteStream",
+            movieUrl: function ({ id }) {
+                return `https://remotestre.am/e/?tmdb=${id}`;
+            },
+            showUrl: function ({ id, season, episode }) {
+                return `https://remotestre.am/e/?tmdb=${id}&s=${season}&e=${episode}`;
+            } 
+        }
+    } : {}),
     smashystream: {
         name: "SmashyStream",
         movieUrl: function ({ id }) {

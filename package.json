@@ -5,13 +5,16 @@
   "private": true,
   "scripts": {
     "dev": "webpack --config build/config.development.js",
-    "prod": "webpack --config build/config.production.js"
+    "prod": "webpack --config build/config.production.js",
+    "portable": "webpack --config build/config.portable.js"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
+    "html-webpack-plugin": "^5.6.0",
     "mini-css-extract-plugin": "^2.7.6",
+    "pug-loader": "^2.4.0",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4",
     "webpack-manifest-plugin": "^5.0.0",
