@@ -1111,6 +1111,7 @@ function modal(info, recommendationImages) {
 
     if (videoActive) watch.append(video);
     if ((left.childElementCount + right.childElementCount) !== 0) watch.append(details);
+    else watch.classList.add("only-video");
 
     setModal(info.title, null, watch, "times", true, info.type);
     checkCurrentlyPlaying();

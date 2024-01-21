@@ -1,3 +1,7 @@
+.watch.only-video {
+    margin-bottom: calc(var(--large-padding) * -1);
+}
+
 .watch .video {
     background-color: rgb(0, 0, 0);
 
