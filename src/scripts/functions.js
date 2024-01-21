@@ -5,7 +5,7 @@ export function onKeyPress(key, prevent, active, depends, callback) {
             return;
         }
 
-        if (e.key === key && (!active || document.activeElement !== active)) {
+        if (e.key.toLowerCase() === key && (!active || document.activeElement !== active)) {
             if (prevent) e.preventDefault();
             if (callback) callback();
         }

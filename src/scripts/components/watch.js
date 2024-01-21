@@ -212,6 +212,11 @@ function modal(info, recommendationImages) {
             }
         }, 250);
 
+        function show() {
+            video.scrollIntoView({ block: "center" });
+        }
+
+        onKeyPress("v", true, null, watch, show);
         video.append(up, down);
     }
 
@@ -279,29 +284,62 @@ function modal(info, recommendationImages) {
                 provider.classList[activeProvider === provider.innerText.toLowerCase() ? "add" : "remove"]("active");
             });
         }
+
+        function providerSet(name) {
+            setProvider(name.toLowerCase());
+            providerCheck();
+
+            playVideo();
+            video.scrollIntoView({ block: "center" });
+        }
+
+        function nextProvider() {
+            const provider = getProvider();
+            const providers = Array.from(providerCards.children);
+
+            const providerElem = providers.find((p) => p.innerText?.toLowerCase() === provider);
+            const index = providerElem && providers.indexOf(providerElem);
+            const next = index !== -1 && providers[index + 1];
+
+            if (next) providerSet(next.innerText);
+        }
+
+        function previousProvider() {
+            const provider = getProvider();
+            const providers = Array.from(providerCards.children);
+
+            const providerElem = providers.find((p) => p.innerText?.toLowerCase() === provider);
+            const index = providerElem && providers.indexOf(providerElem);
+            const previous = index !== -1 && providers[index - 1];
+
+            if (previous) providerSet(previous.innerText);
+        }
     
         Object.values(providers).forEach(function (providerObj) {
             const provider = document.createElement("div");
     
             provider.innerText = providerObj.name;
             provider.addEventListener("click", function () {
-                setProvider(providerObj.name.toLowerCase());
-                providerCheck();
-
-                playVideo();
-                video.scrollIntoView({ block: "center" });
+                providerSet(providerObj.name);
             });
     
             providerCards.append(provider);
         });
-        
-        providersRefresh.addEventListener("click", function () {
+
+        function refresh() {
             playVideo();
             video.scrollIntoView({ block: "center" });
-        });
+        }
+        
+        providersRefresh.addEventListener("click", refresh);
+        onKeyPress("r", true, null, watch, refresh);
 
         providersTitle.append(providersControl);
         providerCheck();
+
+        onKeyPress("+", true, null, watch, nextProvider);
+        onKeyPress("=", true, null, watch, nextProvider);
+        onKeyPress("-", true, null, watch, previousProvider);
     }
 
     seasons.className = "details-card";

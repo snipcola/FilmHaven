@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import { copyText } from "../functions.js";
+import { copyText, onKeyPress } from "../functions.js";
 import { getQuery, onQueryChange, removeQuery } from "../query.js";
 import { setTitle } from "./header.js";
 
@@ -154,4 +154,9 @@ export function initializeModal() {
     document.body.append(container);
 
     initializeModalChangeCheck();
+    onKeyPress("x", false, null, null, function () {
+        if (document.body.classList.contains("modal-active")) {
+            hideModal();
+        }
+    });
 }
