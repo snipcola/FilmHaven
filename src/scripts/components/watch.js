@@ -276,7 +276,7 @@ function modal(info, recommendationImages) {
     providersRefresh.append(providersRefreshIcon);
     providersControl.append(providersRefresh);
 
-    if (videoActive) {
+    if (videoActive && providersActive) {
         function providerCheck() {
             const activeProvider = getProvider();
             
@@ -604,7 +604,7 @@ function modal(info, recommendationImages) {
 
         seasons.append(seasonCards);
         
-        if (videoActive && providersActive) {
+        if (videoActive && seasonsActive) {
             function checkSeasonControl() {
                 const previous = getPreviousEpisode();
                 const next = getNextEpisode();
