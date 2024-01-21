@@ -24,6 +24,8 @@ export function initializeFooter(element) {
         link.ariaLabel = item.label;
         linkIcon.className = `icon icon-${item.icon}`;
 
+        if (item.download) link.setAttribute("download", item.download);
+
         link.append(linkIcon);
         links.append(link);
     }

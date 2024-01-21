@@ -7,6 +7,7 @@ const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
     entry: {
@@ -23,6 +24,10 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [MiniCssExtractPlugin.loader, "css-loader"]
+            },
+            {
+                test: /\.pug$/,
+                loader: "pug-loader"
             }
         ]
     },
@@ -36,6 +41,12 @@ module.exports = {
         new CleanWebpackPlugin(),
         new RemoveEmptyScriptsPlugin(),
         new WebpackManifestPlugin({ fileName: "_manifest.json" }),
-        new MiniCssExtractPlugin({ filename: "[contenthash].css" })
+        new MiniCssExtractPlugin({ filename: "[contenthash].css" }),
+        new HtmlWebpackPlugin({
+            template: path.resolve(src, "portable.pug"),
+            filename: "FilmHaven.html",
+            scriptLoading: "defer",
+            inject: false
+        })
     ]
 };

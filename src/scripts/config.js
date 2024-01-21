@@ -42,6 +42,14 @@ export const config = {
     },
     footer: {
         links: [
+            ...(!window.fhPortable ? [
+                {
+                    icon: "file",
+                    url: "./dist/FilmHaven.html",
+                    label: "Download",
+                    download: "FilmHaven.html"
+                }
+            ] : []),
             {
                 icon: "youtube",
                 url: "https://youtube.com/snipcola",
