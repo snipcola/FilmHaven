@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "webpack --config build/config.development.js",
-    "prod": "webpack --config build/config.production.js",
-    "portable": "webpack --config build/config.portable.js"
+    "prod": "webpack --config build/config.production.js"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
