@@ -158,24 +158,6 @@ export const adult = {
 };
 
 export const providers = {
-    moviesapi: {
-        name: "MoviesAPI",
-        movieUrl: function ({ id }) {
-            return `https://moviesapi.club/movie/${id}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
-        }
-    },
-    onionplay: {
-        name: "OnionPlay",
-        movieUrl: function ({ imdbId }) {
-            return `https://flixon.lol/${imdbId}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://flixon.lol/${id}-${season}-${episode}`;
-        } 
-    },
     "vidsrc.to": {
         name: "VidSrc.to",
         movieUrl: function ({ id }) {
@@ -193,6 +175,24 @@ export const providers = {
         showUrl: function ({ id, season, episode }) {
             return `https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
         }
+    },
+    moviesapi: {
+        name: "MoviesAPI",
+        movieUrl: function ({ id }) {
+            return `https://moviesapi.club/movie/${id}`;
+        },
+        showUrl: function ({ id, season, episode }) {
+            return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
+        }
+    },
+    onionplay: {
+        name: "OnionPlay",
+        movieUrl: function ({ imdbId }) {
+            return `https://flixon.lol/${imdbId}`;
+        },
+        showUrl: function ({ id, season, episode }) {
+            return `https://flixon.lol/${id}-${season}-${episode}`;
+        } 
     },
     superembed: {
         name: "SuperEmbed",
