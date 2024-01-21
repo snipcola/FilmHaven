@@ -19,13 +19,13 @@
         return null;
     }
 
-    $tmdbBaseURL = "https://api.themoviedb.org";
-    $tmdbVersion = "3";
-    $tmdbKey = "5622cafbfe8f8cfe358a29c53e19bba0";
-    $tmdbLanguage = "en";
-    $tmdbImageURL = "https://image.tmdb.org/t/p";
-    $tmdbImageSize = "w342";
-    $tmdbURL = "{$tmdbBaseURL}/{$tmdbVersion}";
+    $apiBaseURL = "https://api.themoviedb.org";
+    $apiVersion = "3";
+    $apiKey = "5622cafbfe8f8cfe358a29c53e19bba0";
+    $apiLanguage = "en";
+    $apiImageURL = "https://image.tmdb.org/t/p";
+    $apiImageSize = "w342";
+    $apiURL = "{$apiBaseURL}/{$apiVersion}";
 
     $modal = getModalInfo();
 
@@ -33,7 +33,7 @@
         $type = $modal[0] === "m" ? "movie" : "tv";
         $id = $modal[1];
 
-        $ch = curl_init("{$tmdbURL}/{$type}/{$id}?api_key={$tmdbKey}&language={$tmdbLanguage}");
+        $ch = curl_init("{$apiURL}/{$type}/{$id}?api_key={$apiKey}&language={$apiLanguage}");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $response = curl_exec($ch);
@@ -51,7 +51,7 @@
 
                 if (isset($data["poster_path"])) {
                     $path = $data["poster_path"];
-                    $ogImage = "{$tmdbImageURL}/{$tmdbImageSize}{$path}";
+                    $ogImage = "{$apiImageURL}/{$apiImageSize}{$path}";
                 }
             }
         }

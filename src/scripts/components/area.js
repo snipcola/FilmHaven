@@ -1,9 +1,9 @@
 import { config } from "../config.js";
 import { splitArray, onWindowResize, removeWindowResize, elementExists } from "../functions.js";
 import { preloadImages } from "../cache.js";
-import { getTrending } from "../tmdb/trending.js";
-import { getRated } from "../tmdb/rated.js";
-import { getNew } from "../tmdb/new.js";
+import { getTrending } from "../api/trending.js";
+import { getRated } from "../api/rated.js";
+import { getNew } from "../api/new.js";
 import { watchContent } from "./watch.js";
 import { getPage } from "../store/pages.js";
 import { getSection } from "../store/sections.js";

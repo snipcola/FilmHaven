@@ -1,7 +1,7 @@
 import { config } from "../config.js";
 import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists, scrollToElement, onKeyPress } from "../functions.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
-import { getSearchResults } from "../tmdb/search.js";
+import { getSearchResults } from "../api/search.js";
 import { watchContent } from "./watch.js";
 import { hideModal } from "./modal.js";
 import { setQuery } from "../query.js";

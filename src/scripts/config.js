@@ -103,7 +103,7 @@ export const config = {
     maxMobileWidth: 700
 };
 
-export const tmdb = {
+export const api = {
     api: {
         url: "https://api.themoviedb.org",
         version: "3",

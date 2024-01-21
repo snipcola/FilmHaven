@@ -1,7 +1,7 @@
 import { config } from "../config.js";
 import { isHovered } from "../functions.js";
 import { preloadImages } from "../cache.js";
-import { getTrending } from "../tmdb/trending.js";
+import { getTrending } from "../api/trending.js";
 import { watchContent } from "./watch.js";
 import { getPage } from "../store/pages.js";
 

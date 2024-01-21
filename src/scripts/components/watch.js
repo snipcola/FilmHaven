@@ -1,6 +1,6 @@
 import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
-import { getDetails } from "../tmdb/details.js";
+import { getDetails } from "../api/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress } from "../functions.js";
 import { config, providers } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
