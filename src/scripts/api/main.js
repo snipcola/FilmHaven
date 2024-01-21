@@ -2,7 +2,7 @@ import { api } from "../config.js";
 import { getAdult } from "../store/adult.js";
 
 export function getApiUrl() {
-    return `${api.api.url}/${api.api.version}`;
+    return `${api.url}/${api.version}`;
 }
 
 export function getImageUrl(path, type = "poster") {
@@ -17,7 +17,7 @@ export async function sendRequest(path, parameters = {}, method = "GET") {
     const apiUrl = getApiUrl();
     const url = new URL(`${apiUrl}/${path}`);
 
-    url.searchParams.append("api_key", api.api.key);
+    url.searchParams.append("api_key", api.key);
     url.searchParams.append("language", api.language);
     url.searchParams.append("include_adult", getAdult());
 

@@ -104,11 +104,9 @@ export const config = {
 };
 
 export const api = {
-    api: {
-        url: "https://api.themoviedb.org",
-        version: "3",
-        key: "5622cafbfe8f8cfe358a29c53e19bba0"
-    },
+    url: "https://api.themoviedb.org",
+    version: "3",
+    key: "5622cafbfe8f8cfe358a29c53e19bba0",
     image: {
         url: "https://image.tmdb.org/t/p",
         poster: "w342",
