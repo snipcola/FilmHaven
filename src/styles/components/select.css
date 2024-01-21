@@ -1,0 +1,27 @@
+.select {
+    background-color: var(--dark);
+    color: var(--text);
+
+    width: 100%;
+    margin: 0;
+
+    border: var(--small-border) solid var(--lighter);
+    outline: none;
+
+    padding: calc(var(--small-padding) * 1.25);
+    box-sizing: border-box;
+
+    border-radius: var(--border-radius);
+    transition: var(--transition-speed) opacity;
+
+    user-select: none;
+    cursor: pointer;
+
+    appearance: none;
+}
+
+@media (hover: hover) {
+    .select:hover {
+        opacity: var(--dim-opacity);
+    }
+}

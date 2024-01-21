@@ -34,6 +34,7 @@
 @import url(./components/search.css);
 @import url(./components/search.responsive.css);
 
+@import url(./components/select.css);
 @import url(./components/notice.css);
 
 @import url(./components/watch.css);

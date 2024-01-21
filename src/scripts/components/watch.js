@@ -72,7 +72,7 @@ function modal(info, recommendationImages) {
     const providersControl = document.createElement("div");
     const providersRefresh = document.createElement("div");
     const providersRefreshIcon = document.createElement("i");
-    const providerCards = document.createElement("div");
+    const providersSelect = document.createElement("select");
 
     const seasons = document.createElement("div");
     const seasonsTitle = document.createElement("div");
@@ -262,80 +262,78 @@ function modal(info, recommendationImages) {
     providersTitle.className = "title";
     providersTitleIcon.className = "icon icon-tv";
     providersTitleText.className = "text";
-    providersTitleText.innerText = "Providers";
+    providersTitleText.innerText = "Provider";
     providersControl.className = "control";
     providersRefresh.className = "button secondary icon-only";
     providersRefreshIcon.className = "icon icon-sync";
-    providerCards.className = "provider-cards";
+    providersSelect.className = "select";
 
     providersTitle.append(providersTitleIcon);
     providersTitle.append(providersTitleText);
     providersElem.append(providersTitle);
-    providersElem.append(providerCards);
+    providersElem.append(providersSelect);
 
     providersRefresh.append(providersRefreshIcon);
     providersControl.append(providersRefresh);
 
     if (videoActive && providersActive) {
-        function providerCheck() {
-            const activeProvider = getProvider();
-            
-            Array.from(providerCards.children).forEach(function (provider) {
-                provider.classList[activeProvider === provider.innerText.toLowerCase() ? "add" : "remove"]("active");
-            });
-        }
-
         function providerSet(name) {
-            setProvider(name.toLowerCase());
-            providerCheck();
-
+            setProvider(name);
             playVideo();
             video.scrollIntoView({ block: "center" });
         }
 
         function nextProvider() {
             const provider = getProvider();
-            const providers = Array.from(providerCards.children);
+            const providers = Array.from(providersSelect.children);
 
-            const providerElem = providers.find((p) => p.innerText?.toLowerCase() === provider);
+            const providerElem = providers.find((p) => p.value === provider);
             const index = providerElem && providers.indexOf(providerElem);
             const next = index !== -1 && providers[index + 1];
 
-            if (next) providerSet(next.innerText);
+            if (next) {
+                providersSelect.value = next.value;
+                providerSet(next.value);
+            }
         }
 
         function previousProvider() {
             const provider = getProvider();
-            const providers = Array.from(providerCards.children);
+            const providers = Array.from(providersSelect.children);
 
-            const providerElem = providers.find((p) => p.innerText?.toLowerCase() === provider);
+            const providerElem = providers.find((p) => p.value === provider);
             const index = providerElem && providers.indexOf(providerElem);
             const previous = index !== -1 && providers[index - 1];
 
-            if (previous) providerSet(previous.innerText);
+            if (previous) {
+                providersSelect.value = previous.value;
+                providerSet(previous.value);
+            }
         }
-    
-        Object.values(providers).forEach(function (providerObj) {
-            const provider = document.createElement("div");
-    
-            provider.innerText = providerObj.name;
-            provider.addEventListener("click", function () {
-                providerSet(providerObj.name);
-            });
-    
-            providerCards.append(provider);
-        });
 
         function refresh() {
             playVideo();
             video.scrollIntoView({ block: "center" });
         }
+    
+        Object.values(providers).forEach(function (providerObj) {
+            const provider = document.createElement("option");
+    
+            provider.value = providerObj.name.toLowerCase();
+            provider.innerText = providerObj.name;
+    
+            providersSelect.append(provider);
+        });
+
+        providersSelect.addEventListener("change", function () {
+            providerSet(providersSelect.value);
+        });
+
+        providersSelect.value = getProvider();
+        providersTitle.append(providersControl);
         
         providersRefresh.addEventListener("click", refresh);
         onKeyPress("r", true, null, watch, refresh);
-
-        providersTitle.append(providersControl);
-        providerCheck();
 
         onKeyPress("+", true, null, watch, nextProvider);
         onKeyPress("=", true, null, watch, nextProvider);
