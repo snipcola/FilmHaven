@@ -545,3 +545,9 @@ export const settings = [
         type: "buttons"
     }
 ];
+
+export const proxy = {
+    url: function (path) {
+        return `https://proxy.snipcola.com/${path}`;
+    }
+};

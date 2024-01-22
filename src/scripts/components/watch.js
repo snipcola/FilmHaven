@@ -10,6 +10,7 @@ import { addContinueWatching } from "../store/continue.js";
 import { getWatchSection } from "../store/watch-sections.js";
 import { getThemeAbsolute } from "../store/theme.js";
 import { initializeArea } from "./area.js";
+import { isValidUrl } from "../api/proxy.js";
 
 export function watchContent(type, id) {
     setQuery(config.query.modal, `${type === "movie" ? "m" : "s"}-${id}`);
@@ -235,10 +236,12 @@ function modal(info, recommendationImages) {
         const supportsThemes = provider.supportsThemes;
 
         const theme = getThemeAbsolute();
-
-        currentIframe.src = info.type === "movie"
+        const url = info.type === "movie"
             ? provider.movieUrl({ id: info.id, imdbId: info.imdbId, theme })
             : provider.showUrl({ id: info.id, season: seasonNumber, episode: episodeNumber, theme });
+
+        isValidUrl(url).then(console.log);
+        currentIframe.src = url;
 
         video.classList[supportsThemes ? "add" : "remove"]("theme");
         videoNoticeContainer.classList.add("active");
