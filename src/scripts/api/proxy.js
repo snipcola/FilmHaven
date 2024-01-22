@@ -10,8 +10,8 @@ export async function isValidUrl(url) {
             new Promise((resolve) => setTimeout(resolve, 3500))
         ]);
     } catch {
-        return true
-    };
+        return true;
+    }
 
     return response && (response.ok || [200, 500].includes(response.status));
 }
