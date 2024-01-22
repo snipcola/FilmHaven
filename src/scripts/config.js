@@ -207,6 +207,7 @@ export const providers = {
     ...(!window.fhPortable ? {
         superembed: {
             name: "SuperEmbed",
+            supportsThemes: true,
             movieUrl: function ({ id, theme }) {
                 return `./providers/superembed.php?v=${id}&t=${theme}`;
             },
