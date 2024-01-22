@@ -255,15 +255,17 @@ function modal(info, recommendationImages) {
         disableHotkeys = true;
         watch.classList.add("disabled");
 
+        const total = Object.keys(providers).length;
+        let checked = 0;
+
         const promises = Object.entries(providers).map(async function ([key, value]) {
             const url = getUrl(value);
             const valid = await isValidUrl(url);
 
-            if (valid) {
-                validProviders[key] = value;
-            }
+            if (valid) validProviders[key] = value;
+            checked++;
 
-            alert(true, "tv", `Checking providers <b>(${Object.keys(validProviders).length}/${Object.keys(providers).length})</b>`);
+            alert(true, "tv", `Checking providers <b>(checked}/${total})</b>`);
         });
 
         await Promise.all(promises);
