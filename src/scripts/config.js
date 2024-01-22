@@ -160,11 +160,6 @@ export const proxy = {
     timeout: 5000
 };
 
-function getHostedProvider(name, params = "") {
-    const url = "https://fh.snipcola.com/providers";
-    return `${url}/${name}.php${params}`;
-}
-
 export const providers = {
     "vidsrc.to": {
         name: "VidSrc.to",
@@ -204,28 +199,6 @@ export const providers = {
             return `https://flixon.lol/${id}-${season}-${episode}`;
         } 
     },
-    ...(!window.fhPortable ? {
-        superembed: {
-            name: "SuperEmbed",
-            supportsThemes: true,
-            movieUrl: function ({ id, theme }) {
-                return getHostedProvider("superembed", `?v=${id}&t=${theme}`);
-            },
-            showUrl: function ({ id, season, episode, theme }) {
-                return getHostedProvider("superembed", `?v=${id}&s=${season}&e=${episode}&t=${theme}`);
-            }
-        }
-    } : {
-        superembed: {
-            name: "SuperEmbed",
-            movieUrl: function ({ id }) {
-                return `https://multiembed.mov/directstream.php?tmdb=1&video_id=${id}`;
-            },
-            showUrl: function ({ id, season, episode }) {
-                return `https://multiembed.mov/directstream.php?tmdb=1&video_id=${id}&s=${season}&e=${episode}`;
-            }
-        }
-    }),
     "2embed.me": {
         name: "2Embed.me",
         movieUrl: function ({ imdbId }) {
@@ -235,15 +208,6 @@ export const providers = {
             return `https://2embed.me/player/tv/${id}/S${season}/E${episode}`;
         } 
     },
-    "2embed.cc": {
-        name: "2Embed.cc",
-        movieUrl: function ({ id }) {
-            return `https://www.2embed.cc/embed/${id}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://www.2embed.cc/embedtv/${id}&s=${season}&e=${episode}`;
-        } 
-    },
     gdrive: {
         name: "GDrive",
         movieUrl: function ({ id }) {
@@ -251,15 +215,6 @@ export const providers = {
         },
         showUrl: function ({ id, season, episode }) {
             return `https://databasegdriveplayer.xyz/player.php?type=series&tmdb=${id}&season=${season}&episode=${episode}`;
-        } 
-    },
-    primewire: {
-        name: "PrimeWire",
-        movieUrl: function ({ id }) {
-            return `https://www.primewire.tf/embed/movie?tmdb=${id}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://www.primewire.tf/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
         } 
     },
     ...(!window.fhPortable ? {
