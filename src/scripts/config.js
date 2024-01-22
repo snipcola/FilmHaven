@@ -332,8 +332,8 @@ export const settings = [
             }));
         },
         onSelect: function (l) {
-            setLanguage(l);
             localStorage.clear();
+            setLanguage(l);
 
             document.body.classList.remove("active");
             window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
