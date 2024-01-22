@@ -359,6 +359,10 @@ export const settings = [
                 {
                     label: "Minimal",
                     value: "minimal"
+                },
+                {
+                    label: "Minimal+",
+                    value: "extra-minimal"
                 }
             ];
         },
@@ -382,25 +386,44 @@ export const settings = [
 
                 document.body.classList.remove("active");
                 window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
+            } else if (i === "minimal") {
+                const pages = getPages();
+                const sections = getSections();
+                const watchSections = getWatchSections();
+
+                for (const page of Object.keys(pages)) {
+                    setPage(page, ["Home"].includes(page));
+                }
+
+                for (const section of Object.keys(sections)) {
+                    setSection(section, ["Search", "Continue", "Carousel", "Genres"].includes(section));
+                }
+
+                for (const watchSection of Object.keys(watchSections)) {
+                    setWatchSection(watchSection, ["Video", "Providers", "Seasons"].includes(watchSection));
+                }
+
+                document.body.classList.remove("active");
+                window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=2`;
             } else {
                 const pages = getPages();
-                    const sections = getSections();
-                    const watchSections = getWatchSections();
+                const sections = getSections();
+                const watchSections = getWatchSections();
 
-                    for (const page of Object.keys(pages)) {
-                        setPage(page, ["Home"].includes(page));
-                    }
+                for (const page of Object.keys(pages)) {
+                    setPage(page, ["Home"].includes(page));
+                }
 
-                    for (const section of Object.keys(sections)) {
-                        setSection(section, ["Search", "Continue", "Carousel", "Genres"].includes(section));
-                    }
+                for (const section of Object.keys(sections)) {
+                    setSection(section, ["Search", "Continue"].includes(section));
+                }
 
-                    for (const watchSection of Object.keys(watchSections)) {
-                        setWatchSection(watchSection, ["Video", "Providers", "Seasons"].includes(watchSection));
-                    }
+                for (const watchSection of Object.keys(watchSections)) {
+                    setWatchSection(watchSection, ["Video"].includes(watchSection));
+                }
 
-                    document.body.classList.remove("active");
-                    window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=2`;
+                document.body.classList.remove("active");
+                window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=2`;
             }
         },
         preventChange: true,
