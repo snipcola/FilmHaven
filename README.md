@@ -4,7 +4,7 @@ A simple, customizable, and lightweight frontend to view and interact with movie
 **Accessible here:**
 - <a target="_blank" href="https://fh.snipcola.com">Main</a>
 - <a target="_blank" href="https://film-haven.vercel.app">Mirror</a>
-- <a target="_blank" href="view-source:https://fh.snipcola.com/dist/FilmHaven.html">Portable</a>
+- <a target="_blank" href="https://fh.snipcola.com/dist/FilmHaven.html">Portable (right click & save)</a>
 
 ## ⚠️ - Disclaimer
 All files, such as media, are linked from third-party services, which FilmHaven is not responsible for and has no control over.
