@@ -265,7 +265,7 @@ function modal(info, recommendationImages) {
             if (valid) validProviders[key] = value;
             checked++;
 
-            alert(true, "tv", `Checking providers <b>(checked}/${total})</b>`);
+            alert(true, "tv", `Checking providers <b>(${checked}/${total})</b>`);
         });
 
         await Promise.all(promises);
