@@ -129,17 +129,17 @@ export function initializeSettings() {
     
                 const activeItem = items.find((i) => i.active);
                 if (activeItem) select.value = activeItem.value;
+
+                select.addEventListener("change", function () {
+                    setting.onSelect(select.value);
+                    if (setting.preventChange) select.value = "";
+                });
             }
 
             const items = setting.items();
             
             if (items instanceof Promise) items.then(initialize);
             else initialize(items);
-
-            select.addEventListener("change", function () {
-                setting.onSelect(select.value);
-                if (setting.preventChange) select.value = "";
-            });
 
             container.append(select);
         }
