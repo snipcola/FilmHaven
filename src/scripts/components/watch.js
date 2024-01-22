@@ -302,9 +302,8 @@ function modal(info, recommendationImages) {
         const url = getUrl(provider);
 
         alert(true, "sync", "Content loading");
-        video.classList[provider.supportsThemes ? "add" : "remove"]("theme");
-
         currentIframe.src = url;
+        
         currentIframe.addEventListener("load", function () {
             alert(false);
             currentIframe.classList.add("active");

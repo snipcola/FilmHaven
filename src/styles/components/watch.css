@@ -22,11 +22,6 @@
     user-select: none;
 }
 
-.watch .video.theme {
-    background-color: var(--light);
-    border: var(--small-border) solid var(--lighter);
-}
-
 .watch .video .iframe {
     display: none;
     position: absolute;
@@ -59,10 +54,6 @@
 
 .watch .video .video-notice .notice {
     margin: 0;
-}
-
-.watch .video.theme .video-notice .notice {
-    background-color: var(--dark);
 }
 
 .watch .video .scroll {
