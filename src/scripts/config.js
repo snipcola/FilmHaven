@@ -320,7 +320,7 @@ export const settings = [
     {
         label: {
             icon: "language",
-            text: "Language (requires reset)"
+            text: "Language (reset required)"
         },
         items: async function () {
             const languages = await getLanguages();
