@@ -1,6 +1,6 @@
 import { settings } from "../config.js";
 
-export async function initializeSettings() {
+export function initializeSettings() {
     const section = document.querySelector(".section.settings");
 
     if (!section) {
@@ -49,73 +49,92 @@ export async function initializeSettings() {
                 }
             }
 
-            for (const item of await setting.items()) {
-                const option = document.createElement("div");
-
-                option.innerText = item.label;
-                if (item.active) option.classList.add("active");
-
-                option.addEventListener("click", function () {
-                    if (!setting.multi) {
-                        resetOptions();
-                        setOptionActive(item.label, true);
-                    } else {
-                        const isActive = option.classList.contains("active");
-                        setOptionActive(item.label, !isActive);
-                    }
-
-                    setting.onClick(item.value);
-                });
-
-                selection.append(option);
+            function initialize (items) {
+                for (const item of items) {
+                    const option = document.createElement("div");
+    
+                    option.innerText = item.label;
+                    if (item.active) option.classList.add("active");
+    
+                    option.addEventListener("click", function () {
+                        if (!setting.multi) {
+                            resetOptions();
+                            setOptionActive(item.label, true);
+                        } else {
+                            const isActive = option.classList.contains("active");
+                            setOptionActive(item.label, !isActive);
+                        }
+    
+                        setting.onClick(item.value);
+                    });
+    
+                    selection.append(option);
+                }
             }
+
+            const items = setting.items();
+
+            if (items instanceof Promise) items.then(initialize);
+            else initialize(items);
 
             container.append(selection);
         } else if (setting.type === "buttons") {
             const buttons = document.createElement("div");
             buttons.className = "buttons";
 
-            for (const item of await setting.items()) {
-                const button = document.createElement("div");
-                const buttonIcon = document.createElement("i");
-                const buttonText = document.createElement("span");
-
-                button.className = "button";
-                if (item.class) button.classList.add(item.class);
-                buttonIcon.className = `icon icon-${item.label.icon}`;
-                buttonText.className = "text";
-                buttonText.innerHTML = item.label.text;
-
-                if (item.label.icon) button.append(buttonIcon);
-                button.append(buttonText);
-                button.addEventListener("click", () => item.onClick(button));
-                
-                buttons.append(button);
+            function initialize (items) {
+                for (const item of items) {
+                    const button = document.createElement("div");
+                    const buttonIcon = document.createElement("i");
+                    const buttonText = document.createElement("span");
+    
+                    button.className = "button";
+                    if (item.class) button.classList.add(item.class);
+                    buttonIcon.className = `icon icon-${item.label.icon}`;
+                    buttonText.className = "text";
+                    buttonText.innerHTML = item.label.text;
+    
+                    if (item.label.icon) button.append(buttonIcon);
+                    button.append(buttonText);
+                    button.addEventListener("click", () => item.onClick(button));
+                    
+                    buttons.append(button);
+                }
             }
+
+            const items = setting.items();
+            
+            if (items instanceof Promise) items.then(initialize);
+            else initialize(items);
 
             container.append(buttons);
         } else if (setting.type === "select") {
             const select = document.createElement("select");
             select.className = "select";
 
-            const items = await setting.items();
-
-            for (const item of items) {
-                const option = document.createElement("option");
-
-                option.value = item.value;
-                option.innerHTML = item.label;
-
-                if (item.placeholder) {
-                    option.setAttribute("disabled", true);
-                    option.setAttribute("selected", true);
+            function initialize (items) {
+                for (const item of items) {
+                    const option = document.createElement("option");
+    
+                    option.value = item.value;
+                    option.innerHTML = item.label;
+    
+                    if (item.placeholder) {
+                        option.setAttribute("disabled", true);
+                        option.setAttribute("selected", true);
+                    }
+    
+                    select.append(option);
                 }
-
-                select.append(option);
+    
+                const activeItem = items.find((i) => i.active);
+                if (activeItem) select.value = activeItem.value;
             }
 
-            const activeItem = items.find((i) => i.active);
-            if (activeItem) select.value = activeItem.value;
+            const items = setting.items();
+            
+            if (items instanceof Promise) items.then(initialize);
+            else initialize(items);
 
             select.addEventListener("change", function () {
                 setting.onSelect(select.value);

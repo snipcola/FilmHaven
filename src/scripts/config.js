@@ -334,6 +334,8 @@ export const settings = [
         onSelect: function (l) {
             setLanguage(l);
             resetCache();
+
+            document.body.classList.remove("active");
             window.location.reload();
         },
         type: "select"
@@ -378,6 +380,7 @@ export const settings = [
                     setWatchSection(watchSection, true);
                 }
 
+                document.body.classList.remove("active");
                 window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
             } else {
                 const pages = getPages();
@@ -396,6 +399,7 @@ export const settings = [
                         setWatchSection(watchSection, ["Video", "Providers", "Seasons"].includes(watchSection));
                     }
 
+                    document.body.classList.remove("active");
                     window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=2`;
             }
         },
@@ -476,6 +480,8 @@ export const settings = [
                     },
                     onClick: function (self) {
                         localStorage.clear();
+
+                        document.body.classList.remove("active");
                         window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
 
                         self.classList.add("inactive");
@@ -489,6 +495,7 @@ export const settings = [
                     },
                     onClick: function (self) {
                         resetCache();
+                        document.body.classList.remove("active");
                         window.location.reload();
 
                         self.classList.add("inactive");
