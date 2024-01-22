@@ -1,5 +1,10 @@
 ## 🎬 - FilmHaven
-A simple, customizable, and lightweight frontend to view and interact with movies & shows. 
+A simple, customizable, and lightweight frontend to view and interact with movies & shows.
+
+**Accessible here:**
+- [Main](https://fh.snipcola.com)
+- [Mirror](https://film-haven.vercel.app)
+- <a href="https://fh.snipcola.com/dist/FilmHaven.html" download="FilmHaven.html">Portable</a>
 
 ## ⚠️ - Disclaimer
 All files, such as media, are linked from third-party services, which FilmHaven is not responsible for and has no control over.
