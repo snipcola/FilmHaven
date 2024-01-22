@@ -120,6 +120,24 @@ export const config = {
     maxMobileWidth: 700
 };
 
+export const api = {
+    url: "https://api.themoviedb.org",
+    version: "3",
+    key: "5622cafbfe8f8cfe358a29c53e19bba0",
+    image: {
+        url: "https://image.tmdb.org/t/p",
+        poster: "w342",
+        backdrop: "w1280",
+        cast: "w150_and_h150_face",
+        avatar: "w150_and_h150_face",
+        episode: "w185"
+    },
+    trending: {
+        timeWindow: "week"
+    },
+    language: "en"
+};
+
 export const proxy = {
     url: function (path) {
         return `https://proxy.snipcola.com/${path}`;
@@ -146,51 +164,6 @@ function getHostedProvider(name, params = "") {
     const url = "https://fh.snipcola.com/providers";
     return `${url}/${name}.php${params}`;
 }
-
-export const api = {
-    url: "https://api.themoviedb.org",
-    version: "3",
-    key: "5622cafbfe8f8cfe358a29c53e19bba0",
-    image: {
-        url: "https://image.tmdb.org/t/p",
-        poster: "w342",
-        backdrop: "w1280",
-        cast: "w150_and_h150_face",
-        avatar: "w150_and_h150_face",
-        episode: "w185"
-    },
-    trending: {
-        timeWindow: "week"
-    },
-    language: "en"
-};
-
-export const store = {
-    names: {
-        cache: function (key) {
-            return `fhc-${key}`;
-        },
-        theme: "fh-theme",
-        adult: "fh-adult",
-        provider: "fh-provider",
-        lastPlayed: "fh-last-played",
-        pages: "fh-pages",
-        sections: "fh-sections",
-        watchSections: "fh-watch-sections",
-        continue: "fh-continue"
-    }
-};
-
-export const themes = {
-    auto: "Auto",
-    dark: "Dark",
-    light: "Light"
-};
-
-export const adult = {
-    show: "Show",
-    hide: "Hide"
-};
 
 export const providers = {
     "vidsrc.to": {
@@ -300,6 +273,33 @@ export const providers = {
             } 
         }
     } : {})
+};
+
+export const store = {
+    names: {
+        cache: function (key) {
+            return `fhc-${key}`;
+        },
+        theme: "fh-theme",
+        adult: "fh-adult",
+        provider: "fh-provider",
+        lastPlayed: "fh-last-played",
+        pages: "fh-pages",
+        sections: "fh-sections",
+        watchSections: "fh-watch-sections",
+        continue: "fh-continue"
+    }
+};
+
+export const themes = {
+    auto: "Auto",
+    dark: "Dark",
+    light: "Light"
+};
+
+export const adult = {
+    show: "Show",
+    hide: "Hide"
 };
 
 export const sections = {
