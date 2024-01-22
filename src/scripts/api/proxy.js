@@ -9,8 +9,9 @@ export async function isValidUrl(url) {
             fetch(proxy.url(url)),
             new Promise((resolve) => setTimeout(resolve, 3500))
         ]);
-    }
-    catch { return false };
+    } catch {
+        return true
+    };
 
     return response && (response.ok || [200, 500].includes(response.status));
 }
