@@ -1,6 +1,6 @@
 import { proxy } from "../config";
 
-async function isValidUrl(url) {
+export async function isValidUrl(url) {
     if (window.fhPortable) return true;
     let response;
 
