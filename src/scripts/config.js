@@ -149,12 +149,11 @@ export const proxy = {
         text: [
             "not found", // Generic
             "no sources", // Generic
+            "onionplay streaming mirrors", // OnionPlay
             "no movie found", // 2Embed.me
             "no tv show found", // 2Embed.me
-            "watch-test-online-", // 2Embed.cc
-            "video_error.mp4", // RemoteStream
             `,"file":"","kind"`, // GDrive
-            "onionplay streaming mirrors" // OnionPlay
+            "video_error.mp4" // RemoteStream
         ]
     },
     timeout: 5000
