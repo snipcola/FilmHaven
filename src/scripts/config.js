@@ -476,7 +476,7 @@ export const settings = [
                 {
                     label: {
                         icon: "sync",
-                        text: "Clear Everything"
+                        text: "Reset"
                     },
                     onClick: function (self) {
                         localStorage.clear();
@@ -491,7 +491,7 @@ export const settings = [
                 {
                     label: {
                         icon: "sync",
-                        text: "Clear Cache"
+                        text: "Empty Cache"
                     },
                     onClick: function (self) {
                         resetCache();
