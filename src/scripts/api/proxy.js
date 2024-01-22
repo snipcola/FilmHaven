@@ -7,11 +7,25 @@ export async function isValidUrl(url) {
     try {
         response = await Promise.race([
             fetch(proxy.url(url)),
-            new Promise((resolve) => setTimeout(resolve, 3500))
+            new Promise((resolve) => setTimeout(resolve, proxy.timeout))
         ]);
     } catch {
         return true;
     }
 
-    return response && (response.ok || [200, 500, 401, 403].includes(response.status));
+    const isOk = response && (response.ok || !(proxy.blacklisted.status).includes(response.status));
+
+    if (isOk) {
+        const text = await response.text();
+
+        if (text) {
+            for (const blacklistedText of proxy.blacklisted.text) {
+                if (text.toLowerCase().includes(blacklistedText)) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return isOk;
 }

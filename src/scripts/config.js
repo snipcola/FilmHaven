@@ -229,10 +229,10 @@ export const providers = {
     "2embed.me": {
         name: "2Embed.me",
         movieUrl: function ({ imdbId }) {
-            return `https://2embed.me/movie/${imdbId}`;
+            return `https://2embed.me/player/movie/${imdbId}`;
         },
         showUrl: function ({ id, season, episode }) {
-            return `https://2embed.me/tv/${id}/S${season}/E${episode}`;
+            return `https://2embed.me/player/tv/${id}/S${season}/E${episode}`;
         } 
     },
     "2embed.cc": {
@@ -272,25 +272,7 @@ export const providers = {
                 return `https://remotestre.am/e/?tmdb=${id}&s=${season}&e=${episode}`;
             } 
         }
-    } : {}),
-    smashystream: {
-        name: "SmashyStream",
-        movieUrl: function ({ id }) {
-            return `https://embed.smashystream.com/playere.php?tmdb=${id}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://embed.smashystream.com/playere.php?tmdb=${id}&season=${season}&episode=${episode}`;
-        } 
-    },
-    tvembed: {
-        name: "TVEmbed",
-        movieUrl: function ({ id }) {
-            return `https://tvembed.cc/movie/${id}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://tvembed.cc/tv/${id}/${season}/${episode}`;
-        } 
-    }
+    } : {})
 };
 
 export const sections = {
@@ -550,5 +532,21 @@ export const settings = [
 export const proxy = {
     url: function (path) {
         return `https://proxy.snipcola.com/${path}`;
-    }
+    },
+    blacklisted: {
+        status: [
+            404 // Not found
+        ],
+        text: [
+            "not found", // Generic
+            "no sources", // Generic
+            "no movie found", // 2Embed.me
+            "no tv show found", // 2Embed.me
+            "watch-test-online-", // 2Embed.cc
+            "video_error.mp4", // RemoteStream
+            `,"file":"","kind"`, // GDrive
+            "onionplay streaming mirrors" // OnionPlay
+        ]
+    },
+    timeout: 5000
 };

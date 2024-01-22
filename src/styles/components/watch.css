@@ -1,4 +1,4 @@
-.watch.only-video {
+.watch.only-video, .watch.disabled {
     margin-bottom: calc(var(--large-padding) * -1);
 }
 
@@ -109,6 +109,10 @@
     margin-top: var(--large-padding);
 }
 
+.watch.disabled .details {
+    display: none;
+}
+
 .watch .details.no-video {
     margin-top: 0;
 }
@@ -145,7 +149,6 @@
 .watch .details .details-card {
     display: flex;
     flex-direction: column;
-    
 
     gap: var(--small-gap);
     background-color: var(--light);
@@ -157,6 +160,10 @@
     border-radius: var(--border-radius);
 
     overflow: hidden;
+}
+
+.watch .details .details-card.disabled {
+    display: none;
 }
 
 .watch .details .title, .watch .details .text {

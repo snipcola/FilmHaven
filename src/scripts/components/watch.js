@@ -16,7 +16,7 @@ export function watchContent(type, id) {
     setQuery(config.query.modal, `${type === "movie" ? "m" : "s"}-${id}`);
 }
 
-async function modal(info, recommendationImages) {
+function modal(info, recommendationImages) {
     addContinueWatching(info.id, info.type, info.title, info.image);
 
     const videoActive = getWatchSection("Video");
@@ -222,6 +222,9 @@ async function modal(info, recommendationImages) {
     }
 
     let currentIframe;
+    let disableHotkeys = false;
+    let validProviders = {};
+    let forceProvider;
 
     function getUrl(provider) {
         const theme = getThemeAbsolute();
@@ -231,37 +234,81 @@ async function modal(info, recommendationImages) {
             : provider.showUrl({ id: info.id, season: seasonNumber, episode: episodeNumber, theme });
     }
 
-    async function playVideo() {
+    function getValidProvider() {
+        const provider = validProviders[getProvider()];
+        if (!provider) forceProvider = Object.values(validProviders)[0];
+        return forceProvider || provider;
+    }
+
+    function getValidProviderKey() {
+        const provider = getValidProvider();
+        return Object.keys(validProviders)[Object.values(validProviders).indexOf(provider)];
+    }
+
+    function alert(toggle, icon, text) {
+        videoNoticeIcon.className = `icon icon-${icon || "sync"}`;
+        videoNoticeText.innerHTML = text || "";
+        videoNoticeContainer.classList[toggle ? "add" : "remove"]("active");
+    }
+
+    async function checkProviders() {
+        disableHotkeys = true;
+        watch.classList.add("disabled");
+
+        const promises = Object.entries(providers).map(async function ([key, value]) {
+            const url = getUrl(value);
+            const valid = await isValidUrl(url);
+
+            if (valid) {
+                validProviders[key] = value;
+            }
+
+            alert(true, "tv", `Checking providers <b>(${Object.keys(validProviders).length}/${Object.keys(providers).length})</b>`);
+        });
+
+        await Promise.all(promises);
+        validProviders = Object.fromEntries(Object.entries(validProviders).sort(([a], [b]) => Object.keys(providers).indexOf(a) - Object.keys(providers).indexOf(b)));
+
+        if (Object.keys(validProviders).length > 0) {
+            Object.values(validProviders).forEach(function (providerObj) {
+                const provider = document.createElement("option");
+        
+                provider.value = providerObj.name.toLowerCase();
+                provider.innerText = providerObj.name;
+        
+                providersSelect.append(provider);
+            });
+
+            playVideo();
+            providersSelect.value = getValidProviderKey();
+
+            disableHotkeys = false;
+        } else {
+            providersElem.classList.add("disabled");
+            seasons.classList.add("disabled");
+            alert(true, "censor", "No providers support this content.");
+        }
+
+        watch.classList.remove("disabled");
+    }
+
+    function playVideo() {
         if (currentIframe) currentIframe.remove();
         
         currentIframe = iframe.cloneNode();
         video.append(currentIframe);
 
-        videoNoticeIcon.className = "icon icon-sync";
-        videoNoticeText.innerText = "Content loading";
-
-        const provider = providers[getProvider()];
-
+        const provider = getValidProvider();
         const url = getUrl(provider);
-        const isValid = await isValidUrl(url);
 
+        alert(true, "sync", "Content loading");
         video.classList[provider.supportsThemes ? "add" : "remove"]("theme");
-        videoNoticeContainer.classList.add("active");
 
-        if (isValid) {
-            currentIframe.src = url;
-            currentIframe.addEventListener("load", function () {
-                videoNoticeContainer.classList.remove("active");
-                currentIframe.classList.add("active");
-            });
-        } else {
-            videoNoticeIcon.className = "icon icon-censor";
-            videoNoticeText.innerHTML = `Content is not available on <b>${provider.name}</b>`;
-        }
-    }
-
-    if (videoActive) {
-        playVideo();
+        currentIframe.src = url;
+        currentIframe.addEventListener("load", function () {
+            alert(false);
+            currentIframe.classList.add("active");
+        });
     }
 
     details.className = videoActive ? "details" : "details no-video";
@@ -289,20 +336,27 @@ async function modal(info, recommendationImages) {
     providersRefresh.append(providersRefreshIcon);
     providersControl.append(providersRefresh);
 
-    if (videoActive && providersActive) {
+    if (videoActive) {
+        checkProviders();
+        
         function providerSet(name) {
+            forceProvider = null;
             setProvider(name);
             playVideo();
             video.scrollIntoView({ block: "center" });
         }
 
         function nextProvider() {
-            const provider = getProvider();
+            if (disableHotkeys) return;
+
+            const provider = getValidProviderKey();
             const providers = Array.from(providersSelect.children);
 
             const providerElem = providers.find((p) => p.value === provider);
             const index = providerElem && providers.indexOf(providerElem);
             const next = index !== -1 && providers[index + 1];
+
+            console.log({provider,providers,providerElem,index,next});
 
             if (next) {
                 providersSelect.value = next.value;
@@ -311,7 +365,9 @@ async function modal(info, recommendationImages) {
         }
 
         function previousProvider() {
-            const provider = getProvider();
+            if (disableHotkeys) return;
+
+            const provider = getValidProviderKey();
             const providers = Array.from(providersSelect.children);
 
             const providerElem = providers.find((p) => p.value === provider);
@@ -325,25 +381,16 @@ async function modal(info, recommendationImages) {
         }
 
         function refresh() {
+            if (disableHotkeys) return;
+
             playVideo();
             video.scrollIntoView({ block: "center" });
         }
-    
-        Object.values(providers).forEach(function (providerObj) {
-            const provider = document.createElement("option");
-    
-            provider.value = providerObj.name.toLowerCase();
-            provider.innerText = providerObj.name;
-    
-            providersSelect.append(provider);
-        });
 
+        providersTitle.append(providersControl);
         providersSelect.addEventListener("change", function () {
             providerSet(providersSelect.value);
         });
-
-        providersSelect.value = getProvider();
-        providersTitle.append(providersControl);
         
         providersRefresh.addEventListener("click", refresh);
         onKeyPress("r", true, null, watch, refresh);
@@ -614,25 +661,29 @@ async function modal(info, recommendationImages) {
         });
 
         seasons.append(seasonCards);
-        
-        if (videoActive && seasonsActive) {
-            function checkSeasonControl() {
-                const previous = getPreviousEpisode();
-                const next = getNextEpisode();
-    
-                seasonsPrevious.classList[previous ? "remove" : "add"]("inactive");
-                seasonsNext.classList[next ? "remove" : "add"]("inactive");
-    
-                seasonsControl.classList[(previous || next) ? "remove" : "add"]("inactive");
-            }
+    } else {
+        seasons.append(notice.cloneNode(true));
+    }
 
-            playEpisodeCallbacks.push(checkSeasonControl);
-            checkSeasonControl();
+    if (videoActive) {
+        function checkSeasonControl() {
+            const previous = getPreviousEpisode();
+            const next = getNextEpisode();
 
-            function seasonControlChange(next) {
-                const episode = next ? getNextEpisode() : getPreviousEpisode();
+            seasonsPrevious.classList[previous ? "remove" : "add"]("inactive");
+            seasonsNext.classList[next ? "remove" : "add"]("inactive");
 
-                if (episode) {
+            seasonsControl.classList[(previous || next) ? "remove" : "add"]("inactive");
+        }
+
+        playEpisodeCallbacks.push(checkSeasonControl);
+        checkSeasonControl();
+
+        function seasonControlChange(next) {
+            const episode = next ? getNextEpisode() : getPreviousEpisode();
+
+            if (episode) {
+                if (seasonsActive) {
                     const seasonCard = Array.from(seasonCards.children)[episode.sIndex];
                     const seasonCardEpisodes = seasonCard ? seasonCard.querySelector(".episodes") : null;
                     const episodeCard = seasonCardEpisodes ? Array.from(seasonCardEpisodes.children)[episode.eIndex] : null;
@@ -646,29 +697,31 @@ async function modal(info, recommendationImages) {
                         const seasonCardIcon = seasonCard.querySelector(".icon-arrow-down");
                         if (seasonCardIcon) seasonCardIcon.className = "icon icon-arrow-up";
                     }
+                } else {
+                    playEpisode(episode.s, episode.e);
                 }
-
-                checkSeasonControl();
-            }
-            
-            function nextEpisode() {
-                seasonControlChange(true);
             }
 
-            function previousEpisode() {
-                seasonControlChange(false);
-            }
-
-            seasonsNext.addEventListener("click", nextEpisode);
-            seasonsPrevious.addEventListener("click", previousEpisode);
-
-            onKeyPress("]", true, null, watch, nextEpisode);
-            onKeyPress("[", true, null, watch, previousEpisode);
-
-            seasonsTitle.append(seasonsControl);
+            checkSeasonControl();
         }
-    } else {
-        seasons.append(notice.cloneNode(true));
+        
+        function nextEpisode() {
+            if (disableHotkeys) return;
+            seasonControlChange(true);
+        }
+
+        function previousEpisode() {
+            if (disableHotkeys) return;
+            seasonControlChange(false);
+        }
+
+        seasonsNext.addEventListener("click", nextEpisode);
+        seasonsPrevious.addEventListener("click", previousEpisode);
+
+        onKeyPress("]", true, null, watch, nextEpisode);
+        onKeyPress("[", true, null, watch, previousEpisode);
+
+        seasonsTitle.append(seasonsControl);
     }
 
     description.className = "details-card";
