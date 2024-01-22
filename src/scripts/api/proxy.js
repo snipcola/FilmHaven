@@ -13,5 +13,5 @@ export async function isValidUrl(url) {
         return true;
     }
 
-    return response && (response.ok || [200, 500].includes(response.status));
+    return response && (response.ok || [200, 500, 401, 403].includes(response.status));
 }
