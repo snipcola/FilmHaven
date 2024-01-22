@@ -16,7 +16,7 @@ export function watchContent(type, id) {
     setQuery(config.query.modal, `${type === "movie" ? "m" : "s"}-${id}`);
 }
 
-function modal(info, recommendationImages) {
+async function modal(info, recommendationImages) {
     addContinueWatching(info.id, info.type, info.title, info.image);
 
     const videoActive = getWatchSection("Video");
@@ -223,7 +223,15 @@ function modal(info, recommendationImages) {
 
     let currentIframe;
 
-    function playVideo() {
+    function getUrl(provider) {
+        const theme = getThemeAbsolute();
+
+        return info.type === "movie"
+            ? provider.movieUrl({ id: info.id, imdbId: info.imdbId, theme })
+            : provider.showUrl({ id: info.id, season: seasonNumber, episode: episodeNumber, theme });
+    }
+
+    async function playVideo() {
         if (currentIframe) currentIframe.remove();
         
         currentIframe = iframe.cloneNode();
@@ -233,26 +241,28 @@ function modal(info, recommendationImages) {
         videoNoticeText.innerText = "Content loading";
 
         const provider = providers[getProvider()];
-        const supportsThemes = provider.supportsThemes;
 
-        const theme = getThemeAbsolute();
-        const url = info.type === "movie"
-            ? provider.movieUrl({ id: info.id, imdbId: info.imdbId, theme })
-            : provider.showUrl({ id: info.id, season: seasonNumber, episode: episodeNumber, theme });
+        const url = getUrl(provider);
+        const isValid = await isValidUrl(url);
 
-        isValidUrl(url).then(console.log);
-        currentIframe.src = url;
-
-        video.classList[supportsThemes ? "add" : "remove"]("theme");
+        video.classList[provider.supportsThemes ? "add" : "remove"]("theme");
         videoNoticeContainer.classList.add("active");
 
-        currentIframe.addEventListener("load", function () {
-            videoNoticeContainer.classList.remove("active");
-            currentIframe.classList.add("active");
-        });
+        if (isValid) {
+            currentIframe.src = url;
+            currentIframe.addEventListener("load", function () {
+                videoNoticeContainer.classList.remove("active");
+                currentIframe.classList.add("active");
+            });
+        } else {
+            videoNoticeIcon.className = "icon icon-censor";
+            videoNoticeText.innerHTML = `Content is not available on <b>${provider.name}</b>`;
+        }
     }
 
-    if (videoActive) playVideo();
+    if (videoActive) {
+        playVideo();
+    }
 
     details.className = videoActive ? "details" : "details no-video";
     left.className = "left container";

@@ -4,8 +4,13 @@ export async function isValidUrl(url) {
     if (window.fhPortable) return true;
     let response;
 
-    try { response = await fetch(proxy.url(url)) }
+    try {
+        response = await Promise.race([
+            fetch(proxy.url(url)),
+            new Promise((resolve) => setTimeout(resolve, 3500))
+        ]);
+    }
     catch { return false };
 
-    return response.ok || response.status === 200;
+    return response && (response.ok || [200, 500].includes(response.status));
 }
