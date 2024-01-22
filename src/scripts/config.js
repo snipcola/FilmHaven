@@ -120,6 +120,33 @@ export const config = {
     maxMobileWidth: 700
 };
 
+export const proxy = {
+    url: function (path) {
+        return `https://proxy.snipcola.com/${path}`;
+    },
+    blacklisted: {
+        status: [
+            404 // Not found
+        ],
+        text: [
+            "not found", // Generic
+            "no sources", // Generic
+            "no movie found", // 2Embed.me
+            "no tv show found", // 2Embed.me
+            "watch-test-online-", // 2Embed.cc
+            "video_error.mp4", // RemoteStream
+            `,"file":"","kind"`, // GDrive
+            "onionplay streaming mirrors" // OnionPlay
+        ]
+    },
+    timeout: 5000
+};
+
+function getHostedProvider(name, params = "") {
+    const url = "https://fh.snipcola.com/providers";
+    return `${url}/${name}.php${params}`;
+}
+
 export const api = {
     url: "https://api.themoviedb.org",
     version: "3",
@@ -209,10 +236,10 @@ export const providers = {
             name: "SuperEmbed",
             supportsThemes: true,
             movieUrl: function ({ id, theme }) {
-                return `./providers/superembed.php?v=${id}&t=${theme}`;
+                return getHostedProvider("superembed", `?v=${id}&t=${theme}`);
             },
             showUrl: function ({ id, season, episode, theme }) {
-                return `./providers/superembed.php?v=${id}&s=${season}&e=${episode}&t=${theme}`;
+                return getHostedProvider("superembed", `?v=${id}&s=${season}&e=${episode}&t=${theme}`);
             }
         }
     } : {
@@ -528,25 +555,3 @@ export const settings = [
         type: "buttons"
     }
 ];
-
-export const proxy = {
-    url: function (path) {
-        return `https://proxy.snipcola.com/${path}`;
-    },
-    blacklisted: {
-        status: [
-            404 // Not found
-        ],
-        text: [
-            "not found", // Generic
-            "no sources", // Generic
-            "no movie found", // 2Embed.me
-            "no tv show found", // 2Embed.me
-            "watch-test-online-", // 2Embed.cc
-            "video_error.mp4", // RemoteStream
-            `,"file":"","kind"`, // GDrive
-            "onionplay streaming mirrors" // OnionPlay
-        ]
-    },
-    timeout: 5000
-};
