@@ -1,7 +1,6 @@
-import { getTheme, setTheme } from "../store/theme.js";
-import { config, settings } from "../config.js";
+import { settings } from "../config.js";
 
-export function initializeSettings() {
+export async function initializeSettings() {
     const section = document.querySelector(".section.settings");
 
     if (!section) {
@@ -26,7 +25,7 @@ export function initializeSettings() {
         label.append(labelText);
         container.append(label);
 
-        if (setting.type === "select") {
+        if (setting.type === "selection") {
             const selection = document.createElement("div");
             
             selection.className = "selection";
@@ -50,7 +49,7 @@ export function initializeSettings() {
                 }
             }
 
-            for (const item of setting.items()) {
+            for (const item of await setting.items()) {
                 const option = document.createElement("div");
 
                 option.innerText = item.label;
@@ -76,7 +75,7 @@ export function initializeSettings() {
             const buttons = document.createElement("div");
             buttons.className = "buttons";
 
-            for (const item of setting.items()) {
+            for (const item of await setting.items()) {
                 const button = document.createElement("div");
                 const buttonIcon = document.createElement("i");
                 const buttonText = document.createElement("span");
@@ -95,6 +94,35 @@ export function initializeSettings() {
             }
 
             container.append(buttons);
+        } else if (setting.type === "select") {
+            const select = document.createElement("select");
+            select.className = "select";
+
+            const items = await setting.items();
+
+            for (const item of items) {
+                const option = document.createElement("option");
+
+                option.value = item.value;
+                option.innerHTML = item.label;
+
+                if (item.placeholder) {
+                    option.setAttribute("disabled", true);
+                    option.setAttribute("selected", true);
+                }
+
+                select.append(option);
+            }
+
+            const activeItem = items.find((i) => i.active);
+            if (activeItem) select.value = activeItem.value;
+
+            select.addEventListener("change", function () {
+                setting.onSelect(select.value);
+                if (setting.preventChange) select.value = "";
+            });
+
+            container.append(select);
         }
 
         section.append(container);

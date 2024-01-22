@@ -78,7 +78,7 @@
 
 .carousel .buttons {
     display: flex;
-    gap: var(--small-padding);
+    gap: var(--small-gap);
 }
 
 .carousel .control {

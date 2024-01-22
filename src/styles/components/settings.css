@@ -1,10 +1,8 @@
 .section.settings.active {
     display: flex;
-    gap: var(--large-gap);
+    gap: calc(var(--large-gap) * 1.5);
 
-    justify-content: center;
     flex-wrap: wrap;
-
     width: 100%;
 }
 
@@ -17,9 +15,8 @@
 
 .section.settings .label {
     display: flex;
-    gap: var(--small-gap);
 
-    justify-content: center;
+    gap: var(--small-gap);
     align-items: center;
     
     opacity: var(--dim-opacity);
@@ -30,25 +27,24 @@
     display: flex;
     background-color: var(--dark);
 
-    border: var(--small-border) solid var(--light);
+    border: var(--small-border) solid var(--lighter);
     width: fit-content;
 
-    padding: var(--small-padding);
+    padding: calc(var(--small-padding) * 0.625);
     box-sizing: border-box;
 
-    gap: var(--small-gap);
+    gap: calc(var(--small-gap) * 0.625);
     border-radius: var(--border-radius);
 
     transition: var(--transition-speed) background-color;
     user-select: none;
 
-    justify-content: center;
     flex-wrap: wrap;
 }
 
 .section.settings .selection > div {
     border-radius: calc(var(--border-radius) / 2);
-    padding: calc(var(--large-padding) / 1.5) var(--large-padding);
+    padding: calc(var(--small-padding) * 0.625);
     
     box-sizing: border-box;
     border: var(--small-border) solid transparent;
@@ -86,8 +82,6 @@
     display: flex;
     gap: var(--small-gap);
 
-    align-items: center;
-    justify-content: center;
-    
+    align-items: center;    
     flex-wrap: wrap;
 }

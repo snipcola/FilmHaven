@@ -90,7 +90,7 @@ body.modal-active .modal-container {
     display: flex;
     align-items: center;
 
-    gap: var(--small-padding);
+    gap: var(--small-gap);
     font-weight: 500;
 }
 

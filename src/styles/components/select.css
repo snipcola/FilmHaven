@@ -8,7 +8,7 @@
     border: var(--small-border) solid var(--lighter);
     outline: none;
 
-    padding: calc(var(--small-padding) * 1.25);
+    padding: calc(var(--small-padding) * 1.25) var(--large-padding);
     box-sizing: border-box;
 
     border-radius: var(--border-radius);
@@ -17,11 +17,15 @@
     user-select: none;
     cursor: pointer;
 
+    text-align: center;
     appearance: none;
+
+    font-weight: 300;
 }
 
 @media (hover: hover) {
     .select:hover {
         opacity: var(--dim-opacity);
+        background-color: var(--light);
     }
 }

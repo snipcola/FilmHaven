@@ -6,10 +6,13 @@ import { getWatchSections, getWatchSection, setWatchSection } from "./store/watc
 import { resetCache } from "./cache.js";
 import { resetContinueWatching } from "./store/continue.js";
 import { resetLastPlayed } from "./store/last-played.js";
+import { getLanguages } from "./api/languages.js";
+import { getLanguage, setLanguage } from "./store/language.js";
 
 export const config = {
     author: "Snipcola",
     name: "FilmHaven",
+    defaultLanguage: "en",
     header: {
         name: {
             normal: {
@@ -134,8 +137,7 @@ export const api = {
     },
     trending: {
         timeWindow: "week"
-    },
-    language: "en"
+    }
 };
 
 export const proxy = {
@@ -236,6 +238,7 @@ export const store = {
         },
         theme: "fh-theme",
         adult: "fh-adult",
+        language: "fh-language",
         provider: "fh-provider",
         lastPlayed: "fh-last-played",
         pages: "fh-pages",
@@ -293,7 +296,7 @@ export const settings = [
                 active: t.toLowerCase() === currentTheme
             }));
         },
-        onClick: setTheme,
+        onSelect: setTheme,
         type: "select"
     },
     {
@@ -311,13 +314,98 @@ export const settings = [
                 active: a.toLowerCase() === currentAdult
             }));
         },
-        onClick: setAdult,
+        onSelect: setAdult,
+        type: "select"
+    },
+    {
+        label: {
+            icon: "language",
+            text: "Language"
+        },
+        items: async function () {
+            const languages = await getLanguages();
+
+            return languages.map((l) => ({
+                label: l.name,
+                value: l.value,
+                active: l.value === getLanguage()
+            }));
+        },
+        onSelect: function (l) {
+            setLanguage(l);
+            resetCache();
+            window.location.reload();
+        },
+        type: "select"
+    },
+    {
+        label: {
+            icon: "list",
+            text: "Presets"
+        },
+        items: function () {
+            return [
+                {
+                    label: "...",
+                    value: "",
+                    placeholder: true
+                },
+                {
+                    label: "Full",
+                    value: "full"
+                },
+                {
+                    label: "Minimal",
+                    value: "minimal"
+                }
+            ];
+        },
+        onSelect: function (i) {
+            if (i === "full") {
+                const pages = getPages();
+                const sections = getSections();
+                const watchSections = getWatchSections();
+
+                for (const page of Object.keys(pages)) {
+                    setPage(page, true);
+                }
+
+                for (const section of Object.keys(sections)) {
+                    setSection(section, true);
+                }
+
+                for (const watchSection of Object.keys(watchSections)) {
+                    setWatchSection(watchSection, true);
+                }
+
+                window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
+            } else {
+                const pages = getPages();
+                    const sections = getSections();
+                    const watchSections = getWatchSections();
+
+                    for (const page of Object.keys(pages)) {
+                        setPage(page, ["Home"].includes(page));
+                    }
+
+                    for (const section of Object.keys(sections)) {
+                        setSection(section, ["Search", "Continue", "Carousel", "Genres"].includes(section));
+                    }
+
+                    for (const watchSection of Object.keys(watchSections)) {
+                        setWatchSection(watchSection, ["Video", "Providers", "Seasons"].includes(watchSection));
+                    }
+
+                    window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=2`;
+            }
+        },
+        preventChange: true,
         type: "select"
     },
     {
         label: {
             icon: "file",
-            text: "Pages (refresh)"
+            text: "Pages (refresh required)"
         },
         items: function () {
             const pages = getPages();
@@ -331,13 +419,13 @@ export const settings = [
         onClick: function (p) {
             setPage(p, !getPage(p));
         },
-        type: "select",
+        type: "selection",
         multi: true
     },
     {
         label: {
             icon: "tags",
-            text: "Sections (refresh)"
+            text: "Sections (refresh required)"
         },
         items: function () {
             const sections = getSections();
@@ -351,7 +439,7 @@ export const settings = [
         onClick: function (s) {
             setSection(s, !getSection(s));
         },
-        type: "select",
+        type: "selection",
         multi: true
     },
     {
@@ -371,7 +459,7 @@ export const settings = [
         onClick: function (w) {
             setWatchSection(w, !getWatchSection(w));
         },
-        type: "select",
+        type: "selection",
         multi: true
     },
     {
@@ -441,67 +529,6 @@ export const settings = [
                             self.querySelector(".icon").className = "icon icon-eye-slash";
                             self.classList.remove("inactive");
                         }, 2500);
-                    }
-                }
-            ];
-        },
-        type: "buttons"
-    },
-    {
-        label: {
-            icon: "list",
-            text: "Presets"
-        },
-        items: function () {
-            return [
-                {
-                    label: {
-                        text: "Full"
-                    },
-                    class: "secondary",
-                    onClick: function () {
-                        const pages = getPages();
-                        const sections = getSections();
-                        const watchSections = getWatchSections();
-
-                        for (const page of Object.keys(pages)) {
-                            setPage(page, true);
-                        }
-
-                        for (const section of Object.keys(sections)) {
-                            setSection(section, true);
-                        }
-
-                        for (const watchSection of Object.keys(watchSections)) {
-                            setWatchSection(watchSection, true);
-                        }
-
-                        window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
-                    }
-                },
-                {
-                    label: {
-                        text: "Minimal"
-                    },
-                    class: "secondary",
-                    onClick: function (self) {
-                        const pages = getPages();
-                        const sections = getSections();
-                        const watchSections = getWatchSections();
-
-                        for (const page of Object.keys(pages)) {
-                            setPage(page, ["Home"].includes(page));
-                        }
-
-                        for (const section of Object.keys(sections)) {
-                            setSection(section, ["Search", "Continue", "Carousel", "Genres"].includes(section));
-                        }
-
-                        for (const watchSection of Object.keys(watchSections)) {
-                            setWatchSection(watchSection, ["Video", "Providers", "Seasons"].includes(watchSection));
-                        }
-
-                        window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=2`;
                     }
                 }
             ];

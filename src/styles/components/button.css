@@ -1,6 +1,6 @@
 .button {
     display: flex;
-    gap: var(--small-padding);
+    gap: var(--small-gap);
     
     align-items: center;
     justify-content: center;

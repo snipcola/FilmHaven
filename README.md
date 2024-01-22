@@ -23,4 +23,4 @@ All files, such as media, are linked from third-party services, which FilmHaven 
 1. Ensure you have `node` and `npm` installed.
 2. Run `npm install`.
 3. Run `npm prod` or `npm dev` depending on what you need.
-4. If you have PHP, it's accessible at `public/index.php`; else, `public/dist/FilmHaven.html`.
+4. If you have PHP, access the site at `public/index.php`; else, `public/dist/FilmHaven.html`.

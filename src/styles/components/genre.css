@@ -14,7 +14,7 @@
     border: var(--small-border) solid var(--lighter);
 
     user-select: none;
-    gap: var(--small-padding);
+    gap: var(--small-gap);
 
     align-items: center;
     justify-content: space-between;
