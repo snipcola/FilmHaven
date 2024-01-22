@@ -320,7 +320,7 @@ export const settings = [
     {
         label: {
             icon: "language",
-            text: "Language"
+            text: "Language (requires reset)"
         },
         items: async function () {
             const languages = await getLanguages();
@@ -333,10 +333,10 @@ export const settings = [
         },
         onSelect: function (l) {
             setLanguage(l);
-            resetCache();
+            localStorage.clear();
 
             document.body.classList.remove("active");
-            window.location.reload();
+            window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
         },
         type: "select"
     },
