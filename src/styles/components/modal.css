@@ -2,10 +2,7 @@
     position: fixed;
     display: flex;
 
-    width: 100vw;
     width: 100dvw;
-
-    height: 100vh;
     height: 100dvh;
 
     align-items: center;
@@ -98,14 +95,11 @@ body.modal-active .modal-container {
     white-space: nowrap;
     text-overflow: ellipsis;
 
-    max-width: 40vw;
     max-width: 40dvw;
-
     overflow: hidden;
 }
 
 .modal-header .text.tv {
-    max-width: 25vw;
     max-width: 25dvw;
 }
 

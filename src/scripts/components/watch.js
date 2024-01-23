@@ -1185,7 +1185,11 @@ function modal(info, recommendationImages) {
     if (videoActive) {
         function checkVideoResize() {
             if (!elementExists(watch)) return removeWindowResize(checkResize);
-            video.style.marginLeft = `calc(-100vw / 2 + ${video.parentElement?.clientWidth}px / 2)`;
+
+            const isFirefox = navigator.userAgent?.toLowerCase().includes("firefox");
+            video.style.marginLeft = isFirefox
+                ? `calc(-50dvw + ${video.parentElement?.clientWidth}px / 2 - 3px)`
+                : `calc(-50dvw + ${video.parentElement?.clientWidth}px / 2)`;
         }
         
         onWindowResize(checkVideoResize);

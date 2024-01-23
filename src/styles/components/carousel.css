@@ -17,13 +17,12 @@
     pointer-events: none;
 
     width: 100%;
-    object-fit: cover;
-
-    height: 65vh;
     height: 65dvh;
 
     max-height: calc(var(--max-width) / 1.5);
     min-height: calc(var(--max-width) / 3);
+
+    object-fit: cover;
 }
 
 .carousel .image[src=""], .carousel .image[src="null"], .carousel .image:not([src]) {

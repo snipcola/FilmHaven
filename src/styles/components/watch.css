@@ -4,8 +4,8 @@
 
 .watch .video {
     background-color: rgb(0, 0, 0);
+    width: calc(100dvw - 4px);
 
-    height: 100vh;
     height: 100dvh;
     min-height: calc(var(--max-width) / 25);
 
@@ -14,9 +14,6 @@
 
     overflow: hidden;
     box-sizing: border-box;
-
-    width: calc(100vw - 4px);
-    width: calc(100dvw - 4px);
 
     position: relative;
     user-select: none;

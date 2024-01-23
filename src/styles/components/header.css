@@ -1,7 +1,5 @@
 .header-container {
     position: fixed;
-
-    width: 100vw;
     width: 100dvw;
 
     z-index: 3;

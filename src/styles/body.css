@@ -23,8 +23,6 @@ body.active {
 
 body > .container {
     position: relative;
-
-    min-height: calc(100vh - (var(--large-padding) * 4));
     min-height: calc(100dvh - (var(--large-padding) * 4));
 }
 
