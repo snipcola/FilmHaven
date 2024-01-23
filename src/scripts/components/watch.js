@@ -256,10 +256,7 @@ function modal(info, recommendationImages) {
         disableHotkeys = true;
         
         watch.classList.add("disabled");
-        
-        for (const option of providersSelect.children) {
-            option.remove();
-        }
+        providersSelect.innerHTML = "";
 
         const total = Object.keys(providers).length;
         let checked = 0;
