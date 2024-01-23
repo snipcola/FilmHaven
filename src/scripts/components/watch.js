@@ -258,21 +258,25 @@ function modal(info, recommendationImages) {
         watch.classList.add("disabled");
         providersSelect.innerHTML = "";
 
-        const total = Object.keys(providers).length;
-        let checked = 0;
-
-        const promises = Object.entries(providers).map(async function ([key, value]) {
-            const url = getUrl(value);
-            const valid = await isValidUrl(url);
-
-            if (valid) validProviders[key] = value;
-            checked++;
-
-            alert(true, "tv", `Checking providers <b>(${checked}/${total})</b>`);
-        });
-
-        await Promise.all(promises);
-        validProviders = Object.fromEntries(Object.entries(validProviders).sort(([a], [b]) => Object.keys(providers).indexOf(a) - Object.keys(providers).indexOf(b)));
+        if (window.fhPortable) {
+            validProviders = providers;
+        } else {
+            const total = Object.keys(providers).length;
+            let checked = 0;
+    
+            const promises = Object.entries(providers).map(async function ([key, value]) {
+                const url = getUrl(value);
+                const valid = await isValidUrl(url);
+    
+                if (valid) validProviders[key] = value;
+                checked++;
+    
+                alert(true, "tv", `Checking providers <b>(${checked}/${total})</b>`);
+            });
+    
+            await Promise.all(promises);
+            validProviders = Object.fromEntries(Object.entries(validProviders).sort(([a], [b]) => Object.keys(providers).indexOf(a) - Object.keys(providers).indexOf(b)));
+        }
 
         if (Object.keys(validProviders).length > 0) {
             Object.values(validProviders).forEach(function (providerObj) {
@@ -284,10 +288,9 @@ function modal(info, recommendationImages) {
                 providersSelect.append(provider);
             });
 
-            playVideo();
             providersSelect.value = getValidProviderKey();
-
             disableHotkeys = false;
+            playVideo();
         } else {
             providersElem.classList.add("disabled");
             seasons.classList.add("disabled");
