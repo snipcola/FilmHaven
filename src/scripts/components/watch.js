@@ -254,6 +254,7 @@ function modal(info, recommendationImages) {
     async function checkProviders() {
         disableHotkeys = true;
         watch.classList.add("disabled");
+        providersSelect.innerHTML = "";
 
         const total = Object.keys(providers).length;
         let checked = 0;
@@ -460,6 +461,7 @@ function modal(info, recommendationImages) {
     function setEpisode(episode) {
         unsetEpisodes();
         episode.classList.add("active");
+        checkProviders();
     }
 
     function checkCurrentlyPlaying() {
