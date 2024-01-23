@@ -252,7 +252,9 @@ function modal(info, recommendationImages) {
     }
 
     async function checkProviders() {
+        validProviders = {};
         disableHotkeys = true;
+        
         watch.classList.add("disabled");
         
         for (const option of providersSelect.children) {
