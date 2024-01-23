@@ -254,7 +254,10 @@ function modal(info, recommendationImages) {
     async function checkProviders() {
         disableHotkeys = true;
         watch.classList.add("disabled");
-        providersSelect.innerHTML = "";
+        
+        for (const option of providersSelect.children) {
+            option.remove();
+        }
 
         const total = Object.keys(providers).length;
         let checked = 0;
