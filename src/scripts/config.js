@@ -141,6 +141,7 @@ export const api = {
 };
 
 export const proxy = {
+    enabled: true,
     url: function (path) {
         return `https://proxy.snipcola.com/${path}`;
     },

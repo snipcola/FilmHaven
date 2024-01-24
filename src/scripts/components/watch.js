@@ -2,7 +2,7 @@ import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
 import { getDetails } from "../api/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress } from "../functions.js";
-import { config, providers } from "../config.js";
+import { config, providers, proxy } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
@@ -258,7 +258,7 @@ function modal(info, recommendationImages) {
         watch.classList.add("disabled");
         providersSelect.innerHTML = "";
 
-        if (window.fhPortable) {
+        if (window.fhPortable || !proxy.enabled) {
             validProviders = providers;
         } else {
             const total = Object.keys(providers).length;
