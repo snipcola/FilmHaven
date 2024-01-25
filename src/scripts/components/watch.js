@@ -422,6 +422,7 @@ function modal(info, recommendationImages) {
     }
 
     seasons.className = "details-card";
+    if (disabled) seasons.classList.add("disabled");
     seasonsTitle.className = "title";
     seasonsTitleIcon.className = "icon icon-list";
     seasonsTitleText.className = "text";
@@ -1082,6 +1083,7 @@ function modal(info, recommendationImages) {
     }
 
     recommendations.className = "details-card";
+    if (disabled) recommendations.classList.add("disabled");
     recommendationsTitle.className = "title";
     recommendationsTitleIcon.className = "icon icon-check";
     recommendationsTitleText.className = "text";
