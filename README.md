@@ -6,9 +6,6 @@ A simple, customizable, and lightweight frontend to view and interact with movie
 - <a target="_blank" href="https://film-haven.vercel.app">Mirror</a>
 - <a target="_blank" href="https://fh.snipcola.com/dist/FilmHaven.html">Portable (right click & save)</a>
 
-## ⚠️ - Disclaimer
-All files, such as media, are linked from third-party services, which FilmHaven is not responsible for and has no control over.
-
 ## ⌨️ - Shortcuts
 - `/` - Focuses on search bar. *Navigates out out of any page or modal open.*
 - `[` - Plays previous episode, *if exists*. *Only works on series modal.*
@@ -19,8 +16,11 @@ All files, such as media, are linked from third-party services, which FilmHaven 
 - `v` - Focuses on video. *Only works on movie or series modal.*
 - `x` - Closes modal. *Only works when modal is open.*
 
-## 📄 - Instructions
+## 💻 - Compilation
 1. Ensure you have `node` and `npm` installed.
 2. Run `npm install`.
 3. Run `npm prod` or `npm dev` depending on what you need.
 4. If you have PHP, access the site at `public/index.php`; else, `public/dist/FilmHaven.html`.
+
+## ⚠️ - Disclaimer
+All files, such as media, are linked from third-party services, which FilmHaven is not responsible for and has no control over.
