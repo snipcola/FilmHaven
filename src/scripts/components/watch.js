@@ -257,7 +257,6 @@ function modal(info, recommendationImages) {
 
         providersElem.classList.add("disabled");
         seasons.classList.add("disabled");
-        recommendations.classList.add("disabled");
 
         if (currentIframe) currentIframe.remove();
         providersSelect.innerHTML = "<option selected disabled>...</option>";
@@ -304,7 +303,6 @@ function modal(info, recommendationImages) {
 
             providersElem.classList.remove("disabled");
             seasons.classList.remove("disabled");
-            recommendations.classList.remove("disabled");
 
             disabled = false;
             playVideo();
@@ -1083,7 +1081,6 @@ function modal(info, recommendationImages) {
     }
 
     recommendations.className = "details-card";
-    if (disabled) recommendations.classList.add("disabled");
     recommendationsTitle.className = "title";
     recommendationsTitleIcon.className = "icon icon-check";
     recommendationsTitleText.className = "text";
