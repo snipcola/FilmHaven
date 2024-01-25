@@ -147,7 +147,8 @@ export const proxy = {
     },
     blacklisted: {
         status: [
-            404 // Not found
+            404, // Not found
+            500 // Internal Server Error
         ],
         text: [
             "not found", // Generic
