@@ -245,7 +245,7 @@ function modal(info, recommendationImages) {
         return Object.keys(validProviders)[Object.values(validProviders).indexOf(provider)];
     }
 
-    function alert(toggle, icon, text) {
+    function videoAlert(toggle, icon, text) {
         videoNoticeIcon.className = `icon icon-${icon || "sync"}`;
         videoNoticeText.innerHTML = text || "";
         videoNoticeContainer.classList[toggle ? "add" : "remove"]("active");
@@ -254,6 +254,8 @@ function modal(info, recommendationImages) {
     async function checkProviders() {
         validProviders = {};
         disabled = true;
+
+        if (currentIframe) currentIframe.remove();
         providersSelect.innerHTML = "<option selected disabled>...</option>";
 
         if (window.fhPortable || !proxy.enabled) {
@@ -261,6 +263,12 @@ function modal(info, recommendationImages) {
         } else {
             const total = Object.keys(providers).length;
             let checked = 0;
+
+            function updateAlert() {
+                videoAlert(true, "tv", `Checking providers <b>(${checked}/${total})</b>`);
+            }
+
+            updateAlert();
     
             const promises = Object.entries(providers).map(async function ([key, value]) {
                 const url = getUrl(value);
@@ -269,7 +277,7 @@ function modal(info, recommendationImages) {
                 if (valid) validProviders[key] = value;
                 checked++;
     
-                alert(true, "tv", `Checking providers <b>(${checked}/${total})</b>`);
+                updateAlert();
             });
     
             await Promise.all(promises);
@@ -294,7 +302,7 @@ function modal(info, recommendationImages) {
         } else {
             providersElem.classList.add("disabled");
             seasons.classList.add("disabled");
-            alert(true, "censor", "No providers support this content.");
+            videoAlert(true, "censor", "No providers available");
         }
     }
 
@@ -308,11 +316,11 @@ function modal(info, recommendationImages) {
         const provider = getValidProvider();
         const url = getUrl(provider);
 
-        alert(true, "sync", "Content loading");
+        videoAlert(true, "sync", "Content loading");
         currentIframe.src = url;
         
         currentIframe.addEventListener("load", function () {
-            alert(false);
+            videoAlert(false);
             currentIframe.classList.add("active");
         });
     }
@@ -363,8 +371,6 @@ function modal(info, recommendationImages) {
             const providerElem = providers.find((p) => p.value === provider);
             const index = providerElem && providers.indexOf(providerElem);
             const next = index !== -1 && providers[index + 1];
-
-            console.log({provider,providers,providerElem,index,next});
 
             if (next) {
                 providersSelect.value = next.value;
@@ -483,8 +489,6 @@ function modal(info, recommendationImages) {
     function playSeries() {
         setLastPlayed(info.id, seasonNumber, episodeNumber);
         checkCurrentlyPlaying();
-
-        playVideo();
         video.scrollIntoView({ block: "center" });
     }
 
