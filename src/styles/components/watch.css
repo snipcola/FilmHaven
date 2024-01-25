@@ -1,4 +1,4 @@
-.watch.only-video, .watch.disabled {
+.watch.only-video {
     margin-bottom: calc(var(--large-padding) * -1);
 }
 

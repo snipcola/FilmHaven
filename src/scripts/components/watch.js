@@ -222,7 +222,7 @@ function modal(info, recommendationImages) {
     }
 
     let currentIframe;
-    let disableHotkeys = false;
+    let disabled = false;
     let validProviders = {};
     let forceProvider;
 
@@ -253,10 +253,8 @@ function modal(info, recommendationImages) {
 
     async function checkProviders() {
         validProviders = {};
-        disableHotkeys = true;
-        
-        watch.classList.add("disabled");
-        providersSelect.innerHTML = "";
+        disabled = true;
+        providersSelect.innerHTML = "<option selected disabled>...</option>";
 
         if (window.fhPortable || !proxy.enabled) {
             validProviders = providers;
@@ -278,6 +276,8 @@ function modal(info, recommendationImages) {
             validProviders = Object.fromEntries(Object.entries(validProviders).sort(([a], [b]) => Object.keys(providers).indexOf(a) - Object.keys(providers).indexOf(b)));
         }
 
+        providersSelect.innerHTML = "";
+
         if (Object.keys(validProviders).length > 0) {
             Object.values(validProviders).forEach(function (providerObj) {
                 const provider = document.createElement("option");
@@ -289,18 +289,17 @@ function modal(info, recommendationImages) {
             });
 
             providersSelect.value = getValidProviderKey();
-            disableHotkeys = false;
+            disabled = false;
             playVideo();
         } else {
             providersElem.classList.add("disabled");
             seasons.classList.add("disabled");
             alert(true, "censor", "No providers support this content.");
         }
-
-        watch.classList.remove("disabled");
     }
 
     function playVideo() {
+        if (disabled) return;
         if (currentIframe) currentIframe.remove();
         
         currentIframe = iframe.cloneNode();
@@ -347,6 +346,8 @@ function modal(info, recommendationImages) {
         checkProviders();
         
         function providerSet(name) {
+            if (disabled) return;
+
             forceProvider = null;
             setProvider(name);
             playVideo();
@@ -354,7 +355,7 @@ function modal(info, recommendationImages) {
         }
 
         function nextProvider() {
-            if (disableHotkeys) return;
+            if (disabled) return;
 
             const provider = getValidProviderKey();
             const providers = Array.from(providersSelect.children);
@@ -372,7 +373,7 @@ function modal(info, recommendationImages) {
         }
 
         function previousProvider() {
-            if (disableHotkeys) return;
+            if (disabled) return;
 
             const provider = getValidProviderKey();
             const providers = Array.from(providersSelect.children);
@@ -388,7 +389,7 @@ function modal(info, recommendationImages) {
         }
 
         function refresh() {
-            if (disableHotkeys) return;
+            if (disabled) return;
 
             playVideo();
             video.scrollIntoView({ block: "center" });
@@ -490,7 +491,7 @@ function modal(info, recommendationImages) {
     let playEpisodeCallbacks = [];
 
     function playEpisode(sNumber, eNumber, episode) {
-        if (!videoActive) return;
+        if (!videoActive || disabled) return;
 
         seasonNumber = sNumber;
         episodeNumber = eNumber;
@@ -714,12 +715,12 @@ function modal(info, recommendationImages) {
         }
         
         function nextEpisode() {
-            if (disableHotkeys) return;
+            if (disabled) return;
             seasonControlChange(true);
         }
 
         function previousEpisode() {
-            if (disableHotkeys) return;
+            if (disabled) return;
             seasonControlChange(false);
         }
 
