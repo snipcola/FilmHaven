@@ -255,6 +255,10 @@ function modal(info, recommendationImages) {
         validProviders = {};
         disabled = true;
 
+        providersElem.classList.add("disabled");
+        seasons.classList.add("disabled");
+        recommendations.classList.add("disabled");
+
         if (currentIframe) currentIframe.remove();
         providersSelect.innerHTML = "<option selected disabled>...</option>";
 
@@ -297,11 +301,14 @@ function modal(info, recommendationImages) {
             });
 
             providersSelect.value = getValidProviderKey();
+
+            providersElem.classList.remove("disabled");
+            seasons.classList.remove("disabled");
+            recommendations.classList.remove("disabled");
+
             disabled = false;
             playVideo();
         } else {
-            providersElem.classList.add("disabled");
-            seasons.classList.add("disabled");
             videoAlert(true, "censor", "No providers available");
         }
     }
