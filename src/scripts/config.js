@@ -149,7 +149,6 @@ export const proxy = {
 
 export const providers = {
     "vidsrc.to": {
-        name: "VidSrc.to",
         movieUrl: function ({ id }) {
             return `https://vidsrc.to/embed/movie/${id}`;
         },
@@ -158,7 +157,6 @@ export const providers = {
         }
     },
     "vidsrc.me": {
-        name: "VidSrc.me",
         movieUrl: function ({ id }) {
             return `https://vidsrc.me/embed/movie?tmdb=${id}`;
         },
@@ -166,8 +164,7 @@ export const providers = {
             return `https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
         }
     },
-    onionplay: {
-        name: "OnionPlay",
+    "flixon.lol": {
         movieUrl: function ({ imdbId }) {
             return `https://flixon.lol/${imdbId}`;
         },
@@ -176,7 +173,6 @@ export const providers = {
         } 
     },
     "2embed.me": {
-        name: "2Embed.me",
         movieUrl: function ({ imdbId }) {
             return `https://2embed.me/player/movie/${imdbId}`;
         },
@@ -184,8 +180,7 @@ export const providers = {
             return `https://2embed.me/player/tv/${id}/S${season}/E${episode}`;
         } 
     },
-    gdrive: {
-        name: "GDrive",
+    "databasegdriveplayer.xyz": {
         movieUrl: function ({ id }) {
             return `https://databasegdriveplayer.xyz/player.php?tmdb=${id}`;
         },
@@ -194,8 +189,7 @@ export const providers = {
         } 
     },
     ...(!window.fhPortable ? {
-        remotestream: {
-            name: "RemoteStream",
+        "remotestre.am": {
             movieUrl: function ({ id }) {
                 return `https://remotestre.am/e/?tmdb=${id}`;
             },

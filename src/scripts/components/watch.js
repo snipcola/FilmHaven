@@ -290,11 +290,11 @@ function modal(info, recommendationImages) {
         providersSelect.innerHTML = "";
 
         if (Object.keys(validProviders).length > 0) {
-            Object.values(validProviders).forEach(function (providerObj) {
+            Object.keys(validProviders).forEach(function (providerName) {
                 const provider = document.createElement("option");
         
-                provider.value = providerObj.name.toLowerCase();
-                provider.innerText = providerObj.name;
+                provider.value = providerName.toLowerCase();
+                provider.innerText = providerName;
         
                 providersSelect.append(provider);
             });
