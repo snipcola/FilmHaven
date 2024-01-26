@@ -3,7 +3,7 @@ import { proxy } from "../config";
 export async function isValidUrl(url) {
     let response;
 
-    try { response = fetch(proxy.url(url)) }
+    try { response = await fetch(proxy.url(url)) }
     catch {};
 
     return response
