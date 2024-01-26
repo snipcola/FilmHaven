@@ -166,17 +166,6 @@ export const providers = {
             return `https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
         }
     },
-    ...(!window.fhPortable ? {
-        moviesapi: {
-            name: "MoviesAPI",
-            movieUrl: function ({ id }) {
-                return `https://moviesapi.club/movie/${id}`;
-            },
-            showUrl: function ({ id, season, episode }) {
-                return `https://moviesapi.club/tv/${id}-${season}-${episode}`;
-            }
-        }
-    } : {}),
     onionplay: {
         name: "OnionPlay",
         movieUrl: function ({ imdbId }) {
