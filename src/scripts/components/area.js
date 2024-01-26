@@ -114,7 +114,7 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
                     lastPlayed = newLastPlayed;
                     seasonInfo.innerText = `S${lastPlayed.s} E${lastPlayed.e}`;
                 }
-            }, 1000);
+            }, 500);
 
             card.append(seasonInfo);
         }

@@ -211,7 +211,7 @@ function modal(info, recommendationImages) {
                     down.classList.remove("active");
                     break
             }
-        }, 250);
+        }, 50);
 
         function show() {
             video.scrollIntoView({ block: "center" });
