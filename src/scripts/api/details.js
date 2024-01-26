@@ -68,7 +68,7 @@ async function format(item, type) {
         
         return {
             id: item.id?.toString(),
-            imdbId: item.imdb_id,
+            imdbId: item.imdb_id ? item.imdb_id.toString() : item.id?.toString(),
             type,
             title: item.title || item.name,
             description: item.overview || item.description,
