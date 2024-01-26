@@ -143,24 +143,8 @@ export const api = {
 export const proxy = {
     enabled: true,
     url: function (path) {
-        return `https://proxy.snipcola.com/${path}`;
-    },
-    blacklisted: {
-        status: [
-            404, // Not found
-            500 // Internal Server Error
-        ],
-        text: [
-            "not found", // Generic
-            "no sources", // Generic
-            "onionplay streaming mirrors", // OnionPlay
-            "no movie found", // 2Embed.me
-            "no tv show found", // 2Embed.me
-            `,"file":"","kind"`, // GDrive
-            "video_error.mp4" // RemoteStream
-        ]
-    },
-    timeout: 5000
+        return `https://fh-proxy.snipcola.com/${path}`;
+    }
 };
 
 export const providers = {
