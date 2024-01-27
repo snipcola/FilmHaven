@@ -80,10 +80,6 @@
     z-index: 3;
 }
 
-.watch .video .scroll:hover {
-    opacity: var(--dim-opacity);
-}
-
 .watch .video .scroll.down {
     top: initial;
     bottom: var(--small-padding);
@@ -657,6 +653,10 @@
 }
 
 @media (hover: hover) {
+    .watch .video .scroll:hover {
+        opacity: var(--dim-opacity);
+    }
+
     .watch .details .cast-cards .cast-card:hover {
         opacity: var(--dim-opacity);
     }

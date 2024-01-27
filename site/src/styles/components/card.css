@@ -38,6 +38,10 @@
     .card:hover {
         background-color: var(--lighter);
     }
+
+    .card:hover .play {
+        opacity: 100%;
+    }
 }
 
 .card .play {
@@ -64,10 +68,6 @@
 
 .card .play .icon {
     font-size: calc(var(--max-font) * 1.5);
-}
-
-.card:hover .play {
-    opacity: 100%;
 }
 
 .card .image {
