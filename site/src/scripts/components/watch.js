@@ -227,7 +227,7 @@ function modal(info, recommendationImages) {
     let validProviders = {};
     let forceProvider;
 
-    let validProxies = [];
+    let validProxy = null;
     let proxiesChecked = false;
 
     function getUrl(provider) {
@@ -266,25 +266,16 @@ function modal(info, recommendationImages) {
         providersSelect.innerHTML = "<option selected disabled>...</option>";
 
         async function proxiesCheck() {
-            const total = Object.keys(proxies).length;
-            let checked = 0;
-
-            function updateAlert() {
-                videoAlert(true, "box", `Checking proxies <b>(${checked}/${total})</b>`);
-            }
-
-            updateAlert();
+            videoAlert(true, "box", "Checking proxies");
 
             const promises = Object.values(proxies).map(async function (proxy) {
-                const valid = await isValidProxy(proxy);
-                
-                if (valid) validProxies.push(proxy);
-                checked++;
+                if (proxiesChecked) return;
 
-                updateAlert();
+                const valid = await isValidProxy(proxy);
+                if (valid) validProxy = proxy;
             });
 
-            await Promise.all(promises);
+            await Promise.race(promises);
             proxiesChecked = true;
         }
 
@@ -314,7 +305,7 @@ function modal(info, recommendationImages) {
 
         if (!proxiesChecked) await proxiesCheck();
         
-        if (validProxies.length > 0) await providersCheck(validProxies[0]);
+        if (validProxy) await providersCheck(validProxy);
         else validProviders = providers;
 
         providersSelect.innerHTML = "";
