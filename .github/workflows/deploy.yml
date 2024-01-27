@@ -12,7 +12,7 @@ jobs:
     - name: Building Site
       run: |
         npm install
-        npm run site
+        npm run build
     - name: Deploying Site
       run: |
         DIRECTORY=/var/www/fh.snipcola.com
