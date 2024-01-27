@@ -1,9 +1,16 @@
 {
-    "cleanUrls": true,
-    "rewrites": [
+    "outputDirectory": "api",
+    "buildCommand": "npm run prod",
+    "installCommand": "npm install",
+    "functions": {
+        "api/**/*.php": {
+            "runtime": "vercel-php@0.6.1"
+        }
+    },
+    "routes": [
         {
-            "source": "/",
-            "destination": "/FilmHaven.html"
+            "src": "/",
+            "dest": "/api/index.php"
         }
     ]
 }

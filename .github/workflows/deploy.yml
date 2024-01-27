@@ -16,6 +16,6 @@ jobs:
     - name: Deploying
       run: |
         DIRECTORY=/var/www/fh.snipcola.com
-        SITE_DIRECTORY=./public
+        SITE_DIRECTORY=./api
         rm -rf $DIRECTORY/*
         mv $SITE_DIRECTORY/* $DIRECTORY
