@@ -9,15 +9,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+    - name: Preparation
+      run: |
+        pm2 stop fh-proxy || true
+        pm2 delete fh-proxy || true
     - name: Installing Dependencies
       run: npm install
     - name: Building Site
       run: npm run build
     - name: Deploying Site
-      run: |
-        find ./site/public/dist ! -name "index.html" -type f -exec rm -f {} +
+      run: find ./site/public/dist ! -name "index.html" -type f -exec rm -f {} +
     - name: Deploying Proxy
       run: |
-        pm2 delete fh-proxy || true
         pm2 start npm --name fh-proxy -- run proxy
         pm2 save --force
