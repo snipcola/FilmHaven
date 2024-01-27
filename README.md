@@ -24,3 +24,5 @@ A simple, customizable, and lightweight frontend to view and interact with movie
 
 ## ⚠️ - Disclaimer
 All files, such as media, are linked from third-party services, which FilmHaven is not responsible for and has no control over.
+
+FilmHaven uses a custom proxy server in order to check which providers are available, the source code for that is available [here](https://github.com/snipcola/FilmHaven-Proxy).
