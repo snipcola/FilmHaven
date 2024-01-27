@@ -1,8 +1,14 @@
 export async function isValidProxy(proxy) {
-    try { await fetch(proxy.base) }
+    let response;
+    let json;
+
+    try { response = await fetch(proxy.base) }
+    catch { return false };
+    
+    try { json = await response.json() }
     catch { return false };
 
-    return true;
+    return json?.success !== null && json?.message !== null;
 }
 
 export async function isValidUrl(proxy, url) {
