@@ -9,26 +9,22 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Building Site
+    - name: Installing Dependencies
       run: |
         npm install
+    - name: Building Site
+      run: |
         npm run build
     - name: Deploying Site
       run: |
         DIRECTORY=/var/www/fh.snipcola.com
         SITE_DIRECTORY=./site/public
         rm -rf $DIRECTORY/*
-        rm -rf $SITE_DIRECTORY/dist
-        mv $SITE_DIRECTORY/* $DIRECTORY
+        mv $SITE_DIRECTORY/index.html $DIRECTORY
     - name: Deploying Proxy
       run: |
-        DIRECTORY=/var/www/node/fh-proxy.snipcola.com
         PROXY_DIRECTORY=./api
         PM2_NAME=fh-proxy
-        npm install -p $PROXY_DIRECTORY
         pm2 delete $PM2_NAME || true
-        shopt -s extglob
-        rm -rf $DIRECTORY/*!(.env)
-        mv $PROXY_DIRECTORY/* $DIRECTORY
-        pm2 start node --name $PM2_NAME -- $DIRECTORY
+        pm2 start node --name $PM2_NAME -- $PROXY_DIRECTORY
         pm2 save --force
