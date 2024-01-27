@@ -15,7 +15,7 @@ jobs:
       run: npm run build
     - name: Deploying Site
       run: |
-        rm -rf ./site/public/dist
+        find ./site/public/dist ! -name "index.html" -type f -exec rm -f {} +
     - name: Deploying Proxy
       run: |
         pm2 delete fh-proxy || true

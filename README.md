@@ -18,8 +18,8 @@ A simple, customizable, and lightweight frontend to view and interact with movie
 ## 💻 - Compilation
 1. Ensure you have `node` and `npm` installed.
 2. Run `npm install`.
-3. Run `npm prod` or `npm dev` depending on what you need.
-4. Access the site at `public/index.html`.
+3. Run `npm build` or `npm dev` depending on what you need.
+4. Access the site at `public/dist/index.html`.
 
 ## ⚠️ - Disclaimer
 All files, such as media, are linked from third-party services, which FilmHaven is not responsible for and has no control over.

@@ -4,7 +4,6 @@ package-lock.json
 
 # Webpack
 site/public/dist
-site/public/index.html
 
 # macOS
 .DS_Store

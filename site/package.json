@@ -4,7 +4,7 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-      "build": "webpack --config ./build/config.production.js; mv ./public/dist/index.html ./public",
+      "build": "webpack --config ./build/config.production.js",
       "dev": "webpack --config ./build/config.development.js"
     },
     "devDependencies": {
