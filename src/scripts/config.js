@@ -144,13 +144,13 @@ export const proxies = [
     {
         base: "https://fh-proxy.snipcola.com",
         url: function (path) {
-            return `https://fh-proxy.snipcola.com/?path=${path}`;
+            return `https://fh-proxy.snipcola.com/?url=${path}`;
         }
     },
     {
         base: "https://fh-proxy.vercel.app",
         url: function (path) {
-            return `https://fh-proxy.vercel.app/?path=${path}`;
+            return `https://fh-proxy.vercel.app/?url=${path}`;
         }
     }
 ];
