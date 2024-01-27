@@ -41,10 +41,7 @@ import { URL } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const dirPath = path.join(__dirname, "..");
-const envPath = path.join(dirPath, ".env");
-
-dotenv.config({ path: envPath });
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 // Variables
 const allowedOrigins = process.env.ORIGIN?.split(",") || ["*"];
