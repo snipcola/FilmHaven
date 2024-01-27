@@ -12,5 +12,4 @@ site/public/dist
 
 # Other
 fiveserver.config.js
-.env
 .vercel

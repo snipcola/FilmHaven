@@ -12,10 +12,9 @@ site/public/dist
 
 # Other
 fiveserver.config.js
-.env
 
 # Vercel
+.env
 .git
 .github
-.env.example
 README.md

@@ -39,8 +39,7 @@ html(lang = "en")
       "background_color": "#141414",
       "theme_color": "#0F0F0F",
       "display": "standalone",
-      "scope": "./",
-      "start_url": "./"
+      "start_url": "."
     })).toString("base64")}`)
     each cssFile in htmlWebpackPlugin.files.css
       style !{compilation.assets[cssFile.substr(htmlWebpackPlugin.files.publicPath.length)].source()}
