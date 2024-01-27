@@ -19,5 +19,5 @@ jobs:
     - name: Deploying Proxy
       run: |
         pm2 delete fh-proxy || true
-        pm2 start npm --name fh-proxy -- proxy
+        pm2 start npm --name fh-proxy -- run proxy
         pm2 save --force
