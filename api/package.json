@@ -1,0 +1,18 @@
+{
+    "name": "filmhaven-proxy",
+    "author": "Snipcola",
+    "license": "MIT",
+    "private": true,
+    "main": "./proxy.js",
+    "type": "module",
+    "scripts": {
+        "start": "node .",
+        "dev": "nodemon ."
+    },
+    "dependencies": {
+        "nodemon": "^3.0.3",
+        "cors-anywhere": "^0.4.4",
+        "dotenv": "^16.4.1",
+        "node-fetch": "^3.3.2"
+    }
+}

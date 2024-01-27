@@ -14,4 +14,9 @@ package-lock.json
 # Other
 fiveserver.config.js
 .env
-.vercel
+
+# Vercel
+.git
+.github
+.env.example
+README.md

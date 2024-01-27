@@ -43,8 +43,8 @@ module.exports = {
         new WebpackManifestPlugin({ fileName: "_manifest.json" }),
         new MiniCssExtractPlugin({ filename: "[contenthash].css" }),
         new HtmlWebpackPlugin({
-            template: path.resolve(src, "portable.pug"),
-            filename: "FilmHaven.html",
+            template: path.resolve(src, "html.pug"),
+            filename: "index.html",
             scriptLoading: "defer",
             inject: false
         })

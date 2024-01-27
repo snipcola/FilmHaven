@@ -1,16 +1,14 @@
 {
-    "outputDirectory": "api",
-    "buildCommand": "npm run prod",
+    "outputDirectory": "site/public",
     "installCommand": "npm install",
-    "functions": {
-        "api/**/*.php": {
-            "runtime": "vercel-php@0.6.1"
-        }
-    },
+    "buildCommand": "npm run build",
     "routes": [
         {
-            "src": "/",
-            "dest": "/api/index.php"
+            "src": "/proxy",
+            "dest": "/api/proxy"
         }
-    ]
+    ],
+    "env": {
+        "ORIGIN": "*"
+    }
 }

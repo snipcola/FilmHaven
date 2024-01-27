@@ -1,4 +1,4 @@
-name: Deploy Website
+name: Deploy
 on:
   push:
     branches:
@@ -9,13 +9,24 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Building
+    - name: Building Site
       run: |
         npm install
-        npm run prod
-    - name: Deploying
+        npm run site
+    - name: Deploying Site
       run: |
         DIRECTORY=/var/www/fh.snipcola.com
-        SITE_DIRECTORY=./api
+        SITE_DIRECTORY=./site/api
         rm -rf $DIRECTORY/*
         mv $SITE_DIRECTORY/* $DIRECTORY
+    - name: Deploying Proxy
+      run: |
+        DIRECTORY=/var/www/node/fh-proxy.snipcola.com
+        PROXY_DIRECTORY=./proxy
+        PM2_NAME=fh-proxy
+        pm2 delete $PM2_NAME || true
+        shopt -s extglob
+        rm -rf $DIRECTORY/*!(.env)
+        mv $PROXY_DIRECTORY/* $DIRECTORY
+        pm2 start node --name $PM2_NAME -- $DIRECTORY
+        pm2 save --force

@@ -3,23 +3,16 @@
   "author": "Snipcola",
   "license": "MIT",
   "private": true,
+  "workspaces": [
+    "site",
+    "proxy"
+  ],
   "scripts": {
-    "dev": "webpack --config build/config.development.js",
-    "prod": "webpack --config build/config.production.js",
-    "deploy": "vercel",
-    "deploy-prod": "vercel --prod"
+    "build": "npm run --workspace=site build",
+    "dev": "concurrently \"npm run --workspace=proxy dev\" \"npm run --workspace=site dev\"",
+    "deploy": "vercel --prod"
   },
   "devDependencies": {
-    "clean-webpack-plugin": "^4.0.0",
-    "css-loader": "^6.8.1",
-    "css-minimizer-webpack-plugin": "^5.0.1",
-    "html-webpack-plugin": "^5.6.0",
-    "mini-css-extract-plugin": "^2.7.6",
-    "pug-loader": "^2.4.0",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-manifest-plugin": "^5.0.0",
-    "webpack-merge": "^5.10.0",
-    "webpack-remove-empty-scripts": "^1.0.4"
+    "concurrently": "^8.2.2"
   }
 }

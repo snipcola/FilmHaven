@@ -45,14 +45,12 @@ export const config = {
     },
     footer: {
         links: [
-            ...(!window.fhPortable ? [
-                {
-                    icon: "file",
-                    url: "./dist/FilmHaven.html",
-                    label: "Download",
-                    download: "FilmHaven.html"
-                }
-            ] : []),
+            {
+                icon: "file",
+                url: window.location.pathname,
+                label: "Download",
+                download: "FilmHaven.html"
+            },
             {
                 icon: "youtube",
                 url: "https://youtube.com/snipcola",
@@ -148,9 +146,9 @@ export const proxies = [
         }
     },
     {
-        base: "https://fh-proxy.vercel.app",
+        base: "https://fh-site.vercel.app/proxy",
         url: function (path) {
-            return `https://fh-proxy.vercel.app/?url=${path}`;
+            return `https://fh-site.vercel.app/proxy?url=${path}`;
         }
     }
 ];
@@ -195,17 +193,7 @@ export const providers = {
         showUrl: function ({ id, season, episode }) {
             return `https://databasegdriveplayer.xyz/player.php?type=series&tmdb=${id}&season=${season}&episode=${episode}`;
         } 
-    },
-    ...(!window.fhPortable ? {
-        "remotestre.am": {
-            movieUrl: function ({ id }) {
-                return `https://remotestre.am/e/?tmdb=${id}`;
-            },
-            showUrl: function ({ id, season, episode }) {
-                return `https://remotestre.am/e/?tmdb=${id}&s=${season}&e=${episode}`;
-            } 
-        }
-    } : {})
+    }
 };
 
 export const store = {
