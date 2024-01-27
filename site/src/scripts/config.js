@@ -146,9 +146,9 @@ export const proxies = [
         }
     },
     {
-        base: "https://fh-site.vercel.app/proxy",
+        base: "/proxy",
         url: function (path) {
-            return `https://fh-site.vercel.app/proxy?url=${path}`;
+            return `/proxy?url=${path}`;
         }
     }
 ];
