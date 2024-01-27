@@ -25,6 +25,7 @@ jobs:
         DIRECTORY=/var/www/node/fh-proxy.snipcola.com
         PROXY_DIRECTORY=./api
         PM2_NAME=fh-proxy
+        npm install -p $PROXY_DIRECTORY
         pm2 delete $PM2_NAME || true
         shopt -s extglob
         rm -rf $DIRECTORY/*!(.env)
