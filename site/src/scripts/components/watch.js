@@ -275,7 +275,7 @@ function modal(info, recommendationImages) {
                 if (valid) validProxy = proxy;
             });
 
-            await Promise.race(promises);
+            await Promise.all(promises);
             proxiesChecked = true;
         }
 
