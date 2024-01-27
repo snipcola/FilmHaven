@@ -10,7 +10,8 @@
   "scripts": {
     "build": "npm run --workspace=site build",
     "dev": "concurrently \"npm run --workspace=proxy dev\" \"npm run --workspace=site dev\"",
-    "deploy": "vercel --prod"
+    "deploy": "git push origin main:deploy",
+    "deploy-vercel": "vercel --prod"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
