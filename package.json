@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "webpack --config build/config.development.js",
-    "prod": "webpack --config build/config.production.js"
+    "prod": "webpack --config build/config.production.js",
+    "deploy": "vercel",
+    "deploy-prod": "vercel --prod"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0",
