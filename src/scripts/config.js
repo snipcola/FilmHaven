@@ -143,7 +143,7 @@ export const api = {
 export const proxy = {
     enabled: true,
     url: function (path) {
-        return `https://fh-proxy.snipcola.com/${path}`;
+        return `https://fh-proxy.snipcola.com/?path=${path}`;
     }
 };
 
