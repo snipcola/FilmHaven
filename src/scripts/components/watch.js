@@ -285,8 +285,6 @@ function modal(info, recommendationImages) {
             });
 
             await Promise.all(promises);
-
-            validProxies = validProxies.sort(() => Math.random() - 0.5);
             proxiesChecked = true;
         }
 
