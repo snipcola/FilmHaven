@@ -16,13 +16,14 @@ jobs:
     - name: Deploying Site
       run: |
         DIRECTORY=/var/www/fh.snipcola.com
-        SITE_DIRECTORY=./site/api
+        SITE_DIRECTORY=./site/public
         rm -rf $DIRECTORY/*
+        rm -rf $SITE_DIRECTORY/dist
         mv $SITE_DIRECTORY/* $DIRECTORY
     - name: Deploying Proxy
       run: |
         DIRECTORY=/var/www/node/fh-proxy.snipcola.com
-        PROXY_DIRECTORY=./proxy
+        PROXY_DIRECTORY=./api
         PM2_NAME=fh-proxy
         pm2 delete $PM2_NAME || true
         shopt -s extglob
