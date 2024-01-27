@@ -266,7 +266,7 @@ function modal(info, recommendationImages) {
         providersSelect.innerHTML = "<option selected disabled>...</option>";
 
         async function proxiesCheck() {
-            videoAlert(true, "box", "Checking proxies");
+            videoAlert(true, "file", "Checking proxies");
 
             const promises = Object.values(proxies).map(async function (proxy) {
                 if (proxiesChecked) return;
