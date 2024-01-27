@@ -5,11 +5,12 @@
   "private": true,
   "workspaces": [
     "site",
-    "proxy"
+    "api"
   ],
   "scripts": {
     "build": "npm run --workspace=site build",
-    "dev": "concurrently \"npm run --workspace=proxy dev\" \"npm run --workspace=site dev\"",
+    "proxy": "npm run --workspace=api start",
+    "dev": "concurrently \"npm run --workspace=api dev\" \"npm run --workspace=site dev\"",
     "deploy": "git push origin main:deploy",
     "deploy-vercel": "vercel --prod"
   },
