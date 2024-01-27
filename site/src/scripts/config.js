@@ -138,7 +138,18 @@ export const api = {
     }
 };
 
+export const proxy = {
+    checkTimeout: 2500,
+    validCheckTimeout: 5000
+};
+
 export const proxies = [
+    {
+        base: "/proxy",
+        url: function (path) {
+            return `/proxy?url=${path}`;
+        }
+    },
     {
         base: "https://fh-proxy.snipcola.com",
         url: function (path) {
@@ -146,9 +157,9 @@ export const proxies = [
         }
     },
     {
-        base: "/proxy",
+        base: "https://fh-site.vercel.app/proxy",
         url: function (path) {
-            return `/proxy?url=${path}`;
+            return `https://fh-site.vercel.app/proxy?url=${path}`;
         }
     }
 ];

@@ -1,8 +1,8 @@
 import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
 import { getDetails } from "../api/details.js";
-import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress } from "../functions.js";
-import { config, providers, proxies } from "../config.js";
+import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress, promiseTimeout } from "../functions.js";
+import { config, providers, proxies, proxy as proxyConfig } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
@@ -268,14 +268,16 @@ function modal(info, recommendationImages) {
         async function proxiesCheck() {
             videoAlert(true, "file", "Checking proxies");
 
-            const promises = Object.values(proxies).map(async function (proxy) {
-                if (proxiesChecked) return;
-
-                const valid = await isValidProxy(proxy);
-                if (valid) validProxy = proxy;
+            const promises = Object.values(proxies).map(function (proxy) {
+                return new Promise(async function (res, rej) {
+                    if (await isValidProxy(proxy)) res(proxy);
+                    else rej(); 
+                });
             });
 
-            await Promise.all(promises);
+            const response = await Promise.any([...promises, promiseTimeout(proxyConfig.checkTimeout)]);
+            if (response) validProxy = response;
+
             proxiesChecked = true;
         }
 
@@ -291,7 +293,7 @@ function modal(info, recommendationImages) {
     
             const promises = Object.entries(providers).map(async function ([key, value]) {
                 const url = getUrl(value);
-                const valid = await isValidUrl(proxy, url);
+                const valid = await Promise.any([isValidUrl(proxy, url), promiseTimeout(proxyConfig.validCheckTimeout)]);
     
                 if (valid) validProviders[key] = value;
                 checked++;

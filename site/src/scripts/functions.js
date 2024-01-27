@@ -1,3 +1,7 @@
+export function promiseTimeout(timeout) {
+    return new Promise((res) => setTimeout(res, timeout));
+}
+
 export function onKeyPress(key, prevent, active, depends, callback) {
     function listener(e) {
         if (depends && !elementExists(depends)) {
