@@ -1,5 +1,5 @@
 {
-    "outputDirectory": "site/public",
+    "outputDirectory": "site/public/dist",
     "installCommand": "npm install",
     "buildCommand": "npm run build",
     "routes": [
