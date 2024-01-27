@@ -2,7 +2,7 @@ import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
 import { getDetails } from "../api/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress } from "../functions.js";
-import { config, providers, proxy } from "../config.js";
+import { config, providers, proxies } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
@@ -10,7 +10,7 @@ import { addContinueWatching } from "../store/continue.js";
 import { getWatchSection } from "../store/watch-sections.js";
 import { getThemeAbsolute } from "../store/theme.js";
 import { initializeArea } from "./area.js";
-import { isValidUrl } from "../api/proxy.js";
+import { isValidProxy, isValidUrl } from "../api/proxy.js";
 
 export function watchContent(type, id) {
     setQuery(config.query.modal, `${type === "movie" ? "m" : "s"}-${id}`);
@@ -223,8 +223,12 @@ function modal(info, recommendationImages) {
 
     let currentIframe;
     let disabled = false;
+
     let validProviders = {};
     let forceProvider;
+
+    let validProxies = [];
+    let proxiesChecked = false;
 
     function getUrl(provider) {
         const theme = getThemeAbsolute();
@@ -261,9 +265,32 @@ function modal(info, recommendationImages) {
         if (currentIframe) currentIframe.remove();
         providersSelect.innerHTML = "<option selected disabled>...</option>";
 
-        if (window.fhPortable || !proxy.enabled) {
-            validProviders = providers;
-        } else {
+        async function proxiesCheck() {
+            const total = Object.keys(proxies).length;
+            let checked = 0;
+
+            function updateAlert() {
+                videoAlert(true, "box", `Checking proxies <b>(${checked}/${total})</b>`);
+            }
+
+            updateAlert();
+
+            const promises = Object.values(proxies).map(async function (proxy) {
+                const valid = await isValidProxy(proxy);
+                
+                if (valid) validProxies.push(proxy);
+                checked++;
+
+                updateAlert();
+            });
+
+            await Promise.all(promises);
+
+            validProxies = validProxies.sort(() => Math.random() - 0.5);
+            proxiesChecked = true;
+        }
+
+        async function providersCheck(proxy) {
             const total = Object.keys(providers).length;
             let checked = 0;
 
@@ -275,7 +302,7 @@ function modal(info, recommendationImages) {
     
             const promises = Object.entries(providers).map(async function ([key, value]) {
                 const url = getUrl(value);
-                const valid = await isValidUrl(url);
+                const valid = await isValidUrl(proxy, url);
     
                 if (valid) validProviders[key] = value;
                 checked++;
@@ -286,6 +313,11 @@ function modal(info, recommendationImages) {
             await Promise.all(promises);
             validProviders = Object.fromEntries(Object.entries(validProviders).sort(([a], [b]) => Object.keys(providers).indexOf(a) - Object.keys(providers).indexOf(b)));
         }
+
+        if (!proxiesChecked) await proxiesCheck();
+        
+        if (validProxies.length > 0) await providersCheck(validProxies[0]);
+        else validProviders = providers;
 
         providersSelect.innerHTML = "";
 

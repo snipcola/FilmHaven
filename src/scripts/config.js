@@ -140,12 +140,20 @@ export const api = {
     }
 };
 
-export const proxy = {
-    enabled: true,
-    url: function (path) {
-        return `https://fh-proxy.snipcola.com/?path=${path}`;
+export const proxies = [
+    {
+        base: "https://fh-proxy.snipcola.com",
+        url: function (path) {
+            return `https://fh-proxy.snipcola.com/?path=${path}`;
+        }
+    },
+    {
+        base: "https://fh-proxy.vercel.app",
+        url: function (path) {
+            return `https://fh-proxy.vercel.app/?path=${path}`;
+        }
     }
-};
+];
 
 export const providers = {
     "vidsrc.to": {
