@@ -303,7 +303,7 @@ export const settings = [
             resetLastPlayed();
 
             document.body.classList.remove("active");
-            window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
+            window.location.reload();
         },
         type: "select"
     },
@@ -352,7 +352,7 @@ export const settings = [
                 }
 
                 document.body.classList.remove("active");
-                window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
+                window.location.href = `${(window.location.href || "").split("?")[0]}?${config.query.page}=4`;
             } else if (i === "minimal") {
                 const pages = getPages();
                 const sections = getSections();
@@ -371,7 +371,7 @@ export const settings = [
                 }
 
                 document.body.classList.remove("active");
-                window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=2`;
+                window.location.href = `${(window.location.href || "").split("?")[0]}?${config.query.page}=2`;
             } else {
                 const pages = getPages();
                 const sections = getSections();
@@ -390,7 +390,7 @@ export const settings = [
                 }
 
                 document.body.classList.remove("active");
-                window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=2`;
+                window.location.href = `${(window.location.href || "").split("?")[0]}?${config.query.page}=2`;
             }
         },
         preventChange: true,
@@ -472,7 +472,7 @@ export const settings = [
                         localStorage.clear();
 
                         document.body.classList.remove("active");
-                        window.location.href = `${window.location.origin}${window.location.pathname}?${config.query.page}=4`;
+                        window.location.href = `${(window.location.href || "").split("?")[0]}?${config.query.page}=4`;
 
                         self.classList.add("inactive");
                         self.querySelector(".icon").className = "icon icon-check";
