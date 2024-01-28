@@ -1,6 +1,10 @@
 ## 🎬 - FilmHaven
 A simple, customizable, and lightweight frontend to view and interact with movies & shows.
 
+<div align="center">
+    <img src="./assets/showcase.png" width="600"/>
+</div>
+
 **Accessible here:**
 - <a target="_blank" href="https://fh.snipcola.com">Main</a>
 - <a target="_blank" href="https://fh-site.vercel.app">Mirror</a>
