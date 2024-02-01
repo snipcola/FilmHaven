@@ -72,7 +72,7 @@ async function handleRequest(req, res, _url) {
     const origin = req?.headers?.origin;
 
     const allowedHost = allowedHosts.includes(hostname);
-    const allowedOrigin = allowedOrigins.includes("*") || allowedOrigins.includes(origin);
+    const allowedOrigin = !origin || allowedOrigins.includes("*") || allowedOrigins.includes(origin);
 
     // Functions
     function sendJSON(status, data) {

@@ -1,0 +1,46 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - deploy
+  
+jobs:
+  deploy:
+    runs-on: host
+
+    env:
+      SITE_DIRECTORY: /sites/fh.snipcola.com
+      SITE_OUTPUT: ./site/public/dist/index.html
+
+      PROXY_DIRECTORY: /node/fh-proxy
+      PROXY_OUTPUT: ./api
+      PROXY_CONFIG: /ecosystem.config.cjs
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Installing Dependencies
+      run: npm install
+
+    - name: Building Site
+      run: npm run build
+
+    - name: Deploying Site
+      run: |
+        mkdir -p "$SITE_DIRECTORY"
+        rm -rf "$SITE_DIRECTORY"/*
+        mv "$SITE_OUTPUT" "$SITE_DIRECTORY"
+        
+    - name: Deploying Proxy
+      run: |
+        ssh node pm2 stop "$PROXY_DIRECTORY$PROXY_CONFIG" || true
+        ssh node pm2 delete "$PROXY_DIRECTORY$PROXY_CONFIG" || true
+
+        mkdir -p "$PROXY_DIRECTORY"
+        rm -rf "$PROXY_DIRECTORY"/*
+        mv ./node_modules "$PROXY_OUTPUT"/{.*,*} "$PROXY_DIRECTORY"
+
+        ssh node pm2 start "$PROXY_DIRECTORY$PROXY_CONFIG"
+        ssh node pm2 save --force

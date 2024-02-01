@@ -151,12 +151,6 @@ export const proxies = [
         }
     },
     {
-        base: "https://fh-proxy.snipcola.com",
-        url: function (path) {
-            return `https://fh-proxy.snipcola.com/?url=${path}`;
-        }
-    },
-    {
         base: "https://fh-site.vercel.app/proxy",
         url: function (path) {
             return `https://fh-site.vercel.app/proxy?url=${path}`;
