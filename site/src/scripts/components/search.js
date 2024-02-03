@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists, scrollToElement, onKeyPress } from "../functions.js";
+import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists, scrollToElement, onKeyPress, onSwipe } from "../functions.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../api/search.js";
 import { watchContent } from "./watch.js";
@@ -322,6 +322,11 @@ function initializeSearch(area, placeholder) {
 
     previous.addEventListener("click", setPrevious);
     next.addEventListener("click", setNext);
+
+    onSwipe(area, function (right) {
+        if (right) setNext();
+        else setPrevious();
+    });
 
     clear.addEventListener("click", onClear);
     input.addEventListener("input", clearCheck);

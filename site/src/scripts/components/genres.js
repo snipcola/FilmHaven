@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import { splitArray, onWindowResize, removeWindowResize, elementExists } from "../functions.js";
+import { splitArray, onWindowResize, removeWindowResize, elementExists, onSwipe } from "../functions.js";
 import { getGenres } from "../api/genres.js";
 import { hideModal, setModal, showModal } from "./modal.js";
 import { initializeArea } from "./area.js";
@@ -228,6 +228,11 @@ function initializeGenreArea(area, initialSlides, type, failed) {
     if (slides) {
         area.append(control);
         area.append(genres);
+
+        onSwipe(area, function (right) {
+            if (right) setNext();
+            else setPrevious();
+        });
     } else {
         area.append(notice);
     }

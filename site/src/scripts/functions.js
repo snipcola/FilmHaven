@@ -1,3 +1,54 @@
+export function onSwipe(element, callback) {
+    let startX, startY, endX, endY;
+    let touchStart, touchMove, touchEnd;
+
+    function remove() {
+        element.removeEventListener("touchstart", touchStart);
+        element.removeEventListener("touchmove", touchMove);
+        element.removeEventListener("touchend", touchEnd);
+    }
+
+    touchStart = function(e) {
+        if (!elementExists(element)) return remove();
+
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    };
+
+    touchMove = function(e) {
+        if (!elementExists(element)) return remove();
+        
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+
+        const deltaX = currentX - startX;
+        const deltaY = currentY - startY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            e.preventDefault();
+        }
+    };
+
+    touchEnd = function(e) {
+        if (!elementExists(element)) return remove();
+
+        endX = e.changedTouches[0].clientX;
+        endY = e.changedTouches[0].clientY;
+
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
+
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX < 0) callback(true);
+            else callback(false);
+        }
+    };
+
+    element.addEventListener("touchstart", touchStart);
+    element.addEventListener("touchmove", touchMove);
+    element.addEventListener("touchend", touchEnd);
+}
+
 export function promiseTimeout(timeout) {
     return new Promise((res) => setTimeout(res, timeout));
 }

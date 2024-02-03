@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import { isHovered } from "../functions.js";
+import { isHovered, onSwipe } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getTrending } from "../api/trending.js";
 import { watchContent } from "./watch.js";
@@ -103,7 +103,9 @@ function initializeCarousel(carousel, slides) {
     }
 
     function iterate() {
-        if (!isHovered(carousel) && !document.body.classList.contains("modal-active")) {
+        const isMobile = navigator.maxTouchPoints || "ontouchstart" in document.documentElement;
+
+        if (!isMobile && (!isHovered(carousel) && !document.body.classList.contains("modal-active"))) {
             setNext();
         }
     }
@@ -122,6 +124,11 @@ function initializeCarousel(carousel, slides) {
     if (slides) {
         carousel.append(details);
         carousel.append(control);
+
+        onSwipe(carousel, function (right) {
+            if (right) setNext();
+            else setPrevious();
+        });
     }
 }
 

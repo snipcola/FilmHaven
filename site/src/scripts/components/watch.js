@@ -1,7 +1,7 @@
 import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
 import { getDetails } from "../api/details.js";
-import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress, promiseTimeout } from "../functions.js";
+import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress, promiseTimeout, onSwipe } from "../functions.js";
 import { config, providers, proxies, proxy as proxyConfig } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
@@ -1173,6 +1173,11 @@ function modal(info, recommendationImages) {
         castPrevious.addEventListener("click", setCastPrevious);
         castNext.addEventListener("click", setCastNext);
 
+        onSwipe(castCards, function (right) {
+            if (right) setCastNext();
+            else setCastPrevious();
+        });
+
         castTitle.append(castControl);
         cast.append(castCards);
     } else {
@@ -1184,6 +1189,11 @@ function modal(info, recommendationImages) {
 
         reviewsPrevious.addEventListener("click", setReviewPrevious);
         reviewsNext.addEventListener("click", setReviewNext);
+
+        onSwipe(reviewCards, function (right) {
+            if (right) setReviewNext();
+            else setReviewPrevious();
+        });
 
         reviewsTitle.append(reviewsControl);
         reviews.append(reviewCards);

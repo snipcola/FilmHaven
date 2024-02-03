@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import { splitArray, onWindowResize, removeWindowResize, elementExists } from "../functions.js";
+import { splitArray, onWindowResize, removeWindowResize, elementExists, onSwipe } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getTrending } from "../api/trending.js";
 import { getRated } from "../api/rated.js";
@@ -250,6 +250,11 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
     if (slides) {
         area.append(control);
         area.append(cards);
+
+        onSwipe(area, function (right) {
+            if (right) setNext();
+            else setPrevious();
+        });
     } else {
         area.append(notice);
     }
