@@ -93,11 +93,11 @@ export function getCache(key, max = config.maxCacheDays) {
     return;
 }
 
-export function resetCache() {
+export function resetCache(exclusion) {
     const prefix = store.names.cache("");
 
     for (const key in localStorage) {
-        if (key.startsWith(prefix)) {
+        if (key.startsWith(prefix) && (!exclusion || key !== `${prefix}${exclusion}`)) {
             localStorage.removeItem(key);
         }
     }

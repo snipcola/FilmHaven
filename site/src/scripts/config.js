@@ -303,7 +303,7 @@ export const settings = [
         },
         onSelect: function (l) {
             setLanguage(l);
-            resetCache();
+            resetCache("languages");
             resetContinueWatching();
             resetLastPlayed();
 
