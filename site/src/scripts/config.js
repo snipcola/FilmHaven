@@ -58,8 +58,8 @@ export const config = {
             },
             {
                 icon: "github",
-                url: "https://github.com/snipcola",
-                label: "GitHub"
+                url: "https://git.snipcola.com/snipcola",
+                label: "Git"
             }
         ]
     },
