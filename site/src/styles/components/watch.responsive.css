@@ -47,7 +47,7 @@
         padding: var(--small-padding);
     }
 
-    .watch .details .season-card .episodes .episode .description {
+    .watch .details .season-card .episodes .episode .description, .watch .details .season-card .episodes .episode .episode-right .notice {
         display: none;
     }
     
