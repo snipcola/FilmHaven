@@ -257,6 +257,7 @@ function modal(info, recommendationImages) {
 
     async function checkProviders() {
         validProviders = {};
+        forceProvider = null;
         disabled = true;
 
         providersElem.classList.add("disabled");
