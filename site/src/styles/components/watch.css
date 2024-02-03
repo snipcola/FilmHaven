@@ -583,6 +583,10 @@
     font-size: var(--large-font);
 }
 
+.watch .details .season-card .episodes .episode-title .time .text {
+    overflow-wrap: normal !important;
+}
+
 .watch .details .season-card .episodes .episode .description, .watch .details .season-card .episodes .episode .episode-title .time .text, .watch .details .season-card .episodes .episode .episode-title .time .icon {
     opacity: var(--dim-opacity);
 }
