@@ -222,7 +222,9 @@ function modal(info, recommendationImages) {
     }
 
     let currentIframe;
+
     let disabled = false;
+    let seasonsDisabled = false;
 
     let validProviders = {};
     let forceProvider;
@@ -258,7 +260,9 @@ function modal(info, recommendationImages) {
     async function checkProviders() {
         validProviders = {};
         forceProvider = null;
+
         disabled = true;
+        seasonsDisabled = true;
 
         providersElem.classList.add("disabled");
         seasons.classList.add("disabled");
@@ -324,15 +328,16 @@ function modal(info, recommendationImages) {
             });
 
             providersSelect.value = getValidProviderKey();
-
             providersElem.classList.remove("disabled");
-            seasons.classList.remove("disabled");
 
             disabled = false;
             playVideo();
         } else {
             videoAlert(true, "censor", "No providers available");
         }
+
+        seasonsDisabled = false;
+        seasons.classList.remove("disabled");
     }
 
     function playVideo() {
@@ -525,7 +530,7 @@ function modal(info, recommendationImages) {
     let playEpisodeCallbacks = [];
 
     function playEpisode(sNumber, eNumber, episode) {
-        if (!videoActive || disabled) return;
+        if (!videoActive || seasonsDisabled) return;
 
         seasonNumber = sNumber;
         episodeNumber = eNumber;
@@ -749,12 +754,12 @@ function modal(info, recommendationImages) {
         }
         
         function nextEpisode() {
-            if (disabled) return;
+            if (seasonsDisabled) return;
             seasonControlChange(true);
         }
 
         function previousEpisode() {
-            if (disabled) return;
+            if (seasonsDisabled) return;
             seasonControlChange(false);
         }
 
