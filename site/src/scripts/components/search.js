@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists, scrollToElement, onKeyPress, onSwipe } from "../functions.js";
+import { onWindowResize, splitArray, debounce, removeWindowResize, elementExists, scrollToElement, onKeyPress, onSwipe, transparentImage } from "../functions.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../api/search.js";
 import { watchContent } from "./watch.js";
@@ -80,6 +80,7 @@ function initializeSearch(area, placeholder) {
     function add(info) {
         const card = document.createElement("div");
         const image = document.createElement("img");
+        const loadImage = document.createElement("img");
         const title = document.createElement("div");
         const typeInfo = document.createElement("div");
 
@@ -100,9 +101,16 @@ function initializeSearch(area, placeholder) {
         image.className = "image";
         image.src = info.image;
         image.alt = info.title;
+        loadImage.className = "image load-image";
+        loadImage.src = transparentImage();
+        loadImage.alt = "";
         title.className = "title";
         typeInfo.className = "type-info";
         typeInfo.innerText = info.type?.toUpperCase();
+
+        image.addEventListener("load", function () {
+            card.classList.add("loaded");
+        });
 
         card.addEventListener("click", function () {
             input.value = "";
@@ -167,6 +175,7 @@ function initializeSearch(area, placeholder) {
         play.append(playIcon);
 
         card.append(image);
+        card.append(loadImage);
         card.append(title);
         card.append(typeInfo);
         card.append(footer);
@@ -297,7 +306,7 @@ function initializeSearch(area, placeholder) {
                 const searchImages = getNonCachedImages(searchResults.map((i) => i.image));
                 images.push(...searchImages);
 
-                await preloadImages(searchImages, config.area.split[desktop ? "desktop" : "mobile"], true);
+                preloadImages(searchImages, true);
 
                 if (input.value.length === 0) {
                     cleanup();

@@ -62,7 +62,7 @@ export async function initializeContinue() {
         checkControlActive();
     });
 
-    async function initializeContinueWatching() {
+    function initializeContinueWatching() {
         initializeArea(homeContinueArea, null, label);
 
         if (!continueWatching || continueWatching.length === 0) {
@@ -70,7 +70,7 @@ export async function initializeContinue() {
             controlActive = false;
             control.remove();
         } else {
-            await preloadImages(continueWatching.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"]);    
+            preloadImages(continueWatching.map((i) => i.image));    
             initializeArea(homeContinueArea, continueWatching, label);
             homeContinueArea.classList.remove("inactive");
             homeContinueArea.append(control);
@@ -85,7 +85,7 @@ export async function initializeContinue() {
 
         if (continueWatching.length === 0 && newContinueWatching.length > 0 || JSON.stringify(newContinueWatching) !== JSON.stringify(continueWatching)) {
             continueWatching = newContinueWatching;
-            await initializeContinueWatching();
+            initializeContinueWatching();
         }
 
         if (!isMobile && (controlActive && !isHovered(homeContinueArea))) {

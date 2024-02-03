@@ -34,6 +34,14 @@
     overflow: hidden;
 }
 
+.card.loaded .load-image {
+    display: none;
+}
+
+.card:not(.loaded) .image:not(.load-image) {
+    display: none;
+}
+
 @media (hover: hover) {
     .card:hover {
         background-color: var(--lighter);

@@ -43,7 +43,7 @@ async function modal(info, type) {
             const popularContentImages = getNonCachedImages(popularContent.map((i) => i.image));
             images.push(...popularContentImages);
 
-            await preloadImages(popularContentImages, config.area.split[desktop ? "desktop" : "mobile"], true);
+            preloadImages(popularContentImages, true);
             initializeArea(popularArea, popularContent, label);
         }
     }
@@ -61,7 +61,7 @@ async function modal(info, type) {
             const ratedContentImages = getNonCachedImages(ratedContent.map((i) => i.image));
             images.push(...ratedContentImages);
 
-            await preloadImages(ratedContentImages, config.area.split[desktop ? "desktop" : "mobile"], true);
+            preloadImages(ratedContentImages, true);
             initializeArea(ratedArea, ratedContent, label);
         }
     }
@@ -79,7 +79,7 @@ async function modal(info, type) {
             const newContentImages = getNonCachedImages(newContent.map((i) => i.image));
             images.push(...newContentImages);
 
-            await preloadImages(newContentImages, config.area.split[desktop ? "desktop" : "mobile"], true);
+            preloadImages(newContentImages, true);
             initializeArea(newArea, newContent, label);
         }
     }

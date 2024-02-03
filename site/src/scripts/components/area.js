@@ -1,5 +1,5 @@
 import { config } from "../config.js";
-import { splitArray, onWindowResize, removeWindowResize, elementExists, onSwipe } from "../functions.js";
+import { splitArray, onWindowResize, removeWindowResize, elementExists, onSwipe, transparentImage } from "../functions.js";
 import { preloadImages } from "../cache.js";
 import { getTrending } from "../api/trending.js";
 import { getRated } from "../api/rated.js";
@@ -66,6 +66,7 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
     function add(info) {
         const card = document.createElement("div");
         const image = document.createElement("img");
+        const loadImage = document.createElement("img");
         const title = document.createElement("div");
 
         const footer = document.createElement("div");
@@ -83,12 +84,19 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
 
         if (info.id) card.setAttribute("data-id", info.id);
         if (info.type) card.setAttribute("data-type", info.type);
-
+        
         card.className = "card";
         image.className = "image";
         image.src = info.image;
         image.alt = info.title;
+        loadImage.className = "image load-image";
+        loadImage.src = transparentImage();
+        loadImage.alt = "";
         title.className = "title";
+
+        image.addEventListener("load", function () {
+            card.classList.add("loaded");
+        });
 
         if (info.continue) {
             const typeInfo = document.createElement("div");
@@ -178,6 +186,7 @@ export function initializeArea(area, initialSlides, labelText, failed, customSpl
         play.append(playIcon);
 
         card.append(image);
+        card.append(loadImage);
         card.append(title);
         card.append(footer);
         card.append(play);
@@ -293,7 +302,7 @@ export function initializeAreas() {
                 trendingMovies.splice(0, config.carousel.amount);    
                 trendingMovies.splice(config.area.amount, trendingMovies.length);
     
-                await preloadImages(trendingMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
+                preloadImages(trendingMovies.map((i) => i.image), true);
                 initializeArea(moviesTrendingArea, trendingMovies, label);
             }
         }
@@ -318,7 +327,7 @@ export function initializeAreas() {
                 trendingShows.splice(0, config.carousel.amount);
                 trendingShows.splice(config.area.amount, trendingShows.length);
     
-                await preloadImages(trendingShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
+                preloadImages(trendingShows.map((i) => i.image), true);
                 initializeArea(showsTrendingArea, trendingShows, label);
             }
         }
@@ -348,7 +357,7 @@ export function initializeAreas() {
                 initializeArea(moviesRatedArea, null, label, true);
             } else {
                 ratedMovies.splice(config.area.amount, ratedMovies.length);
-                await preloadImages(ratedMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
+                preloadImages(ratedMovies.map((i) => i.image), true);
                 initializeArea(moviesRatedArea, ratedMovies, label);
             }
         }
@@ -371,7 +380,7 @@ export function initializeAreas() {
                 initializeArea(showsRatedArea, null, label, true);
             } else {
                 ratedShows.splice(config.area.amount, ratedShows.length);
-                await preloadImages(ratedShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
+                preloadImages(ratedShows.map((i) => i.image), true);
                 initializeArea(showsRatedArea, ratedShows, label);
             }
         }
@@ -401,7 +410,7 @@ export function initializeAreas() {
                 initializeArea(moviesNewArea, null, label, true);
             } else {
                 newMovies.splice(config.area.amount, newMovies.length);
-                await preloadImages(newMovies.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
+                preloadImages(newMovies.map((i) => i.image), true);
                 initializeArea(moviesNewArea, newMovies, label);
             }
         }
@@ -424,7 +433,7 @@ export function initializeAreas() {
                 initializeArea(showsNewArea, null, label, true);
             } else {
                 newShows.splice(config.area.amount, newShows.length);
-                await preloadImages(newShows.map((i) => i.image), config.area.split[desktop ? "desktop" : "mobile"], true);
+                preloadImages(newShows.map((i) => i.image), true);
                 initializeArea(showsNewArea, newShows, label);
             }
         }

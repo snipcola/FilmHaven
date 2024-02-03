@@ -16,14 +16,14 @@ export function isDeletable(image) {
     return !cachedImages.includes(image);
 }
 
-export async function preloadImages(images, onAmount, save) {
+export async function preloadImages(images, save) {
     if (save) cachedImages.push(...images);
     let count = 0;
 
     async function loadImage(url) {
         return new Promise(function (resolve) {
             function checkCount() {
-                if (count >= (onAmount || images.length)) {
+                if (count >= images.length) {
                     resolve();
                 }
             }
