@@ -81,13 +81,14 @@ export async function initializeContinue() {
 
     async function check() {
         const newContinueWatching = getContinueWatching();
+        const isMobile = navigator.maxTouchPoints || "ontouchstart" in document.documentElement;
 
         if (continueWatching.length === 0 && newContinueWatching.length > 0 || JSON.stringify(newContinueWatching) !== JSON.stringify(continueWatching)) {
             continueWatching = newContinueWatching;
             await initializeContinueWatching();
         }
 
-        if (controlActive && !isHovered(homeContinueArea)) {
+        if (!isMobile && (controlActive && !isHovered(homeContinueArea))) {
             controlActive = false;
             checkControlActive();
         }
