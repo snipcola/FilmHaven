@@ -1276,7 +1276,7 @@ function initializeWatchModalCheck() {
 
                     if (info.cast && getWatchSection("Cast")) preloadImages(info.cast.map((p) => p.image));
                     if (info.reviews && getWatchSection("Reviews")) preloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
-                    preloadImages(recommendationImages, null, true);
+                    preloadImages(recommendationImages);
 
                     modal(info, recommendationImages);
                 } else {
