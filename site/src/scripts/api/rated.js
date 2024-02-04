@@ -18,10 +18,10 @@ function format(obj, type) {
 }
 
 export async function getRated(type = "movie", genre) {
-    const cacheName = `rated-${type}`;
+    const cacheName = genre ? `rated-${type}-${genre}` : `rated-${type}`;
     const cache = getCache(cacheName);
 
-    if (cache && !genre) return cache;
+    if (cache) return cache;
     
     const date = new Date();
     const formattedDateNow = date.toISOString().split("T")[0];
@@ -41,9 +41,6 @@ export async function getRated(type = "movie", genre) {
     
     const json = format(response?.results, type);
 
-    if (!genre) {
-        setCache(cacheName, json);
-    }
-
+    setCache(cacheName, json);
     return json;
 }

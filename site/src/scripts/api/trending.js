@@ -36,10 +36,10 @@ function format(obj, type, genre) {
 }
 
 export async function getTrending(type = "movie", genre) {
-    const cacheName = `trending-${type}`;
+    const cacheName = genre ? `trending-${type}-${genre}` : `trending-${type}`;
     const cache = getCache(cacheName);
 
-    if (cache && !genre) return cache;
+    if (cache) return cache;
 
     const date = new Date();
     const formattedDateNow = date.toISOString().split("T")[0];
@@ -60,9 +60,6 @@ export async function getTrending(type = "movie", genre) {
 
     const json = format(response?.results, type, genre);
 
-    if (!genre) {
-        setCache(cacheName, json);
-    }
-
+    setCache(cacheName, json);
     return json;
 }
