@@ -4,8 +4,9 @@ import { preloadImages } from "../cache.js";
 import { getTrending } from "../api/trending.js";
 import { watchContent } from "./watch.js";
 import { getPage } from "../store/pages.js";
+import { getSectionName } from "./header.js";
 
-function initializeCarousel(carousel, slides) {
+function initializeCarousel(carousel, slides, type) {
     carousel.innerHTML = "";
 
     let index = 0;
@@ -104,8 +105,9 @@ function initializeCarousel(carousel, slides) {
 
     function iterate() {
         const isMobile = navigator.maxTouchPoints || "ontouchstart" in document.documentElement;
+        const activeSection = getSectionName().toLowerCase() === "movies" ? "movie" : "tv";
 
-        if (!isMobile && (!isHovered(carousel) && !document.body.classList.contains("modal-active"))) {
+        if (!isMobile && (type === activeSection && !isHovered(carousel) && !document.body.classList.contains("modal-active"))) {
             setNext();
         }
     }
@@ -150,7 +152,7 @@ export function initializeCarousels() {
         if (movies) {
             movies.splice(config.carousel.amount, movies.length);
             preloadImages(movies.map((i) => i.backdrop), true);
-            initializeCarousel(moviesCard, movies);
+            initializeCarousel(moviesCard, movies, "movie");
         }
     }
 
@@ -171,7 +173,7 @@ export function initializeCarousels() {
         if (shows) {
             shows.splice(config.carousel.amount, shows.length)
             preloadImages(shows.map((i) => i.backdrop), true);
-            initializeCarousel(showsCard, shows);
+            initializeCarousel(showsCard, shows, "tv");
         }
     }
 

@@ -19,7 +19,7 @@ function setLinksInactive() {
     }
 }
 
-function getSectionName() {
+export function getSectionName() {
     const link = links.find((l) => l.classList.contains("active"));
 
     if (link) {
