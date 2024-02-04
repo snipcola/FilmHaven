@@ -9,6 +9,7 @@ import { getRated } from "../api/rated.js";
 import { getNew } from "../api/new.js";
 import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import { getPage } from "../store/pages.js";
+import { toggleDim } from "./dim.js";
 
 async function modal(info, type) {
     const desktop = window.innerWidth > config.area.split.max;
@@ -250,6 +251,7 @@ function initializeGenreModalCheck() {
 
             if (modalType === "g") {
                 hideModal(true);
+                toggleDim(true);
                 
                 const info = type === "m"
                     ? (movieGenres || []).find((g) => g.id?.toString() === id)
@@ -261,6 +263,8 @@ function initializeGenreModalCheck() {
                 } else {
                     removeQuery(config.query.modal);
                 }
+
+                toggleDim(false);
             }
         }
     }

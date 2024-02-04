@@ -11,6 +11,7 @@ import { getWatchSection } from "../store/watch-sections.js";
 import { getThemeAbsolute } from "../store/theme.js";
 import { initializeArea } from "./area.js";
 import { isValidProxy, isValidUrl } from "../api/proxy.js";
+import { toggleDim } from "./dim.js";
 
 export function watchContent(type, id) {
     setQuery(config.query.modal, `${type === "movie" ? "m" : "s"}-${id}`);
@@ -1265,6 +1266,7 @@ function initializeWatchModalCheck() {
 
             if (type !== "g" && config.modal.validTypes.includes(type)) {
                 hideModal(true);
+                toggleDim(true);
                 
                 const info = await getDetails(type === "m" ? "movie" : "tv", id);
 
@@ -1272,14 +1274,16 @@ function initializeWatchModalCheck() {
                     let recommendationImages = [];
                     if (info.recommendations && getWatchSection("Recommendations")) recommendationImages = getNonCachedImages(info.recommendations.map((r) => r.image));
 
-                    modal(info, recommendationImages);
-
                     if (info.cast && getWatchSection("Cast")) preloadImages(info.cast.map((p) => p.image));
                     if (info.reviews && getWatchSection("Reviews")) preloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
                     preloadImages(recommendationImages, null, true);
+
+                    modal(info, recommendationImages);
                 } else {
                     removeQuery(config.query.modal);
                 }
+
+                toggleDim(false);
             }
         }
     }
