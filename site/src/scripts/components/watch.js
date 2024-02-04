@@ -823,7 +823,7 @@ function modal(info, recommendationImages) {
 
         cast.className = "cast-card";
         image.className = "image";
-        image.src = info.image;
+        if (info.image) image.src = info.image;
         image.alt = info.name;
         text.className = "text";
         name.className = "cast-name";
@@ -834,7 +834,7 @@ function modal(info, recommendationImages) {
         text.append(name);
         text.append(character);
         
-        cast.append(image);
+        if (info.image) cast.append(image);
         cast.append(text);
         cast.addEventListener("click", function () {
             window.open(info.url);

@@ -10,12 +10,12 @@ async function format(item, type) {
         const date = new Date(dateString);
 
         const cast = (item.credits?.cast || [])
-            .filter((p) => p.name && p.character && p.profile_path)
+            .filter((p) => p.name && p.character)
             .map(function (person) {
                 return {
                     name: person.name,
                     character: person.character,
-                    image: getImageUrl(person.profile_path, "cast"),
+                    image: person.profile_path ? getImageUrl(person.profile_path, "cast") : null,
                     url: getSearchUrl(person.name)
                 };
             });
