@@ -1,5 +1,6 @@
 import { initializeTheme } from "./components/theme.js";
 import { initializeCache } from "./cache.js";
+import { initializeDim } from "./components/dim.js";
 import { initializeModal } from "./components/modal.js";
 import { initializeContent } from "./components/content.js";
 import { initializeHeader } from "./components/header.js";
@@ -39,6 +40,7 @@ function initializeAll() {
     initializeTheme();
     initializeCache();
 
+    initializeDim();
     initializeModal();
     initializeBody();
 

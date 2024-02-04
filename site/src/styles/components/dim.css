@@ -1,0 +1,23 @@
+.dim {
+    position: fixed;
+    opacity: 0;
+
+    width: 100dvw;
+    height: 100dvh;
+
+    z-index: -100;
+    pointer-events: none;
+
+    top: 0;
+    left: 0;
+
+    background-color: rgba(var(--light-rgb), .5);
+    transition: var(--transition-speed) opacity;
+}
+
+.dim.active {
+    opacity: 100%;
+    z-index: 10;
+
+    pointer-events: auto;
+}
