@@ -297,6 +297,9 @@ function initializeSearch(area, placeholder) {
         const query = input.value;
 
         if (query.length > 0) {
+            reset();
+            cleanup();
+            
             notify(true, "Fetching results", "sync");
             const searchResults = await getSearchResults(query);
             

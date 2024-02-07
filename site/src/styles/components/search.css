@@ -34,7 +34,9 @@
 }
 
 .area.search .search .input::placeholder {
+    font-weight: 300;
     opacity: var(--dim-opacity);
+
     user-select: none;
 }
 
