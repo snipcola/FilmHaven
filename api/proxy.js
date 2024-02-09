@@ -5,8 +5,7 @@ const config = {
         "vidsrc.me",
         "flixon.lol",
         "2embed.me",
-        "databasegdriveplayer.xyz",
-        "remotestre.am"
+        "databasegdriveplayer.xyz"
     ],
     blacklist: {
         status: [
@@ -19,8 +18,7 @@ const config = {
             "onionplay streaming mirrors", // flixon.lol
             "no movie found", // 2embed.me
             "no tv show found", // 2embed.me
-            `,"file":"","kind"`, // databasegdriveplayer.xyz
-            "video_error.mp4" // remotestre.am
+            `,"file":"","kind"` // databasegdriveplayer.xyz
         ]
     },
     cacheMaxAge: 21600,
