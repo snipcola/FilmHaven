@@ -3,7 +3,7 @@ const config = {
     hosts: [
         "vidsrc.to",
         "vidsrc.me",
-        "flixon.lol",
+        "flixon.click",
         "2embed.me",
         "databasegdriveplayer.xyz"
     ],
@@ -15,7 +15,7 @@ const config = {
         text: [
             "not found", // Generic
             "no sources", // Generic
-            "onionplay streaming mirrors", // flixon.lol
+            "onionplay streaming mirrors", // flixon.click
             "no movie found", // 2embed.me
             "no tv show found", // 2embed.me
             `,"file":"","kind"` // databasegdriveplayer.xyz

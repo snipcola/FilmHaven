@@ -175,12 +175,12 @@ export const providers = {
             return `https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
         }
     },
-    "flixon.lol": {
+    "flixon.click": {
         movieUrl: function ({ imdbId }) {
-            return `https://flixon.lol/${imdbId}`;
+            return `https://flixon.click/${imdbId}`;
         },
         showUrl: function ({ id, season, episode }) {
-            return `https://flixon.lol/${id}-${season}-${episode}`;
+            return `https://flixon.click/${id}-${season}-${episode}`;
         } 
     },
     "2embed.me": {
