@@ -3,7 +3,7 @@
     "author": "Snipcola",
     "license": "MIT",
     "private": true,
-    "main": "./src/index.js",
+    "main": "index.js",
     "type": "module",
     "scripts": {
         "start": "node .",

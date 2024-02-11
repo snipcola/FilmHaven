@@ -5,7 +5,7 @@
     "routes": [
         {
             "src": "/api(.*)",
-            "dest": "/api/src/index"
+            "dest": "/api/index"
         }
     ],
     "env": {
