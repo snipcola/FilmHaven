@@ -4,7 +4,7 @@
     "buildCommand": "npm run build",
     "routes": [
         {
-            "src": "/api",
+            "src": "/api(.*)",
             "dest": "/api/src/index"
         }
     ],
