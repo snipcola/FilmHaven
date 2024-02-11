@@ -167,7 +167,7 @@
 }
 
 .card .footer .star.half-fill, .watch .rating .star.half-fill {
-    background: linear-gradient(to right, var(--primary) 50%, rgba(255, 255, 255, 0.75) 50%);
+    background: linear-gradient(to right, var(--primary) 50%, rgba(var(--text-rgb), 0.75) 50%);
     color: transparent;
 
     background-clip: text;
