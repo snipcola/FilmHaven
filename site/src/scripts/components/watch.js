@@ -60,6 +60,8 @@ function modal(info, recommendationImages) {
 
     const watch = document.createElement("div");
     const video = document.createElement("div");
+    const backdrop = document.createElement("img");
+    const backdropVignette = document.createElement("div");
     const iframe = document.createElement("iframe");
 
     const details = document.createElement("div");
@@ -175,6 +177,19 @@ function modal(info, recommendationImages) {
     iframe.className = "iframe";
     iframe.setAttribute("allowfullscreen", true);
     video.append(videoNoticeContainer);
+
+    backdrop.className = "backdrop";
+    backdrop.src = info.backdrop;
+    backdrop.alt = info.title;
+    if (info.backdrop) video.append(backdrop);
+
+    backdropVignette.className = "vignette";
+    if (info.backdrop) video.append(backdropVignette);
+
+    function toggleBackdrop(toggle) {
+        backdrop.classList[toggle ? "add" : "remove"]("active");
+        backdropVignette.classList[toggle ? "add" : "remove"]("active");
+    }
     
     if (videoActive) {
         const up = document.createElement("i");
@@ -263,6 +278,8 @@ function modal(info, recommendationImages) {
 
         if (currentIframe) currentIframe.remove();
         providersSelect.innerHTML = "<option selected disabled>...</option>";
+
+        toggleBackdrop(true);
 
         async function proxiesCheck() {
             videoAlert(true, "file", "Checking proxies");
@@ -358,11 +375,13 @@ function modal(info, recommendationImages) {
         const provider = getValidProvider();
         const url = getUrl(provider);
 
+        toggleBackdrop(true);
         videoAlert(true, "sync", "Content loading");
         currentIframe.src = url;
         
         currentIframe.addEventListener("load", function () {
             videoAlert(false);
+            toggleBackdrop(false);
             currentIframe.classList.add("active");
         });
     }
@@ -1174,10 +1193,11 @@ function modal(info, recommendationImages) {
     }
 
     function cleanup() {
+        if (videoActive && info.backdrop) unloadImages([info.backdrop]);
         if (seasonsActive && info.seasons) unloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
         if (castActive && info.cast) unloadImages(info.cast.map((p) => p.image));
         if (reviewsActive && info.reviews) unloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
-        if (recommendationsActive && recommendationImages) unloadImages(recommendationImages, true);
+        if (recommendationsActive && recommendationImages) unloadImages(recommendationImages);
     }
 
     onWindowResize(checkResize);
@@ -1283,6 +1303,7 @@ function initializeWatchModalCheck() {
                     let recommendationImages = [];
                     if (info.recommendations && getWatchSection("Recommendations")) recommendationImages = getNonCachedImages(info.recommendations.map((r) => r.image));
 
+                    if (info.backdrop && getWatchSection("Video")) preloadImages([info.backdrop]);
                     if (info.cast && getWatchSection("Cast")) preloadImages(info.cast.map((p) => p.image));
                     if (info.reviews && getWatchSection("Reviews")) preloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
                     preloadImages(recommendationImages);

@@ -73,6 +73,7 @@ async function format(item, type) {
             title: item.title || item.name,
             description: item.overview || item.description,
             image: getImageUrl(item.poster_path, "poster"),
+            backdrop: item.backdrop_path ? getImageUrl(item.backdrop_path, "backdrop") : null,
             date: dateString ? date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : null,
             language: item.spoken_languages?.find((l) => l?.iso_639_1 === item.original_language)?.english_name,
             rating: (Math.round(item.vote_average) / 2).toString(),
