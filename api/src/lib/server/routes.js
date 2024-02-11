@@ -1,6 +1,6 @@
 import { onRootRequest, onRequest } from "./request.js";
 
-export function applyRoutes(server) {
+export default function (server) {
     server.get("/api", onRootRequest);
 
     server.get("/api/:provider/:id/:imdbId?", async function (...args) {

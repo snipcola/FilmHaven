@@ -11,8 +11,7 @@
     "build": "npm run --workspace=site build",
     "proxy": "npm run --workspace=api start",
     "dev": "concurrently \"npm run --workspace=api dev\" \"npm run --workspace=site dev\"",
-    "deploy": "git push origin main:deploy",
-    "deploy-vercel": "vercel --prod"
+    "deploy": "git push origin main:deploy"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

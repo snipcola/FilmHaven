@@ -1,5 +1,5 @@
-import { initializeEnvironmentVariables } from "./src/other/env.js";
-import { initializeServer } from "./src/server.js";
+import { initializeEnvironmentVariables } from "./lib/other/env.js";
+import { initializeServer } from "./lib/server.js";
 
 initializeEnvironmentVariables();
 const { success, address, error } = await initializeServer();

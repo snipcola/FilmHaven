@@ -139,13 +139,12 @@ export const api = {
 };
 
 export const proxy = {
-    checkTimeout: 2500,
+    checkTimeout: 4000,
     validCheckTimeout: 5000
 };
 
 export const proxies = [
-    "/api",
-    "https://fh-site.vercel.app/api"
+    "https://fh.snipcola.com/api"
 ];
 
 export const store = {
