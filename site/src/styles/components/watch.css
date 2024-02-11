@@ -3,7 +3,7 @@
 }
 
 .watch .video {
-    background-color: rgb(0, 0, 0);
+    background-color: var(--dark);
     width: calc(100dvw - 4px);
 
     height: 100dvh;

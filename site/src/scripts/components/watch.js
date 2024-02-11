@@ -318,8 +318,6 @@ function modal(info, recommendationImages) {
         }
 
         if (!proxiesChecked) await proxiesCheck();
-
-        // await new Promise();
         
         if (validProxy) await providersCheck(validProxy);
         else validProviders = providers;
