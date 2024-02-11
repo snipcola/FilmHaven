@@ -144,62 +144,9 @@ export const proxy = {
 };
 
 export const proxies = [
-    {
-        base: "/proxy",
-        url: function (path) {
-            return `/proxy?url=${path}`;
-        }
-    },
-    {
-        base: "https://fh-site.vercel.app/proxy",
-        url: function (path) {
-            return `https://fh-site.vercel.app/proxy?url=${path}`;
-        }
-    }
+    "/api",
+    "https://fh-site.vercel.app/api"
 ];
-
-export const providers = {
-    "vidsrc.to": {
-        movieUrl: function ({ id }) {
-            return `https://vidsrc.to/embed/movie/${id}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://vidsrc.to/embed/tv/${id}/${season}/${episode}`;
-        }
-    },
-    "vidsrc.me": {
-        movieUrl: function ({ id }) {
-            return `https://vidsrc.me/embed/movie?tmdb=${id}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
-        }
-    },
-    "flixon.click": {
-        movieUrl: function ({ imdbId }) {
-            return `https://flixon.click/${imdbId}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://flixon.click/${id}-${season}-${episode}`;
-        } 
-    },
-    "2embed.me": {
-        movieUrl: function ({ imdbId }) {
-            return `https://2embed.me/player/movie/${imdbId}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://2embed.me/player/tv/${id}/S${season}/E${episode}`;
-        } 
-    },
-    "databasegdriveplayer.xyz": {
-        movieUrl: function ({ id }) {
-            return `https://databasegdriveplayer.xyz/player.php?tmdb=${id}`;
-        },
-        showUrl: function ({ id, season, episode }) {
-            return `https://databasegdriveplayer.xyz/player.php?type=series&tmdb=${id}&season=${season}&episode=${episode}`;
-        } 
-    }
-};
 
 export const store = {
     names: {

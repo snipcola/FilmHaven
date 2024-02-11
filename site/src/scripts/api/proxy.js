@@ -1,23 +1,27 @@
 export async function isValidProxy(proxy) {
-    let response;
-    let json;
+    try {
+        const response = await fetch(proxy);
+        const json = await response.json();
 
-    try { response = await fetch(proxy.base) }
-    catch { return false };
-    
-    try { json = await response.json() }
-    catch { return false };
-
-    return json?.success !== null && json?.message !== null;
+        return json.success
+            ? json.providers
+            : false;
+    } catch {
+        return false;
+    }
 }
 
-export async function isValidUrl(proxy, url) {
-    let response;
+export async function isValidUrl(proxy, provider, info, season, episode) {        
+    try {
+        const response = (info.type === "movie")
+            ? await fetch(`${proxy}/${provider}/${info.id}/${info.imdbId}`)
+            : await fetch(`${proxy}/${provider}/${info.id}/${season}/${episode}/${info.imdbId}`);
+        const json = await response.json();
 
-    try { response = await fetch(proxy.url(url)) }
-    catch {};
-
-    return response
-        ? response.status === 200
-        : true;
+        return json.success
+            ? json.url
+            : false;
+    } catch {
+        return false;
+    }
 }

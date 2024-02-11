@@ -2,13 +2,12 @@ import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
 import { getDetails } from "../api/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress, promiseTimeout, onSwipe } from "../functions.js";
-import { config, providers, proxies, proxy as proxyConfig } from "../config.js";
+import { config, proxies, proxy as proxyConfig } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js"; 
 import { addContinueWatching } from "../store/continue.js";
 import { getWatchSection } from "../store/watch-sections.js";
-import { getThemeAbsolute } from "../store/theme.js";
 import { initializeArea } from "./area.js";
 import { isValidProxy, isValidUrl } from "../api/proxy.js";
 import { toggleDim } from "./dim.js";
@@ -227,29 +226,23 @@ function modal(info, recommendationImages) {
     let disabled = false;
     let seasonsDisabled = false;
 
-    let validProviders = {};
+    let providers = [];
+    let validProviders = [];
     let forceProvider;
 
     let validProxy = null;
     let proxiesChecked = false;
 
-    function getUrl(provider) {
-        const theme = getThemeAbsolute();
-
-        return info.type === "movie"
-            ? provider.movieUrl({ id: info.id, imdbId: info.imdbId, theme })
-            : provider.showUrl({ id: info.id, season: seasonNumber, episode: episodeNumber, theme });
-    }
-
     function getValidProvider() {
-        const provider = validProviders[getProvider()];
-        if (!provider) forceProvider = Object.values(validProviders)[0];
-        return forceProvider || provider;
+        const currentProvider = getProvider();
+        const provider = validProviders.find((p) => p.provider === currentProvider);
+
+        if (!provider) forceProvider = validProviders[0]?.provider;
+        return forceProvider || provider?.provider;
     }
 
-    function getValidProviderKey() {
-        const provider = getValidProvider();
-        return Object.keys(validProviders)[Object.values(validProviders).indexOf(provider)];
+    function getUrl(provider) {
+        return validProviders.find((p) => p.provider === provider)?.url;
     }
 
     function videoAlert(toggle, icon, text) {
@@ -259,7 +252,7 @@ function modal(info, recommendationImages) {
     }
 
     async function checkProviders() {
-        validProviders = {};
+        validProviders = [];
         forceProvider = null;
 
         disabled = true;
@@ -276,19 +269,29 @@ function modal(info, recommendationImages) {
 
             const promises = Object.values(proxies).map(function (proxy) {
                 return new Promise(async function (res, rej) {
-                    if (await isValidProxy(proxy)) res(proxy);
+                    const providers = await isValidProxy(proxy);
+
+                    if (providers) res({ proxy, providers });
                     else rej(); 
                 });
             });
 
             const response = await Promise.any([...promises, promiseTimeout(proxyConfig.checkTimeout)]);
-            if (response) validProxy = response;
+
+            if (response) {
+                providers = response.providers;
+                validProxy = response.proxy;
+
+                if (getProvider() === null && providers[0]) {
+                    setProvider(providers[0]);
+                }
+            }
 
             proxiesChecked = true;
         }
 
         async function providersCheck(proxy) {
-            const total = Object.keys(providers).length;
+            const total = providers.length;
             let checked = 0;
 
             function updateAlert() {
@@ -297,18 +300,20 @@ function modal(info, recommendationImages) {
 
             updateAlert();
     
-            const promises = Object.entries(providers).map(async function ([key, value]) {
-                const url = getUrl(value);
-                const valid = await Promise.any([isValidUrl(proxy, url), promiseTimeout(proxyConfig.validCheckTimeout)]);
+            const promises = providers.map(async function (provider) {
+                const url = await Promise.any([
+                    isValidUrl(proxy, provider, info, seasonNumber, episodeNumber),
+                    promiseTimeout(proxyConfig.validCheckTimeout)
+                ]);
     
-                if (valid) validProviders[key] = value;
+                if (url) validProviders.push({ provider, url });
                 checked++;
     
                 updateAlert();
             });
     
             await Promise.all(promises);
-            validProviders = Object.fromEntries(Object.entries(validProviders).sort(([a], [b]) => Object.keys(providers).indexOf(a) - Object.keys(providers).indexOf(b)));
+            validProviders = validProviders.sort(({ provider: a }, { provider: b }) => providers.indexOf(a) - providers.indexOf(b));
         }
 
         if (!proxiesChecked) await proxiesCheck();
@@ -318,8 +323,8 @@ function modal(info, recommendationImages) {
 
         providersSelect.innerHTML = "";
 
-        if (Object.keys(validProviders).length > 0) {
-            Object.keys(validProviders).forEach(function (providerName) {
+        if (validProviders.length > 0 && validProxy) {
+            validProviders.forEach(function ({ provider: providerName }) {
                 const provider = document.createElement("option");
         
                 provider.value = providerName.toLowerCase();
@@ -328,13 +333,14 @@ function modal(info, recommendationImages) {
                 providersSelect.append(provider);
             });
 
-            providersSelect.value = getValidProviderKey();
+            providersSelect.value = getValidProvider();
             providersElem.classList.remove("disabled");
 
             disabled = false;
             playVideo();
         } else {
-            videoAlert(true, "censor", "No providers available");
+            if (validProxy) videoAlert(true, "censor", "No providers available");
+            else videoAlert(true, "censor", "No proxies available");
         }
 
         seasonsDisabled = false;
@@ -400,7 +406,7 @@ function modal(info, recommendationImages) {
         function nextProvider() {
             if (disabled) return;
 
-            const provider = getValidProviderKey();
+            const provider = getValidProvider();
             const providers = Array.from(providersSelect.children);
 
             const providerElem = providers.find((p) => p.value === provider);
@@ -416,7 +422,7 @@ function modal(info, recommendationImages) {
         function previousProvider() {
             if (disabled) return;
 
-            const provider = getValidProviderKey();
+            const provider = getValidProvider();
             const providers = Array.from(providersSelect.children);
 
             const providerElem = providers.find((p) => p.value === provider);

@@ -4,8 +4,8 @@
     "buildCommand": "npm run build",
     "routes": [
         {
-            "src": "/proxy",
-            "dest": "/api/proxy"
+            "src": "/api",
+            "dest": "/api/index"
         }
     ],
     "env": {

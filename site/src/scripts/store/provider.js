@@ -1,4 +1,4 @@
-import { store, providers } from "../config.js";
+import { store } from "../config.js";
 
 function get() {
     const provider = localStorage.getItem(store.names.provider);
@@ -15,9 +15,8 @@ export function getProvider() {
     if (provider) {
         return provider;
     } else {
-        const defaultProvider = Object.keys(providers)[0];
-        setProvider(defaultProvider);
-        return defaultProvider;
+        setProvider(null);
+        return null;
     }
 }
 
