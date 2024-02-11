@@ -9,6 +9,8 @@
         }
     ],
     "env": {
-        "ORIGIN": "*"
+        "ORIGIN": "*",
+        "CACHE_TIMEOUT": "300",
+        "TIMEOUT": "4"
     }
 }
