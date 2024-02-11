@@ -17,7 +17,11 @@ export function isDeletable(image) {
 }
 
 export async function preloadImages(images, save) {
-    if (save) cachedImages.push(...images);
+    if (save) {
+        const uniqueImages = new Set([...cachedImages, ...images]);
+        cachedImages = [...uniqueImages];
+    }
+
     let count = 0;
 
     async function loadImage(url) {
