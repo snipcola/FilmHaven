@@ -295,7 +295,8 @@ function modal(info, recommendationImages) {
             let checked = 0;
 
             function updateAlert() {
-                videoAlert(true, "tv", `Checking providers <b>(${checked}/${total})</b>`);
+                const percentage = parseInt((checked / total) * 100);
+                videoAlert(true, "tv", `Checking providers <b>(${percentage}%)</b>`);
             }
 
             updateAlert();
@@ -317,6 +318,8 @@ function modal(info, recommendationImages) {
         }
 
         if (!proxiesChecked) await proxiesCheck();
+
+        // await new Promise();
         
         if (validProxy) await providersCheck(validProxy);
         else validProviders = providers;
