@@ -1,0 +1,16 @@
+{
+    "outputDirectory": "site/public/dist",
+    "installCommand": "npm install",
+    "buildCommand": "npm run build",
+    "routes": [
+        {
+            "src": "/api(.*)",
+            "dest": "/api/src/serverless"
+        }
+    ],
+    "env": {
+        "ORIGIN": "*",
+        "CACHE_TIMEOUT": "300",
+        "TIMEOUT": "4"
+    }
+}

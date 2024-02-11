@@ -11,5 +11,10 @@ site/public/dist
 .LSOverride
 
 # Other
-.vercel
 fiveserver.config.js
+
+# Vercel
+.env
+.git
+.github
+README.md

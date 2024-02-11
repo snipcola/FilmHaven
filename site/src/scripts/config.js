@@ -139,12 +139,13 @@ export const api = {
 };
 
 export const proxy = {
-    checkTimeout: 4000,
-    validCheckTimeout: 5000
+    checkTimeout: 2500,
+    validCheckTimeout: 4000
 };
 
 export const proxies = [
-    "https://fh.snipcola.com/api"
+    "/api",
+    "https://film-haven.vercel.app/api"
 ];
 
 export const store = {

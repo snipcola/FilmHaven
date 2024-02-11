@@ -5,6 +5,10 @@ A simple, customizable, and lightweight frontend to view and interact with movie
     <img src="./assets/showcase.png" width="600"/>
 </div>
 
+**Accessible here:**
+- <a target="_blank" href="https://fh.snipcola.com">Main</a>
+- <a target="_blank" href="https://film-haven.vercel.app">Mirror</a>
+
 ## ⌨️ - Shortcuts
 - `/` - Focuses on search bar. *Navigates out out of any page or modal open.*
 - `[` - Plays previous episode, *if exists*. *Only works on series modal.*

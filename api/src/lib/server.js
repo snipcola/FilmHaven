@@ -16,7 +16,7 @@ function runServer(server, host, port) {
     });
 }
 
-export function initializeServer() {
+export function initializeServer(serverless) {
     return new Promise(async function (res) {
         const server = fastify();
 
@@ -24,7 +24,14 @@ export function initializeServer() {
         await applyCaching(server, process.env.CACHE_TIMEOUT);
         applyRoutes(server);
 
-        const response = await runServer(server, process.env.HOST, process.env.PORT);
-        res(response);
+        if (serverless) {
+            res(async function (req, res) {
+                await server.ready();
+                server.server.emit("request", req, res);
+            });
+        } else {
+            const response = await runServer(server, process.env.HOST, process.env.PORT);
+            res(response);
+        }
     });
 }
