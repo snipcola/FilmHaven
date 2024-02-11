@@ -38,14 +38,14 @@ html {
 
 @media (prefers-color-scheme: light) {
     html {
-        --background: #f7f3f3;
+        --background: #e6e2e2;
         --primary: #ee2020;
-        --light: #d8d3d3;
-        --light-rgb: 247, 243, 243;
-        --lighter: #c0bdbd;
-        --lightest: #9c9a9a;
-        --dark: #ece6e6;
-        --text: #080808;
+        --light: #ccc9c9;
+        --light-rgb: 204, 201, 201;
+        --lighter: #b3b2b2;
+        --lightest: #8f8c8c;
+        --dark: #ddd8d8;
+        --text: #2b2929;
     }
 }
 
@@ -61,12 +61,12 @@ html.dark {
 }
 
 html.light {
-    --background: #f7f3f3;
+    --background: #e6e2e2;
     --primary: #ee2020;
-    --light: #d8d3d3;
-    --light-rgb: 247, 243, 243;
-    --lighter: #c0bdbd;
-    --lightest: #9c9a9a;
-    --dark: #ece6e6;
-    --text: #080808;
+    --light: #ccc9c9;
+    --light-rgb: 204, 201, 201;
+    --lighter: #b3b2b2;
+    --lightest: #8f8c8c;
+    --dark: #ddd8d8;
+    --text: #2b2929;
 }
