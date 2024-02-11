@@ -43,17 +43,6 @@ export default {
                         return `https://${this.base}/player/tv/${params.id}/S${params.season}/E${params.episode}`;
                 }
             }
-        },
-        {
-            base: "databasegdriveplayer.xyz",
-            url: function (type, params) {
-                switch (type) {
-                    case "movie":
-                        return `https://${this.base}/player.php?tmdb=${params.id}`;
-                    case "tv":
-                        return `https://${this.base}/player.php?type=series&tmdb=${params.id}&season=${params.season}&episode=${params.episode}`;
-                }
-            }
         }
     ],
     blacklist: {
@@ -67,8 +56,7 @@ export default {
             "media is unavailable", // vidsrc.xyz
             "onionplay streaming mirrors", // flixon.click
             "no movie found", // 2embed.me
-            "no tv show found", // 2embed.me
-            `,"file":"","kind"` // databasegdriveplayer.xyz
+            "no tv show found" // 2embed.me
         ]
     }
 };

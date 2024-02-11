@@ -1,5 +1,5 @@
 import cors from "@fastify/cors";
 
-export async function applyCors(server, origin) {
+export default async function (server, origin) {
     await server.register(cors, { origin: origin || "*" });
 }

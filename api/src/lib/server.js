@@ -1,7 +1,7 @@
 import fastify from "fastify";
 
-import { applyCors } from "./server/cors.js";
-import { applyCaching } from "./server/cache.js";
+import applyCors from "./server/cors.js";
+import applyCaching from "./server/cache.js";
 import applyRoutes from "./server/routes.js";
 
 function runServer(server, host, port) {
