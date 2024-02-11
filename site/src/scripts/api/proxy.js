@@ -1,6 +1,6 @@
 export async function isValidProxy(proxy) {
     try {
-        const response = await fetch(proxy, { method: "POST" });
+        const response = await fetch(proxy);
         const json = await response.json();
 
         return json.success
@@ -17,7 +17,7 @@ export async function isValidUrl(proxy, provider, info, season, episode) {
             ? `${proxy}/${provider}/${info.id}/${info.imdbId}`
             : `${proxy}/${provider}/${info.id}/${season}/${episode}/${info.imdbId}`;
 
-        const response = await fetch(url, { method: "POST" });
+        const response = await fetch(url);
         const json = await response.json();
 
         return json.success
