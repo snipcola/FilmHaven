@@ -4,10 +4,11 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-      "build": "webpack --config ./build/config.production.js",
+      "build": "webpack --config ./build/config.production.js && rimraf --glob ./dist/*.css ./dist/*.js ./dist/*.json",
       "dev": "webpack --config ./build/config.development.js"
     },
     "devDependencies": {
+      "rimraf": "^5.0.5",
       "clean-webpack-plugin": "^4.0.0",
       "css-loader": "^6.8.1",
       "css-minimizer-webpack-plugin": "^5.0.1",

@@ -1,5 +1,5 @@
 import config from "./config.js";
-import fetch from "node-fetch";
+import fetch from "ky";
 
 function promiseWithTimeout(promise, timeout) {
     return Promise.race([
@@ -12,7 +12,7 @@ function promiseWithTimeout(promise, timeout) {
 
 async function get(url) {
     try {
-        const response = await promiseWithTimeout(fetch(url), process.env.TIMEOUT);
+        const response = await promiseWithTimeout(fetch.get(url), process.env.TIMEOUT);
         const text = await response.text();
 
         return {

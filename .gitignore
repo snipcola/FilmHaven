@@ -3,7 +3,7 @@ node_modules
 package-lock.json
 
 # Webpack
-site/public/dist
+site/dist
 
 # macOS
 .DS_Store

@@ -11,11 +11,11 @@ jobs:
 
     env:
       SITE_DIRECTORY: /sites/fh.snipcola.com
-      SITE_OUTPUT: ./site/public/dist/index.html
+      SITE_OUTPUT: ./site/dist
 
-      PROXY_DIRECTORY: /node/fh-proxy
-      PROXY_OUTPUT: ./api
-      PROXY_CONFIG: /ecosystem.config.cjs
+      API_DIRECTORY: /node/filmhaven-api
+      API_OUTPUT: ./api
+      API_CONFIG: /ecosystem.config.cjs
     
     steps:
     - name: Checkout
@@ -31,16 +31,18 @@ jobs:
       run: |
         mkdir -p "$SITE_DIRECTORY"
         rm -rf "$SITE_DIRECTORY"/*
-        mv "$SITE_OUTPUT" "$SITE_DIRECTORY"
+        mv "$SITE_OUTPUT"/.* "$SITE_DIRECTORY" || true
+        mv "$SITE_OUTPUT"/* "$SITE_DIRECTORY"
         
-    - name: Deploying Proxy
+    - name: Deploying API
       run: |
-        ssh node pm2 stop "$PROXY_DIRECTORY$PROXY_CONFIG" || true
-        ssh node pm2 delete "$PROXY_DIRECTORY$PROXY_CONFIG" || true
+        ssh node pm2 stop "$API_DIRECTORY$API_CONFIG" || true
+        ssh node pm2 delete "$API_DIRECTORY$API_CONFIG" || true
 
-        mkdir -p "$PROXY_DIRECTORY"
-        rm -rf "$PROXY_DIRECTORY"/*
-        mv ./node_modules "$PROXY_OUTPUT"/{.*,*} "$PROXY_DIRECTORY"
+        mkdir -p "$API_DIRECTORY"
+        rm -rf "$API_DIRECTORY"/*
+        mv "$API_OUTPUT"/.* "$API_DIRECTORY" || true
+        mv ./node_modules "$API_OUTPUT"/* "$API_DIRECTORY"
 
-        ssh node pm2 start "$PROXY_DIRECTORY$PROXY_CONFIG"
+        ssh node pm2 start "$API_DIRECTORY$API_CONFIG"
         ssh node pm2 save --force

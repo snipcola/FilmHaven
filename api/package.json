@@ -1,5 +1,5 @@
 {
-    "name": "filmhaven-proxy",
+    "name": "filmhaven-api",
     "author": "Snipcola",
     "license": "MIT",
     "private": true,
@@ -14,7 +14,7 @@
         "fastify": "^3.29.0",
         "@fastify/cors": "^7.0.0",
         "fastify-response-caching": "^0.0.4",
-        "node-fetch": "^3.3.2"
+        "ky": "^1.2.0"
     },
     "devDependencies": {
         "nodemon": "^3.0.3"

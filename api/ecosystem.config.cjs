@@ -1,7 +1,7 @@
 module.exports = {
     "apps": [
         {
-            "name": "fh-proxy",
+            "name": "filmhaven-api",
             "cwd": __dirname,
             "script": "node ."
         }
