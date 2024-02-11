@@ -543,6 +543,8 @@ function modal(info, recommendationImages) {
         episodeNumber = eNumber;
 
         if (episode) setEpisode(episode);
+        else checkProviders();
+        
         playSeries();
 
         for (const callback of playEpisodeCallbacks) {
