@@ -32,17 +32,6 @@ export default {
                         return `https://${this.base}/${params.id}-${params.season}-${params.episode}`;
                 }
             }
-        },
-        {
-            base: "2embed.me",
-            url: function (type, params) {
-                switch (type) {
-                    case "movie":
-                        return `https://${this.base}/player/movie/${params.imdbId}`;
-                    case "tv":
-                        return `https://${this.base}/player/tv/${params.id}/S${params.season}/E${params.episode}`;
-                }
-            }
         }
     ],
     blacklist: {
@@ -53,10 +42,12 @@ export default {
         text: [
             "not found", // Generic
             "no sources", // Generic
-            "media is unavailable", // vidsrc.xyz
-            "onionplay streaming mirrors", // flixon.click
-            "no movie found", // 2embed.me
-            "no tv show found" // 2embed.me
+            "no movie found", // Generic
+            "no tv show found", // Generic
+            "no episode found", // Generic
+            "no show found", // Generic
+            "media is unavailable", // vidsrc.me
+            "onionplay streaming mirrors" // flixon.click
         ]
     }
 };
