@@ -40,12 +40,12 @@ export default {
             500 // Internal Server Error
         ],
         text: [
-            "not found", // Generic
-            "no sources", // Generic
-            "no movie found", // Generic
-            "no tv show found", // Generic
-            "no episode found", // Generic
-            "no show found", // Generic
+            "not found",
+            "no sources",
+            "no movie found",
+            "no tv show found",
+            "no episode found",
+            "no show found",
             "media is unavailable", // vidsrc.me
             "onionplay streaming mirrors" // flixon.click
         ]

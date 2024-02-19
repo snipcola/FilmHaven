@@ -120,7 +120,6 @@ export function initializeSettings() {
                     option.innerHTML = item.label;
     
                     if (item.placeholder) {
-                        option.setAttribute("disabled", true);
                         option.setAttribute("selected", true);
                     }
     
