@@ -4,7 +4,7 @@ import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../api/search.js";
 import { watchContent } from "./watch.js";
 import { hideModal } from "./modal.js";
-import { setQuery } from "../query.js";
+import { setQuery, getQuery, removeQuery } from "../query.js";
 
 function initializeSearch(area, placeholder) {
     let results = [];
@@ -328,6 +328,20 @@ function initializeSearch(area, placeholder) {
 
         reset();
         cleanup();
+        queryCheck();
+    }
+
+    function forceSearch(query) {
+        input.value = query;
+        clearCheck();
+        onInput();
+    }
+
+    function queryCheck() {
+        const query = input.value;
+
+        if (query.length > 0) setQuery(config.query.search, query);
+        else removeQuery(config.query.search);
     }
 
     onWindowResize(checkResize);
@@ -340,9 +354,13 @@ function initializeSearch(area, placeholder) {
         else setPrevious();
     });
 
+    const searchQuery = getQuery(config.query.search);
+    if (searchQuery) forceSearch(searchQuery);
+
     clear.addEventListener("click", onClear);
     input.addEventListener("input", clearCheck);
     input.addEventListener("input", debouncedOnInput);
+    input.addEventListener("input", queryCheck);
     input.addEventListener("focusin", onFocus);
 
     area.append(label);

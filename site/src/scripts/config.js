@@ -113,7 +113,8 @@ export const config = {
     },
     query: {
         page: "p",
-        modal: "m"
+        modal: "m",
+        search: "s"
     },
     maxDescriptionLength: 230,
     maxReviewContentLength: 230,
