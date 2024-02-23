@@ -4,7 +4,7 @@ import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../api/search.js";
 import { watchContent } from "./watch.js";
 import { hideModal } from "./modal.js";
-import { setQuery, getQuery, removeQuery } from "../query.js";
+import { setQuery, getQuery, removeQuery, onQueryChange } from "../query.js";
 
 function initializeSearch(area, placeholder) {
     let results = [];
@@ -345,6 +345,7 @@ function initializeSearch(area, placeholder) {
     }
 
     onWindowResize(checkResize);
+    onQueryChange(queryCheck);
 
     previous.addEventListener("click", setPrevious);
     next.addEventListener("click", setNext);
