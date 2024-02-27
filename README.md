@@ -22,7 +22,7 @@ A simple, customizable, and lightweight frontend to view and interact with movie
 ## 💻 - Compilation
 1. Ensure you have `node` and `npm` installed.
 2. Run `npm install`.
-3. Run `npm build` or `npm dev` depending on what you need.
+3. Run `npm run build` or `npm run dev` depending on what you need.
 4. Access the site at `site/dist/index.html`.
 
 ## ⚠️ - Disclaimer
