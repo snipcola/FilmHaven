@@ -1265,23 +1265,11 @@ function modal(info, recommendationImages) {
     if ((left.childElementCount + right.childElementCount) !== 0) watch.append(details);
     else watch.classList.add("only-video");
 
-    setModal(info.title, null, watch, "times", true, info.type);
+    setModal(info.title, null, watch, "times", info.type);
     checkCurrentlyPlaying();
     showModal(cleanup);
 
     if (videoActive) {
-        function checkVideoResize() {
-            if (!elementExists(watch)) return removeWindowResize(checkResize);
-
-            const isFirefox = navigator.userAgent?.toLowerCase().includes("firefox");
-            video.style.marginLeft = isFirefox
-                ? `calc(-50dvw + ${video.parentElement?.clientWidth}px / 2 - 3px)`
-                : `calc(-50dvw + ${video.parentElement?.clientWidth}px / 2)`;
-        }
-        
-        onWindowResize(checkVideoResize);
-        checkVideoResize();
-
         video.scrollIntoView({ block: "center" });
     }
 }

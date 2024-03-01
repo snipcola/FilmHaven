@@ -28,8 +28,8 @@ export function changeHeaderText(label, info, titleClass) {
     headerInfo.className = info ? "info active" : "info";
 }
 
-export function setModal(label = "", info, newContent, icon = "times", fill = false, titleClass) {
-    container.className = fill ? "modal-container fill" : "modal-container";
+export function setModal(label = "", info, newContent, icon = "times", titleClass) {
+    container.className = "modal-container";
     headerText.innerText = label;
     headerText.className = titleClass ? `text ${titleClass}` : "text";
     headerInfo.innerText = info || "";
