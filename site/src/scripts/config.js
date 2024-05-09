@@ -8,6 +8,9 @@ import { resetContinueWatching } from "./store/continue.js";
 import { resetLastPlayed } from "./store/last-played.js";
 import { getLanguages } from "./api/languages.js";
 import { getLanguage, setLanguage } from "./store/language.js";
+import { isLocal } from "./functions.js";
+
+const local = isLocal();
 
 export const config = {
     author: "Snipcola",
@@ -145,9 +148,17 @@ export const proxy = {
 };
 
 export const proxies = [
-    "/api",
-    "https://film-haven.vercel.app/api"
-];
+    {
+        url: "/api",
+        local: false
+    },
+    {
+        url: "https://film-haven.vercel.app/api",
+        local: true
+    }
+]
+    .filter((proxy) => local ? proxy.local : true)
+    .map((proxy) => proxy.url);
 
 export const store = {
     names: {

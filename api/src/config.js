@@ -2,6 +2,7 @@ export default {
     providers: [
         {
             base: "vidsrc.to",
+            local: true,
             url: function (type, params) {
                 switch (type) {
                     case "movie":
@@ -13,6 +14,7 @@ export default {
         },
         {
             base: "vidsrc.pro",
+            local: false,
             url: function (type, params) {
                 switch (type) {
                     case "movie":
@@ -24,6 +26,7 @@ export default {
         },
         {
             base: "vidsrc.me",
+            local: true,
             url: function (type, params) {
                 switch (type) {
                     case "movie":
@@ -35,6 +38,7 @@ export default {
         },
         {
             base: "flixon.click",
+            local: true,
             url: function (type, params) {
                 switch (type) {
                     case "movie":

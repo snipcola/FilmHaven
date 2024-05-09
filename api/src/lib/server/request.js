@@ -1,4 +1,4 @@
-import config from "../other/config.js";
+import config from "../../config.js";
 import { check } from "../other/check.js";
 
 export function onRootRequest() {

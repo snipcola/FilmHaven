@@ -1,10 +1,16 @@
+import { isLocal } from "../functions.js";
+
+const local = isLocal();
+
 export async function isValidProxy(proxy) {
     try {
         const response = await fetch(proxy);
         const json = await response.json();
 
         return json.success
-            ? json.providers
+            ? json.providers.filter((provider) => typeof provider.local === "boolean"
+                ? (local ? provider.local : true)
+                : true)
             : false;
     } catch {
         return false;
