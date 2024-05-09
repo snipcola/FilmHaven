@@ -10,9 +10,10 @@ function promiseWithTimeout(promise, timeout) {
     ]);
 }
 
-async function get(url) {
+async function get(url, base) {
     try {
-        const response = await promiseWithTimeout(fetch.get(url), process.env.TIMEOUT);
+        const headers = { "Origin": `https://${base}`, "Referer": `https://${base}/` };
+        const response = await promiseWithTimeout(fetch.get(url, { headers }), process.env.TIMEOUT);
         const text = await response.text();
 
         return {
@@ -24,8 +25,8 @@ async function get(url) {
     }
 }
 
-export async function check(url) {
-    const response = await get(url);
+export async function check(url, base) {
+    const response = await get(url, base);
     
     switch (response) {
         case null:

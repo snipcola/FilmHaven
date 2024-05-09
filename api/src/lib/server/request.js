@@ -25,7 +25,7 @@ export async function onRequest(type, req) {
     const url = provider.url(type, { id, imdbId, season, episode });
 
     // Return
-    return await check(url)
+    return await check(url, provider.base)
         ? { success: true, url }
         : { success: false };
 }
