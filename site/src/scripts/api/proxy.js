@@ -8,9 +8,9 @@ export async function isValidProxy(proxy) {
         const json = await response.json();
 
         return json.success
-            ? json.providers.filter((provider) => typeof provider.local === "boolean"
-                ? (local ? provider.local : true)
-                : true)
+            ? json.providers
+                .filter((provider) => local ? provider.local : true)
+                .map((provider) => provider.base)
             : false;
     } catch {
         return false;

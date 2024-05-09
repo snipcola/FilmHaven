@@ -2,7 +2,7 @@ import config from "../../config.js";
 import { check } from "../other/check.js";
 
 export function onRootRequest() {
-    return { success: true, providers: config.providers.map((p) => p.base) };
+    return { success: true, providers: config.providers.map(({ base, local }) => ({ base, local })) };
 }
 
 export async function onRequest(type, req) {
