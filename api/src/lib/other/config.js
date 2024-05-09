@@ -12,6 +12,17 @@ export default {
             }
         },
         {
+            base: "vidsrc.pro",
+            url: function (type, params) {
+                switch (type) {
+                    case "movie":
+                        return `https://${this.base}/embed/movie/${params.id}`;
+                    case "tv":
+                        return `https://${this.base}/embed/tv/${params.id}/${params.season}/${params.episode}`;
+                }
+            }
+        },
+        {
             base: "vidsrc.me",
             url: function (type, params) {
                 switch (type) {
