@@ -173,7 +173,8 @@ export const store = {
         pages: "fh-pages",
         sections: "fh-sections",
         watchSections: "fh-watch-sections",
-        continue: "fh-continue"
+        continue: "fh-continue",
+        query: "fh-query"
     }
 };
 

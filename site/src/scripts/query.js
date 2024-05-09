@@ -1,3 +1,5 @@
+import { getQueryStore, setQueryStore } from "./store/query.js";
+
 export function setQuery(key, value) {
     if (key === null || key === undefined) {
         return;
@@ -49,3 +51,21 @@ function checkChange() {
 }
 
 setInterval(checkChange, 50);
+
+export function initializeQuery() {
+    const query = getQueryStore();
+    const search = window.location.search;
+    
+    if (query && query !== search && search === "") {
+        window.location.search = query;
+        return;
+    }
+
+    function queryChanged() {
+        const search = window.location.search;
+        if (search) setQueryStore(search);
+    }
+
+    onQueryChange(queryChanged);
+    queryChanged();
+}
