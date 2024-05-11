@@ -9,11 +9,12 @@
 
     background-color: var(--light);
     padding: calc(var(--small-padding) * 1.5) var(--large-padding);
-    
+
     border-radius: var(--border-radius);
     border: var(--small-border) solid var(--lighter);
 
     user-select: none;
+    -webkit-user-select: none;
     gap: var(--small-gap);
 
     align-items: center;

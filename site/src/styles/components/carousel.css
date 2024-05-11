@@ -1,7 +1,7 @@
 .carousel {
     position: relative;
     display: flex;
-    
+
     align-items: center;
     justify-content: center;
 
@@ -14,6 +14,7 @@
 
 .carousel .image {
     user-select: none;
+    -webkit-user-select: none;
     pointer-events: none;
 
     width: 100%;
@@ -25,7 +26,9 @@
     object-fit: cover;
 }
 
-.carousel .image[src=""], .carousel .image[src="null"], .carousel .image:not([src]) {
+.carousel .image[src=""],
+.carousel .image[src="null"],
+.carousel .image:not([src]) {
     opacity: 0;
 }
 
@@ -57,11 +60,15 @@
 
     top: 0;
     left: 0;
-    
+
     width: 100%;
     height: 100%;
 
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(var(--light-rgb), 0.75) 75%);
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0),
+        rgba(var(--light-rgb), 0.75) 75%
+    );
 }
 
 .carousel .title {
@@ -83,7 +90,7 @@
 .carousel .control {
     display: flex;
     position: absolute;
-    
+
     bottom: 0.5rem;
     width: calc(100% - var(--small-padding) * 2);
 

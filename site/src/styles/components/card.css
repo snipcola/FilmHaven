@@ -1,7 +1,7 @@
 .cards {
     display: flex;
     gap: var(--small-gap);
-    
+
     justify-content: center;
 }
 
@@ -14,7 +14,7 @@
     position: relative;
 
     flex-direction: column;
-    
+
     gap: calc(var(--small-padding) / 2);
     justify-content: space-between;
 
@@ -29,6 +29,7 @@
 
     width: calc(25% - var(--small-padding));
     user-select: none;
+    -webkit-user-select: none;
 
     border: var(--small-border) solid var(--lighter);
     overflow: hidden;
@@ -55,7 +56,7 @@
 .card .play {
     display: flex;
     transition: var(--transition-speed) opacity;
-    
+
     align-items: center;
     justify-content: center;
 
@@ -69,7 +70,7 @@
     height: 100%;
 
     z-index: 2;
-    background-color: rgba(var(--light-rgb), .5);
+    background-color: rgba(var(--light-rgb), 0.5);
 
     opacity: 0%;
 }
@@ -86,19 +87,23 @@
     object-fit: cover;
 
     user-select: none;
+    -webkit-user-select: none;
     pointer-events: none;
-    
+
     border-radius: calc(var(--border-radius) / 2);
     margin-bottom: calc(var(--small-padding) / 2);
 
     background-color: var(--dark);
 }
 
-.card .image[src=""], .card .image[src="null"], .card .image:not([src]) {
+.card .image[src=""],
+.card .image[src="null"],
+.card .image:not([src]) {
     opacity: 0;
 }
 
-.card .season-info, .card .type-info {
+.card .season-info,
+.card .type-info {
     position: absolute;
 
     background-color: var(--lighter);
@@ -109,7 +114,7 @@
 
     top: calc(var(--small-padding) * 1.25);
     right: calc(var(--small-padding) * 1.25);
-    
+
     border-radius: calc(var(--border-radius) / 1.5);
     opacity: var(--dim-opacity);
 }
@@ -127,7 +132,9 @@
     font-size: var(--small-font);
 }
 
-.card .footer > div, .card .title, .watch .rating {
+.card .footer > div,
+.card .title,
+.watch .rating {
     display: flex;
     gap: calc(var(--small-gap) / 2);
 
@@ -153,27 +160,40 @@
     overflow-wrap: anywhere;
 }
 
-.card .footer .text, .card .footer .icon, .watch .rating .rating-text, .watch .rating .icon {
+.card .footer .text,
+.card .footer .icon,
+.watch .rating .rating-text,
+.watch .rating .icon {
     opacity: var(--dim-opacity);
 }
 
-.card .footer .stars, .watch .rating .stars {
+.card .footer .stars,
+.watch .rating .stars {
     display: flex;
     gap: calc(var(--small-gap) / 4);
 }
 
-.card .footer .star.fill, .watch .rating .star.fill {
+.card .footer .star.fill,
+.watch .rating .star.fill {
     color: var(--primary);
 }
 
-.card .footer .star.half-fill, .watch .rating .star.half-fill {
-    background: linear-gradient(to right, var(--primary) 50%, rgba(var(--text-rgb), 0.75) 50%);
+.card .footer .star.half-fill,
+.watch .rating .star.half-fill {
+    background: linear-gradient(
+        to right,
+        var(--primary) 50%,
+        rgba(var(--text-rgb), 0.75) 50%
+    );
     color: transparent;
 
     background-clip: text;
     -webkit-background-clip: text;
 }
 
-.card .footer .star.fill .icon, .watch .rating .star.fill .icon, .card .footer .star.half-fill .icon, .watch .rating .star.half-fill .icon {
+.card .footer .star.fill .icon,
+.watch .rating .star.fill .icon,
+.card .footer .star.half-fill .icon,
+.watch .rating .star.half-fill .icon {
     opacity: 100%;
 }

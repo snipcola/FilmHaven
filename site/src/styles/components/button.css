@@ -1,7 +1,7 @@
 .button {
     display: flex;
     gap: var(--small-gap);
-    
+
     align-items: center;
     justify-content: center;
 
@@ -13,6 +13,7 @@
 
     box-sizing: border-box;
     user-select: none;
+    -webkit-user-select: none;
 
     width: fit-content;
     font-size: var(--large-font);
@@ -33,7 +34,7 @@
     .button:hover {
         opacity: var(--dim-opacity);
     }
-    
+
     .button.secondary:hover {
         background-color: var(--light);
     }

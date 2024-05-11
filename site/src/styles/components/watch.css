@@ -30,7 +30,7 @@
 
     width: 100%;
     max-width: 100%;
-    
+
     height: 100dvh;
     min-height: calc(var(--max-width) / 25);
 
@@ -42,6 +42,7 @@
 
     position: relative;
     user-select: none;
+    -webkit-user-select: none;
 
     margin-left: 0;
     margin-right: 0;
@@ -71,10 +72,15 @@
     width: 100%;
     height: 100%;
 
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(var(--light-rgb), 0.4) 25%);
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0),
+        rgba(var(--light-rgb), 0.4) 25%
+    );
 }
 
-.watch .video .backdrop.active, .watch .video .vignette.active {
+.watch .video .backdrop.active,
+.watch .video .vignette.active {
     display: flex;
 }
 
@@ -164,7 +170,7 @@
 .watch .container {
     display: flex;
     flex-direction: column;
-    
+
     gap: var(--large-gap);
 }
 
@@ -210,7 +216,8 @@
     display: none;
 }
 
-.watch .details .title, .watch .details .text {
+.watch .details .title,
+.watch .details .text {
     font-size: var(--large-font);
     margin: 0;
 
@@ -225,7 +232,8 @@
     align-items: center;
 }
 
-.watch .details .title .text, .watch .details .title .icon {
+.watch .details .title .text,
+.watch .details .title .icon {
     opacity: var(--dim-opacity);
 }
 
@@ -258,7 +266,7 @@
 .watch .details .cast-cards {
     display: flex;
     gap: var(--small-gap);
-    
+
     justify-content: center;
 }
 
@@ -284,6 +292,7 @@
     justify-content: center;
 
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .watch .details .cast-cards .cast-card .text {
@@ -311,12 +320,15 @@
 
     pointer-events: none;
     user-select: none;
+    -webkit-user-select: none;
 
     border-radius: 50%;
     object-fit: cover;
 }
 
-.watch .details .cast-cards .cast-card .image[src=""], .watch .details .cast-cards .cast-card .image[src="null"], .watch .details .cast-cards .cast-card .image:not([src]) {
+.watch .details .cast-cards .cast-card .image[src=""],
+.watch .details .cast-cards .cast-card .image[src="null"],
+.watch .details .cast-cards .cast-card .image:not([src]) {
     opacity: 0;
 }
 
@@ -347,6 +359,7 @@
     overflow: hidden;
 
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .watch .details .review-title {
@@ -382,7 +395,7 @@
 
     overflow: hidden;
     border-radius: 5rem;
-    
+
     background-color: var(--light);
 }
 
@@ -391,12 +404,15 @@
     height: 1.75rem;
 
     object-fit: cover;
+    pointer-events: none;
 
     user-select: none;
-    pointer-events: none;
+    -webkit-user-select: none;
 }
 
-.watch .details .review-title .title-container .avatar .image[src=""], .watch .details .review-title .title-container .avatar .image[src="null"], .watch .details .review-title .title-container .avatar .image:not([src]) {
+.watch .details .review-title .title-container .avatar .image[src=""],
+.watch .details .review-title .title-container .avatar .image[src="null"],
+.watch .details .review-title .title-container .avatar .image:not([src]) {
     opacity: 0;
 }
 
@@ -476,7 +492,7 @@
 .watch .details .season-card .season-title {
     display: flex;
     align-items: center;
-    
+
     gap: var(--small-gap);
     font-weight: 500;
 }
@@ -532,6 +548,7 @@
 
     padding: var(--large-padding);
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .watch .details .season-card .episodes .episode.active {
@@ -584,14 +601,17 @@
 .watch .details .season-card .episodes .episode .preview .image {
     width: 8rem;
     height: 5rem;
-    
+
     object-fit: cover;
+    pointer-events: none;
 
     user-select: none;
-    pointer-events: none;
+    -webkit-user-select: none;
 }
 
-.watch .details .season-card .episodes .episode .preview .image[src=""], .watch .details .season-card .episodes .episode .preview .image[src="null"], .watch .details .season-card .episodes .episode .preview .image:not([src]) {
+.watch .details .season-card .episodes .episode .preview .image[src=""],
+.watch .details .season-card .episodes .episode .preview .image[src="null"],
+.watch .details .season-card .episodes .episode .preview .image:not([src]) {
     opacity: 0;
 }
 
@@ -647,7 +667,9 @@
     overflow-wrap: normal !important;
 }
 
-.watch .details .season-card .episodes .episode .description, .watch .details .season-card .episodes .episode .episode-title .time .text, .watch .details .season-card .episodes .episode .episode-title .time .icon {
+.watch .details .season-card .episodes .episode .description,
+.watch .details .season-card .episodes .episode .episode-title .time .text,
+.watch .details .season-card .episodes .episode .episode-title .time .icon {
     opacity: var(--dim-opacity);
 }
 
@@ -689,6 +711,7 @@
 
     transition: var(--transition-speed) background-color;
     user-select: none;
+    -webkit-user-select: none;
 
     justify-content: center;
     flex-wrap: wrap;
@@ -701,7 +724,7 @@
 .provider-cards > div {
     border-radius: calc(var(--border-radius) / 2);
     padding: calc(var(--large-padding) / 1.5) var(--large-padding);
-    
+
     box-sizing: border-box;
     border: var(--small-border) solid transparent;
 
@@ -733,7 +756,11 @@
         background-color: var(--lighter);
     }
 
-    .watch .details:not(.no-video) .season-card .episodes .episode:not(.active):hover {
+    .watch
+        .details:not(.no-video)
+        .season-card
+        .episodes
+        .episode:not(.active):hover {
         opacity: var(--dim-opacity);
     }
 

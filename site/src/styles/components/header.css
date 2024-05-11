@@ -12,7 +12,7 @@
 .header-container .header {
     display: flex;
     justify-content: space-between;
-    
+
     align-items: center;
     gap: var(--large-gap);
 
@@ -34,6 +34,7 @@
 
     margin: 0;
     user-select: none;
+    -webkit-user-select: none;
 
     font-weight: 500;
 }
@@ -70,7 +71,8 @@ body.modal-active .header-container .header .links {
 
     border-radius: calc(var(--border-radius) / 2);
     user-select: none;
-    
+    -webkit-user-select: none;
+
     transition: var(--transition-speed) background-color;
 }
 

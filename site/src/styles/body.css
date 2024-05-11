@@ -6,7 +6,7 @@
 body {
     font-family: "Open Sans", sans-serif !important;
     font-weight: 300;
-    
+
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
@@ -37,6 +37,7 @@ body.modal-active {
 
 body.modal-active > .container {
     user-select: none;
+    -webkit-user-select: none;
 }
 
 img {

@@ -18,7 +18,8 @@
     height: 3rem;
 }
 
-.area.search .search:hover, .area.search .search:focus-within {
+.area.search .search:hover,
+.area.search .search:focus-within {
     background-color: var(--lighter);
 }
 
@@ -38,6 +39,7 @@
     opacity: var(--dim-opacity);
 
     user-select: none;
+    -webkit-user-select: none;
 }
 
 .area.search .search .icon {
@@ -53,7 +55,7 @@
 
     background-color: var(--primary);
     padding: calc(var(--small-padding) / 1.75);
-    
+
     border-radius: var(--border-radius);
     transition: var(--transition-speed) opacity;
 
