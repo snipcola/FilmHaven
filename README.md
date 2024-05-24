@@ -8,19 +8,18 @@ A simple, customizable, and lightweight frontend to view and interact with movie
 
 **Accessible here:**
 
-- <a target="\_blank" href="https://fh.snipcola.com">Main</a>
-- <a target="\_blank" href="https://film-haven.vercel.app">Mirror</a>
+- <a target="\_blank" href="https://film-haven.vercel.app">film-haven.vercel.app</a>
 
 ## ⌨️ - Shortcuts
 
-- `/` - Focuses on search bar. *Navigates out out of any page or modal open.*
-- `[` - Plays previous episode, *if exists*. *Only works on series modal.*
-- `]` - Plays next episode, *if exists*. *Only works on series modal.*
-- `- or =` - Sets previous provider, *if exists*. *Only works on movie or series modal.*
-- `+` - Sets next provider, *if exists*. *Only works on movie or series modal.*
-- `r` - Refreshes video. *Only works on movie or series modal.*
-- `v` - Focuses on video. *Only works on movie or series modal.*
-- `x` - Closes modal. *Only works when modal is open.*
+- `/` - Focuses on search bar. _Navigates out out of any page or modal open._
+- `[` - Plays previous episode, _if exists_. _Only works on series modal._
+- `]` - Plays next episode, _if exists_. _Only works on series modal._
+- `- or =` - Sets previous provider, _if exists_. _Only works on movie or series modal._
+- `+` - Sets next provider, _if exists_. _Only works on movie or series modal._
+- `r` - Refreshes video. _Only works on movie or series modal._
+- `v` - Focuses on video. _Only works on movie or series modal._
+- `x` - Closes modal. _Only works when modal is open._
 
 ## 💻 - Compilation
 
