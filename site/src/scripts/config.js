@@ -53,10 +53,9 @@ export const config = {
   footer: {
     links: [
       {
-        icon: "file",
-        url: window.location.pathname,
-        label: "Download",
-        download: "FilmHaven.html",
+        icon: "youtube",
+        url: "https://url.snipcola.com/youtube",
+        label: "YouTube",
       },
       {
         icon: "github",
@@ -64,14 +63,10 @@ export const config = {
         label: "Git",
       },
       {
-        icon: "discord",
-        url: "https://url.snipcola.com/discord",
-        label: "Discord",
-      },
-      {
-        icon: "youtube",
-        url: "https://url.snipcola.com/youtube",
-        label: "YouTube",
+        icon: "file",
+        url: window.location.pathname,
+        label: "Download",
+        download: "FilmHaven.html",
       },
     ],
   },
@@ -102,6 +97,7 @@ export const config = {
     },
   },
   cast: {
+    amount: 100,
     split: {
       max: 700,
       desktop: 4,
@@ -109,6 +105,7 @@ export const config = {
     },
   },
   reviews: {
+    amount: 50,
     split: {
       max: 700,
       desktop: 2,
