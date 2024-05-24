@@ -158,10 +158,6 @@ export const proxy = {
 
 export const proxies = [
   {
-    url: "/api",
-    local: false,
-  },
-  {
     url: "https://film-haven.vercel.app/api",
     local: true,
   },
