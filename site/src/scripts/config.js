@@ -63,7 +63,7 @@ export const config = {
         label: "Git",
       },
       {
-        icon: "file",
+        icon: "download",
         url: window.location.pathname,
         label: "Download",
         download: "FilmHaven.html",

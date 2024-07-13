@@ -1,5 +1,5 @@
 import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
-import { setModal, showModal, changeHeaderText, hideModal } from "./modal.js";
+import { setModal, showModal, changeHeaderText, hideModal, setCustomButton } from "./modal.js";
 import { getDetails } from "../api/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress, promiseTimeout, onSwipe } from "../functions.js";
 import { config, proxies, proxy as proxyConfig } from "../config.js";
@@ -234,6 +234,13 @@ function modal(info, recommendationImages) {
 
         onKeyPress("v", true, null, watch, show);
         video.append(up, down);
+
+        if (info.trailer) setCustomButton({
+            icon: "camera",
+            callback: function () {
+                window.open(info.trailer);
+            }
+        });
     }
 
     let currentIframe;
