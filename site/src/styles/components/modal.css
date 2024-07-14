@@ -69,8 +69,9 @@ body.modal-active .modal-container {
     font-size: var(--min-font);
 }
 
-.modal-header .header-buttons .hidden {
-    display: none;
+.modal-header .header-buttons .custom-buttons {
+    display: flex;
+    gap: var(--small-gap);
 }
 
 .modal-header .text-container {

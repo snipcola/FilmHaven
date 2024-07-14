@@ -7,6 +7,9 @@
 
     background-color: var(--background);
     border-bottom: var(--small-border) solid var(--lighter);
+
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .header-container .header {

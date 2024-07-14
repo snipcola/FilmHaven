@@ -32,6 +32,9 @@
 
     font-size: var(--large-font);
     color: var(--text);
+
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .area.search .search .input::placeholder {

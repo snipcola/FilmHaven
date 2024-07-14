@@ -7,9 +7,7 @@ let container;
 let headerText;
 let headerInfo;
 let buttons;
-let customButton;
-let customButtonIcon;
-let customButtonCallback;
+let customButtons;
 let copyButton;
 let copyButtonIcon;
 let headerButtonIcon;
@@ -68,7 +66,7 @@ export function hideModal(ignore) {
 
 function initializeModalChangeCheck() {
     function handleQueryChange() {
-        if (customButton) setCustomButton();
+        if (customButtons) setCustomButtons();
         const modalQuery = getQuery(config.query.modal);
         
         if (!modalQuery) {
@@ -103,17 +101,28 @@ function copyLink() {
     }
 }
 
-export function setCustomButton(data) {
-    if (!data || !data.icon || !data.callback) {
-        customButton.className = "button secondary icon-only hidden";
-        customButtonIcon.className = "icon";
-        customButtonCallback = null;
-        return;
-    }
+function createCustomButton(data) {
+    if (!data || !data.icon || !data.callback || typeof data.callback !== "function") return;
+    
+    const customButton = document.createElement("div");
+    const customButtonIcon = document.createElement("i");
 
     customButton.className = "button secondary icon-only";
     customButtonIcon.className = `icon icon-${data.icon}`;
-    customButtonCallback = data.callback;
+
+    customButton.append(customButtonIcon);
+    customButton.addEventListener("click", data.callback);
+
+    customButtons.append(customButton);
+}
+
+export function setCustomButtons(data) {
+    if (!data || !Array.isArray(data)) {
+        customButtons.innerHTML = "";
+        return;
+    }
+
+    data.forEach(createCustomButton);
 }
 
 export function initializeModal() {
@@ -125,8 +134,7 @@ export function initializeModal() {
     headerText = document.createElement("span");
     headerInfo = document.createElement("span");
     buttons = document.createElement("div");
-    customButton = document.createElement("div");
-    customButtonIcon = document.createElement("i");
+    customButtons = document.createElement("div");
     copyButton = document.createElement("div");
     copyButtonIcon = document.createElement("i");
     const headerButton = document.createElement("div");
@@ -144,8 +152,7 @@ export function initializeModal() {
     buttons.className = "header-buttons";
     headerButton.className = "button secondary icon-only";
     headerButtonIcon.className = "icon icon-times";
-    customButton.className = "button secondary icon-only hidden";
-    customButtonIcon.className = "icon";
+    customButtons.className = "custom-buttons";
     copyButton.className = "button secondary icon-only";
     copyButtonIcon.className = "icon icon-link";
 
@@ -157,17 +164,10 @@ export function initializeModal() {
         hideModal();
     });
 
-    customButton.append(customButtonIcon);
-    customButton.addEventListener("click", function () {
-        if (customButtonCallback && typeof customButtonCallback === "function") {
-            customButtonCallback();
-        }
-    });
-
     copyButton.append(copyButtonIcon);
     copyButton.addEventListener("click", copyLink);
 
-    buttons.append(customButton);
+    buttons.append(customButtons);
     buttons.append(copyButton);
     buttons.append(headerButton);
     

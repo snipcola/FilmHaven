@@ -1,5 +1,5 @@
 import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
-import { setModal, showModal, changeHeaderText, hideModal, setCustomButton } from "./modal.js";
+import { setModal, showModal, changeHeaderText, hideModal, setCustomButtons } from "./modal.js";
 import { getDetails } from "../api/details.js";
 import { elementExists, onWindowResize, removeWindowResize, splitArray, getCenteringDirection, onKeyPress, promiseTimeout, onSwipe } from "../functions.js";
 import { config, proxies, proxy as proxyConfig } from "../config.js";
@@ -53,6 +53,8 @@ function modal(info, recommendationImages) {
         seasonNumber = lastPlayed.s;
         episodeNumber = lastPlayed.e;
     }
+
+    let customButtons = [];
 
     const notice = document.createElement("div");
     const noticeIcon = document.createElement("i");
@@ -411,8 +413,8 @@ function modal(info, recommendationImages) {
         
         currentTrailerIframe = trailerIframe.cloneNode();
         trailer.append(currentTrailerIframe);
-        
-        setCustomButton({
+
+        customButtons.push({
             icon: "camera",
             callback: function () {
                 trailer.classList.add("active");
@@ -1303,6 +1305,7 @@ function modal(info, recommendationImages) {
     if ((left.childElementCount + right.childElementCount) !== 0) watch.append(details);
     else watch.classList.add("only-video");
 
+    setCustomButtons(customButtons);
     setModal(info.title, null, watch, "times", info.type);
     checkCurrentlyPlaying();
     showModal(cleanup);

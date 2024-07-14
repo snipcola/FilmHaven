@@ -520,6 +520,9 @@
     box-sizing: border-box;
 
     border-radius: var(--border-radius);
+
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .watch .details .season-card .season-title {
