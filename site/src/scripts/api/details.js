@@ -63,11 +63,11 @@ async function format(item, type) {
           .filter((s) => s.season_number > 0 && s.episode_count > 0)
           .map(async function (season) {
             return getSeason(item.id, season.season_number);
-          })
+          }),
       );
 
     const recommendations = sortByPopularity(
-      item.recommendations?.results || []
+      item.recommendations?.results || [],
     )
       .filter((r) => r.poster_path && r.media_type === type)
       .splice(0, config.recommendations.amount)
@@ -80,9 +80,16 @@ async function format(item, type) {
         };
       });
 
-    const trailer = (item.videos?.results || []).filter(
-      (v) => v.type === "Trailer" && v.site === "YouTube" && v.official === true && v.key !== null && v.key !== undefined
-    ).slice(-1)[0];
+    const trailer = (item.videos?.results || [])
+      .filter(
+        (v) =>
+          v.type === "Trailer" &&
+          v.site === "YouTube" &&
+          v.official === true &&
+          v.key !== null &&
+          v.key !== undefined,
+      )
+      .slice(-1)[0];
 
     return {
       id: item.id?.toString(),
@@ -102,7 +109,7 @@ async function format(item, type) {
           })
         : null,
       language: item.spoken_languages?.find(
-        (l) => l?.iso_639_1 === item.original_language
+        (l) => l?.iso_639_1 === item.original_language,
       )?.english_name,
       rating: (Math.round(item.vote_average) / 2).toString(),
       stars: shortenNumber(item.vote_count, 1),
@@ -119,9 +126,8 @@ async function format(item, type) {
 }
 
 export async function getDetails(type = "movie", id) {
-  let append_to_response = [];
+  let append_to_response = ["videos"];
 
-  if (getWatchSection("Video")) append_to_response.push("videos");
   if (getWatchSection("Cast")) append_to_response.push("credits");
   if (getWatchSection("Reviews")) append_to_response.push("reviews");
   if (getWatchSection("Recommendations"))
@@ -131,7 +137,7 @@ export async function getDetails(type = "movie", id) {
     `${type}/${id}`,
     append_to_response.length > 0
       ? { append_to_response: append_to_response.join(",") }
-      : undefined
+      : undefined,
   );
   const json = format(response, type);
 

@@ -72,6 +72,7 @@ body.modal-active .modal-container {
 .modal-header .header-buttons .custom-buttons {
     display: flex;
     gap: var(--small-gap);
+    flex-direction: row-reverse;
 }
 
 .modal-header .text-container {

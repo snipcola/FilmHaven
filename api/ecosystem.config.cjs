@@ -1,9 +1,9 @@
 module.exports = {
-    "apps": [
-        {
-            "name": "filmhaven-api",
-            "cwd": __dirname,
-            "script": "node ."
-        }
-    ]
+  apps: [
+    {
+      name: "filmhaven-api",
+      cwd: __dirname,
+      script: "node .",
+    },
+  ],
 };

@@ -13,152 +13,160 @@ let content;
 let callback;
 
 function checkCallback() {
-    if (callback && typeof callback === "function") {
-        callback();
-    }
+  if (callback && typeof callback === "function") {
+    callback();
+  }
 
-    callback = null;
+  callback = null;
 }
 
 export function changeHeaderText(label, info, titleClass) {
-    headerText.innerText = label;
-    headerText.className = titleClass ? `text ${titleClass}` : "text";
-    headerInfo.innerText = info || "";
-    headerInfo.className = info ? "info active" : "info";
+  headerText.innerText = label;
+  headerText.className = titleClass ? `text ${titleClass}` : "text";
+  headerInfo.innerText = info || "";
+  headerInfo.className = info ? "info active" : "info";
 }
 
-export function setModal(label = "", info, newContent, icon = "times", titleClass) {
-    container.className = "modal-container";
-    headerText.innerText = label;
-    headerText.className = titleClass ? `text ${titleClass}` : "text";
-    headerInfo.innerText = info || "";
-    headerInfo.className = info ? "info active" : "info";
-    headerButtonIcon.className = `icon icon-${icon}`;
-    content.innerHTML = "";
-    
-    if (newContent) {
-        if (Array.isArray(newContent)) {
-            content.append(...newContent);
-        } else {
-            content.append(newContent);
-        }
+export function setModal(
+  label = "",
+  info,
+  newContent,
+  icon = "times",
+  titleClass,
+) {
+  container.className = "modal-container";
+  headerText.innerText = label;
+  headerText.className = titleClass ? `text ${titleClass}` : "text";
+  headerInfo.innerText = info || "";
+  headerInfo.className = info ? "info active" : "info";
+  headerButtonIcon.className = `icon icon-${icon}`;
+  content.innerHTML = "";
+
+  if (newContent) {
+    if (Array.isArray(newContent)) {
+      content.append(...newContent);
+    } else {
+      content.append(newContent);
     }
+  }
 }
 
 export function showModal(cb) {
-    checkCallback();
-    callback = cb;
+  checkCallback();
+  callback = cb;
 
-    container.scrollTo({ top: 0 });
-    document.body.classList.add("modal-active");
+  container.scrollTo({ top: 0 });
+  document.body.classList.add("modal-active");
 }
 
 export function hideModal(ignore) {
-    if (!ignore) removeQuery(config.query.modal);
-    if (!ignore) document.body.classList.remove("modal-active");
+  if (!ignore) removeQuery(config.query.modal);
+  if (!ignore) document.body.classList.remove("modal-active");
 
-    if (!ignore) setModal();
-    if (!ignore) setTitle();
-    checkCallback();
+  if (!ignore) setModal();
+  if (!ignore) setTitle();
+  checkCallback();
 }
 
 function initializeModalChangeCheck() {
-    function handleQueryChange() {
-        if (customButtons) setCustomButtons();
-        const modalQuery = getQuery(config.query.modal);
-        
-        if (!modalQuery) {
-            hideModal();
-        } else {
-            const [modalType] = modalQuery.split("-");
+  function handleQueryChange() {
+    if (customButtons) setCustomButtons();
+    const modalQuery = getQuery(config.query.modal);
 
-            if (!config.modal.validTypes.includes(modalType)) {
-                hideModal();
-            }
-        }
+    if (!modalQuery) {
+      hideModal();
+    } else {
+      const [modalType] = modalQuery.split("-");
+
+      if (!config.modal.validTypes.includes(modalType)) {
+        hideModal();
+      }
     }
+  }
 
-    handleQueryChange();
-    onQueryChange(handleQueryChange);
+  handleQueryChange();
+  onQueryChange(handleQueryChange);
 }
 
 function createCustomButton(data) {
-    if (!data || !data.icon || !data.callback || typeof data.callback !== "function") return;
-    
-    const customButton = document.createElement("div");
-    const customButtonIcon = document.createElement("i");
+  if (
+    !data ||
+    !data.icon ||
+    !data.callback ||
+    typeof data.callback !== "function"
+  )
+    return;
 
-    customButton.className = "button secondary icon-only";
-    customButtonIcon.className = `icon icon-${data.icon}`;
+  const customButton = document.createElement("div");
+  const customButtonIcon = document.createElement("i");
 
-    customButton.append(customButtonIcon);
-    customButton.addEventListener("click", data.callback);
+  customButton.className = "button secondary icon-only";
+  customButtonIcon.className = `icon icon-${data.icon}`;
 
-    customButtons.append(customButton);
+  customButton.append(customButtonIcon);
+  customButton.addEventListener("click", data.callback);
+
+  customButtons.append(customButton);
 }
 
 export function setCustomButtons(data) {
-    if (!data || !Array.isArray(data)) {
-        customButtons.innerHTML = "";
-        return;
-    }
-
-    data.forEach(createCustomButton);
+  customButtons.innerHTML = "";
+  if (data && Array.isArray(data)) data.forEach(createCustomButton);
 }
 
 export function initializeModal() {
-    container = document.createElement("div");
-    const modal = document.createElement("div");
+  container = document.createElement("div");
+  const modal = document.createElement("div");
 
-    const header = document.createElement("div");
-    const headerTextContainer = document.createElement("div");
-    headerText = document.createElement("span");
-    headerInfo = document.createElement("span");
-    buttons = document.createElement("div");
-    customButtons = document.createElement("div");
-    const headerButton = document.createElement("div");
-    headerButtonIcon = document.createElement("i");
-    
-    content = document.createElement("div");
+  const header = document.createElement("div");
+  const headerTextContainer = document.createElement("div");
+  headerText = document.createElement("span");
+  headerInfo = document.createElement("span");
+  buttons = document.createElement("div");
+  customButtons = document.createElement("div");
+  const headerButton = document.createElement("div");
+  headerButtonIcon = document.createElement("i");
 
-    container.className = "modal-container";
-    modal.className = "modal";
+  content = document.createElement("div");
 
-    header.className = "modal-header";
-    headerTextContainer.className = "text-container";
-    headerText.className = "text";
-    headerInfo.className = "info";
-    buttons.className = "header-buttons";
-    headerButton.className = "button secondary icon-only";
-    headerButtonIcon.className = "icon icon-times";
-    customButtons.className = "custom-buttons";
+  container.className = "modal-container";
+  modal.className = "modal";
 
-    headerTextContainer.append(headerText);
-    headerTextContainer.append(headerInfo);
+  header.className = "modal-header";
+  headerTextContainer.className = "text-container";
+  headerText.className = "text";
+  headerInfo.className = "info";
+  buttons.className = "header-buttons";
+  headerButton.className = "button secondary icon-only";
+  headerButtonIcon.className = "icon icon-times";
+  customButtons.className = "custom-buttons";
 
-    headerButton.append(headerButtonIcon);
-    headerButton.addEventListener("click", function () {
-        hideModal();
-    });
+  headerTextContainer.append(headerText);
+  headerTextContainer.append(headerInfo);
 
-    buttons.append(customButtons);
-    buttons.append(headerButton);
-    
-    header.append(headerTextContainer);
-    header.append(buttons);
+  headerButton.append(headerButtonIcon);
+  headerButton.addEventListener("click", function () {
+    hideModal();
+  });
 
-    content.className = "modal-content";
-    
-    modal.append(header);
-    modal.append(content);
+  buttons.append(customButtons);
+  buttons.append(headerButton);
 
-    container.append(modal);
-    document.body.append(container);
+  header.append(headerTextContainer);
+  header.append(buttons);
 
-    initializeModalChangeCheck();
-    onKeyPress("x", false, null, null, function () {
-        if (document.body.classList.contains("modal-active")) {
-            hideModal();
-        }
-    });
+  content.className = "modal-content";
+
+  modal.append(header);
+  modal.append(content);
+
+  container.append(modal);
+  document.body.append(container);
+
+  initializeModalChangeCheck();
+  onKeyPress("x", false, null, null, function () {
+    if (document.body.classList.contains("modal-active")) {
+      hideModal();
+    }
+  });
 }

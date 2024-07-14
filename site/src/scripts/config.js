@@ -148,6 +148,11 @@ export const api = {
   },
 };
 
+export const downloadApi = {
+  url: "https://yts.mx/api",
+  version: "v2",
+};
+
 export const proxy = {
   checkTimeout: 2500,
   validCheckTimeout: 4000,

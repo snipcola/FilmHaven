@@ -35,7 +35,7 @@ export default {
             return `https://${this.base}/embed/tv?tmdb=${params.id}&season=${params.season}&episode=${params.episode}`;
         }
       },
-    }
+    },
   ],
   blacklist: {
     status: [
@@ -49,7 +49,7 @@ export default {
       "no tv show found",
       "no episode found",
       "no show found",
-      "media is unavailable" // vidsrc.me
+      "media is unavailable", // vidsrc.me
     ],
   },
 };

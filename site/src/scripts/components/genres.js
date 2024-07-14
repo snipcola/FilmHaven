@@ -1,5 +1,11 @@
 import { config } from "../config.js";
-import { splitArray, onWindowResize, removeWindowResize, elementExists, onSwipe } from "../functions.js";
+import {
+  splitArray,
+  onWindowResize,
+  removeWindowResize,
+  elementExists,
+  onSwipe,
+} from "../functions.js";
 import { getGenres } from "../api/genres.js";
 import { hideModal, setModal, showModal } from "./modal.js";
 import { initializeArea } from "./area.js";
@@ -12,317 +18,346 @@ import { getPage } from "../store/pages.js";
 import { toggleDim } from "./dim.js";
 
 async function modal(info, type) {
-    const desktop = window.innerWidth > config.area.split.max;
+  const desktop = window.innerWidth > config.area.split.max;
 
-    const popularArea = document.createElement("div");
-    const ratedArea = document.createElement("div");
-    const newArea = document.createElement("div");
+  const popularArea = document.createElement("div");
+  const ratedArea = document.createElement("div");
+  const newArea = document.createElement("div");
 
-    popularArea.className = "area";
-    ratedArea.className = "area";
-    newArea.className = "area";
+  popularArea.className = "area";
+  ratedArea.className = "area";
+  newArea.className = "area";
 
-    const images = [];
+  const images = [];
 
-    function cleanup() {
-        unloadImages(images, true);
+  function cleanup() {
+    unloadImages(images, true);
+  }
+
+  setModal(info.name, null, [popularArea, ratedArea, newArea], "arrow-left");
+  showModal(cleanup);
+
+  async function initializePopular() {
+    const label = "Popular";
+
+    initializeArea(popularArea, null, label);
+    let popularContent = await getTrending(type, info.id);
+
+    if (!popularContent) {
+      initializeArea(popularArea, null, label, true);
+    } else {
+      popularContent.splice(config.area.amount, popularContent.length);
+      const popularContentImages = getNonCachedImages(
+        popularContent.map((i) => i.image),
+      );
+      images.push(...popularContentImages);
+
+      preloadImages(popularContentImages, true);
+      initializeArea(popularArea, popularContent, label);
     }
+  }
 
-    setModal(info.name, null, [popularArea, ratedArea, newArea], "arrow-left");
-    showModal(cleanup);
+  async function initializeTopRated() {
+    const label = "Top-Rated";
 
-    async function initializePopular() {
-        const label = "Popular";
+    initializeArea(ratedArea, null, label);
+    let ratedContent = await getRated(type, info.id);
 
-        initializeArea(popularArea, null, label);
-        let popularContent = await getTrending(type, info.id);
+    if (!ratedContent) {
+      initializeArea(ratedArea, null, label, true);
+    } else {
+      ratedContent.splice(config.area.amount, ratedContent.length);
+      const ratedContentImages = getNonCachedImages(
+        ratedContent.map((i) => i.image),
+      );
+      images.push(...ratedContentImages);
 
-        if (!popularContent) {
-            initializeArea(popularArea, null, label, true);
-        } else {
-            popularContent.splice(config.area.amount, popularContent.length);
-            const popularContentImages = getNonCachedImages(popularContent.map((i) => i.image));
-            images.push(...popularContentImages);
-
-            preloadImages(popularContentImages, true);
-            initializeArea(popularArea, popularContent, label);
-        }
+      preloadImages(ratedContentImages, true);
+      initializeArea(ratedArea, ratedContent, label);
     }
+  }
 
-    async function initializeTopRated() {
-        const label = "Top-Rated";
+  async function initializeNew() {
+    const label = "New";
 
-        initializeArea(ratedArea, null, label);
-        let ratedContent = await getRated(type, info.id);
+    initializeArea(newArea, null, label);
+    let newContent = await getNew(type, info.id);
 
-        if (!ratedContent) {
-            initializeArea(ratedArea, null, label, true);
-        } else {
-            ratedContent.splice(config.area.amount, ratedContent.length);
-            const ratedContentImages = getNonCachedImages(ratedContent.map((i) => i.image));
-            images.push(...ratedContentImages);
+    if (!newContent) {
+      initializeArea(newArea, null, label, true);
+    } else {
+      newContent.splice(config.area.amount, newContent.length);
+      const newContentImages = getNonCachedImages(
+        newContent.map((i) => i.image),
+      );
+      images.push(...newContentImages);
 
-            preloadImages(ratedContentImages, true);
-            initializeArea(ratedArea, ratedContent, label);
-        }
+      preloadImages(newContentImages, true);
+      initializeArea(newArea, newContent, label);
     }
+  }
 
-    async function initializeNew() {
-        const label = "New";
-
-        initializeArea(newArea, null, label);
-        let newContent = await getNew(type, info.id);
-
-        if (!newContent) {
-            initializeArea(newArea, null, label, true);
-        } else {
-            newContent.splice(config.area.amount, newContent.length);
-            const newContentImages = getNonCachedImages(newContent.map((i) => i.image));
-            images.push(...newContentImages);
-
-            preloadImages(newContentImages, true);
-            initializeArea(newArea, newContent, label);
-        }
-    }
-
-    initializePopular();
-    initializeTopRated();
-    initializeNew();
+  initializePopular();
+  initializeTopRated();
+  initializeNew();
 }
 
 function initializeGenreArea(area, initialSlides, type, failed) {
-    area.innerHTML = "";
-    const noResults = Array.isArray(initialSlides) && initialSlides.length === 0;
+  area.innerHTML = "";
+  const noResults = Array.isArray(initialSlides) && initialSlides.length === 0;
 
-    let desktop = window.innerWidth > config.genre.split.max;
-    let slides;
-    let index = 0;
+  let desktop = window.innerWidth > config.genre.split.max;
+  let slides;
+  let index = 0;
 
-    if (initialSlides && initialSlides.length !== 0) {
-        slides = splitArray(initialSlides, config.genre.split[desktop ? "desktop" : "mobile"]);
-    }
+  if (initialSlides && initialSlides.length !== 0) {
+    slides = splitArray(
+      initialSlides,
+      config.genre.split[desktop ? "desktop" : "mobile"],
+    );
+  }
 
-    const label = document.createElement("div");
+  const label = document.createElement("div");
 
-    const control = document.createElement("div");
-    const previous = document.createElement("div");
-    const previousIcon = document.createElement("i");
-    const indicators = document.createElement("div");
-    const next = document.createElement("div");
-    const nextIcon = document.createElement("i");
+  const control = document.createElement("div");
+  const previous = document.createElement("div");
+  const previousIcon = document.createElement("i");
+  const indicators = document.createElement("div");
+  const next = document.createElement("div");
+  const nextIcon = document.createElement("i");
 
-    const notice = document.createElement("div");
-    const noticeIcon = document.createElement("i");
-    const noticeText = document.createElement("span");
+  const notice = document.createElement("div");
+  const noticeIcon = document.createElement("i");
+  const noticeText = document.createElement("span");
 
-    const genres = document.createElement("div");
+  const genres = document.createElement("div");
 
-    label.className = "label";
-    label.innerText = "Genres";
+  label.className = "label";
+  label.innerText = "Genres";
 
-    control.className = "control";
-    previous.className = "button secondary icon-only previous";
-    previousIcon.className = "icon icon-arrow-left";
-    indicators.className = "indicators";
-    next.className = "button secondary icon-only next";
-    nextIcon.className = "icon icon-arrow-right";
+  control.className = "control";
+  previous.className = "button secondary icon-only previous";
+  previousIcon.className = "icon icon-arrow-left";
+  indicators.className = "indicators";
+  next.className = "button secondary icon-only next";
+  nextIcon.className = "icon icon-arrow-right";
 
-    previous.append(previousIcon);
-    next.append(nextIcon);
+  previous.append(previousIcon);
+  next.append(nextIcon);
 
-    control.append(previous);
-    control.append(indicators);
-    control.append(next);
+  control.append(previous);
+  control.append(indicators);
+  control.append(next);
 
-    notice.className = "notice";
-    noticeIcon.className = `icon icon-${failed ? "warning" : noResults ? "eye-slash" : "sync"}`
-    noticeText.className = "text";
-    noticeText.innerText = failed ? "Failed to fetch genres" : noResults ? "No results found" : "Fetching genres";
+  notice.className = "notice";
+  noticeIcon.className = `icon icon-${failed ? "warning" : noResults ? "eye-slash" : "sync"}`;
+  noticeText.className = "text";
+  noticeText.innerText = failed
+    ? "Failed to fetch genres"
+    : noResults
+      ? "No results found"
+      : "Fetching genres";
 
-    notice.append(noticeIcon);
-    notice.append(noticeText);
+  notice.append(noticeIcon);
+  notice.append(noticeText);
 
-    genres.className = "genres";
+  genres.className = "genres";
 
-    function add(info) {
-        const genre = document.createElement("div");
-        const genreText = document.createElement("span");
-        const genreIcon = document.createElement("i");
+  function add(info) {
+    const genre = document.createElement("div");
+    const genreText = document.createElement("span");
+    const genreIcon = document.createElement("i");
 
-        genre.className = "genre";
-        genreText.className = "text";
-        genreText.innerText = info.name;
-        genreIcon.className = "icon icon-arrow-right";
+    genre.className = "genre";
+    genreText.className = "text";
+    genreText.innerText = info.name;
+    genreIcon.className = "icon icon-arrow-right";
 
-        genre.addEventListener("click", function () {
-            setQuery(config.query.modal, `g-${type === "movie" ? "m" : "s"}-${info.id}`);
-        });
+    genre.addEventListener("click", function () {
+      setQuery(
+        config.query.modal,
+        `g-${type === "movie" ? "m" : "s"}-${info.id}`,
+      );
+    });
 
-        genre.append(genreText);
-        genre.append(genreIcon);
+    genre.append(genreText);
+    genre.append(genreIcon);
 
-        genres.append(genre);
-    }
+    genres.append(genre);
+  }
 
-    function setIndicators() {
-        indicators.innerHTML = "";
+  function setIndicators() {
+    indicators.innerHTML = "";
 
-        slides.forEach(function (_, i) {
-            const indicator = document.createElement("div");
+    slides.forEach(function (_, i) {
+      const indicator = document.createElement("div");
 
-            indicator.className = index === i ? "indicator active" : "indicator";
-            indicator.addEventListener("click", function () {
-                set(i);
-            });
+      indicator.className = index === i ? "indicator active" : "indicator";
+      indicator.addEventListener("click", function () {
+        set(i);
+      });
 
-            indicators.append(indicator);
-        });
-    }
+      indicators.append(indicator);
+    });
+  }
 
-    function set(newIndex) {
-        index = slides[newIndex] ? newIndex : 0;
-        const slide = slides[index];
+  function set(newIndex) {
+    index = slides[newIndex] ? newIndex : 0;
+    const slide = slides[index];
 
-        genres.innerHTML = "";
-        slide.forEach(add);
+    genres.innerHTML = "";
+    slide.forEach(add);
 
-        setIndicators();
-    }
+    setIndicators();
+  }
 
-    function setPrevious() {
-        set(slides[index - 1] ? index - 1 : slides.length - 1);
-    }
+  function setPrevious() {
+    set(slides[index - 1] ? index - 1 : slides.length - 1);
+  }
 
-    function setNext() {
-        set(slides[index + 1] ? index + 1 : 0);
-    }
+  function setNext() {
+    set(slides[index + 1] ? index + 1 : 0);
+  }
 
-    function checkResize() {
-        if (!elementExists(area)) return removeWindowResize(checkResize);
-        const newDesktop = window.innerWidth > config.genre.split.max;
+  function checkResize() {
+    if (!elementExists(area)) return removeWindowResize(checkResize);
+    const newDesktop = window.innerWidth > config.genre.split.max;
 
-        if (desktop !== newDesktop) {
-            desktop = newDesktop;
-            
-            if (slides && slides.length !== 0) {
-                slides = splitArray(initialSlides, config.genre.split[desktop ? "desktop" : "mobile"]);
+    if (desktop !== newDesktop) {
+      desktop = newDesktop;
 
-                index = index === 0 ? 0 : desktop
-                    ? Math.round((index + 1) / (config.genre.split.desktop / config.genre.split.mobile)) - 1
-                    : Math.round((index + 1) * (config.genre.split.desktop / config.genre.split.mobile)) - 2;
+      if (slides && slides.length !== 0) {
+        slides = splitArray(
+          initialSlides,
+          config.genre.split[desktop ? "desktop" : "mobile"],
+        );
 
-                set(index);
-            }
-        }
-    }
+        index =
+          index === 0
+            ? 0
+            : desktop
+              ? Math.round(
+                  (index + 1) /
+                    (config.genre.split.desktop / config.genre.split.mobile),
+                ) - 1
+              : Math.round(
+                  (index + 1) *
+                    (config.genre.split.desktop / config.genre.split.mobile),
+                ) - 2;
 
-    if (slides) {
-        onWindowResize(checkResize);
         set(index);
-
-        previous.addEventListener("click", setPrevious);
-        next.addEventListener("click", setNext);
+      }
     }
+  }
 
-    area.append(label);
-    
-    if (slides) {
-        area.append(control);
-        area.append(genres);
+  if (slides) {
+    onWindowResize(checkResize);
+    set(index);
 
-        onSwipe(area, function (right) {
-            if (right) setNext();
-            else setPrevious();
-        });
-    } else {
-        area.append(notice);
-    }
+    previous.addEventListener("click", setPrevious);
+    next.addEventListener("click", setNext);
+  }
+
+  area.append(label);
+
+  if (slides) {
+    area.append(control);
+    area.append(genres);
+
+    onSwipe(area, function (right) {
+      if (right) setNext();
+      else setPrevious();
+    });
+  } else {
+    area.append(notice);
+  }
 }
 
 let movieGenres;
 let showGenres;
 
 function initializeGenreModalCheck() {
-    function handleQueryChange() {
-        const modalQuery = getQuery(config.query.modal);
-        
-        if (modalQuery) {
-            const [modalType, type, id] = modalQuery.split("-");
+  function handleQueryChange() {
+    const modalQuery = getQuery(config.query.modal);
 
-            if (modalType === "g") {
-                hideModal(true);
-                toggleDim(true);
-                
-                const info = type === "m"
-                    ? (movieGenres || []).find((g) => g.id?.toString() === id)
-                    : (showGenres || []).find((g) => g.id?.toString() === id);
+    if (modalQuery) {
+      const [modalType, type, id] = modalQuery.split("-");
 
-                if (info) {
-                    modal(info, type === "m" ? "movie" : "tv");
-                    document.title = `${type === "m" ? "Movies" : "Shows"} - ${info.name}`;
-                } else {
-                    removeQuery(config.query.modal);
-                }
+      if (modalType === "g") {
+        hideModal(true);
+        toggleDim(true);
 
-                toggleDim(false);
-            }
+        const info =
+          type === "m"
+            ? (movieGenres || []).find((g) => g.id?.toString() === id)
+            : (showGenres || []).find((g) => g.id?.toString() === id);
+
+        if (info) {
+          modal(info, type === "m" ? "movie" : "tv");
+          document.title = `${type === "m" ? "Movies" : "Shows"} - ${info.name}`;
+        } else {
+          removeQuery(config.query.modal);
         }
-    }
 
-    handleQueryChange();
-    onQueryChange(handleQueryChange);
+        toggleDim(false);
+      }
+    }
+  }
+
+  handleQueryChange();
+  onQueryChange(handleQueryChange);
 }
 
 export async function initializeGenres() {
-    async function initializeMovies() {
-        const type = "movie";
-        const moviesSection = document.querySelector(".section.movies");
+  async function initializeMovies() {
+    const type = "movie";
+    const moviesSection = document.querySelector(".section.movies");
 
-        if (!moviesSection) {
-            return console.error("Failed to find movies section.");
-        }
-
-        const moviesGenresArea = document.createElement("div");
-        moviesGenresArea.className = "area genres";
-        moviesSection.append(moviesGenresArea);
-        
-        initializeGenreArea(moviesGenresArea, null, type);
-        movieGenres = await getGenres("movie");
-
-        if (!movieGenres) {
-            initializeGenreArea(moviesGenresArea, null, type, true);
-        } else {
-            initializeGenreArea(moviesGenresArea, movieGenres, type);
-        }
+    if (!moviesSection) {
+      return console.error("Failed to find movies section.");
     }
 
-    async function initializeShows() {
-        const type = "tv";
-        const showsSection = document.querySelector(".section.shows");
+    const moviesGenresArea = document.createElement("div");
+    moviesGenresArea.className = "area genres";
+    moviesSection.append(moviesGenresArea);
 
-        if (!showsSection) {
-            return console.error("Failed to find shows section.");
-        }
+    initializeGenreArea(moviesGenresArea, null, type);
+    movieGenres = await getGenres("movie");
 
-        const showsGenresArea = document.createElement("div");
-        showsGenresArea.className = "area genres";
-        showsSection.append(showsGenresArea);
+    if (!movieGenres) {
+      initializeGenreArea(moviesGenresArea, null, type, true);
+    } else {
+      initializeGenreArea(moviesGenresArea, movieGenres, type);
+    }
+  }
 
-        initializeGenreArea(showsGenresArea, null, type);
-        showGenres = await getGenres("tv");
+  async function initializeShows() {
+    const type = "tv";
+    const showsSection = document.querySelector(".section.shows");
 
-        if (!showGenres) {
-            initializeGenreArea(showsGenresArea, null, type, true);
-        } else {
-            initializeGenreArea(showsGenresArea, showGenres, type);
-        }
+    if (!showsSection) {
+      return console.error("Failed to find shows section.");
     }
 
-    const promises = [];
+    const showsGenresArea = document.createElement("div");
+    showsGenresArea.className = "area genres";
+    showsSection.append(showsGenresArea);
 
-    if (getPage("Movies")) promises.push(initializeMovies());
-    if (getPage("Shows")) promises.push(initializeShows());
+    initializeGenreArea(showsGenresArea, null, type);
+    showGenres = await getGenres("tv");
 
-    await Promise.all(promises);
-    initializeGenreModalCheck();
+    if (!showGenres) {
+      initializeGenreArea(showsGenresArea, null, type, true);
+    } else {
+      initializeGenreArea(showsGenresArea, showGenres, type);
+    }
+  }
+
+  const promises = [];
+
+  if (getPage("Movies")) promises.push(initializeMovies());
+  if (getPage("Shows")) promises.push(initializeShows());
+
+  await Promise.all(promises);
+  initializeGenreModalCheck();
 }

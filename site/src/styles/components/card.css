@@ -15,7 +15,7 @@
 
     flex-direction: column;
 
-    gap: calc(var(--small-padding) / 2);
+    gap: calc(var(--small-gap) / 2);
     justify-content: space-between;
 
     background-color: var(--light);

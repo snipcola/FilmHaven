@@ -11,7 +11,7 @@
     max-width: 100%;
 }
 
-.watch > *:not(.trailer) {
+.watch > *:not(> .trailer):not(> .downloads) {
     width: calc(100% - (2 * var(--large-padding)));
     max-width: var(--max-width);
 
@@ -183,6 +183,56 @@
 
     width: 80dvw;
     height: 80dvh;
+}
+
+.watch .downloads {
+    display: none;
+    position: fixed;
+
+    z-index: 9;
+    background-color: rgba(var(--light-rgb), 0.6);
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    align-items: center;
+    justify-content: center;
+
+    top: 0;
+    left: 0;
+
+    width: 100dvw;
+    height: 100dvh;
+}
+
+.watch .downloads.active {
+    display: flex;
+}
+
+.watch .downloads .torrents {
+    background-color: var(--lighter);
+    border-radius: var(--border-radius);
+    padding: var(--small-padding);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-gap);
+
+    max-width: 70dvw;
+    max-height: 70dvh;
+    
+    overflow: auto;
+}
+
+.watch .downloads .torrents .download {
+    padding: calc(var(--small-padding) / 2) var(--small-padding);
+}
+
+.watch .downloads .torrents .download:hover {
+    cursor: pointer;
+
+    background-color: var(--lightest);
+    border-radius: var(--border-radius);
 }
 
 .watch .details {

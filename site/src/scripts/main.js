@@ -22,44 +22,44 @@ let contentContainer;
 let content;
 
 function enableBody() {
-    document.body.classList.add("active");
+  document.body.classList.add("active");
 }
 
 function initializeBody() {
-    container = document.createElement("div");
-    contentContainer = document.createElement("div");
-    content = initializeContent(contentContainer);
+  container = document.createElement("div");
+  contentContainer = document.createElement("div");
+  content = initializeContent(contentContainer);
 
-    container.className = "container";
-    contentContainer.className = "content-container";
-    
-    container.append(contentContainer);
-    document.body.append(container);
+  container.className = "container";
+  contentContainer.className = "content-container";
+
+  container.append(contentContainer);
+  document.body.append(container);
 }
 
 function initializeAll() {
-    initializeTheme();
-    initializeCache();
-    initializeQuery();
+  initializeTheme();
+  initializeCache();
+  initializeQuery();
 
-    initializeDim();
-    initializeModal();
-    initializeBody();
+  initializeDim();
+  initializeModal();
+  initializeBody();
 
-    initializeHeader(container, content);
-    initializeFooter(container);
-    initializeWatch();
+  initializeHeader(container, content);
+  initializeFooter(container);
+  initializeWatch();
 
-    if (getPage("Home") && getSection("Search")) initializeSearches();
-    if (getPage("Home") && getSection("Continue")) initializeContinue();
+  if (getPage("Home") && getSection("Search")) initializeSearches();
+  if (getPage("Home") && getSection("Continue")) initializeContinue();
 
-    if (getSection("Carousel")) initializeCarousels();
-    else content.classList.add("no-carousel");
-    if (getSection("Genres")) initializeGenres();
-    initializeAreas();
+  if (getSection("Carousel")) initializeCarousels();
+  else content.classList.add("no-carousel");
+  if (getSection("Genres")) initializeGenres();
+  initializeAreas();
 
-    initializeSettings();
-    enableBody();
+  initializeSettings();
+  enableBody();
 }
 
 initializeAll();

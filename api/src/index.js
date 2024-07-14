@@ -5,10 +5,10 @@ initializeEnvironmentVariables();
 const { success, address, error } = await initializeServer();
 
 switch (success) {
-    case true:
-        console.log(`[Server] Running at ${address}`);
-        break;
-    case false:
-        console.error(`[Server] Error caught:\n`, error);
-        process.exit(1);
+  case true:
+    console.log(`[Server] Running at ${address}`);
+    break;
+  case false:
+    console.error(`[Server] Error caught:\n`, error);
+    process.exit(1);
 }
