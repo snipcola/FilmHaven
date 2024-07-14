@@ -471,7 +471,7 @@ function modal(info, recommendationImages) {
           const downloadElement = document.createElement("div");
 
           downloadElement.className = "download";
-          downloadElement.innerText = `Torrent (${download.type}, ${download.quality})`;
+          downloadElement.innerText = `Torrent (${download.type}, ${download.quality}, ${download.size})`;
 
           downloadElement.addEventListener("click", function () {
             window.open(download.url);

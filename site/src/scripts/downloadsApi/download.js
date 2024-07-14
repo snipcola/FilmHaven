@@ -5,12 +5,13 @@ function format(json) {
 
   return torrents && Array.isArray(torrents) && torrents.length > 0
     ? torrents
-        .filter((t) => t.url && t.type && t.quality)
+        .filter((t) => t.url && t.type && t.quality && t.size)
         .map(function (torrent) {
           return {
             url: torrent.url,
             type: torrent.type,
             quality: torrent.quality,
+            size: torrent.size,
           };
         })
     : null;
