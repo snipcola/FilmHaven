@@ -11,7 +11,7 @@
     max-width: 100%;
 }
 
-.watch > * {
+.watch > *:not(.trailer) {
     width: calc(100% - (2 * var(--large-padding)));
     max-width: var(--max-width);
 
@@ -150,6 +150,39 @@
 .watch .video .scroll.down {
     top: initial;
     bottom: var(--small-padding);
+}
+
+.watch .trailer {
+    display: none;
+    position: fixed;
+
+    z-index: 9;
+    background-color: rgba(var(--light-rgb), 0.6);
+
+    user-select: none;
+    -webkit-user-select: none;
+
+    align-items: center;
+    justify-content: center;
+
+    top: 0;
+    left: 0;
+
+    width: 100dvw;
+    height: 100dvh;
+}
+
+.watch .trailer.active {
+    display: flex;
+}
+
+.watch .trailer .iframe {
+    border-radius: var(--border-radius);
+    outline: none;
+    border: none;
+
+    width: 80dvw;
+    height: 80dvh;
 }
 
 .watch .details {

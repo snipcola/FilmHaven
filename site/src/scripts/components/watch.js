@@ -64,6 +64,9 @@ function modal(info, recommendationImages) {
     const backdropVignette = document.createElement("div");
     const iframe = document.createElement("iframe");
 
+    const trailer = document.createElement("div");
+    const trailerIframe = document.createElement("iframe");
+
     const details = document.createElement("div");
     const left = document.createElement("div");
     const right = document.createElement("div");
@@ -234,13 +237,6 @@ function modal(info, recommendationImages) {
 
         onKeyPress("v", true, null, watch, show);
         video.append(up, down);
-
-        if (info.trailer) setCustomButton({
-            icon: "camera",
-            callback: function () {
-                window.open(info.trailer);
-            }
-        });
     }
 
     let currentIframe;
@@ -390,6 +386,37 @@ function modal(info, recommendationImages) {
             videoAlert(false);
             toggleBackdrop(false);
             currentIframe.classList.add("active");
+        });
+    }
+
+    if (videoActive && info.trailer) {
+        let currentTrailerIframe;
+
+        trailer.className = "trailer";
+        trailer.addEventListener("click", function (e) {
+            if (e.target === trailer) {
+                trailer.classList.remove("active");
+                
+                if (currentTrailerIframe) {
+                    currentTrailerIframe.remove();
+                    currentTrailerIframe = trailerIframe.cloneNode();
+                    trailer.append(currentTrailerIframe);
+                }
+            }
+        });
+        
+        trailerIframe.className = "iframe";
+        trailerIframe.setAttribute("allowfullscreen", true);
+        trailerIframe.src = info.trailer;
+        
+        currentTrailerIframe = trailerIframe.cloneNode();
+        trailer.append(currentTrailerIframe);
+        
+        setCustomButton({
+            icon: "camera",
+            callback: function () {
+                trailer.classList.add("active");
+            }
         });
     }
 
@@ -1268,7 +1295,11 @@ function modal(info, recommendationImages) {
         right.remove();
     }
 
-    if (videoActive) watch.append(video);
+    if (videoActive) {
+        watch.append(video);
+        if (info.trailer) watch.append(trailer);
+    }
+
     if ((left.childElementCount + right.childElementCount) !== 0) watch.append(details);
     else watch.classList.add("only-video");
 

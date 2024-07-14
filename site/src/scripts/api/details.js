@@ -111,7 +111,7 @@ async function format(item, type) {
       genres,
       seasons,
       recommendations,
-      trailer: trailer ? `https://youtube.com/watch?v=${trailer.key}` : null,
+      trailer: trailer ? `https://youtube.com/embed/${trailer.key}` : null,
     };
   }
 
