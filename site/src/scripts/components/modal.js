@@ -8,8 +8,6 @@ let headerText;
 let headerInfo;
 let buttons;
 let customButtons;
-let copyButton;
-let copyButtonIcon;
 let headerButtonIcon;
 let content;
 let callback;
@@ -84,23 +82,6 @@ function initializeModalChangeCheck() {
     onQueryChange(handleQueryChange);
 }
 
-function copyLink() {
-    const page = getQuery(config.query.page);
-    const modal = getQuery(config.query.modal);
-
-    if (page && modal) {
-        copyButton.classList.add("copied");
-        copyButtonIcon.className = "icon icon-check";
-
-        copyText(`${(window.location.href || "").split("?")[0]}?${config.query.modal}=${modal}`);
-        
-        setTimeout(function () {
-            copyButtonIcon.className = "icon icon-link";
-            copyButton.classList.remove("copied");
-        }, 2000);
-    }
-}
-
 function createCustomButton(data) {
     if (!data || !data.icon || !data.callback || typeof data.callback !== "function") return;
     
@@ -135,8 +116,6 @@ export function initializeModal() {
     headerInfo = document.createElement("span");
     buttons = document.createElement("div");
     customButtons = document.createElement("div");
-    copyButton = document.createElement("div");
-    copyButtonIcon = document.createElement("i");
     const headerButton = document.createElement("div");
     headerButtonIcon = document.createElement("i");
     
@@ -153,8 +132,6 @@ export function initializeModal() {
     headerButton.className = "button secondary icon-only";
     headerButtonIcon.className = "icon icon-times";
     customButtons.className = "custom-buttons";
-    copyButton.className = "button secondary icon-only";
-    copyButtonIcon.className = "icon icon-link";
 
     headerTextContainer.append(headerText);
     headerTextContainer.append(headerInfo);
@@ -164,11 +141,7 @@ export function initializeModal() {
         hideModal();
     });
 
-    copyButton.append(copyButtonIcon);
-    copyButton.addEventListener("click", copyLink);
-
     buttons.append(customButtons);
-    buttons.append(copyButton);
     buttons.append(headerButton);
     
     header.append(headerTextContainer);
