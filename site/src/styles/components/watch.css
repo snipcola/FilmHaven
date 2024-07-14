@@ -225,7 +225,11 @@
 }
 
 .watch .downloads .torrents .download {
+    display: flex;
+    align-items: center;
+
     padding: var(--small-padding);
+    gap: var(--small-gap);
 }
 
 .watch .downloads .torrents .download:hover {
@@ -233,6 +237,26 @@
 
     background-color: var(--lightest);
     border-radius: var(--border-radius);
+}
+
+.watch .downloads .torrents .download span {
+    padding: calc(var(--small-padding) / 3);
+    border-radius: var(--border-radius);
+
+    color: var(--dark);
+    font-weight: 400;
+}
+
+.watch .downloads .torrents .download .type {
+    background-color: var(--blue);
+}
+
+.watch .downloads .torrents .download .quality {
+    background-color: var(--green);
+}
+
+.watch .downloads .torrents .download .size {
+    background-color: var(--orange);
 }
 
 .watch .details {

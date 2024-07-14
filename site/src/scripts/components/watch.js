@@ -469,10 +469,20 @@ function modal(info, recommendationImages) {
 
         for (const download of downloads) {
           const downloadElement = document.createElement("div");
+          const downloadType = document.createElement("span");
+          const downloadQuality = document.createElement("span");
+          const downloadSize = document.createElement("span");
+
+          downloadType.className = "type";
+          downloadQuality.className = "quality";
+          downloadSize.className = "size";
+          downloadType.innerText = download.type;
+          downloadQuality.innerText = download.quality;
+          downloadSize.innerText = download.size;
 
           downloadElement.className = "download";
-          downloadElement.innerText = `Torrent (${download.type}, ${download.quality}, ${download.size})`;
-
+          downloadElement.innerText = "Torrent";
+          downloadElement.append(downloadType, downloadQuality, downloadSize);
           downloadElement.addEventListener("click", function () {
             window.open(download.url);
           });
