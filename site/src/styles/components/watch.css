@@ -11,7 +11,7 @@
     max-width: 100%;
 }
 
-.watch > *:not(> .trailer):not(> .downloads) {
+.watch > .video, .watch > .details {
     width: calc(100% - (2 * var(--large-padding)));
     max-width: var(--max-width);
 
@@ -225,7 +225,7 @@
 }
 
 .watch .downloads .torrents .download {
-    padding: calc(var(--small-padding) / 2) var(--small-padding);
+    padding: var(--small-padding);
 }
 
 .watch .downloads .torrents .download:hover {
