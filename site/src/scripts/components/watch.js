@@ -327,12 +327,13 @@ function modal(info, recommendationImages) {
         });
       });
 
-      const response = proxies.length > 0
-        ? await Promise.any([
-          ...promises,
-          promiseTimeout(proxyConfig.checkTimeout),
-        ])
-        : null;
+      const response =
+        proxies.length > 0
+          ? await Promise.any([
+              ...promises,
+              promiseTimeout(proxyConfig.checkTimeout),
+            ])
+          : null;
 
       if (response) {
         providers = response.providers;
@@ -362,14 +363,19 @@ function modal(info, recommendationImages) {
       updateAlert();
 
       const promises = providers.map(async function (provider) {
-        const url = proxy ?
-          await Promise.any([
-            isValidUrl(proxy, provider, info, seasonNumber, episodeNumber),
-            promiseTimeout(proxyConfig.validCheckTimeout),
-          ])
+        const url = proxy
+          ? await Promise.any([
+              isValidUrl(proxy, provider, info, seasonNumber, episodeNumber),
+              promiseTimeout(proxyConfig.validCheckTimeout),
+            ])
           : backupProviders
-            .find((backupProvider) => backupProvider.base === provider)
-            .url(info.type, { id: info.id, imdbId: info.imdbId, season: seasonNumber, episode: episodeNumber });
+              .find((backupProvider) => backupProvider.base === provider)
+              .url(info.type, {
+                id: info.id,
+                imdbId: info.imdbId,
+                season: seasonNumber,
+                episode: episodeNumber,
+              });
 
         if (url) validProviders.push({ provider, url });
         checked++;
