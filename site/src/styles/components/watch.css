@@ -230,13 +230,14 @@
 
     padding: var(--small-padding);
     gap: var(--small-gap);
+
+    border-radius: var(--border-radius);
+    transition: var(--transition-speed) background-color;
 }
 
 .watch .downloads .torrents .download:hover {
     cursor: pointer;
-
     background-color: var(--lightest);
-    border-radius: var(--border-radius);
 }
 
 .watch .downloads .torrents .download span {
