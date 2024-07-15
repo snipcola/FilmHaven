@@ -566,6 +566,9 @@ function modal(info, recommendationImages) {
       });
 
       setCustomButtons(customButtons);
+    } else if (customButtons.find((b) => b.icon === "download")) {
+      customButtons = customButtons.filter((b) => b.icon !== "download");
+      setCustomButtons(customButtons);
     }
   }
 
