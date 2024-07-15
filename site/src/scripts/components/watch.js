@@ -26,7 +26,7 @@ import { getWatchSection } from "../store/watch-sections.js";
 import { initializeArea } from "./area.js";
 import { isValidProxy, isValidUrl } from "../api/proxy.js";
 import { toggleDim } from "./dim.js";
-import { getDownloads } from "../downloadsApi/download.js";
+import { getDownloads, constructMagnet } from "../downloadsApi/download.js";
 import { backupProviders } from "../../../../api/src/config.js";
 import { getMode } from "../store/mode.js";
 import { isLocal } from "../functions.js";
@@ -488,23 +488,27 @@ function modal(info, recommendationImages) {
         });
 
         for (const download of downloads) {
+          const magnet = constructMagnet(download.hash, info.title);
           const downloadElement = document.createElement("div");
+          const downloadIcon = document.createElement("i");
+          const downloadText = document.createElement("p");
           const downloadType = document.createElement("span");
           const downloadQuality = document.createElement("span");
           const downloadSize = document.createElement("span");
 
+          downloadIcon.className = "icon-magnet";
           downloadType.className = "type";
           downloadQuality.className = "quality";
           downloadSize.className = "size";
+          downloadText.innerText = "Magnet";
           downloadType.innerText = download.type;
           downloadQuality.innerText = download.quality;
           downloadSize.innerText = download.size;
 
           downloadElement.className = "download";
-          downloadElement.innerText = "Torrent";
-          downloadElement.append(downloadType, downloadQuality, downloadSize);
+          downloadElement.append(downloadIcon, downloadText, downloadType, downloadQuality, downloadSize);
           downloadElement.addEventListener("click", function () {
-            window.open(download.url);
+            window.location.href = magnet;
           });
 
           downloadsList.append(downloadElement);
