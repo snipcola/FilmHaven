@@ -235,9 +235,8 @@
     transition: var(--transition-speed) background-color;
 }
 
-.watch .downloads .torrents .download:hover {
-    cursor: pointer;
-    background-color: var(--lightest);
+.watch .downloads .torrents .download p {
+    margin: 0;
 }
 
 .watch .downloads .torrents .download span {
@@ -246,6 +245,11 @@
 
     color: var(--dark);
     font-weight: 400;
+}
+
+.watch .downloads .torrents .download:hover {
+    cursor: pointer;
+    background-color: var(--lightest);
 }
 
 .watch .downloads .torrents .download .type {
