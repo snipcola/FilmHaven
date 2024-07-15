@@ -208,6 +208,8 @@ export const sections = {
 
 export const watchSections = {
   Video: true,
+  Trailer: true,
+  Download: true,
   Providers: true,
   Seasons: true,
   Description: true,
@@ -344,7 +346,7 @@ export const settings = [
         for (const watchSection of Object.keys(watchSections)) {
           setWatchSection(
             watchSection,
-            ["Video", "Providers", "Seasons"].includes(watchSection),
+            ["Video", "Trailer", "Download", "Providers", "Seasons"].includes(watchSection),
           );
         }
 

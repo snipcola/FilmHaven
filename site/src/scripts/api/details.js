@@ -126,8 +126,9 @@ async function format(item, type) {
 }
 
 export async function getDetails(type = "movie", id) {
-  let append_to_response = ["videos"];
+  let append_to_response = [];
 
+  if (getWatchSection("Trailer")) append_to_response.push("videos");
   if (getWatchSection("Cast")) append_to_response.push("credits");
   if (getWatchSection("Reviews")) append_to_response.push("reviews");
   if (getWatchSection("Recommendations"))

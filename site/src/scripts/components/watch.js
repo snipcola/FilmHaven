@@ -40,6 +40,8 @@ function modal(info, recommendationImages) {
   addContinueWatching(info.id, info.type, info.title, info.image);
 
   const videoActive = getWatchSection("Video");
+  const trailerActive = getWatchSection("Trailer");
+  const downloadActive = getWatchSection("Download");
   const providersActive = getWatchSection("Providers");
   const seasonsActive = getWatchSection("Seasons");
   const descriptionActive = getWatchSection("Description");
@@ -439,7 +441,7 @@ function modal(info, recommendationImages) {
     });
   }
 
-  if (info.trailer) {
+  if (trailerActive && info.trailer) {
     let currentTrailerIframe;
 
     trailer.className = "trailer";
@@ -470,7 +472,7 @@ function modal(info, recommendationImages) {
     });
   }
 
-  if (info.type === "movie" && info.imdbId) {
+  if (downloadActive && info.type === "movie" && info.imdbId) {
     async function checkDownloads() {
       const downloads = await getDownloads(info.imdbId);
 
@@ -1483,7 +1485,7 @@ function modal(info, recommendationImages) {
   }
 
   if (videoActive) watch.append(video);
-  if (info.trailer) watch.append(trailer);
+  if (trailerActive && info.trailer) watch.append(trailer);
 
   if (left.childElementCount + right.childElementCount !== 0)
     watch.append(details);
