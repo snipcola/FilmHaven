@@ -207,3 +207,27 @@ export function splitArray(array, amount = 1) {
 
   return newArray;
 }
+
+export function formatBytes(_bytes) {
+  let bytes;
+
+  if (typeof _bytes === "string") {
+    try {
+      bytes = parseInt(_bytes);
+    } catch {
+      bytes = 0;
+    }
+  } else {
+    bytes = _bytes;
+  }
+
+  if (bytes === 0) {
+    return "0 Bytes";
+  }
+
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  const formattedBytes = (bytes / Math.pow(1024, i)).toFixed(2);
+
+  return `${formattedBytes} ${sizes[i]}`;
+}

@@ -331,7 +331,7 @@ function modal(info, recommendationImages) {
       });
 
       const response =
-        (getMode() === "proxy")
+        getMode() === "proxy"
           ? await Promise.any([
               ...promises,
               promiseTimeout(proxyConfig.checkTimeout),
@@ -473,61 +473,103 @@ function modal(info, recommendationImages) {
     });
   }
 
-  if (downloadActive && info.type === "movie" && info.imdbId) {
-    async function checkDownloads() {
-      const downloads = await getDownloads(info.imdbId);
+  let fetchedDownloads;
 
-      if (downloads && Array.isArray(downloads) && downloads.length > 0) {
-        downloadsContainer.className = "downloads";
-        downloadsList.className = "torrents";
+  async function checkDownloads() {
+    if (info.type !== "movie" && !videoActive) return;
+    if (!fetchedDownloads)
+      fetchedDownloads = await getDownloads(info.type, info.imdbId);
 
-        downloadsContainer.addEventListener("click", function (e) {
-          if (e.target === downloadsContainer) {
-            downloadsContainer.classList.remove("active");
-          }
-        });
+    let downloads = fetchedDownloads;
+    const seasonString = seasonNumber?.toString();
+    const episodeString = episodeNumber?.toString();
+    if (info.type !== "movie")
+      downloads = downloads.filter(
+        (d) => d.season === seasonString && d.episode === episodeString,
+      );
 
-        for (const download of downloads) {
-          const magnet = constructMagnet(download.hash, info.title);
-          const downloadElement = document.createElement("div");
-          const downloadIcon = document.createElement("i");
-          const downloadText = document.createElement("p");
-          const downloadType = document.createElement("span");
-          const downloadQuality = document.createElement("span");
-          const downloadSize = document.createElement("span");
+    if (downloads && Array.isArray(downloads) && downloads.length > 0) {
+      downloadsContainer.className = "downloads";
+      downloadsList.className = "torrents";
 
-          downloadIcon.className = "icon-magnet";
-          downloadType.className = "type";
-          downloadQuality.className = "quality";
-          downloadSize.className = "size";
-          downloadText.innerText = "Magnet";
-          downloadType.innerText = download.type;
+      downloadsContainer.addEventListener("click", function (e) {
+        if (e.target === downloadsContainer) {
+          downloadsContainer.classList.remove("active");
+        }
+      });
+
+      downloadsList.innerHTML = "";
+
+      for (const download of downloads) {
+        const magnet = constructMagnet(
+          download.hash,
+          info.type === "movie"
+            ? `${info.title} (${download.type}, ${download.quality}, ${download.size})`
+            : `${download.title} (S${download.season} E${download.episode}, ${download.size})`,
+        );
+        const downloadElement = document.createElement("div");
+        const downloadIcon = document.createElement("i");
+        const downloadText = document.createElement("p");
+        const downloadType = document.createElement("span");
+        const downloadQuality = document.createElement("span");
+        const downloadSize = document.createElement("span");
+
+        downloadIcon.className = "icon-magnet";
+        downloadType.className = "type";
+        downloadQuality.className = "quality";
+        downloadSize.className = "size";
+        downloadText.innerText = "Magnet";
+        downloadType.innerText =
+          info.type === "movie"
+            ? download.type
+            : download.title.replace(/^.*?(S\d+E\d+)/, "");
+        downloadSize.innerText = download.size;
+
+        if (info.type === "movie") {
           downloadQuality.innerText = download.quality;
-          downloadSize.innerText = download.size;
-
-          downloadElement.className = "download";
-          downloadElement.append(downloadIcon, downloadText, downloadType, downloadQuality, downloadSize);
-          downloadElement.addEventListener("click", function () {
-            window.location.href = magnet;
-          });
-
-          downloadsList.append(downloadElement);
         }
 
-        downloadsContainer.append(downloadsList);
-        watch.append(downloadsContainer);
-
-        customButtons.push({
-          icon: "download",
-          callback: function () {
-            downloadsContainer.classList.add("active");
-          },
+        downloadElement.className = "download";
+        downloadElement.addEventListener("click", function () {
+          window.location.href = magnet;
         });
 
-        setCustomButtons(customButtons);
-      }
-    }
+        if (info.type === "movie") {
+          downloadElement.append(
+            downloadIcon,
+            downloadText,
+            downloadType,
+            downloadQuality,
+            downloadSize,
+          );
+        } else {
+          downloadElement.append(
+            downloadIcon,
+            downloadText,
+            downloadType,
+            downloadSize,
+          );
+        }
 
+        downloadsList.append(downloadElement);
+      }
+
+      downloadsContainer.append(downloadsList);
+      watch.append(downloadsContainer);
+
+      customButtons = customButtons.filter((b) => b.icon !== "download");
+      customButtons.push({
+        icon: "download",
+        callback: function () {
+          downloadsContainer.classList.add("active");
+        },
+      });
+
+      setCustomButtons(customButtons);
+    }
+  }
+
+  if (downloadActive && info.imdbId) {
     checkDownloads();
   }
 
@@ -710,6 +752,10 @@ function modal(info, recommendationImages) {
 
     seasonNumber = sNumber;
     episodeNumber = eNumber;
+
+    if (downloadActive && info.imdbId) {
+      checkDownloads();
+    }
 
     if (episode) setEpisode(episode);
     else checkProviders();

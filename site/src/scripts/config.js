@@ -150,8 +150,14 @@ export const api = {
 };
 
 export const downloadApi = {
-  url: "https://yts.mx/api",
-  version: "v2",
+  movies: {
+    url: "https://yts.mx/api",
+    version: "v2",
+  },
+  tv: {
+    url: "https://eztvx.to/api",
+    limit: 100,
+  },
   trackers: [
     "udp://glotorrents.pw:6969/announce",
     "udp://tracker.opentrackr.org:1337/announce",
@@ -161,6 +167,13 @@ export const downloadApi = {
     "udp://tracker.leechers-paradise.org:6969",
     "udp://p4p.arenabg.ch:1337",
     "udp://tracker.internetwarriors.net:1337",
+    "udp://9.rarbg.me:2970/announce",
+    "udp://p4p.arenabg.com:1337/announce",
+    "udp://tracker.torrent.eu.org:451/announce",
+    "udp://tracker.dler.org:6969/announce",
+    "udp://open.stealth.si:80/announce",
+    "udp://ipv4.tracker.harry.lu:80/announce",
+    "https://opentracker.i2p.rocks:443/announce",
   ],
 };
 
@@ -220,7 +233,7 @@ export const sections = {
 
 export const mode = {
   local: "Local",
-  proxy: "Proxy"
+  proxy: "Proxy",
 };
 
 export const defaultMode = proxies.length > 0 ? "proxy" : "local";
@@ -365,7 +378,9 @@ export const settings = [
         for (const watchSection of Object.keys(watchSections)) {
           setWatchSection(
             watchSection,
-            ["Video", "Trailer", "Download", "Providers", "Seasons"].includes(watchSection),
+            ["Video", "Trailer", "Download", "Providers", "Seasons"].includes(
+              watchSection,
+            ),
           );
         }
 

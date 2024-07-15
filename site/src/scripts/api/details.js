@@ -91,9 +91,11 @@ async function format(item, type) {
       )
       .slice(-1)[0];
 
+    const imdbId = item.external_ids?.imdb_id;
+
     return {
       id: item.id?.toString(),
-      imdbId: item.imdb_id ? item.imdb_id.toString() : item.id?.toString(),
+      imdbId: imdbId ? imdbId.toString() : item.id?.toString(),
       type,
       title: item.title || item.name,
       description: item.overview || item.description,
@@ -126,7 +128,7 @@ async function format(item, type) {
 }
 
 export async function getDetails(type = "movie", id) {
-  let append_to_response = [];
+  let append_to_response = ["external_ids"];
 
   if (getWatchSection("Trailer")) append_to_response.push("videos");
   if (getWatchSection("Cast")) append_to_response.push("credits");
