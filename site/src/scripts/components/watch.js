@@ -28,6 +28,7 @@ import { isValidProxy, isValidUrl } from "../api/proxy.js";
 import { toggleDim } from "./dim.js";
 import { getDownloads } from "../downloadsApi/download.js";
 import { backupProviders } from "../../../../api/src/config.js";
+import { getMode } from "../store/mode.js";
 import { isLocal } from "../functions.js";
 
 const local = isLocal();
@@ -330,7 +331,7 @@ function modal(info, recommendationImages) {
       });
 
       const response =
-        proxies.length > 0
+        (getMode() === "proxy")
           ? await Promise.any([
               ...promises,
               promiseTimeout(proxyConfig.checkTimeout),

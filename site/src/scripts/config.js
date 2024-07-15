@@ -1,5 +1,6 @@
 import { getTheme, setTheme } from "./store/theme.js";
 import { getAdult, setAdult } from "./store/adult.js";
+import { getMode, setMode } from "./store/mode.js";
 import { getPages, getPage, setPage } from "./store/pages.js";
 import { getSections, getSection, setSection } from "./store/sections.js";
 import {
@@ -175,6 +176,7 @@ export const store = {
     theme: "fh-theme",
     adult: "fh-adult",
     language: "fh-language",
+    mode: "fh-mode",
     provider: "fh-provider",
     lastPlayed: "fh-last-played",
     pages: "fh-pages",
@@ -205,6 +207,13 @@ export const sections = {
   "Top-Rated": true,
   New: true,
 };
+
+export const mode = {
+  local: "Local",
+  proxy: "Proxy"
+};
+
+export const defaultMode = proxies.length > 0 ? "proxy" : "local";
 
 export const watchSections = {
   Video: true,
@@ -374,6 +383,24 @@ export const settings = [
       }
     },
     preventChange: true,
+    type: "select",
+  },
+  {
+    label: {
+      icon: "cog",
+      text: "Mode",
+    },
+    items: function () {
+      const currentMode = getMode();
+      const modeItems = Object.values(mode);
+
+      return modeItems.map((a) => ({
+        label: a,
+        value: a.toLowerCase(),
+        active: a.toLowerCase() === currentMode,
+      }));
+    },
+    onSelect: setMode,
     type: "select",
   },
   {

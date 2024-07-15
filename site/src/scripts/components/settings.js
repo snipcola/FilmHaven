@@ -1,6 +1,8 @@
 import { settings } from "../config.js";
+import { checkMode } from "../store/mode.js";
 
 export function initializeSettings() {
+  checkMode();
   const section = document.querySelector(".section.settings");
 
   if (!section) {
