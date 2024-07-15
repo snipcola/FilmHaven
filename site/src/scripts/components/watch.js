@@ -27,6 +27,10 @@ import { initializeArea } from "./area.js";
 import { isValidProxy, isValidUrl } from "../api/proxy.js";
 import { toggleDim } from "./dim.js";
 import { getDownloads } from "../downloadsApi/download.js";
+import { backupProviders } from "../../../../api/src/config.js";
+import { isLocal } from "../functions.js";
+
+const local = isLocal();
 
 export function watchContent(type, id) {
   setQuery(config.query.modal, `${type === "movie" ? "m" : "s"}-${id}`);
@@ -323,18 +327,24 @@ function modal(info, recommendationImages) {
         });
       });
 
-      const response = await Promise.any([
-        ...promises,
-        promiseTimeout(proxyConfig.checkTimeout),
-      ]);
+      const response = proxies.length > 0
+        ? await Promise.any([
+          ...promises,
+          promiseTimeout(proxyConfig.checkTimeout),
+        ])
+        : null;
 
       if (response) {
         providers = response.providers;
         validProxy = response.proxy;
+      } else {
+        providers = backupProviders
+          .filter((provider) => (local ? provider.local : true))
+          .map((provider) => provider.base);
+      }
 
-        if (getProvider() === null && providers[0]) {
-          setProvider(providers[0]);
-        }
+      if (getProvider() === null && providers[0]) {
+        setProvider(providers[0]);
       }
 
       proxiesChecked = true;
@@ -352,10 +362,14 @@ function modal(info, recommendationImages) {
       updateAlert();
 
       const promises = providers.map(async function (provider) {
-        const url = await Promise.any([
-          isValidUrl(proxy, provider, info, seasonNumber, episodeNumber),
-          promiseTimeout(proxyConfig.validCheckTimeout),
-        ]);
+        const url = proxy ?
+          await Promise.any([
+            isValidUrl(proxy, provider, info, seasonNumber, episodeNumber),
+            promiseTimeout(proxyConfig.validCheckTimeout),
+          ])
+          : backupProviders
+            .find((backupProvider) => backupProvider.base === provider)
+            .url(info.type, { id: info.id, imdbId: info.imdbId, season: seasonNumber, episode: episodeNumber });
 
         if (url) validProviders.push({ provider, url });
         checked++;
@@ -371,13 +385,11 @@ function modal(info, recommendationImages) {
     }
 
     if (!proxiesChecked) await proxiesCheck();
-
-    if (validProxy) await providersCheck(validProxy);
-    else validProviders = providers;
+    await providersCheck(validProxy);
 
     providersSelect.innerHTML = "";
 
-    if (validProviders.length > 0 && validProxy) {
+    if (validProxy ? validProviders.length > 0 : true) {
       validProviders.forEach(function ({ provider: providerName }) {
         const provider = document.createElement("option");
 
@@ -393,8 +405,7 @@ function modal(info, recommendationImages) {
       disabled = false;
       playVideo();
     } else {
-      if (validProxy) videoAlert(true, "censor", "No providers available");
-      else videoAlert(true, "censor", "No proxies available");
+      videoAlert(true, "censor", "No providers available");
     }
 
     seasonsDisabled = false;
