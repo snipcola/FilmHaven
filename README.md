@@ -10,6 +10,10 @@ A simple, customizable, and lightweight frontend to view and interact with movie
 
 - <a target="\_blank" href="https://film-haven.vercel.app">film-haven.vercel.app</a>
 
+## 🗒️ - Note
+
+Due to the nature of how the project works, you will most likely be faced with ads upon viewing content; to fix this, use [uBlock Origin](https://ublockorigin.com), [AdGuard](http://adguard.com), or an ad-blocker of your choice.
+
 ## ⌨️ - Shortcuts
 
 - `/` - Focuses on search bar. _Navigates out out of any page or modal open._
