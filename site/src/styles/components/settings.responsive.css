@@ -1,19 +1,19 @@
 @media only screen and (max-width: 600px) {
-    .section.settings {
-        flex-direction: column;
-        flex-wrap: nowrap;
-    }
+  .section.settings {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
 
-    .section.settings .selection {
-        flex-direction: column;
-        width: 100%;
-    }
+  .section.settings .selection {
+    flex-direction: column;
+    width: 100%;
+  }
 
-    .section.settings .buttons {
-        flex-direction: column;
-    }
+  .section.settings .buttons {
+    flex-direction: column;
+  }
 
-    .section.settings .buttons .button {
-        width: 100%;
-    }
+  .section.settings .buttons .button {
+    width: 100%;
+  }
 }

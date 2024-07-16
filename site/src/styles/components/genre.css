@@ -1,33 +1,33 @@
 .area.genres .genres {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 }
 
 .area.genres .genres .genre {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 
-    background-color: var(--light);
-    padding: calc(var(--small-padding) * 1.5) var(--large-padding);
+  background-color: var(--light);
+  padding: calc(var(--small-padding) * 1.5) var(--large-padding);
 
-    border-radius: var(--border-radius);
-    border: var(--small-border) solid var(--lighter);
+  border-radius: var(--border-radius);
+  border: var(--small-border) solid var(--lighter);
 
-    user-select: none;
-    -webkit-user-select: none;
-    gap: var(--small-gap);
+  user-select: none;
+  -webkit-user-select: none;
+  gap: var(--small-gap);
 
-    align-items: center;
-    justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 
-    cursor: pointer;
-    transition: var(--transition-speed) background-color;
+  cursor: pointer;
+  transition: var(--transition-speed) background-color;
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 @media (hover: hover) {
-    .area.genres .genres .genre:hover {
-        background-color: var(--lighter);
-    }
+  .area.genres .genres .genre:hover {
+    background-color: var(--lighter);
+  }
 }

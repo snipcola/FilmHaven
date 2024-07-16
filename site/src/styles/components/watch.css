@@ -1,885 +1,886 @@
 .watch {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    align-items: center;
+  align-items: center;
 
-    margin-left: 0;
-    margin-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 
-    width: 100%;
-    max-width: 100%;
+  width: 100%;
+  max-width: 100%;
 }
 
-.watch > .video, .watch > .details {
-    width: calc(100% - (2 * var(--large-padding)));
-    max-width: var(--max-width);
+.watch > .video,
+.watch > .details {
+  width: calc(100% - (2 * var(--large-padding)));
+  max-width: var(--max-width);
 
-    margin-left: var(--large-padding);
-    margin-right: var(--large-padding);
+  margin-left: var(--large-padding);
+  margin-right: var(--large-padding);
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .watch.only-video {
-    margin-bottom: calc(var(--large-padding) * -1);
+  margin-bottom: calc(var(--large-padding) * -1);
 }
 
 .watch .video {
-    background-color: var(--dark);
+  background-color: var(--dark);
 
-    width: 100%;
-    max-width: 100%;
+  width: 100%;
+  max-width: 100%;
 
-    height: 100dvh;
-    min-height: calc(var(--max-width) / 25);
+  height: 100dvh;
+  min-height: calc(var(--max-width) / 25);
 
-    -webkit-mask-image: -webkit-radial-gradient(var(--light), var(--dark));
-    mask-image: -webkit-radial-gradient(var(--light), var(--dark));
+  -webkit-mask-image: -webkit-radial-gradient(var(--light), var(--dark));
+  mask-image: -webkit-radial-gradient(var(--light), var(--dark));
 
-    overflow: hidden;
-    box-sizing: border-box;
+  overflow: hidden;
+  box-sizing: border-box;
 
-    position: relative;
-    user-select: none;
-    -webkit-user-select: none;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
 
-    margin-left: 0;
-    margin-right: 0;
+  margin-left: 0;
+  margin-right: 0;
 }
 
 .watch .video .backdrop {
-    display: none;
-    position: absolute;
+  display: none;
+  position: absolute;
 
-    top: 0;
-    left: 0;
+  top: 0;
+  left: 0;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    object-fit: cover;
-    opacity: var(--dim-opacity);
+  object-fit: cover;
+  opacity: var(--dim-opacity);
 }
 
 .watch .video .vignette {
-    display: none;
-    position: absolute;
+  display: none;
+  position: absolute;
 
-    top: 0;
-    left: 0;
+  top: 0;
+  left: 0;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0),
-        rgba(var(--light-rgb), 0.4) 25%
-    );
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(var(--light-rgb), 0.4) 25%
+  );
 }
 
 .watch .video .backdrop.active,
 .watch .video .vignette.active {
-    display: flex;
+  display: flex;
 }
 
 .watch .video .iframe {
-    display: none;
-    position: absolute;
+  display: none;
+  position: absolute;
 
-    outline: none;
-    border: none;
+  outline: none;
+  border: none;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .watch .video .iframe.active {
-    display: inline-block;
+  display: inline-block;
 }
 
 .watch .video .video-notice {
-    display: none;
-    position: absolute;
+  display: none;
+  position: absolute;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    z-index: 2;
+  z-index: 2;
 }
 
 .watch .video .video-notice.active {
-    display: flex;
+  display: flex;
 }
 
 .watch .video .video-notice .notice {
-    margin: 0;
+  margin: 0;
 }
 
 .watch .video .scroll {
-    position: fixed;
-    transform: translate(-50%, 0);
+  position: fixed;
+  transform: translate(-50%, 0);
 
-    top: var(--small-padding);
-    left: 50%;
+  top: var(--small-padding);
+  left: 50%;
 
-    background-color: var(--lighter);
-    border: var(--small-border) solid var(--lightest);
+  background-color: var(--lighter);
+  border: var(--small-border) solid var(--lightest);
 
-    box-sizing: border-box;
-    padding: var(--small-padding);
+  box-sizing: border-box;
+  padding: var(--small-padding);
 
-    border-radius: 50%;
-    opacity: 0;
+  border-radius: 50%;
+  opacity: 0;
 
-    transition: var(--transition-speed) opacity;
-    cursor: pointer;
+  transition: var(--transition-speed) opacity;
+  cursor: pointer;
 
-    z-index: -10;
+  z-index: -10;
 }
 
 .watch .video .scroll.active {
-    opacity: calc(var(--dimmer-opacity) / 2);
-    z-index: 3;
+  opacity: calc(var(--dimmer-opacity) / 2);
+  z-index: 3;
 }
 
 .watch .video .scroll.down {
-    top: initial;
-    bottom: var(--small-padding);
+  top: initial;
+  bottom: var(--small-padding);
 }
 
 .watch .trailer {
-    display: none;
-    position: fixed;
+  display: none;
+  position: fixed;
 
-    z-index: 9;
-    background-color: rgba(var(--light-rgb), 0.6);
+  z-index: 9;
+  background-color: rgba(var(--light-rgb), 0.6);
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    top: 0;
-    left: 0;
+  top: 0;
+  left: 0;
 
-    width: 100dvw;
-    height: 100dvh;
+  width: 100dvw;
+  height: 100dvh;
 }
 
 .watch .trailer.active {
-    display: flex;
+  display: flex;
 }
 
 .watch .trailer .iframe {
-    border-radius: var(--border-radius);
-    outline: none;
-    border: none;
+  border-radius: var(--border-radius);
+  outline: none;
+  border: none;
 
-    width: 80dvw;
-    height: 80dvh;
+  width: 80dvw;
+  height: 80dvh;
 }
 
 .watch .downloads {
-    display: none;
-    position: fixed;
+  display: none;
+  position: fixed;
 
-    z-index: 9;
-    background-color: rgba(var(--light-rgb), 0.6);
+  z-index: 9;
+  background-color: rgba(var(--light-rgb), 0.6);
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    top: 0;
-    left: 0;
+  top: 0;
+  left: 0;
 
-    width: 100dvw;
-    height: 100dvh;
+  width: 100dvw;
+  height: 100dvh;
 }
 
 .watch .downloads.active {
-    display: flex;
+  display: flex;
 }
 
 .watch .downloads .torrents {
-    background-color: var(--lighter);
-    border-radius: var(--border-radius);
-    padding: var(--small-padding);
+  background-color: var(--lighter);
+  border-radius: var(--border-radius);
+  padding: var(--small-padding);
 
-    display: flex;
-    flex-direction: column;
-    gap: var(--small-gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--small-gap);
 
-    max-width: 70dvw;
-    max-height: 70dvh;
-    
-    overflow: auto;
+  max-width: 70dvw;
+  max-height: 70dvh;
+
+  overflow: auto;
 }
 
 .watch .downloads .torrents .download {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    padding: var(--small-padding);
-    gap: var(--small-gap);
+  padding: var(--small-padding);
+  gap: var(--small-gap);
 
-    border-radius: var(--border-radius);
-    transition: var(--transition-speed) background-color;
+  border-radius: var(--border-radius);
+  transition: var(--transition-speed) background-color;
 }
 
 .watch .downloads .torrents .download p {
-    margin: 0;
+  margin: 0;
 }
 
 .watch .downloads .torrents .download span {
-    padding: calc(var(--small-padding) / 3);
-    border-radius: var(--border-radius);
+  padding: calc(var(--small-padding) / 3);
+  border-radius: var(--border-radius);
 
-    color: var(--dark);
-    font-weight: 400;
+  color: var(--dark);
+  font-weight: 500;
 }
 
 .watch .downloads .torrents .download:hover {
-    cursor: pointer;
-    background-color: var(--lightest);
+  cursor: pointer;
+  background-color: var(--lightest);
 }
 
 .watch .downloads .torrents .download .type {
-    background-color: var(--blue);
+  background-color: var(--blue);
 }
 
 .watch .downloads .torrents .download .quality {
-    background-color: var(--green);
+  background-color: var(--green);
 }
 
 .watch .downloads .torrents .download .size {
-    background-color: var(--orange);
+  background-color: var(--orange);
 }
 
 .watch .details {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 
-    margin-top: var(--large-padding);
+  margin-top: var(--large-padding);
 }
 
 .watch.disabled .details {
-    display: none;
+  display: none;
 }
 
 .watch .details.no-video {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .watch .container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    gap: var(--large-gap);
+  gap: var(--large-gap);
 }
 
 .watch .details .left {
-    width: 66.25%;
+  width: 66.25%;
 }
 
 .watch .details .left.full-width {
-    width: 100%;
+  width: 100%;
 }
 
 .watch .details .right {
-    width: 32%;
+  width: 32%;
 }
 
 .watch .details .right.full-width {
-    width: 100%;
-    flex-direction: row;
-    justify-content: space-between;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .watch .details .right.full-width .details-card {
-    height: fit-content;
+  height: fit-content;
 }
 
 .watch .details .details-card {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    gap: var(--small-gap);
-    background-color: var(--light);
+  gap: var(--small-gap);
+  background-color: var(--light);
 
-    padding: var(--large-padding);
-    box-sizing: border-box;
+  padding: var(--large-padding);
+  box-sizing: border-box;
 
-    border: var(--small-border) solid var(--lighter);
-    border-radius: var(--border-radius);
+  border: var(--small-border) solid var(--lighter);
+  border-radius: var(--border-radius);
 
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .watch .details .details-card.disabled {
-    display: none;
+  display: none;
 }
 
 .watch .details .title,
 .watch .details .text {
-    font-size: var(--large-font);
-    margin: 0;
+  font-size: var(--large-font);
+  margin: 0;
 
-    overflow-wrap: anywhere;
+  overflow-wrap: anywhere;
 }
 
 .watch .details .title {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 
-    font-weight: 500;
-    align-items: center;
+  font-weight: 500;
+  align-items: center;
 }
 
 .watch .details .title .text,
 .watch .details .title .icon {
-    opacity: var(--dim-opacity);
+  opacity: var(--dim-opacity);
 }
 
 .watch .details .notice {
-    background-color: var(--dark);
-    margin: 0;
+  background-color: var(--dark);
+  margin: 0;
 }
 
 .watch .details .control {
-    margin-left: auto;
+  margin-left: auto;
 }
 
 .watch .details .control {
-    background-color: transparent;
-    border: none;
+  background-color: transparent;
+  border: none;
 
-    padding: 0;
-    gap: calc(var(--small-gap) / 4);
+  padding: 0;
+  gap: calc(var(--small-gap) / 4);
 }
 
 .watch .details .control .indicators {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .watch .details .control .button {
-    width: 2.6rem;
-    border-radius: 50%;
+  width: 2.6rem;
+  border-radius: 50%;
 }
 
 .watch .details .cast-cards {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 
-    justify-content: center;
+  justify-content: center;
 }
 
 .watch .details .cast-cards .cast-card {
-    display: flex;
+  display: flex;
 
-    padding: var(--small-padding);
-    box-sizing: border-box;
+  padding: var(--small-padding);
+  box-sizing: border-box;
 
-    background-color: var(--dark);
-    border: var(--small-border) solid var(--lighter);
+  background-color: var(--dark);
+  border: var(--small-border) solid var(--lighter);
 
-    border-radius: var(--border-radius);
-    width: calc(25% - var(--small-padding));
+  border-radius: var(--border-radius);
+  width: calc(25% - var(--small-padding));
 
-    gap: var(--small-gap);
-    transition: var(--transition-speed) opacity;
+  gap: var(--small-gap);
+  transition: var(--transition-speed) opacity;
 
-    cursor: pointer;
-    overflow: hidden;
+  cursor: pointer;
+  overflow: hidden;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .watch .details .cast-cards .cast-card .text {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    gap: calc(var(--small-gap) / 3);
-    font-size: calc(var(--min-font) * 1.05);
+  gap: calc(var(--small-gap) / 3);
+  font-size: calc(var(--min-font) * 1.05);
 
-    justify-content: center;
-    overflow-wrap: anywhere;
+  justify-content: center;
+  overflow-wrap: anywhere;
 }
 
 .watch .details .cast-cards .cast-card .text .cast-name {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .watch .details .cast-cards .cast-card .text .cast-character {
-    opacity: var(--dim-opacity);
-    font-size: var(--min-font);
+  opacity: var(--dim-opacity);
+  font-size: var(--min-font);
 }
 
 .watch .details .cast-cards .cast-card .image {
-    height: 3rem;
+  height: 3rem;
 
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-select: none;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
 
-    border-radius: 50%;
-    object-fit: cover;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .watch .details .cast-cards .cast-card .image[src=""],
 .watch .details .cast-cards .cast-card .image[src="null"],
 .watch .details .cast-cards .cast-card .image:not([src]) {
-    opacity: 0;
+  opacity: 0;
 }
 
 .watch .details .review-cards {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 
-    justify-content: center;
+  justify-content: center;
 }
 
 .watch .details .review-cards .review-card {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    padding: var(--large-padding);
-    box-sizing: border-box;
+  padding: var(--large-padding);
+  box-sizing: border-box;
 
-    background-color: var(--dark);
-    border: var(--small-border) solid var(--lighter);
+  background-color: var(--dark);
+  border: var(--small-border) solid var(--lighter);
 
-    border-radius: var(--border-radius);
-    width: calc(50% - var(--small-padding));
+  border-radius: var(--border-radius);
+  width: calc(50% - var(--small-padding));
 
-    gap: var(--large-gap);
-    transition: var(--transition-speed) opacity;
+  gap: var(--large-gap);
+  transition: var(--transition-speed) opacity;
 
-    cursor: pointer;
-    overflow: hidden;
+  cursor: pointer;
+  overflow: hidden;
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .watch .details .review-title {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 
-    align-items: center;
-    justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .watch .details .review-title .title-container {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 
-    align-items: center;
+  align-items: center;
 }
 
 .watch .details .review-title .title-container .author {
-    overflow-wrap: anywhere;
+  overflow-wrap: anywhere;
 }
 
 .watch .details .review-title .title-container .avatar {
-    display: flex;
-    position: relative;
+  display: flex;
+  position: relative;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    border: var(--small-border) solid var(--lighter);
-    box-sizing: border-box;
+  border: var(--small-border) solid var(--lighter);
+  box-sizing: border-box;
 
-    overflow: hidden;
-    border-radius: 5rem;
+  overflow: hidden;
+  border-radius: 5rem;
 
-    background-color: var(--light);
+  background-color: var(--light);
 }
 
 .watch .details .review-title .title-container .avatar .image {
-    width: 1.75rem;
-    height: 1.75rem;
+  width: 1.75rem;
+  height: 1.75rem;
 
-    object-fit: cover;
-    pointer-events: none;
+  object-fit: cover;
+  pointer-events: none;
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .watch .details .review-title .title-container .avatar .image[src=""],
 .watch .details .review-title .title-container .avatar .image[src="null"],
 .watch .details .review-title .title-container .avatar .image:not([src]) {
-    opacity: 0;
+  opacity: 0;
 }
 
 .watch .details .rating {
-    background-color: var(--light);
-    border-radius: 5rem;
+  background-color: var(--light);
+  border-radius: 5rem;
 
-    width: fit-content;
-    font-size: var(--small-font);
+  width: fit-content;
+  font-size: var(--small-font);
 }
 
 .watch .details .review-content {
-    opacity: var(--dim-opacity);
-    font-size: var(--large-font);
+  opacity: var(--dim-opacity);
+  font-size: var(--large-font);
 
-    overflow-wrap: anywhere;
+  overflow-wrap: anywhere;
 }
 
 .watch .details .details-card.misc {
-    flex-direction: row;
-    gap: var(--large-gap);
+  flex-direction: row;
+  gap: var(--large-gap);
 }
 
 .watch .details .details-card.misc > div {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    gap: var(--small-gap);
+  gap: var(--small-gap);
 }
 
 .watch .details .details-card.misc .title:not(:first-child) {
-    margin-top: var(--large-padding);
+  margin-top: var(--large-padding);
 }
 
 .watch .details .details-card.misc .rating {
-    background-color: var(--dark);
-    border-radius: var(--border-radius);
+  background-color: var(--dark);
+  border-radius: var(--border-radius);
 }
 
 .watch .details .genre-cards {
-    display: flex;
-    gap: calc(var(--small-gap) / 2);
+  display: flex;
+  gap: calc(var(--small-gap) / 2);
 
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .watch .details .genre-card {
-    background-color: var(--dark);
-    border: var(--small-border) solid var(--lighter);
+  background-color: var(--dark);
+  border: var(--small-border) solid var(--lighter);
 
-    padding: calc(var(--small-padding) / 1.5);
-    box-sizing: border-box;
+  padding: calc(var(--small-padding) / 1.5);
+  box-sizing: border-box;
 
-    border-radius: var(--border-radius);
-    font-size: var(--large-font);
+  border-radius: var(--border-radius);
+  font-size: var(--large-font);
 
-    overflow-wrap: anywhere;
+  overflow-wrap: anywhere;
 }
 
 .watch .details .season-cards {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    gap: var(--small-gap);
+  gap: var(--small-gap);
 }
 
 .watch .details .season-card {
-    background-color: var(--dark);
-    border: var(--small-border) solid var(--lighter);
+  background-color: var(--dark);
+  border: var(--small-border) solid var(--lighter);
 
-    padding: var(--small-padding) var(--large-padding);
-    box-sizing: border-box;
+  padding: var(--small-padding) var(--large-padding);
+  box-sizing: border-box;
 
-    border-radius: var(--border-radius);
+  border-radius: var(--border-radius);
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .watch .details .season-card .season-title {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    gap: var(--small-gap);
-    font-weight: 500;
+  gap: var(--small-gap);
+  font-weight: 500;
 }
 
 .watch .details .season-card .season-title .button {
-    background-color: var(--light);
-    border: var(--small-border) solid var(--lighter);
+  background-color: var(--light);
+  border: var(--small-border) solid var(--lighter);
 
-    border-radius: 50%;
-    margin-left: auto;
+  border-radius: 50%;
+  margin-left: auto;
 
-    width: 2rem;
-    height: 2rem;
+  width: 2rem;
+  height: 2rem;
 
-    font-size: var(--small-font);
+  font-size: var(--small-font);
 }
 
 .watch .details .season-card .season-title .button .icon {
-    opacity: var(--dim-opacity);
+  opacity: var(--dim-opacity);
 }
 
 .watch .details .season-card .season-title .name {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .watch .details .season-card .season-title .amount {
-    font-size: var(--small-font);
-    opacity: var(--dim-opacity);
+  font-size: var(--small-font);
+  opacity: var(--dim-opacity);
 }
 
 .watch .details .season-card .episodes {
-    display: none;
-    flex-direction: column;
+  display: none;
+  flex-direction: column;
 
-    padding: var(--small-padding) 0;
-    box-sizing: border-box;
+  padding: var(--small-padding) 0;
+  box-sizing: border-box;
 }
 
 .watch .details .season-card.active .episodes {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 }
 
 .watch .details .season-card .episodes .episode {
-    display: flex;
-    box-sizing: border-box;
+  display: flex;
+  box-sizing: border-box;
 
-    gap: var(--small-gap);
-    align-items: center;
+  gap: var(--small-gap);
+  align-items: center;
 
-    border-radius: var(--border-radius);
-    transition: var(--transition-speed) opacity;
+  border-radius: var(--border-radius);
+  transition: var(--transition-speed) opacity;
 
-    padding: var(--large-padding);
-    user-select: none;
-    -webkit-user-select: none;
+  padding: var(--large-padding);
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .watch .details .season-card .episodes .episode.active {
-    background-color: var(--light);
-    pointer-events: none;
+  background-color: var(--light);
+  pointer-events: none;
 }
 
 .watch .details:not(.no-video) .season-card .episodes .episode:not(.active) {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .watch .details .season-card .episodes .episode .number {
-    font-weight: 500;
-    font-size: var(--max-font);
+  font-weight: 500;
+  font-size: var(--max-font);
 
-    opacity: var(--dim-opacity);
+  opacity: var(--dim-opacity);
 }
 
 .watch .details .season-card .episodes .episode .episode-left {
-    display: flex;
+  display: flex;
 
-    gap: var(--large-gap);
-    align-items: center;
+  gap: var(--large-gap);
+  align-items: center;
 }
 
 .watch .details .season-card .episodes .episode .episode-right {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    gap: var(--small-gap);
-    width: 100%;
+  gap: var(--small-gap);
+  width: 100%;
 }
 
 .watch .details .season-card .episodes .episode .preview {
-    display: flex;
-    position: relative;
+  display: flex;
+  position: relative;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    border: var(--small-border) solid var(--lighter);
-    box-sizing: border-box;
+  border: var(--small-border) solid var(--lighter);
+  box-sizing: border-box;
 
-    overflow: hidden;
-    border-radius: var(--border-radius);
+  overflow: hidden;
+  border-radius: var(--border-radius);
 
-    background-color: var(--light);
+  background-color: var(--light);
 }
 
 .watch .details .season-card .episodes .episode .preview .image {
-    width: 8rem;
-    height: 5rem;
+  width: 8rem;
+  height: 5rem;
 
-    object-fit: cover;
-    pointer-events: none;
+  object-fit: cover;
+  pointer-events: none;
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .watch .details .season-card .episodes .episode .preview .image[src=""],
 .watch .details .season-card .episodes .episode .preview .image[src="null"],
 .watch .details .season-card .episodes .episode .preview .image:not([src]) {
-    opacity: 0;
+  opacity: 0;
 }
 
 .watch .details .season-card .episodes .episode:not(.active) .notice {
-    background-color: var(--light);
+  background-color: var(--light);
 }
 
 .watch .details .season-card .episodes .episode .preview .notice {
-    position: absolute;
-    background-color: var(--light);
+  position: absolute;
+  background-color: var(--light);
 }
 
 .watch .details .season-card .episodes .episode .episode-title {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 
-    justify-content: space-between;
-    align-items: center;
+  justify-content: space-between;
+  align-items: center;
 
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .watch .details .season-card .episodes .episode .episode-title .name {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .watch .details .season-card .episodes .episode .episode-title .time {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    background-color: var(--light);
-    border: var(--small-border) solid var(--lighter);
+  background-color: var(--light);
+  border: var(--small-border) solid var(--lighter);
 
-    padding: calc(var(--small-padding) / 2);
-    box-sizing: border-box;
+  padding: calc(var(--small-padding) / 2);
+  box-sizing: border-box;
 
-    border-radius: var(--border-radius);
+  border-radius: var(--border-radius);
 }
 
 .watch .details .season-card .episodes .episode.active .episode-title .time {
-    background-color: var(--lighter);
-    border: var(--small-border) solid var(--lightest);
+  background-color: var(--lighter);
+  border: var(--small-border) solid var(--lightest);
 }
 
 .watch .details .season-card .episodes .episode .description {
-    font-size: var(--large-font);
+  font-size: var(--large-font);
 }
 
 .watch .details .season-card .episodes .episode-title .time .text {
-    overflow-wrap: normal !important;
+  overflow-wrap: normal !important;
 }
 
 .watch .details .season-card .episodes .episode .description,
 .watch .details .season-card .episodes .episode .episode-title .time .text,
 .watch .details .season-card .episodes .episode .episode-title .time .icon {
-    opacity: var(--dim-opacity);
+  opacity: var(--dim-opacity);
 }
 
 .watch .details .area.minimal {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .watch .details .area.minimal .cards .card {
-    width: calc(50% - var(--small-padding));
-    background-color: var(--dark);
+  width: calc(50% - var(--small-padding));
+  background-color: var(--dark);
 }
 
 .watch .details .area.minimal .cards .card .title {
-    background-color: var(--light);
+  background-color: var(--light);
 }
 
 .watch .season-control .button.inactive {
-    opacity: calc(var(--dimmer-opacity) / 2);
-    pointer-events: none;
+  opacity: calc(var(--dimmer-opacity) / 2);
+  pointer-events: none;
 }
 
 .watch .season-control.inactive {
-    display: none;
+  display: none;
 }
 
 .provider-cards {
-    display: flex;
-    background-color: var(--dark);
+  display: flex;
+  background-color: var(--dark);
 
-    border: var(--small-border) solid var(--light);
-    width: fit-content;
+  border: var(--small-border) solid var(--light);
+  width: fit-content;
 
-    padding: var(--small-padding);
-    box-sizing: border-box;
+  padding: var(--small-padding);
+  box-sizing: border-box;
 
-    gap: var(--small-gap);
-    border-radius: var(--border-radius);
+  gap: var(--small-gap);
+  border-radius: var(--border-radius);
 
-    transition: var(--transition-speed) background-color;
-    user-select: none;
-    -webkit-user-select: none;
+  transition: var(--transition-speed) background-color;
+  user-select: none;
+  -webkit-user-select: none;
 
-    justify-content: center;
-    flex-wrap: wrap;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .provider-cards > div:not(.active) {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .provider-cards > div {
-    border-radius: calc(var(--border-radius) / 2);
-    padding: calc(var(--large-padding) / 1.5) var(--large-padding);
+  border-radius: calc(var(--border-radius) / 2);
+  padding: calc(var(--large-padding) / 1.5) var(--large-padding);
 
-    box-sizing: border-box;
-    border: var(--small-border) solid transparent;
+  box-sizing: border-box;
+  border: var(--small-border) solid transparent;
 
-    opacity: var(--dim-opacity);
+  opacity: var(--dim-opacity);
 }
 
 .provider-cards > div.active {
-    background-color: var(--light);
-    border: var(--small-border) solid var(--lighter);
+  background-color: var(--light);
+  border: var(--small-border) solid var(--lighter);
 
-    opacity: 100%;
-    pointer-events: none;
+  opacity: 100%;
+  pointer-events: none;
 }
 
 @media (hover: hover) {
-    .watch .video .scroll:hover {
-        opacity: var(--dim-opacity);
-    }
+  .watch .video .scroll:hover {
+    opacity: var(--dim-opacity);
+  }
 
-    .watch .details .cast-cards .cast-card:hover {
-        opacity: var(--dim-opacity);
-    }
+  .watch .details .cast-cards .cast-card:hover {
+    opacity: var(--dim-opacity);
+  }
 
-    .watch .details .review-cards .review-card:hover {
-        opacity: var(--dim-opacity);
-    }
+  .watch .details .review-cards .review-card:hover {
+    opacity: var(--dim-opacity);
+  }
 
-    .watch .details .season-card .season-title .button:hover {
-        background-color: var(--lighter);
-    }
+  .watch .details .season-card .season-title .button:hover {
+    background-color: var(--lighter);
+  }
 
-    .watch
-        .details:not(.no-video)
-        .season-card
-        .episodes
-        .episode:not(.active):hover {
-        opacity: var(--dim-opacity);
-    }
+  .watch
+    .details:not(.no-video)
+    .season-card
+    .episodes
+    .episode:not(.active):hover {
+    opacity: var(--dim-opacity);
+  }
 
-    .provider-cards > div:not(.active):hover {
-        background-color: var(--light);
-    }
+  .provider-cards > div:not(.active):hover {
+    background-color: var(--light);
+  }
 }

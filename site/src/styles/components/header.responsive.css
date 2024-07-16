@@ -1,26 +1,26 @@
 @media only screen and (max-width: 700px) {
-    .header .links {
-        width: 100%;
-    }
-    
-    .header .links .link {
-        width: 100%;
-        justify-content: center;
-    }
+  .header .links {
+    width: 100%;
+  }
+
+  .header .links .link {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 @media only screen and (max-width: 550px) {
-    .header .links .link .text {
-        display: none;
-    }
+  .header .links .link .text {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 350px) {
-    .header .links {
-        width: fit-content;
-    }
+  .header .links {
+    width: fit-content;
+  }
 
-    .header .links .link {
-        width: 0.5rem;
-    }
+  .header .links .link {
+    width: 0.5rem;
+  }
 }

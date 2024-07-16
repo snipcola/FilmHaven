@@ -1,22 +1,22 @@
 .content {
-    padding: var(--large-padding);
-    box-sizing: border-box;
+  padding: var(--large-padding);
+  box-sizing: border-box;
 
-    max-width: var(--max-width);
-    width: 100%;
+  max-width: var(--max-width);
+  width: 100%;
 
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .content > .section {
-    width: 100%;
-    display: none;
+  width: 100%;
+  display: none;
 }
 
 .content > .section.active {
-    display: inline-block;
+  display: inline-block;
 }

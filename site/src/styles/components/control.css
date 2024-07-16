@@ -1,74 +1,75 @@
-.area .control, .watch .details .control {
-    display: flex;    
-    align-items: center;
+.area .control,
+.watch .details .control {
+  display: flex;
+  align-items: center;
 
-    background-color: var(--dark);
-    padding: var(--small-padding);
+  background-color: var(--dark);
+  padding: var(--small-padding);
 
-    width: fit-content;
-    height: fit-content;
+  width: fit-content;
+  height: fit-content;
 
-    gap: calc(var(--small-gap) / 3);
+  gap: calc(var(--small-gap) / 3);
 
-    border-radius: var(--border-radius);
-    border: var(--small-border) solid var(--light);
+  border-radius: var(--border-radius);
+  border: var(--small-border) solid var(--light);
 
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .control.inactive {
-    display: none;
+  display: none;
 }
 
 .area .control .button {
-    background-color: var(--light);
-    border: var(--small-border) solid var(--lighter);
-    font-size: var(--min-font);
+  background-color: var(--light);
+  border: var(--small-border) solid var(--lighter);
+  font-size: var(--min-font);
 }
 
 .control .indicators {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    background-color: var(--dark);
-    gap: calc(var(--small-gap) / 3);
+  background-color: var(--dark);
+  gap: calc(var(--small-gap) / 3);
 
-    padding: calc(var(--small-padding) / 1.25);
-    border-radius: var(--border-radius);
+  padding: calc(var(--small-padding) / 1.25);
+  border-radius: var(--border-radius);
 }
 
 .control .indicator {
-    padding: 2px 8px;
-    background-color: var(--lighter);
+  padding: 2px 8px;
+  background-color: var(--lighter);
 
-    border-radius: var(--border-radius);
-    transition: var(--transition-speed) background-color;
+  border-radius: var(--border-radius);
+  transition: var(--transition-speed) background-color;
 }
 
 .control .indicator:not(.active) {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .control .indicator.active {
-    background-color: var(--primary);
-    pointer-events: none;
+  background-color: var(--primary);
+  pointer-events: none;
 }
 
 .area.continue .control:not(.continue) {
-    margin-right: 3.5rem;
+  margin-right: 3.5rem;
 }
 
 .control.continue .button.active {
-    opacity: 100% !important;
-    background-color: var(--primary) !important;
+  opacity: 100% !important;
+  background-color: var(--primary) !important;
 }
 
 @media (hover: hover) {
-    .area .control .button:hover {
-        background-color: var(--lighter);
-    }
+  .area .control .button:hover {
+    background-color: var(--lighter);
+  }
 
-    .control .indicator:not(.active):hover {
-        background-color: var(--lightest);
-    }
+  .control .indicator:not(.active):hover {
+    background-color: var(--lightest);
+  }
 }

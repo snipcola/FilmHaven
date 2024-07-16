@@ -1,5 +1,6 @@
 @media only screen and (max-width: 600px) {
-    .area.genres .genres .genre .icon, .area.genres .genres .genre .text {
-        font-size: var(--min-font);
-    }
+  .area.genres .genres .genre .icon,
+  .area.genres .genres .genre .text {
+    font-size: var(--min-font);
+  }
 }

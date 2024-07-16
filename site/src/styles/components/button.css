@@ -1,41 +1,41 @@
 .button {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    background-color: var(--primary);
-    padding: calc(var(--small-padding) * 1.25) var(--large-padding);
+  background-color: var(--primary);
+  padding: calc(var(--small-padding) * 1.25) var(--large-padding);
 
-    border-radius: var(--border-radius);
-    cursor: pointer;
+  border-radius: var(--border-radius);
+  cursor: pointer;
 
-    box-sizing: border-box;
-    user-select: none;
-    -webkit-user-select: none;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
 
-    width: fit-content;
-    font-size: var(--large-font);
+  width: fit-content;
+  font-size: var(--large-font);
 
-    transition: var(--transition-speed) opacity;
+  transition: var(--transition-speed) opacity;
 }
 
 .button.icon-only {
-    padding: calc(var(--small-padding) * 1.25);
+  padding: calc(var(--small-padding) * 1.25);
 }
 
 .button.secondary {
-    background-color: var(--dark);
-    border: var(--small-border) solid var(--lighter);
+  background-color: var(--dark);
+  border: var(--small-border) solid var(--lighter);
 }
 
 @media (hover: hover) {
-    .button:hover {
-        opacity: var(--dim-opacity);
-    }
+  .button:hover {
+    opacity: var(--dim-opacity);
+  }
 
-    .button.secondary:hover {
-        background-color: var(--light);
-    }
+  .button.secondary:hover {
+    background-color: var(--light);
+  }
 }

@@ -1,61 +1,62 @@
 .area {
-    position: relative;
-    
-    margin-top: calc(var(--large-padding) * 2.5);
-    padding: var(--large-padding);
+  position: relative;
 
-    padding-top: calc(var(--large-padding) * 1.75);
+  margin-top: calc(var(--large-padding) * 2.5);
+  padding: var(--large-padding);
 
-    border: var(--small-border) solid var(--lighter);
-    border-radius: var(--border-radius);
+  padding-top: calc(var(--large-padding) * 1.75);
 
-    box-sizing: border-box;
-    width: 100%;
+  border: var(--small-border) solid var(--lighter);
+  border-radius: var(--border-radius);
+
+  box-sizing: border-box;
+  width: 100%;
 }
 
-.content.no-carousel > .section .area:first-child, .section.home .area:first-child {
-    margin-top: var(--large-padding);
+.content.no-carousel > .section .area:first-child,
+.section.home .area:first-child {
+  margin-top: var(--large-padding);
 }
 
 .area.minimal {
-    border: none;
-    border-radius: 0;
+  border: none;
+  border-radius: 0;
 }
 
 .area.inactive {
-    display: none;
+  display: none;
 }
 
 .area:not(.search) .notice {
-    margin-top: 0;
-    display: flex;
+  margin-top: 0;
+  display: flex;
 }
 
 .area .label {
-    position: absolute;
-    padding: var(--small-padding) var(--large-padding);
+  position: absolute;
+  padding: var(--small-padding) var(--large-padding);
 
-    font-size: var(--large-font);
-    top: calc(var(--small-padding) * -2);
+  font-size: var(--large-font);
+  top: calc(var(--small-padding) * -2);
 
-    background-color: var(--primary);
-    border-radius: var(--border-radius);
+  background-color: var(--primary);
+  border-radius: var(--border-radius);
 
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .area.minimal .label {
-    display: none;
+  display: none;
 }
 
 .area .control {
-    position: absolute;
-    
-    top: calc(var(--small-padding) * -2.5);
-    right: calc(var(--small-padding) * 2);
+  position: absolute;
+
+  top: calc(var(--small-padding) * -2.5);
+  right: calc(var(--small-padding) * 2);
 }
 
 .area .control .button {
-    width: 1rem;
-    height: 1rem;
+  width: 1rem;
+  height: 1rem;
 }

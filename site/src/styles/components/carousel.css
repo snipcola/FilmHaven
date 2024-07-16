@@ -1,101 +1,101 @@
 .carousel {
-    position: relative;
-    display: flex;
+  position: relative;
+  display: flex;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    width: 100%;
-    height: fit-content;
+  width: 100%;
+  height: fit-content;
 
-    border-radius: var(--border-radius);
-    overflow: hidden;
+  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 
 .carousel .image {
-    user-select: none;
-    -webkit-user-select: none;
-    pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
 
-    width: 100%;
-    height: 65dvh;
+  width: 100%;
+  height: 65dvh;
 
-    max-height: calc(var(--max-width) / 1.5);
-    min-height: calc(var(--max-width) / 3);
+  max-height: calc(var(--max-width) / 1.5);
+  min-height: calc(var(--max-width) / 3);
 
-    object-fit: cover;
+  object-fit: cover;
 }
 
 .carousel .image[src=""],
 .carousel .image[src="null"],
 .carousel .image:not([src]) {
-    opacity: 0;
+  opacity: 0;
 }
 
 .carousel .details {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    position: absolute;
-    bottom: 3rem;
+  position: absolute;
+  bottom: 3rem;
 
-    border-radius: var(--border-radius);
-    padding: var(--small-padding);
+  border-radius: var(--border-radius);
+  padding: var(--small-padding);
 
-    max-width: 80%;
-    text-align: center;
+  max-width: 80%;
+  text-align: center;
 
-    text-overflow: ellipsis;
-    text-wrap: wrap;
+  text-overflow: ellipsis;
+  text-wrap: wrap;
 
-    overflow: hidden;
-    z-index: 2;
+  overflow: hidden;
+  z-index: 2;
 }
 
 .carousel .vignette {
-    position: absolute;
+  position: absolute;
 
-    top: 0;
-    left: 0;
+  top: 0;
+  left: 0;
 
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0),
-        rgba(var(--light-rgb), 0.75) 75%
-    );
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(var(--light-rgb), 0.75) 75%
+  );
 }
 
 .carousel .title {
-    font-size: calc(var(--max-font) * 1.25);
-    font-weight: 500;
+  font-size: calc(var(--max-font) * 1.25);
+  font-weight: 500;
 
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .carousel .description {
-    opacity: var(--dim-opacity);
+  opacity: var(--dim-opacity);
 }
 
 .carousel .buttons {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 }
 
 .carousel .control {
-    display: flex;
-    position: absolute;
+  display: flex;
+  position: absolute;
 
-    bottom: 0.5rem;
-    width: calc(100% - var(--small-padding) * 2);
+  bottom: 0.5rem;
+  width: calc(100% - var(--small-padding) * 2);
 
-    align-items: center;
-    justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
 
-    left: var(--small-padding);
+  left: var(--small-padding);
 }

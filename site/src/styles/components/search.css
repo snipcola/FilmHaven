@@ -1,81 +1,81 @@
 .area.search .search {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 
-    width: 100%;
-    align-items: center;
+  width: 100%;
+  align-items: center;
 
-    background-color: var(--light);
-    border: var(--small-border) solid var(--lighter);
+  background-color: var(--light);
+  border: var(--small-border) solid var(--lighter);
 
-    border-radius: var(--border-radius);
-    padding: var(--small-padding);
+  border-radius: var(--border-radius);
+  padding: var(--small-padding);
 
-    box-sizing: border-box;
-    transition: var(--transition-speed) background-color;
+  box-sizing: border-box;
+  transition: var(--transition-speed) background-color;
 
-    cursor: text;
-    height: 3rem;
+  cursor: text;
+  height: 3rem;
 }
 
 .area.search .search:hover,
 .area.search .search:focus-within {
-    background-color: var(--lighter);
+  background-color: var(--lighter);
 }
 
 .area.search .search .input {
-    width: 100%;
-    background-color: transparent;
+  width: 100%;
+  background-color: transparent;
 
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
 
-    font-size: var(--large-font);
-    color: var(--text);
+  font-size: var(--large-font);
+  color: var(--text);
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .area.search .search .input::placeholder {
-    font-weight: 300;
-    opacity: var(--dim-opacity);
+  font-weight: 300;
+  opacity: var(--dim-opacity);
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .area.search .search .icon {
-    opacity: 25%;
+  opacity: 25%;
 }
 
 .area.search .search .clear {
-    display: none;
-    width: 1.8rem;
+  display: none;
+  width: 1.8rem;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    background-color: var(--primary);
-    padding: calc(var(--small-padding) / 1.75);
+  background-color: var(--primary);
+  padding: calc(var(--small-padding) / 1.75);
 
-    border-radius: var(--border-radius);
-    transition: var(--transition-speed) opacity;
+  border-radius: var(--border-radius);
+  transition: var(--transition-speed) opacity;
 
-    box-sizing: border-box;
-    cursor: pointer;
+  box-sizing: border-box;
+  cursor: pointer;
 }
 
 .area.search .search .clear.active {
-    display: flex;
+  display: flex;
 }
 
 @media (hover: hover) {
-    .area.search .search .clear:hover {
-        opacity: var(--dim-opacity);
-    }
+  .area.search .search .clear:hover {
+    opacity: var(--dim-opacity);
+  }
 }
 
 .area.search .cards {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }

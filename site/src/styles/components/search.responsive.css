@@ -1,5 +1,6 @@
 @media only screen and (max-width: 600px) {
-    .area.search .search .icon, .area.search .search .input {
-        font-size: var(--small-font);
-    }
+  .area.search .search .icon,
+  .area.search .search .input {
+    font-size: var(--small-font);
+  }
 }

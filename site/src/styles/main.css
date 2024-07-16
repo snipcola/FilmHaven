@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500&display=swap");
-@import url(./external/normalize.min.css);
+@import url(./external/normalize.css);
+@import url(./external/font.css);
 
 @import url(./variables.css);
 @import url(./body.css);

@@ -1,45 +1,42 @@
 * {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-drag: none;
 }
 
 body {
-    font-family: "Open Sans", sans-serif !important;
-    font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
+  color: var(--text);
 
-    background-color: var(--background);
-    color: var(--text);
-
-    transition: var(--transition-speed) opacity;
-    opacity: 0;
+  transition: var(--transition-speed) opacity;
+  opacity: 0;
 }
 
 body.active {
-    opacity: 100%;
+  opacity: 100%;
 }
 
 body > .container {
-    position: relative;
-    min-height: calc(100dvh - (var(--large-padding) * 4));
+  position: relative;
+  min-height: calc(100dvh - (var(--large-padding) * 4));
 }
 
 body > .container > .content-container {
-    margin-top: calc(var(--large-padding) * 4);
-    padding-bottom: var(--footer-height);
+  margin-top: calc(var(--large-padding) * 4);
+  padding-bottom: var(--footer-height);
 }
 
 body.modal-active {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 body.modal-active > .container {
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 img {
-    font-size: 0;
+  font-size: 0;
 }

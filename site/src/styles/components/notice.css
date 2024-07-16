@@ -1,31 +1,31 @@
 .notice {
-    display: none;
-    gap: var(--small-gap);
+  display: none;
+  gap: var(--small-gap);
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    margin-top: 1rem;
-    width: fit-content;
+  margin-top: 1rem;
+  width: fit-content;
 
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 
-    background-color: var(--light);
-    border-radius: var(--border-radius);
+  background-color: var(--light);
+  border-radius: var(--border-radius);
 
-    padding: calc(var(--small-padding) / 1.5);
-    box-sizing: border-box;
+  padding: calc(var(--small-padding) / 1.5);
+  box-sizing: border-box;
 }
 
 .notice.active {
-    display: flex;
+  display: flex;
 }
 
 .notice .icon {
-    color: var(--primary);
+  color: var(--primary);
 }
 
 .notice .text {
-    opacity: var(--dim-opacity);
+  opacity: var(--dim-opacity);
 }

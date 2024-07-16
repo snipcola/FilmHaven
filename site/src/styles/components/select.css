@@ -1,33 +1,33 @@
 .select {
-    background-color: var(--dark);
-    color: var(--text);
+  background-color: var(--dark);
+  color: var(--text);
 
-    width: 100%;
-    margin: 0;
+  width: 100%;
+  margin: 0;
 
-    border: var(--small-border) solid var(--lighter);
-    outline: none;
+  border: var(--small-border) solid var(--lighter);
+  outline: none;
 
-    padding: calc(var(--small-padding) * 1.25) var(--large-padding);
-    box-sizing: border-box;
+  padding: calc(var(--small-padding) * 1.25) var(--large-padding);
+  box-sizing: border-box;
 
-    border-radius: var(--border-radius);
-    transition: var(--transition-speed) opacity;
+  border-radius: var(--border-radius);
+  transition: var(--transition-speed) opacity;
 
-    user-select: none;
-    -webkit-user-select: none;
-    cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: pointer;
 
-    text-align: center;
-    appearance: none;
+  text-align: center;
+  appearance: none;
 
-    font-weight: 300;
-    text-align-last: center;
+  font-weight: 300;
+  text-align-last: center;
 }
 
 @media (hover: hover) {
-    .select:hover {
-        opacity: var(--dim-opacity);
-        background-color: var(--light);
-    }
+  .select:hover {
+    opacity: var(--dim-opacity);
+    background-color: var(--light);
+  }
 }

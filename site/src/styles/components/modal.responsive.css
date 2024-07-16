@@ -1,14 +1,16 @@
 @media only screen and (max-width: 600px) {
-    .modal-header {
-        padding: var(--small-padding);
-    }
+  .modal-header {
+    padding: var(--small-padding);
+  }
 
-    .modal-header .text-container .text, .modal-header .text-container .info, .modal-header .header-buttons {
-        font-size: var(--small-font);
-    }
+  .modal-header .text-container .text,
+  .modal-header .text-container .info,
+  .modal-header .header-buttons {
+    font-size: var(--small-font);
+  }
 
-    .modal-header .header-buttons .button {
-        padding: var(--small-padding);
-        width: 2.3rem;
-    }
+  .modal-header .header-buttons .button {
+    padding: var(--small-padding);
+    width: 2.3rem;
+  }
 }

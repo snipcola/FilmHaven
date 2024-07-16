@@ -1,13 +1,13 @@
 @media only screen and (max-width: 1200px) {
-    .carousel .title {
-        margin-bottom: var(--large-padding);
-    }
+  .carousel .title {
+    margin-bottom: var(--large-padding);
+  }
 
-    .carousel .description {
-        display: none;
-    }
+  .carousel .description {
+    display: none;
+  }
 
-    .carousel .buttons {
-        flex-direction: column;
-    }
+  .carousel .buttons {
+    flex-direction: column;
+  }
 }

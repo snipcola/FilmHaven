@@ -1,89 +1,89 @@
 .section.settings.active {
-    display: flex;
-    gap: calc(var(--large-gap) * 1.5);
+  display: flex;
+  gap: calc(var(--large-gap) * 1.5);
 
-    flex-wrap: wrap;
-    width: 100%;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .section.settings .container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    gap: var(--large-gap);
+  gap: var(--large-gap);
 }
 
 .section.settings .label {
-    display: flex;
+  display: flex;
 
-    gap: var(--small-gap);
-    align-items: center;
+  gap: var(--small-gap);
+  align-items: center;
 
-    opacity: var(--dim-opacity);
-    font-weight: 500;
+  opacity: var(--dim-opacity);
+  font-weight: 500;
 }
 
 .section.settings .selection {
-    display: flex;
-    background-color: var(--dark);
+  display: flex;
+  background-color: var(--dark);
 
-    border: var(--small-border) solid var(--lighter);
-    width: fit-content;
+  border: var(--small-border) solid var(--lighter);
+  width: fit-content;
 
-    padding: calc(var(--small-padding) * 0.625);
-    box-sizing: border-box;
+  padding: calc(var(--small-padding) * 0.625);
+  box-sizing: border-box;
 
-    gap: calc(var(--small-gap) * 0.625);
-    border-radius: var(--border-radius);
+  gap: calc(var(--small-gap) * 0.625);
+  border-radius: var(--border-radius);
 
-    transition: var(--transition-speed) background-color;
-    flex-wrap: wrap;
+  transition: var(--transition-speed) background-color;
+  flex-wrap: wrap;
 
-    user-select: none;
-    -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .section.settings .selection > div {
-    border-radius: calc(var(--border-radius) / 2);
-    padding: calc(var(--small-padding) * 0.625);
+  border-radius: calc(var(--border-radius) / 2);
+  padding: calc(var(--small-padding) * 0.625);
 
-    box-sizing: border-box;
-    border: var(--small-border) solid transparent;
+  box-sizing: border-box;
+  border: var(--small-border) solid transparent;
 
-    opacity: var(--dim-opacity);
+  opacity: var(--dim-opacity);
 }
 
 .section.settings .selection > div:not(.active),
 .section.settings .selection.multi > div {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 @media (hover: hover) {
-    .section.settings .selection > div:not(.active):hover {
-        background-color: var(--light);
-    }
+  .section.settings .selection > div:not(.active):hover {
+    background-color: var(--light);
+  }
 }
 
 .section.settings .selection > div.active {
-    background-color: var(--light);
-    border: var(--small-border) solid var(--lighter);
+  background-color: var(--light);
+  border: var(--small-border) solid var(--lighter);
 
-    opacity: 100%;
+  opacity: 100%;
 }
 
 .section.settings .selection:not(.multi) > div.active {
-    pointer-events: none;
+  pointer-events: none;
 }
 
 .section.settings .button.inactive {
-    opacity: var(--dim-opacity);
-    pointer-events: none;
+  opacity: var(--dim-opacity);
+  pointer-events: none;
 }
 
 .section.settings .buttons {
-    display: flex;
-    gap: var(--small-gap);
+  display: flex;
+  gap: var(--small-gap);
 
-    align-items: center;
-    flex-wrap: wrap;
+  align-items: center;
+  flex-wrap: wrap;
 }
