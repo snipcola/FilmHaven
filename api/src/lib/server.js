@@ -23,7 +23,10 @@ export function initializeServer(serverless) {
   return new Promise(async function (res) {
     const server = fastify();
 
-    await applyCors(server, process.env.ORIGIN);
+    await applyCors(
+      server,
+      process.env.NODE_ENV === "production" ? process.env.ORIGIN : "*",
+    );
     await applyCaching(server, process.env.CACHE_TIMEOUT);
     applyRoutes(server);
 

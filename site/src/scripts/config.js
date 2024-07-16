@@ -182,12 +182,21 @@ export const proxy = {
   validCheckTimeout: 3500,
 };
 
-export const proxies = [
-  {
-    url: "https://film-haven.vercel.app/api",
-    local: true,
-  },
-]
+export const proxies = (
+  process?.env?.NODE_ENV === "development"
+    ? [
+        {
+          url: "http://localhost:1000/api",
+          local: true,
+        },
+      ]
+    : [
+        {
+          url: "https://film-haven.vercel.app/api",
+          local: true,
+        },
+      ]
+)
   .filter((proxy) => (local ? proxy.local : true))
   .map((proxy) => proxy.url);
 
