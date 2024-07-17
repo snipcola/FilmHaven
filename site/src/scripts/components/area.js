@@ -309,8 +309,6 @@ export function initializeArea(
 }
 
 export function initializeAreas() {
-  const desktop = window.innerWidth > config.area.split.max;
-
   const moviesActive = getPage("Movies");
   const showsActive = getPage("Shows");
 

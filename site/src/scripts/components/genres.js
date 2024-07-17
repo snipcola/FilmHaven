@@ -18,8 +18,6 @@ import { getPage } from "../store/pages.js";
 import { toggleDim } from "./dim.js";
 
 async function modal(info, type) {
-  const desktop = window.innerWidth > config.area.split.max;
-
   const popularArea = document.createElement("div");
   const ratedArea = document.createElement("div");
   const newArea = document.createElement("div");

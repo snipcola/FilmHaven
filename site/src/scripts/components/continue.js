@@ -8,7 +8,6 @@ import { preloadImages } from "../cache.js";
 import { isHovered } from "../functions.js";
 
 export async function initializeContinue() {
-  const desktop = window.innerWidth > config.area.split.max;
   const label = "Continue";
 
   const homeSection = document.querySelector(".section.home");
