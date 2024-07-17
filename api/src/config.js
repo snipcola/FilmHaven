@@ -1,3 +1,4 @@
+const theme = "e12323";
 const providers = [
   {
     base: "vidsrc.pro",
@@ -5,9 +6,21 @@ const providers = [
     url: function (type, params) {
       switch (type) {
         case "movie":
-          return `https://${this.base}/embed/movie/${params.id}`;
+          return `https://${this.base}/embed/movie/${params.id}?theme=${theme}`;
         case "tv":
-          return `https://${this.base}/embed/tv/${params.id}/${params.season}/${params.episode}`;
+          return `https://${this.base}/embed/tv/${params.id}/${params.season}/${params.episode}?theme=${theme}`;
+      }
+    },
+  },
+  {
+    base: "moviesapi.club",
+    local: false,
+    url: function (type, params) {
+      switch (type) {
+        case "movie":
+          return `https://${this.base}/movie/${params.id}`;
+        case "tv":
+          return `https://${this.base}/tv/${params.id}-${params.season}-${params.episode}`;
       }
     },
   },
