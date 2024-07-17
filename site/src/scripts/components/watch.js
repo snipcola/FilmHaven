@@ -12,7 +12,6 @@ import {
   onWindowResize,
   removeWindowResize,
   splitArray,
-  getCenteringDirection,
   onKeyPress,
   promiseTimeout,
   onSwipe,
@@ -229,48 +228,11 @@ function modal(info, recommendationImages) {
   }
 
   if (videoActive) {
-    const up = document.createElement("i");
-    const down = document.createElement("i");
-
-    up.className = "scroll up icon-arrow-up";
-    down.className = "scroll down icon-arrow-down";
-
-    function onClick() {
-      video.scrollIntoView({ block: "center" });
-      up.classList.remove("active");
-      down.classList.remove("active");
-    }
-
-    up.addEventListener("click", onClick);
-    down.addEventListener("click", onClick);
-
-    const interval = setInterval(function () {
-      if (!elementExists(watch)) return clearInterval(interval);
-
-      const direction = getCenteringDirection(video);
-
-      switch (direction) {
-        case "up":
-          up.classList.add("active");
-          down.classList.remove("active");
-          break;
-        case "down":
-          up.classList.remove("active");
-          down.classList.add("active");
-          break;
-        default:
-          up.classList.remove("active");
-          down.classList.remove("active");
-          break;
-      }
-    }, 50);
-
     function show() {
-      video.scrollIntoView({ block: "center" });
+      video.scrollIntoView({ block: "end" });
     }
 
     onKeyPress("v", true, null, watch, show);
-    video.append(up, down);
   }
 
   let currentIframe;
@@ -610,7 +572,7 @@ function modal(info, recommendationImages) {
       forceProvider = null;
       setProvider(name);
       playVideo();
-      video.scrollIntoView({ block: "center" });
+      video.scrollIntoView({ block: "end" });
     }
 
     function nextProvider() {
@@ -649,7 +611,7 @@ function modal(info, recommendationImages) {
       if (disabled) return;
 
       playVideo();
-      video.scrollIntoView({ block: "center" });
+      video.scrollIntoView({ block: "end" });
     }
 
     providersTitle.append(providersControl);
@@ -745,7 +707,7 @@ function modal(info, recommendationImages) {
   function playSeries() {
     setLastPlayed(info.id, seasonNumber, episodeNumber);
     checkCurrentlyPlaying();
-    video.scrollIntoView({ block: "center" });
+    video.scrollIntoView({ block: "end" });
   }
 
   let playEpisodeCallbacks = [];
@@ -1551,7 +1513,7 @@ function modal(info, recommendationImages) {
   showModal(cleanup);
 
   if (videoActive) {
-    video.scrollIntoView({ block: "center" });
+    video.scrollIntoView({ block: "end" });
   }
 }
 

@@ -18,7 +18,6 @@
   height: 3rem;
 }
 
-.area.search .search:hover,
 .area.search .search:focus-within {
   background-color: var(--lighter);
 }
@@ -71,6 +70,10 @@
 }
 
 @media (hover: hover) {
+  .area.search .search:hover {
+    background-color: var(--lighter);
+  }
+
   .area.search .search .clear:hover {
     opacity: var(--dim-opacity);
   }

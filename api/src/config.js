@@ -1,4 +1,3 @@
-const theme = "e12323";
 const providers = [
   {
     base: "vidsrc.pro",
@@ -6,9 +5,9 @@ const providers = [
     url: function (type, params) {
       switch (type) {
         case "movie":
-          return `https://${this.base}/embed/movie/${params.id}?theme=${theme}`;
+          return `https://${this.base}/embed/movie/${params.id}`;
         case "tv":
-          return `https://${this.base}/embed/tv/${params.id}/${params.season}/${params.episode}?theme=${theme}`;
+          return `https://${this.base}/embed/tv/${params.id}/${params.season}/${params.episode}`;
       }
     },
   },

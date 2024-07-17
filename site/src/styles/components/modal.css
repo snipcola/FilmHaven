@@ -45,13 +45,10 @@ body.modal-active .modal-container {
   align-items: center;
 
   box-sizing: border-box;
-  padding: calc(var(--small-padding) * 1.25) var(--large-padding);
+  padding: calc(var(--small-padding) * 1.25);
 
   margin-left: var(--large-padding);
   margin-right: var(--large-padding);
-
-  height: calc(var(--small-padding) * 6);
-  background-color: var(--dark);
 
   border: var(--small-border) solid var(--light);
   border-radius: var(--border-radius);
@@ -59,6 +56,7 @@ body.modal-active .modal-container {
   width: calc(100% - (2 * var(--large-padding)));
   max-width: var(--max-width);
 
+  background-color: var(--dark);
   margin-top: 1rem;
 }
 

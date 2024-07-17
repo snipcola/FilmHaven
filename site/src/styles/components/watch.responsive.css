@@ -1,3 +1,10 @@
+@media only screen and (min-width: 1200px) {
+  .watch .video {
+    width: calc(100% - (20px * 2));
+    max-width: 100%;
+  }
+}
+
 @media only screen and (max-width: 1200px) {
   .watch .details {
     flex-direction: column;
@@ -64,19 +71,9 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .provider-cards > div {
-    width: calc(50% - var(--small-padding));
-    text-align: center;
-  }
-}
-
-@media only screen and (max-width: 350px) {
-  .provider-cards {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .provider-cards > div {
-    width: 100%;
+  .watch .video {
+    height: calc(
+      100dvh - (16px + 1px + 10px + 37px + 10px + 1px + 20px + 1rem)
+    );
   }
 }
