@@ -28,11 +28,11 @@
 
 .watch .video {
   background-color: var(--dark);
+
+  border: var(--small-border) solid var(--light);
   border-radius: var(--border-radius);
 
-  height: calc(
-    100dvh - (16px + 1px + 12.5px + 42px + 12.5px + 1px + 20px + 1rem)
-  );
+  height: calc(100dvh - (16px + 1px + 10px + 42px + 10px + 1px + 20px + 1rem));
   max-height: var(--max-width);
   min-height: calc(var(--max-width) / 20);
 

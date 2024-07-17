@@ -45,7 +45,7 @@ body.modal-active .modal-container {
   align-items: center;
 
   box-sizing: border-box;
-  padding: calc(var(--small-padding) * 1.25);
+  padding: var(--small-padding);
 
   margin-left: var(--large-padding);
   margin-right: var(--large-padding);
