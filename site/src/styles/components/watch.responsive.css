@@ -1,7 +1,8 @@
 @media only screen and (min-width: 1200px) {
-  .watch .video {
-    width: calc(100% - (20px * 2));
-    max-width: 100%;
+  .watch .video,
+  .modal-header.has-video {
+    width: calc(100% - (20px * 2)) !important;
+    max-width: 100% !important;
   }
 }
 

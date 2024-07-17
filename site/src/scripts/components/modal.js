@@ -1,9 +1,10 @@
 import { config } from "../config.js";
-import { copyText, onKeyPress } from "../functions.js";
+import { onKeyPress } from "../functions.js";
 import { getQuery, onQueryChange, removeQuery } from "../query.js";
 import { setTitle } from "./header.js";
 
 let container;
+let header;
 let headerText;
 let headerInfo;
 let buttons;
@@ -33,8 +34,12 @@ export function setModal(
   newContent,
   icon = "times",
   titleClass,
+  headerClass,
 ) {
   container.className = "modal-container";
+  header.className = headerClass
+    ? `modal-header ${headerClass}`
+    : "modal-header";
   headerText.innerText = label;
   headerText.className = titleClass ? `text ${titleClass}` : "text";
   headerInfo.innerText = info || "";
@@ -118,7 +123,7 @@ export function initializeModal() {
   container = document.createElement("div");
   const modal = document.createElement("div");
 
-  const header = document.createElement("div");
+  header = document.createElement("div");
   const headerTextContainer = document.createElement("div");
   headerText = document.createElement("span");
   headerInfo = document.createElement("span");

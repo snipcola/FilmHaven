@@ -1508,7 +1508,14 @@ function modal(info, recommendationImages) {
   else watch.classList.add("only-video");
 
   setCustomButtons(customButtons);
-  setModal(info.title, null, watch, "times", info.type);
+  setModal(
+    info.title,
+    null,
+    watch,
+    "times",
+    info.type,
+    videoActive ? "has-video" : null,
+  );
   checkCurrentlyPlaying();
   showModal(cleanup);
 

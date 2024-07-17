@@ -100,10 +100,6 @@ export function convertMinutesToText(minutes) {
   }
 }
 
-export function copyText(text) {
-  window.navigator.clipboard.writeText(text);
-}
-
 export function getSearchUrl(query) {
   return `https://duckduckgo.com/?q=${query.replace(/ /g, "+")}`;
 }
