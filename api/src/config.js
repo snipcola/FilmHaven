@@ -1,5 +1,17 @@
 const providers = [
   {
+    base: "vidsrc.to",
+    local: true,
+    url: function (type, params) {
+      switch (type) {
+        case "movie":
+          return `https://${this.base}/embed/movie/${params.id}`;
+        case "tv":
+          return `https://${this.base}/embed/tv/${params.id}/${params.season}/${params.episode}`;
+      }
+    },
+  },
+  {
     base: "vidsrc.pro",
     local: false,
     url: function (type, params) {
@@ -20,18 +32,6 @@ const providers = [
           return `https://${this.base}/movie/${params.id}`;
         case "tv":
           return `https://${this.base}/tv/${params.id}-${params.season}-${params.episode}`;
-      }
-    },
-  },
-  {
-    base: "vidsrc.to",
-    local: true,
-    url: function (type, params) {
-      switch (type) {
-        case "movie":
-          return `https://${this.base}/embed/movie/${params.id}`;
-        case "tv":
-          return `https://${this.base}/embed/tv/${params.id}/${params.season}/${params.episode}`;
       }
     },
   },
