@@ -1,14 +1,12 @@
-import { onRootRequest, onRequest } from "./request.js";
+import { onRequest } from "./request.js";
 
 export default function (server) {
-  server.get("/api", onRootRequest);
-
-  server.get("/api/:provider/:id/:imdbId?", async function (...args) {
+  server.get("/api/:id/:imdbId/:online?", async function (...args) {
     return await onRequest("movie", ...args);
   });
 
   server.get(
-    "/api/:provider/:id/:season/:episode/:imdbId?",
+    "/api/:id/:imdbId/:season/:episode/:online?",
     async function (...args) {
       return await onRequest("tv", ...args);
     },

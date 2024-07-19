@@ -1,56 +1,29 @@
-const providers = [
-  {
-    base: "vidsrc.to",
-    local: true,
-    url: function (type, params) {
-      switch (type) {
-        case "movie":
-          return `https://${this.base}/embed/movie/${params.id}`;
-        case "tv":
-          return `https://${this.base}/embed/tv/${params.id}/${params.season}/${params.episode}`;
-      }
-    },
-  },
-  {
-    base: "vidsrc.pro",
-    local: false,
-    url: function (type, params) {
-      switch (type) {
-        case "movie":
-          return `https://${this.base}/embed/movie/${params.id}`;
-        case "tv":
-          return `https://${this.base}/embed/tv/${params.id}/${params.season}/${params.episode}`;
-      }
-    },
-  },
-  {
-    base: "moviesapi.club",
-    local: false,
-    url: function (type, params) {
-      switch (type) {
-        case "movie":
-          return `https://${this.base}/movie/${params.id}`;
-        case "tv":
-          return `https://${this.base}/tv/${params.id}-${params.season}-${params.episode}`;
-      }
-    },
-  },
-  {
-    base: "vidsrc.me",
-    local: true,
-    url: function (type, params) {
-      switch (type) {
-        case "movie":
-          return `https://${this.base}/embed/movie?tmdb=${params.id}`;
-        case "tv":
-          return `https://${this.base}/embed/tv?tmdb=${params.id}&season=${params.season}&episode=${params.episode}`;
-      }
-    },
-  },
-];
-
 export default {
-  providers,
+  providers: [
+    {
+      base: "vidsrc.to",
+      url: function (type, { id, season, episode }) {
+        if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
+        return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
+      },
+    },
+    {
+      base: "vidsrc.pro",
+      online: true,
+      url: function (type, { id, season, episode }) {
+        if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
+        return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
+      },
+    },
+    {
+      base: "moviesapi.club",
+      online: true,
+      url: function (type, { id, season, episode }) {
+        if (type === "movie") return `https://${this.base}/movie/${id}`;
+        return `https://${this.base}/tv/${id}-${season}-${episode}`;
+      },
+    },
+  ],
   blacklist: {
     status: [
       404, // Not Found
@@ -63,9 +36,6 @@ export default {
       "no tv show found",
       "no episode found",
       "no show found",
-      "media is unavailable", // vidsrc.me
     ],
   },
 };
-
-export const backupProviders = providers;

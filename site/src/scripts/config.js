@@ -13,9 +13,9 @@ import { resetContinueWatching } from "./store/continue.js";
 import { resetLastPlayed } from "./store/last-played.js";
 import { getLanguages } from "./api/languages.js";
 import { getLanguage, setLanguage } from "./store/language.js";
-import { isLocal } from "./functions.js";
+import { isOnline } from "./functions.js";
 
-const local = isLocal();
+const online = isOnline();
 
 export const config = {
   author: "Snipcola",
@@ -186,18 +186,16 @@ export const proxies = (
   process?.env?.NODE_ENV === "development"
     ? [
         {
-          url: "http://localhost:1000/api",
-          local: true,
+          url: "http://localhost:2000/api",
         },
       ]
     : [
         {
           url: "https://film-haven.vercel.app/api",
-          local: true,
         },
       ]
 )
-  .filter((proxy) => (local ? proxy.local : true))
+  .filter((proxy) => (online ? true : proxy.online !== true))
   .map((proxy) => proxy.url);
 
 export const store = {

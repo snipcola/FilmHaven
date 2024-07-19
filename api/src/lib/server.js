@@ -9,7 +9,7 @@ function runServer(server, host, port) {
     server.listen(
       {
         host: host || "0.0.0.0",
-        port: port || 5000,
+        port: port || 2000,
       },
       function (error, address) {
         if (error) res({ success: false, error });

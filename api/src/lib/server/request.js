@@ -1,34 +1,38 @@
 import config from "../../config.js";
 import { check } from "../other/check.js";
 
-export function onRootRequest() {
-  return {
-    success: true,
-    providers: config.providers.map(({ base, local }) => ({ base, local })),
-  };
-}
-
 export async function onRequest(type, req) {
-  // Provider Check
-  const provider = config.providers.find((p) => p.base === req.params.provider);
-  if (!provider) return { success: false, message: "Unsupported provider" };
-
   // Parameters
   const id = req.params.id;
   const imdbId = req.params.imdbId;
   const season = req.params.season;
   const episode = req.params.episode;
+  const online = req.params.online;
 
   // Empty Check
   if (id === "" || imdbId === "" || season === "" || episode === "") {
     return { success: false, message: "Missing parameters" };
   }
 
-  // URL
-  const url = provider.url(type, { id, imdbId, season, episode });
+  // Get Providers
+  const promises = config.providers
+    .filter((provider) =>
+      typeof online !== "string"
+        ? true
+        : online === "true"
+          ? true
+          : provider.online !== true,
+    )
+    .map(function (provider) {
+      return new Promise(async function (res) {
+        const url = provider.url(type, { id, imdbId, season, episode });
+        const valid = await check(url, provider.base);
+
+        res(valid ? { provider: provider.base, url } : null);
+      });
+    });
+  const providers = (await Promise.all(promises)).filter((p) => p !== null);
 
   // Return
-  return (await check(url, provider.base))
-    ? { success: true, url }
-    : { success: false };
+  return { success: true, providers };
 }

@@ -1,5 +1,5 @@
-export function isLocal() {
-  return window.location.href.startsWith("file:");
+export function isOnline() {
+  return !window.location.href.startsWith("file:");
 }
 
 export function transparentImage() {

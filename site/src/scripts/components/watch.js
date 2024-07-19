@@ -23,14 +23,14 @@ import { getLastPlayed, setLastPlayed } from "../store/last-played.js";
 import { addContinueWatching } from "../store/continue.js";
 import { getWatchSection } from "../store/watch-sections.js";
 import { initializeArea } from "./area.js";
-import { isValidProxy, isValidUrl } from "../api/proxy.js";
+import { getProviders } from "../api/proxy.js";
 import { toggleDim } from "./dim.js";
 import { getDownloads, constructMagnet } from "../downloadsApi/download.js";
-import { backupProviders } from "../../../../api/src/config.js";
+import apiConfig from "../../../../api/src/config.js";
 import { getMode } from "../store/mode.js";
-import { isLocal } from "../functions.js";
+import { isOnline } from "../functions.js";
 
-const local = isLocal();
+const online = isOnline();
 
 export function watchContent(type, id) {
   setQuery(config.query.modal, `${type === "movie" ? "m" : "s"}-${id}`);
@@ -241,22 +241,18 @@ function modal(info, recommendationImages) {
   let seasonsDisabled = false;
 
   let providers = [];
-  let validProviders = [];
   let forceProvider;
-
-  let validProxy = null;
-  let proxiesChecked = false;
 
   function getValidProvider() {
     const currentProvider = getProvider();
-    const provider = validProviders.find((p) => p.provider === currentProvider);
+    const provider = providers.find((p) => p.provider === currentProvider);
 
-    if (!provider) forceProvider = validProviders[0]?.provider;
+    if (!provider) forceProvider = providers[0]?.provider;
     return forceProvider || provider?.provider;
   }
 
   function getUrl(provider) {
-    return validProviders.find((p) => p.provider === provider)?.url;
+    return providers.find((p) => p.provider === provider)?.url;
   }
 
   function videoAlert(toggle, icon, text) {
@@ -266,7 +262,7 @@ function modal(info, recommendationImages) {
   }
 
   async function checkProviders() {
-    validProviders = [];
+    providers = [];
     forceProvider = null;
 
     disabled = true;
@@ -280,88 +276,54 @@ function modal(info, recommendationImages) {
 
     toggleBackdrop(true);
 
-    async function proxiesCheck() {
-      videoAlert(true, "file", "Checking proxies");
+    async function providersCheck() {
+      videoAlert(true, "tv", "Checking providers");
 
-      const promises = Object.values(proxies).map(function (proxy) {
-        return new Promise(async function (res, rej) {
-          const providers = await isValidProxy(proxy);
-
-          if (providers) res({ proxy, providers });
-          else rej();
+      const localProviders = apiConfig.providers
+        .filter((provider) => (online ? true : provider.online !== true))
+        .map(function (provider) {
+          return {
+            provider: provider.base,
+            url: provider.url(info.type, {
+              id: info.id,
+              imdbId: info.imdbId,
+              season: seasonNumber,
+              episode: episodeNumber,
+            }),
+          };
         });
-      });
+      
+      async function fetchProviders() {
+        const promises = Object.values(proxies).map(function (proxy) {
+          return new Promise(async function (res, rej) {
+            const providers = await getProviders(proxy, info, seasonNumber, episodeNumber);
+  
+            if (providers) res(providers);
+            else rej();
+          });
+        });
 
-      const response =
-        getMode() === "proxy"
-          ? await Promise.any([
-              ...promises,
-              promiseTimeout(proxyConfig.checkTimeout),
-            ])
-          : null;
-
-      if (response) {
-        providers = response.providers;
-        validProxy = response.proxy;
-      } else {
-        providers = backupProviders
-          .filter((provider) => (local ? provider.local : true))
-          .map((provider) => provider.base);
+        return await Promise.any([
+          ...promises,
+          promiseTimeout(proxyConfig.checkTimeout),
+        ]);
       }
-
+      
+      providers = getMode() === "proxy"
+        ? (await fetchProviders() || localProviders)
+        : localProviders;
+      
       if (getProvider() === null && providers[0]) {
         setProvider(providers[0]);
       }
-
-      proxiesChecked = true;
     }
 
-    async function providersCheck(proxy) {
-      const total = providers.length;
-      let checked = 0;
-
-      function updateAlert() {
-        const percentage = parseInt((checked / total) * 100);
-        videoAlert(true, "tv", `Checking providers <b>(${percentage}%)</b>`);
-      }
-
-      updateAlert();
-
-      const promises = providers.map(async function (provider) {
-        const url = proxy
-          ? await Promise.any([
-              isValidUrl(proxy, provider, info, seasonNumber, episodeNumber),
-              promiseTimeout(proxyConfig.validCheckTimeout),
-            ])
-          : backupProviders
-              .find((backupProvider) => backupProvider.base === provider)
-              .url(info.type, {
-                id: info.id,
-                imdbId: info.imdbId,
-                season: seasonNumber,
-                episode: episodeNumber,
-              });
-
-        if (url) validProviders.push({ provider, url });
-        checked++;
-
-        updateAlert();
-      });
-
-      await Promise.all(promises);
-      validProviders = validProviders.sort(
-        ({ provider: a }, { provider: b }) =>
-          providers.indexOf(a) - providers.indexOf(b),
-      );
-    }
-
-    if (!proxiesChecked) await proxiesCheck();
-    await providersCheck(validProxy);
+    await providersCheck();
 
     providersSelect.innerHTML = "";
 
-    if (validProxy ? validProviders.length > 0 : true) {
-      validProviders.forEach(function ({ provider: providerName }) {
+    if (providers.length > 0) {
+      providers.forEach(function ({ provider: providerName }) {
         const provider = document.createElement("option");
 
         provider.value = providerName.toLowerCase();
