@@ -178,8 +178,7 @@ export const downloadApi = {
 };
 
 export const proxy = {
-  checkTimeout: 1250,
-  validCheckTimeout: 3500,
+  checkTimeout: 1750,
 };
 
 export const proxies = (
