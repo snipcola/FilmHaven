@@ -190,6 +190,10 @@ export const proxies = (
       ]
     : [
         {
+          url: "https://fh.snipcola.com/api",
+          online: true,
+        },
+        {
           url: "https://film-haven.vercel.app/api",
         },
       ]

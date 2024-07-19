@@ -1,0 +1,48 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  
+jobs:
+  deploy:
+    runs-on: host
+
+    env:
+      SITE_DIRECTORY: /sites/fh.snipcola.com
+      SITE_OUTPUT: ./site/dist
+
+      API_DIRECTORY: /node/filmhaven-api
+      API_OUTPUT: ./api
+      API_CONFIG: /ecosystem.config.cjs
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Installing Dependencies
+      run: npm install
+
+    - name: Building Site
+      run: npm run build
+
+    - name: Deploying Site
+      run: |
+        mkdir -p "$SITE_DIRECTORY"
+        rm -rf "$SITE_DIRECTORY"/*
+        mv "$SITE_OUTPUT"/.* "$SITE_DIRECTORY" || true
+        mv "$SITE_OUTPUT"/* "$SITE_DIRECTORY"
+        
+    - name: Deploying API
+      run: |
+        ssh node pm2 stop "$API_DIRECTORY$API_CONFIG" || true
+        ssh node pm2 delete "$API_DIRECTORY$API_CONFIG" || true
+
+        mkdir -p "$API_DIRECTORY"
+        rm -rf "$API_DIRECTORY"/*
+        mv "$API_OUTPUT"/.* "$API_DIRECTORY" || true
+        mv ./node_modules "$API_OUTPUT"/* "$API_DIRECTORY"
+
+        ssh node pm2 start "$API_DIRECTORY$API_CONFIG"
+        ssh node pm2 save --force
