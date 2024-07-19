@@ -76,7 +76,7 @@ export async function onEmbedRequest(type, req, reply) {
     <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
   </head>
   <body>
-    <video id="player" controls>
+    <video id="player" controls playsinline>
 ${embedInfo.sources.map((s) => `<source src="${s.url}" title="${s.quality === "auto" ? s.quality : `${s.quality}p`}" type="application/x-mpegURL" />`).join(`\n       `)}
 ${embedInfo.subtitles.map((c) => `<track src="${c.url}" label="${c.language}" srclang="${c.language}" kind="metadata">`).join(`\n       `)}
     </video>
@@ -86,7 +86,6 @@ ${embedInfo.subtitles.map((c) => `<track src="${c.url}" label="${c.language}" sr
           primaryColor: "#e12323",
           playButtonShowing: false,
           fillToContainer: true,
-          autoPlay: true,
           subtitlesEnabled: true,
           subtitlesOnByDefault: false,
           keyboardControl: true,
