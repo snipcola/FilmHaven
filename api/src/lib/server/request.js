@@ -87,6 +87,7 @@ export async function onEmbedRequest(type, req, reply) {
         layoutControls: {
           primaryColor: "#e12323",
           playButtonShowing: false,
+          playPauseAnimation: false,
           fillToContainer: true,
           subtitlesEnabled: true,
           subtitlesOnByDefault: false,
