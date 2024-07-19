@@ -277,16 +277,6 @@ function modal(info, recommendationImages) {
     toggleBackdrop(true);
 
     async function providersCheck() {
-      let secs = 0;
-      const interval = setInterval(function () {
-        secs++;
-        videoAlert(
-          true,
-          "tv",
-          `Fetching Providers <span style="opacity: 50%">(${secs}s)</span>`,
-        );
-      }, 1000);
-
       videoAlert(true, "tv", "Fetching Providers");
 
       const localProviders = apiConfig.providers
@@ -332,8 +322,6 @@ function modal(info, recommendationImages) {
       if (getProvider() === null && providers[0]) {
         setProvider(providers[0]);
       }
-
-      clearInterval(interval);
     }
 
     await providersCheck();
@@ -373,22 +361,11 @@ function modal(info, recommendationImages) {
     const provider = getValidProvider();
     const url = getUrl(provider);
 
-    let secs = 0;
-    const interval = setInterval(function () {
-      secs++;
-      videoAlert(
-        true,
-        "tv",
-        `Loading Content <span style="opacity: 50%">(${secs}s)</span>`,
-      );
-    }, 1000);
-
     toggleBackdrop(true);
     videoAlert(true, "sync", "Loading Content");
     currentIframe.src = url;
 
     currentIframe.addEventListener("load", function () {
-      clearInterval(interval);
       videoAlert(false);
       toggleBackdrop(false);
       currentIframe.classList.add("active");
