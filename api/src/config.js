@@ -1,6 +1,25 @@
 export default {
   providers: [
     {
+      ...(process?.env?.NODE_ENV === "development"
+        ? {
+            base: "localhost:2000",
+            url: function (type, { id, season, episode }) {
+              if (type === "movie")
+                return `http://${this.base}/api/embed/${id}`;
+              return `http://${this.base}/api/embed/${id}/${season}/${episode}`;
+            },
+          }
+        : {
+            base: "film-haven.vercel.app",
+            url: function (type, { id, season, episode }) {
+              if (type === "movie")
+                return `https://${this.base}/api/embed/${id}`;
+              return `https://${this.base}/api/embed/${id}/${season}/${episode}`;
+            },
+          }),
+    },
+    {
       base: "vidsrc.to",
       url: function (type, { id, season, episode }) {
         if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
@@ -30,7 +49,6 @@ export default {
       500, // Internal Server Error
     ],
     text: [
-      "not found",
       "no sources",
       "no movie found",
       "no tv show found",

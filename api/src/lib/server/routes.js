@@ -1,4 +1,4 @@
-import { onRequest } from "./request.js";
+import { onRequest, onEmbedRequest } from "./request.js";
 
 export default function (server) {
   server.get("/api/:id/:imdbId/:online?", async function (...args) {
@@ -11,6 +11,14 @@ export default function (server) {
       return await onRequest("tv", ...args);
     },
   );
+
+  server.get("/api/embed/:id", async function (...args) {
+    return await onEmbedRequest("movie", ...args);
+  });
+
+  server.get("/api/embed/:id/:season/:episode", async function (...args) {
+    return await onEmbedRequest("tv", ...args);
+  });
 
   server.setNotFoundHandler(function (_, reply) {
     reply.code(404).send("404 Not Found");

@@ -11,6 +11,6 @@
   "env": {
     "ORIGIN": "*",
     "CACHE_TIMEOUT": "300",
-    "TIMEOUT": "4"
+    "TIMEOUT": "12"
   }
 }

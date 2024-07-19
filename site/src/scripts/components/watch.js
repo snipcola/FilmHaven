@@ -277,7 +277,17 @@ function modal(info, recommendationImages) {
     toggleBackdrop(true);
 
     async function providersCheck() {
-      videoAlert(true, "tv", "Checking providers");
+      let secs = 0;
+      const interval = setInterval(function () {
+        secs++;
+        videoAlert(
+          true,
+          "tv",
+          `Fetching Providers <span style="opacity: 50%">(${secs}s)</span>`,
+        );
+      }, 1000);
+
+      videoAlert(true, "tv", "Fetching Providers");
 
       const localProviders = apiConfig.providers
         .filter((provider) => (online ? true : provider.online !== true))
@@ -292,12 +302,17 @@ function modal(info, recommendationImages) {
             }),
           };
         });
-      
+
       async function fetchProviders() {
         const promises = Object.values(proxies).map(function (proxy) {
           return new Promise(async function (res, rej) {
-            const providers = await getProviders(proxy, info, seasonNumber, episodeNumber);
-  
+            const providers = await getProviders(
+              proxy,
+              info,
+              seasonNumber,
+              episodeNumber,
+            );
+
             if (providers) res(providers);
             else rej();
           });
@@ -308,14 +323,17 @@ function modal(info, recommendationImages) {
           promiseTimeout(proxyConfig.checkTimeout),
         ]);
       }
-      
-      providers = getMode() === "proxy"
-        ? (await fetchProviders() || localProviders)
-        : localProviders;
-      
+
+      providers =
+        getMode() === "proxy"
+          ? (await fetchProviders()) || localProviders
+          : localProviders;
+
       if (getProvider() === null && providers[0]) {
         setProvider(providers[0]);
       }
+
+      clearInterval(interval);
     }
 
     await providersCheck();
@@ -338,7 +356,7 @@ function modal(info, recommendationImages) {
       disabled = false;
       playVideo();
     } else {
-      videoAlert(true, "censor", "No providers available");
+      videoAlert(true, "censor", "Not Available");
     }
 
     seasonsDisabled = false;
@@ -355,11 +373,22 @@ function modal(info, recommendationImages) {
     const provider = getValidProvider();
     const url = getUrl(provider);
 
+    let secs = 0;
+    const interval = setInterval(function () {
+      secs++;
+      videoAlert(
+        true,
+        "tv",
+        `Loading Content <span style="opacity: 50%">(${secs}s)</span>`,
+      );
+    }, 1000);
+
     toggleBackdrop(true);
-    videoAlert(true, "sync", "Content loading");
+    videoAlert(true, "sync", "Loading Content");
     currentIframe.src = url;
 
     currentIframe.addEventListener("load", function () {
+      clearInterval(interval);
       videoAlert(false);
       toggleBackdrop(false);
       currentIframe.classList.add("active");
