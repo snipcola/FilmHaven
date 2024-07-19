@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "filmhaven-api",
       cwd: __dirname,
-      script: "node .",
+      script: "npm -- start",
     },
   ],
 };

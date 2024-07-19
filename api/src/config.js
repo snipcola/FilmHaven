@@ -1,32 +1,37 @@
 export default {
   providers: [
-    {
-      base: "fh.snipcola.com",
-      online: true,
-      url: function (type, { id, season, episode }) {
-        if (type === "movie") return `https://${this.base}/api/embed/${id}`;
-        return `https://${this.base}/api/embed/${id}/${season}/${episode}`;
-      },
-    },
-    {
-      ...(process?.env?.NODE_ENV === "development"
-        ? {
-            base: "localhost:2000",
-            url: function (type, { id, season, episode }) {
-              if (type === "movie")
-                return `http://${this.base}/api/embed/${id}`;
-              return `http://${this.base}/api/embed/${id}/${season}/${episode}`;
+    ...[
+      ...(process?.env?.NODE_ENV === "production"
+        ? [
+            {
+              base: "fh.snipcola.com",
+              online: true,
+              url: function (type, { id, season, episode }) {
+                if (type === "movie")
+                  return `https://${this.base}/api/embed/${id}`;
+                return `https://${this.base}/api/embed/${id}/${season}/${episode}`;
+              },
             },
-          }
-        : {
-            base: "film-haven.vercel.app",
-            url: function (type, { id, season, episode }) {
-              if (type === "movie")
-                return `https://${this.base}/api/embed/${id}`;
-              return `https://${this.base}/api/embed/${id}/${season}/${episode}`;
+            {
+              base: "film-haven.vercel.app",
+              url: function (type, { id, season, episode }) {
+                if (type === "movie")
+                  return `https://${this.base}/api/embed/${id}`;
+                return `https://${this.base}/api/embed/${id}/${season}/${episode}`;
+              },
             },
-          }),
-    },
+          ]
+        : [
+            {
+              base: "localhost:2000",
+              url: function (type, { id, season, episode }) {
+                if (type === "movie")
+                  return `http://${this.base}/api/embed/${id}`;
+                return `http://${this.base}/api/embed/${id}/${season}/${episode}`;
+              },
+            },
+          ]),
+    ],
     {
       base: "vidsrc.to",
       url: function (type, { id, season, episode }) {
