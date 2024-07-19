@@ -79,8 +79,8 @@ export async function onEmbedRequest(type, req, reply) {
   </head>
   <body>
     <video id="player" controls playsinline>
-${embedInfo.sources.map((s) => `<source src="${s.url}" title="${s.quality === "auto" ? s.quality : `${s.quality}p`}" type="application/x-mpegURL" />`).join(`\n       `)}
-${embedInfo.subtitles.map((c) => `<track src="${c.url}" label="${c.language}" srclang="${c.language}" kind="metadata">`).join(`\n       `)}
+       ${embedInfo.sources.map((s) => `<source src="${s.url}" title="${s.quality === "auto" ? s.quality : `${s.quality}p`}" type="application/x-mpegURL" />`).join(`\n       `)}
+       ${embedInfo.subtitles.map((c) => `<track src="${c.url}" label="${c.language}" srclang="${c.language}" kind="metadata">`).join(`\n       `)}
     </video>
     <script>
       new fluidPlayer("player", {
