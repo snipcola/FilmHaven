@@ -6,7 +6,7 @@ export async function sendRequest(
   path,
   parameters = {},
   method = "GET",
-  timeout = 12000,
+  timeout = 20000,
 ) {
   const apiUrl = config.url;
   const url = new URL(`${apiUrl}/${path}`);
