@@ -124,7 +124,7 @@ export async function onRequest(req, reply) {
             show: true,
           },
           contextMenu: {
-            controls: true,
+            controls: false
           },
           miniPlayer: {
             enabled: false,
