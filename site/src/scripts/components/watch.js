@@ -28,7 +28,6 @@ import { toggleDim } from "./dim.js";
 import { getDownloads, constructMagnet } from "../downloadsApi/download.js";
 import apiConfig from "../../../../api/src/config.js";
 import { getMode } from "../store/mode.js";
-import { getCustomProviders } from "../store/custom-providers.js";
 import { isOnline } from "../functions.js";
 
 const online = isOnline();
@@ -263,9 +262,6 @@ function modal(info, recommendationImages) {
   }
 
   const mode = getMode();
-  const customProviders = getCustomProviders();
-  const custom =
-    typeof customProviders !== "string" ? true : customProviders === "use";
 
   async function checkProviders() {
     providers = [];

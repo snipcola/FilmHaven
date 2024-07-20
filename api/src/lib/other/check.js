@@ -10,18 +10,20 @@ function promiseWithTimeout(promise, timeout) {
   ]);
 }
 
-async function get(url, base) {
+export async function get(url, base, json = false) {
   try {
     const headers = { Origin: `https://${base}`, Referer: `https://${base}/` };
     const response = await promiseWithTimeout(
       fetch.get(url, { headers }),
       process.env.TIMEOUT,
     );
-    const text = await response.text();
+
+    const status = response.status;
+    const data = await response[json ? "json" : "text"]();
 
     return {
-      status: response.status,
-      text: text.toLowerCase() || "",
+      status,
+      data: json ? data : data?.toLowerCase(),
     };
   } catch {
     return null;
@@ -39,7 +41,7 @@ export async function check(url, base) {
         response.status,
       );
       const blacklistedText = config.blacklist.text.some((t) =>
-        response.text.includes(t),
+        response.data.includes(t),
       );
 
       return !(blacklistedStatus || blacklistedText);
