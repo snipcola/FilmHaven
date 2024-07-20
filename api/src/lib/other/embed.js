@@ -70,6 +70,8 @@ export async function fetchEmbedUrl(base, protocol, ...args) {
   const embedInfo = await getEmbedInfo(...args);
   if (!embedInfo) return null;
 
-  const data = btoa(JSON.stringify(embedInfo));
-  return `${protocol}://${base}/api/embed?data=${data}`;
+  const data = btoa(
+    encodeURIComponent(JSON.stringify({ action: "embed", data: embedInfo })),
+  );
+  return `${protocol}://${base}/api?data=${data}`;
 }

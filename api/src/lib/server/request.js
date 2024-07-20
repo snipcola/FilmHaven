@@ -1,84 +1,89 @@
 import config from "../../config.js";
 import { check } from "../other/check.js";
-import { getEmbedInfo } from "../other/embed.js";
 
-export async function onRequest(type, req) {
-  // Parameters
-  const id = req.params.id;
-  const imdbId = req.params.imdbId;
-  const season = req.params.season;
-  const episode = req.params.episode;
-  const online = req.params.online;
-  const custom = req.params.custom;
-  const info = { id, imdbId, season, episode };
-
-  // Empty Check
-  if (id === "" || imdbId === "" || season === "" || episode === "") {
-    return { success: false, message: "Missing parameters" };
-  }
-
-  // Get Providers
-  const promises = config.providers
-    .filter((provider) =>
-      typeof online !== "string"
-        ? true
-        : online === "true"
-          ? true
-          : provider.online !== true,
-    )
-    .filter((provider) =>
-      typeof custom !== "string"
-        ? true
-        : custom === "true"
-          ? true
-          : provider.custom !== true,
-    )
-    .map(function (provider) {
-      return new Promise(async function (res) {
-        const url =
-          provider.custom === true
-            ? await provider.url(type, info)
-            : provider.url(type, info);
-        const valid = url && (await check(url, provider.base));
-
-        res(valid ? { provider: provider.base, url } : null);
-      });
-    });
-  const providers = (await Promise.all(promises)).filter((p) => p !== null);
-
-  // Return
-  return { success: true, providers };
-}
-
-export async function onEmbedRequest(req, reply) {
+export async function onRequest(req, reply) {
   // Parameters
   const data = req.query.data;
 
   // Empty Check
   if (data === "") {
-    return { success: false, message: "No Sources" };
+    return btoa(encodeURIComponent(JSON.stringify({ success: false })));
   }
 
   // Parse Data
-  let embedInfo;
+  let action;
+  let info;
 
   try {
-    embedInfo = JSON.parse(atob(data));
+    const result = JSON.parse(decodeURIComponent(atob(data)));
 
-    if (!embedInfo || !embedInfo.sources || !Array.isArray(embedInfo.sources)) {
-      return { success: false, message: "No Sources" };
+    if (
+      !result ||
+      typeof result.action !== "string" ||
+      typeof result.data !== "object" ||
+      !["providers", "embed"].includes(result.action)
+    ) {
+      return btoa(encodeURIComponent(JSON.stringify({ success: false })));
     }
+
+    action = result.action;
+    info = result.data;
   } catch {
-    return { success: false, message: "No Sources" };
+    return btoa(encodeURIComponent(JSON.stringify({ success: false })));
   }
 
-  // Return Embed
-  reply.type("text/html");
-  return `<!DOCTYPE html>
+  // Check Action
+  if (action === "providers") {
+    if (
+      !info ||
+      typeof info.type !== "string" ||
+      typeof info.id !== "string" ||
+      typeof info.imdbId !== "string" ||
+      typeof info.online !== "boolean" ||
+      typeof info.custom !== "boolean" ||
+      (info.type !== "movie" &&
+        (typeof info.season !== "number" || typeof info.episode !== "number"))
+    ) {
+      return btoa(encodeURIComponent(JSON.stringify({ success: false })));
+    }
+
+    // Get Providers
+    const promises = config.providers
+      .filter((provider) => (info.online ? true : provider.online !== true))
+      .filter((provider) => (info.custom ? true : provider.custom !== true))
+      .map(function (provider) {
+        return new Promise(async function (res) {
+          const url =
+            provider.custom === true
+              ? await provider.url(info.type, info)
+              : provider.url(info.type, info);
+          const valid = url && (await check(url, provider.base));
+
+          res(valid ? { provider: provider.base, url } : null);
+        });
+      });
+    const providers = (await Promise.all(promises)).filter((p) => p !== null);
+
+    // Return
+    return btoa(
+      encodeURIComponent(JSON.stringify({ success: true, providers })),
+    );
+  } else {
+    if (
+      !info ||
+      !info.sources ||
+      !Array.isArray(info.sources) ||
+      !info.subtitles ||
+      !Array.isArray(info.subtitles)
+    ) {
+      return btoa(encodeURIComponent(JSON.stringify({ success: false })));
+    }
+
+    // Return Embed
+    reply.type("text/html");
+    return `<!DOCTYPE html>
 <html>
   <head>
-    <title>FilmHaven Embed</title>
-    <meta name="description" content="A catalog of thousands of movies & shows.">
     <meta charset="UTF-8">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi">
     <style>
@@ -99,8 +104,8 @@ export async function onEmbedRequest(req, reply) {
   </head>
   <body>
     <video id="player" controls playsinline>
-       ${embedInfo.sources.map((s) => `<source src="${s.url}" title="${s.quality === "auto" ? s.quality : `${s.quality}p`}" type="application/x-mpegURL" />`).join(`\n       `)}
-       ${embedInfo.subtitles.map((c) => `<track src="${c.url}" label="${c.language}" srclang="${c.language}" kind="metadata">`).join(`\n       `)}
+       ${info.sources.map((s) => `<source src="${s.url}" title="${s.quality === "auto" ? s.quality : `${s.quality}p`}" type="application/x-mpegURL" />`).join(`\n       `)}
+       ${info.subtitles.map((c) => `<track src="${c.url}" label="${c.language}" srclang="${c.language}" kind="metadata">`).join(`\n       `)}
     </video>
     <script>
       new fluidPlayer("player", {
@@ -135,4 +140,5 @@ export async function onEmbedRequest(req, reply) {
     </script>
   </body>
 </html>`;
+  }
 }

@@ -66,6 +66,7 @@ export default {
       "no tv show found",
       "no episode found",
       "no show found",
+      "eyJzdWNjZXNzIjpmYWxzZX0%3D", // Custom Embeds
     ],
   },
 };

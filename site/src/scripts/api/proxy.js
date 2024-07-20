@@ -9,16 +9,29 @@ export async function getProviders(proxy, info, season, episode) {
     typeof customProviders !== "string" ? true : customProviders === "use";
 
   try {
-    const url =
-      info.type === "movie"
-        ? `${proxy}/${info.id}/${info.imdbId}/${online}/${custom}`
-        : `${proxy}/${info.id}/${info.imdbId}/${season}/${episode}/${online}/${custom}`;
-
+    const data = btoa(
+      encodeURIComponent(
+        JSON.stringify({
+          action: "providers",
+          data: {
+            type: info.type,
+            id: info.id,
+            imdbId: info.imdbId,
+            season,
+            episode,
+            online,
+            custom,
+          },
+        }),
+      ),
+    );
+    const url = `${proxy}?data=${data}`;
     const response = await fetch(url);
-    const json = await response.json();
+    const text = await response.text();
+    const json = JSON.parse(decodeURIComponent(atob(text)));
 
     return json.success ? json.providers : false;
-  } catch {
+  } catch (err) {
     return false;
   }
 }

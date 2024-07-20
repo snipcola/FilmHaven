@@ -286,9 +286,8 @@ function modal(info, recommendationImages) {
       videoAlert(true, "tv", "Fetching Providers");
 
       const localProviders = apiConfig.providers
+        .filter((provider) => !provider.custom)
         .filter((provider) => (online ? true : provider.online !== true))
-        .filter((provider) => (custom ? true : provider.custom !== true))
-        .filter((provider) => (mode === "proxy" ? true : !provider.custom))
         .map(function (provider) {
           const _info = {
             id: info.id,

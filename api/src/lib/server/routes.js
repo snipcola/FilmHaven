@@ -1,19 +1,8 @@
-import { onRequest, onEmbedRequest } from "./request.js";
+import { onRequest } from "./request.js";
 
 export default function (server) {
-  server.get("/api/:id/:imdbId/:online/:custom?", async function (...args) {
-    return await onRequest("movie", ...args);
-  });
-
-  server.get(
-    "/api/:id/:imdbId/:season/:episode/:online/:custom?",
-    async function (...args) {
-      return await onRequest("tv", ...args);
-    },
-  );
-
-  server.get("/api/embed", async function (...args) {
-    return await onEmbedRequest(...args);
+  server.get("/api", async function (...args) {
+    return await onRequest(...args);
   });
 
   server.setNotFoundHandler(function (_, reply) {
