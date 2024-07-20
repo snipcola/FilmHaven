@@ -1,3 +1,5 @@
+import { fetchEmbedUrl } from "./lib/other/embed.js";
+
 export default {
   providers: [
     ...[
@@ -7,19 +9,15 @@ export default {
               base: "fh.snipcola.com",
               online: true,
               custom: true,
-              url: function (type, { id, season, episode }) {
-                if (type === "movie")
-                  return `https://${this.base}/api/embed/${id}`;
-                return `https://${this.base}/api/embed/${id}/${season}/${episode}`;
+              url: async function (...args) {
+                return await fetchEmbedUrl(this.base, "https", ...args);
               },
             },
             {
               base: "film-haven.vercel.app",
               custom: true,
-              url: function (type, { id, season, episode }) {
-                if (type === "movie")
-                  return `https://${this.base}/api/embed/${id}`;
-                return `https://${this.base}/api/embed/${id}/${season}/${episode}`;
+              url: async function (...args) {
+                return await fetchEmbedUrl(this.base, "https", ...args);
               },
             },
           ]
@@ -27,10 +25,8 @@ export default {
             {
               base: "localhost:2000",
               custom: true,
-              url: function (type, { id, season, episode }) {
-                if (type === "movie")
-                  return `http://${this.base}/api/embed/${id}`;
-                return `http://${this.base}/api/embed/${id}/${season}/${episode}`;
+              url: async function (...args) {
+                return await fetchEmbedUrl(this.base, "http", ...args);
               },
             },
           ]),

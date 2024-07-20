@@ -12,12 +12,8 @@ export default function (server) {
     },
   );
 
-  server.get("/api/embed/:id", async function (...args) {
-    return await onEmbedRequest("movie", ...args);
-  });
-
-  server.get("/api/embed/:id/:season/:episode", async function (...args) {
-    return await onEmbedRequest("tv", ...args);
+  server.get("/api/embed", async function (...args) {
+    return await onEmbedRequest(...args);
   });
 
   server.setNotFoundHandler(function (_, reply) {

@@ -65,3 +65,11 @@ export async function getEmbedInfo(type, info) {
     return null;
   }
 }
+
+export async function fetchEmbedUrl(base, protocol, ...args) {
+  const embedInfo = await getEmbedInfo(...args);
+  if (!embedInfo) return null;
+
+  const data = btoa(JSON.stringify(embedInfo));
+  return `${protocol}://${base}/api/embed?data=${data}`;
+}

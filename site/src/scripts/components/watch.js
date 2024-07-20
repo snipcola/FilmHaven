@@ -262,6 +262,7 @@ function modal(info, recommendationImages) {
     videoNoticeContainer.classList[toggle ? "add" : "remove"]("active");
   }
 
+  const mode = getMode();
   const customProviders = getCustomProviders();
   const custom =
     typeof customProviders !== "string" ? true : customProviders === "use";
@@ -287,15 +288,18 @@ function modal(info, recommendationImages) {
       const localProviders = apiConfig.providers
         .filter((provider) => (online ? true : provider.online !== true))
         .filter((provider) => (custom ? true : provider.custom !== true))
+        .filter((provider) => (mode === "proxy" ? true : !provider.custom))
         .map(function (provider) {
+          const _info = {
+            id: info.id,
+            imdbId: info.imdbId,
+            season: seasonNumber,
+            episode: episodeNumber,
+          };
+
           return {
             provider: provider.base,
-            url: provider.url(info.type, {
-              id: info.id,
-              imdbId: info.imdbId,
-              season: seasonNumber,
-              episode: episodeNumber,
-            }),
+            url: provider.url(info.type, _info),
           };
         });
 
@@ -321,7 +325,7 @@ function modal(info, recommendationImages) {
       }
 
       providers =
-        getMode() === "proxy"
+        mode === "proxy"
           ? (await fetchProviders()) || localProviders
           : localProviders;
 
