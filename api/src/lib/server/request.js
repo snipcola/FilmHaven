@@ -139,6 +139,9 @@ export async function onRequest(req, reply) {
       });
     </script>
   </body>
-</html>`;
+</html>`
+      .replace(/\>[\r\n ]+\</g, "><")
+      .replace(/(<.*?>)|\s+/g, (_, $1) => ($1 ? $1 : " "))
+      .trim();
   }
 }
