@@ -28,6 +28,7 @@ import { toggleDim } from "./dim.js";
 import { getDownloads, constructMagnet } from "../downloadsApi/download.js";
 import apiConfig from "../../../../api/src/config.js";
 import { getMode } from "../store/mode.js";
+import { getCustomProviders } from "../store/custom-providers.js";
 import { isOnline } from "../functions.js";
 
 const online = isOnline();
@@ -261,6 +262,10 @@ function modal(info, recommendationImages) {
     videoNoticeContainer.classList[toggle ? "add" : "remove"]("active");
   }
 
+  const customProviders = getCustomProviders();
+  const custom =
+    typeof customProviders !== "string" ? true : customProviders === "use";
+
   async function checkProviders() {
     providers = [];
     forceProvider = null;
@@ -281,6 +286,7 @@ function modal(info, recommendationImages) {
 
       const localProviders = apiConfig.providers
         .filter((provider) => (online ? true : provider.online !== true))
+        .filter((provider) => (custom ? true : provider.custom !== true))
         .map(function (provider) {
           return {
             provider: provider.base,

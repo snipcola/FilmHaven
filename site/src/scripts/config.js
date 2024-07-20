@@ -1,6 +1,10 @@
 import { getTheme, setTheme } from "./store/theme.js";
 import { getAdult, setAdult } from "./store/adult.js";
 import { getMode, setMode } from "./store/mode.js";
+import {
+  setCustomProviders,
+  getCustomProviders,
+} from "./store/custom-providers.js";
 import { getPages, getPage, setPage } from "./store/pages.js";
 import { getSections, getSection, setSection } from "./store/sections.js";
 import {
@@ -210,6 +214,7 @@ export const store = {
     adult: "fh-adult",
     language: "fh-language",
     mode: "fh-mode",
+    customProviders: "fh-custom-providers",
     provider: "fh-provider",
     lastPlayed: "fh-last-played",
     pages: "fh-pages",
@@ -248,6 +253,11 @@ export const mode = {
 
 export const defaultMode = proxies.length > 0 ? "proxy" : "local";
 
+export const customProviders = {
+  use: "Use",
+  dontUse: "Don't Use",
+};
+
 export const watchSections = {
   Video: true,
   Trailer: true,
@@ -262,6 +272,82 @@ export const watchSections = {
 };
 
 export const settings = [
+  {
+    label: {
+      icon: "box",
+      text: "Data",
+    },
+    items: function () {
+      return [
+        {
+          label: {
+            icon: "sync",
+            text: "Reset",
+          },
+          onClick: function (self) {
+            localStorage.clear();
+
+            document.body.classList.remove("active");
+            window.location.href = `${(window.location.href || "").split("?")[0]}?${config.query.page}=4`;
+
+            self.classList.add("inactive");
+            self.querySelector(".icon").className = "icon icon-check";
+          },
+        },
+        {
+          label: {
+            icon: "sync",
+            text: "Empty Cache",
+          },
+          onClick: function (self) {
+            resetCache();
+            document.body.classList.remove("active");
+            window.location.reload();
+
+            self.classList.add("inactive");
+            self.querySelector(".icon").className = "icon icon-check";
+          },
+        },
+        {
+          label: {
+            icon: "eye-slash",
+            text: "Clear Continue Watching",
+          },
+          class: "secondary",
+          onClick: function (self) {
+            resetContinueWatching();
+
+            self.classList.add("inactive");
+            self.querySelector(".icon").className = "icon icon-check";
+
+            setTimeout(function () {
+              self.querySelector(".icon").className = "icon icon-eye-slash";
+              self.classList.remove("inactive");
+            }, 2500);
+          },
+        },
+        {
+          label: {
+            icon: "eye-slash",
+            text: "Clear Last Watched",
+          },
+          class: "secondary",
+          onClick: function (self) {
+            resetLastPlayed();
+
+            self.classList.add("inactive");
+            self.querySelector(".icon").className = "icon icon-check";
+
+            setTimeout(function () {
+              self.querySelector(".icon").className = "icon icon-eye-slash";
+              self.classList.remove("inactive");
+            }, 2500);
+          },
+        },
+      ];
+    },
+    type: "buttons",
+  },
   {
     label: {
       icon: "paint-brush",
@@ -422,7 +508,7 @@ export const settings = [
   },
   {
     label: {
-      icon: "cog",
+      icon: "globe",
       text: "Mode",
     },
     items: function () {
@@ -436,6 +522,24 @@ export const settings = [
       }));
     },
     onSelect: setMode,
+    type: "select",
+  },
+  {
+    label: {
+      icon: "image",
+      text: "Custom Providers",
+    },
+    items: function () {
+      const _customProviders = getCustomProviders();
+      const customProviderItems = Object.values(customProviders);
+
+      return customProviderItems.map((a) => ({
+        label: a,
+        value: a.toLowerCase(),
+        active: a.toLowerCase() === _customProviders,
+      }));
+    },
+    onSelect: setCustomProviders,
     type: "select",
   },
   {
@@ -497,81 +601,5 @@ export const settings = [
     },
     type: "selection",
     multi: true,
-  },
-  {
-    label: {
-      icon: "box",
-      text: "Data",
-    },
-    items: function () {
-      return [
-        {
-          label: {
-            icon: "sync",
-            text: "Reset",
-          },
-          onClick: function (self) {
-            localStorage.clear();
-
-            document.body.classList.remove("active");
-            window.location.href = `${(window.location.href || "").split("?")[0]}?${config.query.page}=4`;
-
-            self.classList.add("inactive");
-            self.querySelector(".icon").className = "icon icon-check";
-          },
-        },
-        {
-          label: {
-            icon: "sync",
-            text: "Empty Cache",
-          },
-          onClick: function (self) {
-            resetCache();
-            document.body.classList.remove("active");
-            window.location.reload();
-
-            self.classList.add("inactive");
-            self.querySelector(".icon").className = "icon icon-check";
-          },
-        },
-        {
-          label: {
-            icon: "eye-slash",
-            text: "Clear Continue Watching",
-          },
-          class: "secondary",
-          onClick: function (self) {
-            resetContinueWatching();
-
-            self.classList.add("inactive");
-            self.querySelector(".icon").className = "icon icon-check";
-
-            setTimeout(function () {
-              self.querySelector(".icon").className = "icon icon-eye-slash";
-              self.classList.remove("inactive");
-            }, 2500);
-          },
-        },
-        {
-          label: {
-            icon: "eye-slash",
-            text: "Clear Last Watched",
-          },
-          class: "secondary",
-          onClick: function (self) {
-            resetLastPlayed();
-
-            self.classList.add("inactive");
-            self.querySelector(".icon").className = "icon icon-check";
-
-            setTimeout(function () {
-              self.querySelector(".icon").className = "icon icon-eye-slash";
-              self.classList.remove("inactive");
-            }, 2500);
-          },
-        },
-      ];
-    },
-    type: "buttons",
   },
 ];

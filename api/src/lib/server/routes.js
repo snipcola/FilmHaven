@@ -1,12 +1,12 @@
 import { onRequest, onEmbedRequest } from "./request.js";
 
 export default function (server) {
-  server.get("/api/:id/:imdbId/:online?", async function (...args) {
+  server.get("/api/:id/:imdbId/:online/:custom?", async function (...args) {
     return await onRequest("movie", ...args);
   });
 
   server.get(
-    "/api/:id/:imdbId/:season/:episode/:online?",
+    "/api/:id/:imdbId/:season/:episode/:online/:custom?",
     async function (...args) {
       return await onRequest("tv", ...args);
     },

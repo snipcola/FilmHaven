@@ -6,6 +6,7 @@ export default {
             {
               base: "fh.snipcola.com",
               online: true,
+              custom: true,
               url: function (type, { id, season, episode }) {
                 if (type === "movie")
                   return `https://${this.base}/api/embed/${id}`;
@@ -14,6 +15,7 @@ export default {
             },
             {
               base: "film-haven.vercel.app",
+              custom: true,
               url: function (type, { id, season, episode }) {
                 if (type === "movie")
                   return `https://${this.base}/api/embed/${id}`;
@@ -24,6 +26,7 @@ export default {
         : [
             {
               base: "localhost:2000",
+              custom: true,
               url: function (type, { id, season, episode }) {
                 if (type === "movie")
                   return `http://${this.base}/api/embed/${id}`;

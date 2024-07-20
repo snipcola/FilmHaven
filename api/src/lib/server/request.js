@@ -9,6 +9,7 @@ export async function onRequest(type, req) {
   const season = req.params.season;
   const episode = req.params.episode;
   const online = req.params.online;
+  const custom = req.params.custom;
   const info = { id, imdbId, season, episode };
 
   // Empty Check
@@ -24,6 +25,13 @@ export async function onRequest(type, req) {
         : online === "true"
           ? true
           : provider.online !== true,
+    )
+    .filter((provider) =>
+      typeof custom !== "string"
+        ? true
+        : custom === "true"
+          ? true
+          : provider.custom !== true,
     )
     .map(function (provider) {
       return new Promise(async function (res) {
