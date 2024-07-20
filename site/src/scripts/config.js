@@ -221,7 +221,6 @@ export const store = {
     sections: "fh-sections",
     watchSections: "fh-watch-sections",
     continue: "fh-continue",
-    query: "fh-query",
   },
 };
 
