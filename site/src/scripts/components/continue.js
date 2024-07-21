@@ -1,4 +1,3 @@
-import { config } from "../config.js";
 import { initializeArea } from "./area.js";
 import {
   getContinueWatching,

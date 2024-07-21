@@ -11,38 +11,32 @@ export async function getEmbedInfo(type, info) {
     const response = await get(`${config.url}/${path}`, config.base);
     if (!response || response.status !== 200) return null;
 
-    let _sources = [];
-    let _subtitles = [];
+    let dashUrl = "";
+    let hlsUrl = "";
+    let audio = { names: [], order: [] };
+    let subtitles = [];
+    let qualities = { 1920: 1080 };
 
     if (type === "movie") {
-      // Sources
-      const url = /hls:\s"(.+?)"/.exec(response.data)[1];
-      let quality = 1080;
+      // URL
+      dashUrl = /dash:\s"(.+?)"/.exec(response.data)[1];
+      hlsUrl = /hls:\s"(.+?)"/.exec(response.data)[1];
 
+      // Audio
       try {
-        quality = Math.max(
-          ...Object.values(
-            JSON.parse(/qualityByWidth:\s+({.*\})/.exec(response.data)[1]),
-          ),
-        );
+        audio = JSON.parse(/audio:\s+({.*\})/.exec(response.data)[1]);
       } catch {}
-
-      if (!url || !quality) {
-        return null;
-      }
-
-      _sources.push({ url, quality });
 
       // Subtitles
       try {
-        const subtitles = JSON.parse(
-          /cc:\s+(\[{.*\}\])/.exec(response.data)[1],
-        );
+        subtitles = JSON.parse(/cc:\s+(\[{.*\}\])/.exec(response.data)[1]);
+      } catch {}
 
-        for (const subtitle of subtitles) {
-          if (subtitle.url && subtitle.name)
-            _subtitles.push({ url: subtitle.url, lang: subtitle.name });
-        }
+      // Qualities
+      try {
+        qualities = JSON.parse(
+          /qualityByWidth:\s+({.*\})/.exec(response.data)[1],
+        );
       } catch {}
     } else {
       // Season
@@ -54,43 +48,67 @@ export async function getEmbedInfo(type, info) {
         (e) => e.episode.toString() === info.episode.toString(),
       );
 
-      // Sources
-      const url = episode.hls;
-      let quality = 1080;
+      // URL
+      dashUrl = episode.dash;
+      hlsUrl = episode.hls;
 
-      try {
-        quality = Math.max(...Object.values(episode.qbw));
-      } catch {}
-
-      if (!url || !quality) {
-        return null;
-      }
-
-      _sources.push({ url, quality });
+      // Audio
+      audio = episode.audio;
 
       // Subtitles
+      subtitles = episode.cc;
+
+      // Qualities
       try {
-        for (const subtitle of episode.cc) {
-          if (subtitle.url && subtitle.name)
-            _subtitles.push({ url: subtitle.url, lang: subtitle.name });
-        }
+        qualities = JSON.parse(
+          /qualityByWidth:\s+({.*\})/.exec(response.data)[1],
+        );
       } catch {}
     }
 
-    const sources = _sources
-      .filter(
-        (s) =>
-          typeof s?.url === "string" && s?.url?.endsWith(".m3u8") && s?.quality,
-      )
-      .map(({ url, quality }) => ({ url, quality }));
-    const subtitles = _subtitles
-      .filter(
-        (s) =>
-          typeof s?.url === "string" && s?.url?.endsWith(".vtt") && s?.lang,
-      )
-      .map(({ url, lang }) => ({ url, language: lang }));
+    // Checks
+    if (
+      !dashUrl ||
+      typeof dashUrl !== "string" ||
+      !dashUrl.endsWith(".mpd") ||
+      !hlsUrl ||
+      typeof hlsUrl !== "string" ||
+      !hlsUrl.endsWith(".m3u8")
+    ) {
+      return null;
+    }
 
-    return sources.length > 0 ? { sources, subtitles } : null;
+    if (
+      !audio ||
+      typeof audio !== "object" ||
+      !audio.names ||
+      !Array.isArray(audio.names) ||
+      !audio.order ||
+      !Array.isArray(audio.order)
+    ) {
+      audio = { names: [], order: [] };
+    }
+
+    subtitles = subtitles.filter(function (subtitle) {
+      return (
+        subtitle.url &&
+        typeof subtitle.url === "string" &&
+        subtitle.url.endsWith(".vtt") &&
+        subtitle.name &&
+        typeof subtitle.name === "string"
+      );
+    });
+
+    if (
+      !qualities ||
+      typeof qualities !== "object" ||
+      Object.values(qualities).length === 0
+    ) {
+      qualities = { 1920: 1080 };
+    }
+
+    // Return
+    return { dashUrl, hlsUrl, audio, subtitles, qualities };
   } catch {
     return null;
   }
