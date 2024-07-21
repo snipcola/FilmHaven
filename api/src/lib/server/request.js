@@ -1,4 +1,4 @@
-import config from "../../config.js";
+import { providers as _providers } from "../../config.js";
 import { check } from "../other/check.js";
 
 export async function onRequest(req, reply) {
@@ -46,7 +46,7 @@ export async function onRequest(req, reply) {
     }
 
     // Get Providers
-    const promises = config.providers
+    const promises = _providers
       .filter((provider) =>
         typeof info.online !== "boolean"
           ? true

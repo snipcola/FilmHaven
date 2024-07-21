@@ -1,4 +1,4 @@
-import config from "../../config.js";
+import { blacklist } from "../../config.js";
 import fetch from "ky";
 
 function promiseWithTimeout(promise, timeout) {
@@ -39,10 +39,10 @@ export async function check(url, base) {
     case null:
       return false;
     default:
-      const blacklistedStatus = config.blacklist.status.includes(
+      const blacklistedStatus = blacklist.status.includes(
         response.status,
       );
-      const blacklistedText = config.blacklist.text.some((t) =>
+      const blacklistedText = blacklist.text.some((t) =>
         data.includes(t),
       );
 

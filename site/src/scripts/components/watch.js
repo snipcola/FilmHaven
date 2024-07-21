@@ -26,7 +26,7 @@ import { initializeArea } from "./area.js";
 import { getProviders } from "../api/proxy.js";
 import { toggleDim } from "./dim.js";
 import { getDownloads, constructMagnet } from "../downloadsApi/download.js";
-import apiConfig from "../../../../api/src/config.js";
+import { providers as _providers } from "../../../../api/src/config.js";
 import { getMode } from "../store/mode.js";
 import { isOnline } from "../functions.js";
 
@@ -281,7 +281,7 @@ function modal(info, recommendationImages) {
     async function providersCheck() {
       videoAlert(true, "tv", "Fetching Providers");
 
-      const localProviders = apiConfig.providers
+      const localProviders = _providers
         .filter((provider) => !provider.custom)
         .filter((provider) => (online ? true : provider.online !== true))
         .map(function (provider) {
