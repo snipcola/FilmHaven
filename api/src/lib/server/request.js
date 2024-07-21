@@ -125,7 +125,7 @@ export async function onRequest(req, reply) {
       const englishAudio = (audio.names || [])
         .find(function (_name) {
           const name = _name.toLowerCase();
-          return name.startsWith("eng") && !name.includes("commentary");
+          return (name.startsWith("eng") || name.includes("original")) && !name.includes("commentary");
         });
       if (englishAudio) {
         localStorage.setItem("player.track", englishAudio);
