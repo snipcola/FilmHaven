@@ -4,7 +4,7 @@ let cache;
 let cachedImages = [];
 
 function imageExists(url) {
-  return Array.from(cache.children).some((i) => i.src == url);
+  return Array.from(cache.children).some((i) => i.src === url);
 }
 
 export function initializeCache() {

@@ -7,14 +7,12 @@ export const providers = [
           {
             base: "fh.snipcola.com",
             online: true,
-            custom: true,
             url: async function (...args) {
               return await fetchEmbedUrl(this.base, "https", ...args);
             },
           },
           {
             base: "film-haven.vercel.app",
-            custom: true,
             url: async function (...args) {
               return await fetchEmbedUrl(this.base, "https", ...args);
             },
@@ -23,7 +21,6 @@ export const providers = [
       : [
           {
             base: "localhost:2000",
-            custom: true,
             url: async function (...args) {
               return await fetchEmbedUrl(this.base, "http", ...args);
             },

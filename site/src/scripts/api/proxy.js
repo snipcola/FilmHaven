@@ -1,13 +1,8 @@
 import { isOnline } from "../functions.js";
-import { getCustomProviders } from "../store/custom-providers.js";
 
 const online = isOnline();
 
 export async function getProviders(proxy, info, season, episode) {
-  const customProviders = getCustomProviders();
-  const custom =
-    typeof customProviders !== "string" ? true : customProviders === "use";
-
   try {
     const data = btoa(
       encodeURIComponent(
@@ -20,7 +15,6 @@ export async function getProviders(proxy, info, season, episode) {
             season,
             episode,
             online,
-            custom,
           },
         }),
       ),

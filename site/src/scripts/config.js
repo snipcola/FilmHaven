@@ -1,10 +1,6 @@
 import { getTheme, setTheme } from "./store/theme.js";
 import { getAdult, setAdult } from "./store/adult.js";
 import { getMode, setMode } from "./store/mode.js";
-import {
-  setCustomProviders,
-  getCustomProviders,
-} from "./store/custom-providers.js";
 import { getPages, getPage, setPage } from "./store/pages.js";
 import { getSections, getSection, setSection } from "./store/sections.js";
 import {
@@ -214,7 +210,6 @@ export const store = {
     adult: "fh-adult",
     language: "fh-language",
     mode: "fh-mode",
-    customProviders: "fh-custom-providers",
     provider: "fh-provider",
     lastPlayed: "fh-last-played",
     pages: "fh-pages",
@@ -251,11 +246,6 @@ export const mode = {
 };
 
 export const defaultMode = proxies.length > 0 ? "proxy" : "local";
-
-export const customProviders = {
-  use: "Use",
-  dontUse: "Don't Use",
-};
 
 export const watchSections = {
   Video: true,
@@ -521,24 +511,6 @@ export const settings = [
       }));
     },
     onSelect: setMode,
-    type: "select",
-  },
-  {
-    label: {
-      icon: "image",
-      text: "Custom Providers",
-    },
-    items: function () {
-      const _customProviders = getCustomProviders();
-      const customProviderItems = Object.values(customProviders);
-
-      return customProviderItems.map((a) => ({
-        label: a,
-        value: a.toLowerCase(),
-        active: a.toLowerCase() === _customProviders,
-      }));
-    },
-    onSelect: setCustomProviders,
     type: "select",
   },
   {

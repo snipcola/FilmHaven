@@ -54,17 +54,10 @@ export async function onRequest(req, reply) {
             ? true
             : provider.online !== true,
       )
-      .filter((provider) =>
-        typeof info.custom !== "boolean"
-          ? true
-          : info.custom
-            ? true
-            : provider.custom !== true,
-      )
       .map(function (provider) {
         return new Promise(async function (res) {
           const url =
-            provider.url?.constructor?.name == "AsyncFunction"
+            provider.url?.constructor?.name === "AsyncFunction"
               ? await provider.url(info.type, info)
               : provider.url(info.type, info);
           const valid = url && (await check(url, provider.base));
