@@ -47,12 +47,11 @@ export async function onRequest(req, reply) {
 
     // Get Providers
     const promises = _providers
-      .filter((provider) =>
-        typeof info.online !== "boolean"
-          ? true
-          : info.online
-            ? true
-            : provider.online !== true,
+      .filter(
+        (provider) =>
+          typeof info.online !== "boolean" ||
+          info.online === true ||
+          provider.online !== true,
       )
       .map(function (provider) {
         return new Promise(async function (res) {

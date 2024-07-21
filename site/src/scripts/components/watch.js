@@ -282,8 +282,10 @@ function modal(info, recommendationImages) {
       videoAlert(true, "tv", "Fetching Providers");
 
       const localProviders = _providers
-        .filter((provider) => provider.url?.constructor?.name !== "AsyncFunction")
-        .filter((provider) => (online ? true : provider.online !== true))
+        .filter(
+          (provider) => provider.url?.constructor?.name !== "AsyncFunction",
+        )
+        .filter((provider) => online || provider.online !== true)
         .map(function (provider) {
           const _info = {
             id: info.id,

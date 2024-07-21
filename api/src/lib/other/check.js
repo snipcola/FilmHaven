@@ -39,12 +39,8 @@ export async function check(url, base) {
     case null:
       return false;
     default:
-      const blacklistedStatus = blacklist.status.includes(
-        response.status,
-      );
-      const blacklistedText = blacklist.text.some((t) =>
-        data.includes(t),
-      );
+      const blacklistedStatus = blacklist.status.includes(response.status);
+      const blacklistedText = blacklist.text.some((t) => data.includes(t));
 
       return !(blacklistedStatus || blacklistedText);
   }
