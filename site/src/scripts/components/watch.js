@@ -319,10 +319,7 @@ function modal(info, recommendationImages) {
         ]);
       }
 
-      providers =
-        mode === "proxy"
-          ? (await fetchProviders()) || localProviders
-          : localProviders;
+      providers = mode === "proxy" ? await fetchProviders() : localProviders;
 
       if (getProvider() === null && providers[0]) {
         setProvider(providers[0]);

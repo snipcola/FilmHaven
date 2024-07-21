@@ -23,7 +23,7 @@ export async function get(url, base, json = false) {
 
     return {
       status,
-      data: json ? data : data?.toLowerCase(),
+      data,
     };
   } catch {
     return null;
@@ -32,6 +32,8 @@ export async function get(url, base, json = false) {
 
 export async function check(url, base) {
   const response = await get(url, base);
+  const data =
+    typeof response?.data === "string" ? response.data.toLowerCase() : "";
 
   switch (response) {
     case null:
@@ -41,7 +43,7 @@ export async function check(url, base) {
         response.status,
       );
       const blacklistedText = config.blacklist.text.some((t) =>
-        response.data.includes(t),
+        data.includes(t),
       );
 
       return !(blacklistedStatus || blacklistedText);

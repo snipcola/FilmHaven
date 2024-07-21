@@ -54,7 +54,7 @@ export async function onRequest(req, reply) {
       .map(function (provider) {
         return new Promise(async function (res) {
           const url =
-            provider.custom === true
+            provider.url?.constructor?.name == "AsyncFunction"
               ? await provider.url(info.type, info)
               : provider.url(info.type, info);
           const valid = url && (await check(url, provider.base));
