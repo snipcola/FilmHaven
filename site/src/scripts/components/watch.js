@@ -308,7 +308,10 @@ function modal(info, recommendationImages) {
               episodeNumber,
             );
 
-            if (providers) res(providers);
+            if (providers)
+              res(
+                online ? providers : providers.filter((p) => p.type !== "data"),
+              );
             else rej();
           });
         });
