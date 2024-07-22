@@ -212,6 +212,7 @@ function modal(info, recommendationImages) {
   video.className = "video";
   iframe.className = "iframe";
   iframe.setAttribute("allowfullscreen", true);
+  iframe.setAttribute("autoplay", true);
   video.append(videoNoticeContainer);
 
   backdrop.className = "backdrop";
