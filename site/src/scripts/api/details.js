@@ -120,7 +120,9 @@ async function format(item, type) {
       genres,
       seasons,
       recommendations,
-      trailer: trailer ? `https://www.youtube-nocookie.com/embed/${trailer.key}` : null,
+      trailer: trailer
+        ? `https://www.youtube-nocookie.com/embed/${trailer.key}`
+        : null,
     };
   }
 
