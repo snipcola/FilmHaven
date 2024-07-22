@@ -385,6 +385,7 @@ function modal(info, recommendationImages) {
     const player = VenomPlayer.make({
       publicPath: "https://cdn.jsdelivr.net/npm/venom-player@0.2.88/dist/",
       container: currentPlayer,
+      id: info.type === "movie" ? info.id : `${info.id}-${seasonNumber}-${episodeNumber}`,
       source: {
         dash: dash === "" ? undefined : dash,
         hls: hls === "" ? undefined : hls,
@@ -408,7 +409,7 @@ function modal(info, recommendationImages) {
         "background-color-primary": "rgba(26, 26, 26, 0.75)",
       },
       speed: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-      trackProgress: 30,
+      trackProgress: 10,
       replay: false,
       autoplay: true,
     });
