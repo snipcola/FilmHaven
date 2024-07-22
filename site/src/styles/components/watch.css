@@ -811,3 +811,8 @@
     opacity: var(--dim-opacity);
   }
 }
+
+.player_1JR0Q.user-active .controls_11sFr {
+  background-color: rgba(0, 0, 0, 0.25);
+  transition: background-color 0.25s;
+}

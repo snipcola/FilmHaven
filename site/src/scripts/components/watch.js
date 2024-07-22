@@ -473,7 +473,8 @@ function modal(info, recommendationImages) {
     if (currentIframe) currentIframe.remove();
     if (currentPlayer) currentPlayer.remove();
     if (hasPlayer) hasPlayer = false;
-    if (watch.parentElement?.parentElement) watch.parentElement.parentElement.classList.remove("has-player");
+    if (watch.parentElement?.parentElement)
+      watch.parentElement.parentElement.classList.remove("has-player");
 
     const provider = getCurrentProvider();
     const response = provider[provider.type];
@@ -495,7 +496,8 @@ function modal(info, recommendationImages) {
       currentPlayer = _player.cloneNode();
       video.append(currentPlayer);
       hasPlayer = true;
-      if (watch.parentElement?.parentElement) watch.parentElement.parentElement.classList.add("has-player");
+      if (watch.parentElement?.parentElement)
+        watch.parentElement.parentElement.classList.add("has-player");
       initializePlayer(response, function () {
         videoAlert(false);
         toggleBackdrop(false);
