@@ -68,12 +68,8 @@ export async function getEmbedInfo(type, info) {
 
     // Checks
     if (
-      !dashUrl ||
-      typeof dashUrl !== "string" ||
-      !dashUrl.endsWith(".mpd") ||
-      !hlsUrl ||
-      typeof hlsUrl !== "string" ||
-      !hlsUrl.endsWith(".m3u8")
+      (!dashUrl || typeof dashUrl !== "string" || !dashUrl.endsWith(".mpd")) &&
+      (!hlsUrl || typeof hlsUrl !== "string" || !hlsUrl.endsWith(".m3u8"))
     ) {
       return null;
     }
@@ -112,14 +108,4 @@ export async function getEmbedInfo(type, info) {
   } catch {
     return null;
   }
-}
-
-export async function fetchEmbedUrl(base, protocol, ...args) {
-  const embedInfo = await getEmbedInfo(...args);
-  if (!embedInfo) return null;
-
-  const data = btoa(
-    encodeURIComponent(JSON.stringify({ action: "embed", data: embedInfo })),
-  );
-  return `${protocol}://${base}/api?data=${data}`;
 }

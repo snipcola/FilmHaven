@@ -44,5 +44,6 @@ html(lang = "en")
     each cssFile in htmlWebpackPlugin.files.css
       style !{compilation.assets[cssFile.substr(htmlWebpackPlugin.files.publicPath.length)].source()}
   body
+    script(src="https://cdn.jsdelivr.net/npm/venom-player@0.2.88")
     each jsFile in htmlWebpackPlugin.files.js
       script !{compilation.assets[jsFile.substr(htmlWebpackPlugin.files.publicPath.length)].source()}

@@ -86,18 +86,20 @@
   display: flex;
 }
 
-.watch .video .iframe {
+.watch .video .iframe,
+.watch .video > .player {
   display: none;
   position: absolute;
 
   outline: none;
   border: none;
 
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
 }
 
-.watch .video .iframe.active {
+.watch .video .iframe.active,
+.watch .video > .player.active {
   display: inline-block;
 }
 

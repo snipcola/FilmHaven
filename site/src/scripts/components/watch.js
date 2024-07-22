@@ -93,6 +93,7 @@ function modal(info, recommendationImages) {
   const backdrop = document.createElement("img");
   const backdropVignette = document.createElement("div");
   const iframe = document.createElement("iframe");
+  const _player = document.createElement("div");
 
   const trailer = document.createElement("div");
   const trailerIframe = document.createElement("iframe");
@@ -213,6 +214,7 @@ function modal(info, recommendationImages) {
   iframe.className = "iframe";
   iframe.setAttribute("allowfullscreen", true);
   iframe.setAttribute("allow", "autoplay");
+  _player.className = "player";
   video.append(videoNoticeContainer);
 
   backdrop.className = "backdrop";
@@ -237,23 +239,15 @@ function modal(info, recommendationImages) {
   }
 
   let currentIframe;
+  let currentPlayer;
 
   let disabled = false;
   let seasonsDisabled = false;
 
   let providers = [];
-  let forceProvider;
 
-  function getValidProvider() {
-    const currentProvider = getProvider();
-    const provider = providers.find((p) => p.provider === currentProvider);
-
-    if (!provider) forceProvider = providers[0]?.provider;
-    return forceProvider || provider?.provider;
-  }
-
-  function getUrl(provider) {
-    return providers.find((p) => p.provider === provider)?.url;
+  function getCurrentProvider() {
+    return providers.find((p) => p.name === getProvider()) || providers[0];
   }
 
   function videoAlert(toggle, icon, text) {
@@ -266,7 +260,6 @@ function modal(info, recommendationImages) {
 
   async function checkProviders() {
     providers = [];
-    forceProvider = null;
 
     disabled = true;
     seasonsDisabled = true;
@@ -275,6 +268,7 @@ function modal(info, recommendationImages) {
     seasons.classList.add("disabled");
 
     if (currentIframe) currentIframe.remove();
+    if (currentPlayer) currentPlayer.remove();
     providersSelect.innerHTML = "<option selected disabled>...</option>";
 
     toggleBackdrop(true);
@@ -284,7 +278,9 @@ function modal(info, recommendationImages) {
 
       const localProviders = _providers
         .filter(
-          (provider) => provider.url?.constructor?.name !== "AsyncFunction",
+          (provider) =>
+            provider.url?.constructor?.name !== "AsyncFunction" &&
+            provider.data?.constructor?.name !== "AsyncFunction",
         )
         .filter((provider) => online || provider.online !== true)
         .map(function (provider) {
@@ -296,8 +292,9 @@ function modal(info, recommendationImages) {
           };
 
           return {
-            provider: provider.base,
-            url: provider.url(info.type, _info),
+            name: provider.base,
+            type: provider.type,
+            [provider.type]: provider[provider.type](info.type, _info),
           };
         });
 
@@ -334,16 +331,16 @@ function modal(info, recommendationImages) {
     providersSelect.innerHTML = "";
 
     if (providers.length > 0) {
-      providers.forEach(function ({ provider: providerName }) {
+      providers.forEach(function ({ name }) {
         const provider = document.createElement("option");
 
-        provider.value = providerName.toLowerCase();
-        provider.innerText = providerName;
+        provider.value = name.toLowerCase();
+        provider.innerText = name;
 
         providersSelect.append(provider);
       });
 
-      providersSelect.value = getValidProvider();
+      providersSelect.value = getCurrentProvider().name;
       providersElem.classList.remove("disabled");
 
       disabled = false;
@@ -356,25 +353,96 @@ function modal(info, recommendationImages) {
     seasons.classList.remove("disabled");
   }
 
+  function initializePlayer(
+    { dashUrl: dash, hlsUrl: hls, audio, subtitles, qualities },
+    onReady,
+  ) {
+    localStorage.setItem("player.cc", "Off");
+    localStorage.setItem("player.isCountdown", false);
+    localStorage.setItem("player.muted", false);
+    localStorage.setItem("player.speed", "1");
+    localStorage.setItem("player.withTotal", true);
+
+    const englishAudio = (audio.names || []).find(function (_name) {
+      const name = _name.toLowerCase();
+      return (
+        (name.startsWith("eng") || name.includes("original")) &&
+        !name.includes("commentary")
+      );
+    });
+    if (englishAudio) {
+      localStorage.setItem("player.track", englishAudio);
+    }
+
+    const highestQuality = Math.max(...Object.values(qualities || []));
+    if (highestQuality) {
+      localStorage.setItem("player.quality", highestQuality);
+    }
+
+    const player = VenomPlayer.make({
+      publicPath: "https://cdn.jsdelivr.net/npm/venom-player@0.2.88/dist/",
+      container: currentPlayer,
+      source: {
+        dash: dash === "" ? undefined : dash,
+        hls: hls === "" ? undefined : hls,
+        audio,
+        cc: subtitles,
+      },
+      hlsNativeQuality: false,
+      qualityByWidth: qualities,
+      ui: {
+        autoLandscape: true,
+        pip: true,
+        theme: "modern",
+        share: false,
+        timeline: true,
+        prevNext: true,
+      },
+      cssVars: {
+        "color-primary":
+          getComputedStyle(document.body)?.getPropertyValue("--primary") ||
+          "#e12323",
+        "background-color-primary": "rgba(26, 26, 26, 0.75)",
+      },
+      speed: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+      trackProgress: 30,
+      replay: false,
+      autoplay: true,
+    });
+
+    player.once("ready", onReady);
+  }
+
   function playVideo() {
     if (disabled) return;
     if (currentIframe) currentIframe.remove();
+    if (currentPlayer) currentPlayer.remove();
 
-    currentIframe = iframe.cloneNode();
-    video.append(currentIframe);
-
-    const provider = getValidProvider();
-    const url = getUrl(provider);
+    const provider = getCurrentProvider();
+    const response = provider[provider.type];
 
     toggleBackdrop(true);
     videoAlert(true, "sync", "Loading Content");
-    currentIframe.src = url;
 
-    currentIframe.addEventListener("load", function () {
-      videoAlert(false);
-      toggleBackdrop(false);
-      currentIframe.classList.add("active");
-    });
+    if (provider.type === "url") {
+      currentIframe = iframe.cloneNode();
+      currentIframe.src = response;
+
+      video.append(currentIframe);
+      currentIframe.addEventListener("load", function () {
+        videoAlert(false);
+        toggleBackdrop(false);
+        currentIframe.classList.add("active");
+      });
+    } else {
+      currentPlayer = _player.cloneNode();
+      video.append(currentPlayer);
+      initializePlayer(response, function () {
+        videoAlert(false);
+        toggleBackdrop(false);
+        currentPlayer.classList.add("active");
+      });
+    }
   }
 
   if (trailerActive && info.trailer) {
@@ -542,7 +610,6 @@ function modal(info, recommendationImages) {
     function providerSet(name) {
       if (disabled) return;
 
-      forceProvider = null;
       setProvider(name);
       playVideo();
       video.scrollIntoView({ block: "end" });
@@ -551,10 +618,10 @@ function modal(info, recommendationImages) {
     function nextProvider() {
       if (disabled) return;
 
-      const provider = getValidProvider();
+      const provider = getCurrentProvider();
       const providers = Array.from(providersSelect.children);
 
-      const providerElem = providers.find((p) => p.value === provider);
+      const providerElem = providers.find((p) => p.value === provider.name);
       const index = providerElem && providers.indexOf(providerElem);
       const next = index !== -1 && providers[index + 1];
 
@@ -567,10 +634,10 @@ function modal(info, recommendationImages) {
     function previousProvider() {
       if (disabled) return;
 
-      const provider = getValidProvider();
+      const provider = getCurrentProvider();
       const providers = Array.from(providersSelect.children);
 
-      const providerElem = providers.find((p) => p.value === provider);
+      const providerElem = providers.find((p) => p.value === provider.name);
       const index = providerElem && providers.indexOf(providerElem);
       const previous = index !== -1 && providers[index - 1];
 
