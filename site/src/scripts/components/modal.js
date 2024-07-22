@@ -3,6 +3,7 @@ import { onKeyPress } from "../functions.js";
 import { getQuery, onQueryChange, removeQuery } from "../query.js";
 import { setTitle } from "./header.js";
 
+let modal;
 let container;
 let header;
 let headerText;
@@ -15,7 +16,7 @@ let callback;
 
 function checkCallback() {
   if (callback && typeof callback === "function") {
-    callback();
+    callback(modal);
   }
 
   callback = null;
@@ -121,7 +122,7 @@ export function setCustomButtons(data) {
 
 export function initializeModal() {
   container = document.createElement("div");
-  const modal = document.createElement("div");
+  modal = document.createElement("div");
 
   header = document.createElement("div");
   const headerTextContainer = document.createElement("div");

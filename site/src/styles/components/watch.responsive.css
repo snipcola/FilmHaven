@@ -1,6 +1,6 @@
 @media only screen and (min-width: 1200px) {
-  .watch .video,
-  .modal-header.has-video {
+  .modal:not(.has-player) .watch .video,
+  .modal:not(.has-player) .modal-header.has-video {
     width: calc(100% - (20px * 2)) !important;
     max-width: 100% !important;
   }
@@ -72,7 +72,7 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .watch .video {
+  .modal:not(.has-player) .watch .video {
     height: calc(
       100dvh - (16px + 1px + 10px + 37px + 10px + 1px + 20px + 1rem)
     );

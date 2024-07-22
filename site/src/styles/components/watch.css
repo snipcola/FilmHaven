@@ -50,6 +50,13 @@
   margin-right: 0;
 }
 
+.modal.has-player .watch .video {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 100dvh !important;
+  border-radius: 0 !important;
+}
+
 .watch .video .backdrop {
   display: none;
   position: absolute;

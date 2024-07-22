@@ -230,9 +230,11 @@ function modal(info, recommendationImages) {
     backdropVignette.classList[toggle ? "add" : "remove"]("active");
   }
 
+  let hasPlayer = false;
+
   if (videoActive) {
     function show() {
-      video.scrollIntoView({ block: "end" });
+      video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
     }
 
     onKeyPress("v", true, null, watch, show);
@@ -356,6 +358,32 @@ function modal(info, recommendationImages) {
     seasons.classList.remove("disabled");
   }
 
+  let playerFullscreen = false;
+
+  function setPlayerButtons() {
+    try {
+      const topRight = document.querySelector(".top-right_1_I7J");
+      topRight.innerHTML = "";
+
+      const closeButton = {
+        icon: "times",
+        callback: function () {
+          hideModal();
+        },
+      };
+      const buttons = playerFullscreen
+        ? [closeButton]
+        : [closeButton, ...customButtons];
+
+      buttons.reverse().forEach(function ({ icon, callback }) {
+        const button = document.createElement("i");
+        button.className = `button_1_nBS icon_3zeDf icon-${icon}`;
+        button.addEventListener("click", callback);
+        topRight.append(button);
+      });
+    } catch {}
+  }
+
   function initializePlayer(
     { dashUrl: dash, hlsUrl: hls, audio, subtitles, qualities },
     onReady,
@@ -382,10 +410,20 @@ function modal(info, recommendationImages) {
       localStorage.setItem("player.quality", highestQuality);
     }
 
+    playerFullscreen = false;
+
     const player = VenomPlayer.make({
       publicPath: "https://cdn.jsdelivr.net/npm/venom-player@0.2.88/dist/",
       container: currentPlayer,
-      id: info.type === "movie" ? info.id : `${info.id}-${seasonNumber}-${episodeNumber}`,
+      id:
+        info.type === "movie"
+          ? `m${info.id}`
+          : `s${info.id}${seasonNumber}${episodeNumber}`,
+      title:
+        info.type === "movie"
+          ? info.title
+          : `${info.title} (S${seasonNumber} E${episodeNumber})`,
+      poster: info.backdrop || undefined,
       source: {
         dash: dash === "" ? undefined : dash,
         hls: hls === "" ? undefined : hls,
@@ -409,18 +447,33 @@ function modal(info, recommendationImages) {
         "background-color-primary": "rgba(26, 26, 26, 0.75)",
       },
       speed: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-      trackProgress: 10,
+      trackProgress: 30,
       replay: false,
       autoplay: true,
     });
 
-    player.once("ready", onReady);
+    player.on("fullscreenEnter", function () {
+      playerFullscreen = true;
+      setPlayerButtons();
+    });
+
+    player.on("fullscreenExit", function () {
+      playerFullscreen = false;
+      setPlayerButtons();
+    });
+
+    player.once("ready", function () {
+      setPlayerButtons();
+      onReady();
+    });
   }
 
   function playVideo() {
     if (disabled) return;
     if (currentIframe) currentIframe.remove();
     if (currentPlayer) currentPlayer.remove();
+    if (hasPlayer) hasPlayer = false;
+    watch.parentElement.parentElement.classList.remove("has-player");
 
     const provider = getCurrentProvider();
     const response = provider[provider.type];
@@ -441,6 +494,8 @@ function modal(info, recommendationImages) {
     } else {
       currentPlayer = _player.cloneNode();
       video.append(currentPlayer);
+      hasPlayer = true;
+      watch.parentElement.parentElement.classList.add("has-player");
       initializePlayer(response, function () {
         videoAlert(false);
         toggleBackdrop(false);
@@ -573,9 +628,11 @@ function modal(info, recommendationImages) {
       });
 
       setCustomButtons(customButtons);
+      setPlayerButtons();
     } else if (customButtons.find((b) => b.icon === "download")) {
       customButtons = customButtons.filter((b) => b.icon !== "download");
       setCustomButtons(customButtons);
+      setPlayerButtons();
     }
   }
 
@@ -616,7 +673,7 @@ function modal(info, recommendationImages) {
 
       setProvider(name);
       playVideo();
-      video.scrollIntoView({ block: "end" });
+      video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
     }
 
     function nextProvider() {
@@ -655,7 +712,7 @@ function modal(info, recommendationImages) {
       if (disabled) return;
 
       playVideo();
-      video.scrollIntoView({ block: "end" });
+      video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
     }
 
     providersTitle.append(providersControl);
@@ -735,23 +792,27 @@ function modal(info, recommendationImages) {
   }
 
   function checkCurrentlyPlaying() {
-    if (document.title !== info.title) document.title = info.title;
+    let newTitle;
 
     if (info.type === "movie" || (info.type === "tv" && !videoActive)) {
       changeHeaderText(info.title, null, info.type);
+      newTitle = info.title;
     } else {
       changeHeaderText(
         info.title,
         `S${seasonNumber} E${episodeNumber}`,
         info.type,
       );
+      newTitle = `${info.title} (S${seasonNumber} E${episodeNumber})`;
     }
+
+    if (newTitle && document.title !== newTitle) document.title = newTitle;
   }
 
   function playSeries() {
     setLastPlayed(info.id, seasonNumber, episodeNumber);
     checkCurrentlyPlaying();
-    video.scrollIntoView({ block: "end" });
+    video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
   }
 
   let playEpisodeCallbacks = [];
@@ -1470,7 +1531,9 @@ function modal(info, recommendationImages) {
     }
   }
 
-  function cleanup() {
+  function cleanup(modal) {
+    if (modal) modal.classList.remove("has-player");
+
     if (videoActive && info.backdrop) unloadImages([info.backdrop]);
     if (seasonsActive && info.seasons)
       unloadImages(
@@ -1552,6 +1615,7 @@ function modal(info, recommendationImages) {
   else watch.classList.add("only-video");
 
   setCustomButtons(customButtons);
+  setPlayerButtons();
   setModal(
     info.title,
     null,
@@ -1564,7 +1628,7 @@ function modal(info, recommendationImages) {
   showModal(cleanup);
 
   if (videoActive) {
-    video.scrollIntoView({ block: "end" });
+    video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
   }
 }
 

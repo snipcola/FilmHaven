@@ -37,6 +37,10 @@ body.modal-active .modal-container {
   height: 100%;
 }
 
+.modal.has-player .modal-header {
+  display: none;
+}
+
 .modal-header {
   display: flex;
   gap: var(--large-gap);
@@ -128,6 +132,10 @@ body.modal-active .modal-container {
   .modal-header .button.secondary:hover {
     background-color: var(--lighter);
   }
+}
+
+.modal.has-player .modal-content {
+  padding-top: 0 !important;
 }
 
 .modal-content {
