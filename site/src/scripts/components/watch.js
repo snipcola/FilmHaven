@@ -362,7 +362,7 @@ function modal(info, recommendationImages) {
 
   function setPlayerButtons() {
     try {
-      const topRight = document.querySelector(".top-right_1_I7J");
+      const topRight = currentPlayer.querySelector(".top-right_1_I7J");
       topRight.innerHTML = "";
 
       const closeButton = {
@@ -388,7 +388,7 @@ function modal(info, recommendationImages) {
     try {
       if (info.type !== "tv") return;
 
-      const topLeft = document.querySelector(".top-left_2-xxL");
+      const topLeft = currentPlayer.querySelector(".top-left_2-xxL");
       const buttons = [];
 
       buttons.push({
@@ -411,6 +411,13 @@ function modal(info, recommendationImages) {
         topLeft.append(button);
       });
     } catch {}
+  }
+
+  let playerReadyInterval;
+
+  function clearPlayerReadyInterval() {
+    if (playerReadyInterval) clearInterval(playerReadyInterval);
+    playerReadyInterval = null;
   }
 
   function initializePlayer(
@@ -489,15 +496,26 @@ function modal(info, recommendationImages) {
       setPlayerButtons();
     });
 
-    player.once("ready", function () {
+    function ready() {
       setPlayerButtons();
       setPlayerSeasonButtons();
-      onReady();
 
       try {
         player.play();
       } catch {}
-    });
+
+      onReady();
+    }
+
+    clearPlayerReadyInterval();
+    playerReadyInterval = setInterval(function () {
+      if (!elementExists(currentPlayer)) {
+        clearPlayerReadyInterval();
+      } else if (currentPlayer.querySelector("video")) {
+        setTimeout(ready, 250);
+        clearPlayerReadyInterval();
+      }
+    }, 10);
   }
 
   function playVideo() {
@@ -507,6 +525,7 @@ function modal(info, recommendationImages) {
     if (hasPlayer) hasPlayer = false;
     if (watch.parentElement?.parentElement)
       watch.parentElement.parentElement.classList.remove("has-player");
+    clearPlayerReadyInterval();
 
     const provider = getCurrentProvider();
     const response = provider[provider.type];
