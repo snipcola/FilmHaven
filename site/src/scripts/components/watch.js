@@ -384,6 +384,35 @@ function modal(info, recommendationImages) {
     } catch {}
   }
 
+  function setPlayerSeasonButtons() {
+    try {
+      if (info.type !== "tv") return;
+
+      const topLeft = document.querySelector(".top-left_2-xxL");
+      const buttons = [];
+
+      buttons.push({
+        icon: "arrow-left",
+        callback: previousEpisode,
+        disabled: [undefined, null].includes(getPreviousEpisode()),
+      });
+
+      buttons.push({
+        icon: "arrow-right",
+        callback: nextEpisode,
+        disabled: [undefined, null].includes(getNextEpisode()),
+      });
+
+      buttons.forEach(function ({ icon, callback, disabled }) {
+        const button = document.createElement("i");
+        button.className = `button_1_nBS icon_3zeDf icon-${icon}`;
+        if (disabled) button.classList.add("disabled");
+        else button.addEventListener("click", callback);
+        topLeft.append(button);
+      });
+    } catch {}
+  }
+
   function initializePlayer(
     { dashUrl: dash, hlsUrl: hls, audio, subtitles, qualities },
     onReady,
@@ -423,7 +452,6 @@ function modal(info, recommendationImages) {
         info.type === "movie"
           ? info.title
           : `${info.title} (S${seasonNumber} E${episodeNumber})`,
-      poster: info.backdrop || undefined,
       source: {
         dash: dash === "" ? undefined : dash,
         hls: hls === "" ? undefined : hls,
@@ -449,7 +477,6 @@ function modal(info, recommendationImages) {
       speed: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
       trackProgress: 30,
       replay: false,
-      autoplay: true,
     });
 
     player.on("fullscreenEnter", function () {
@@ -464,7 +491,12 @@ function modal(info, recommendationImages) {
 
     player.once("ready", function () {
       setPlayerButtons();
+      setPlayerSeasonButtons();
       onReady();
+
+      try {
+        player.play();
+      } catch {}
     });
   }
 
@@ -906,6 +938,46 @@ function modal(info, recommendationImages) {
     };
   }
 
+  function seasonControlChange(next) {
+    const episode = next ? getNextEpisode() : getPreviousEpisode();
+
+    if (episode) {
+      if (seasonsActive) {
+        const seasonCard = Array.from(seasonCards.children)[episode.sIndex];
+        const seasonCardEpisodes = seasonCard
+          ? seasonCard.querySelector(".episodes")
+          : null;
+        const episodeCard = seasonCardEpisodes
+          ? Array.from(seasonCardEpisodes.children)[episode.eIndex]
+          : null;
+
+        if (episodeCard) {
+          playEpisode(episode.s, episode.e, episodeCard);
+
+          hideSeasons();
+          seasonCard.classList.add("active");
+
+          const seasonCardIcon = seasonCard.querySelector(".icon-arrow-down");
+          if (seasonCardIcon) seasonCardIcon.className = "icon icon-arrow-up";
+        }
+      } else {
+        playEpisode(episode.s, episode.e);
+      }
+    }
+
+    checkSeasonControl();
+  }
+
+  function nextEpisode() {
+    if (seasonsDisabled) return;
+    seasonControlChange(true);
+  }
+
+  function previousEpisode() {
+    if (seasonsDisabled) return;
+    seasonControlChange(false);
+  }
+
   if (seasonsActive && info.seasons && info.seasons.length > 0) {
     info.seasons.forEach(function (season) {
       const card = document.createElement("div");
@@ -1051,46 +1123,6 @@ function modal(info, recommendationImages) {
 
     playEpisodeCallbacks.push(checkSeasonControl);
     checkSeasonControl();
-
-    function seasonControlChange(next) {
-      const episode = next ? getNextEpisode() : getPreviousEpisode();
-
-      if (episode) {
-        if (seasonsActive) {
-          const seasonCard = Array.from(seasonCards.children)[episode.sIndex];
-          const seasonCardEpisodes = seasonCard
-            ? seasonCard.querySelector(".episodes")
-            : null;
-          const episodeCard = seasonCardEpisodes
-            ? Array.from(seasonCardEpisodes.children)[episode.eIndex]
-            : null;
-
-          if (episodeCard) {
-            playEpisode(episode.s, episode.e, episodeCard);
-
-            hideSeasons();
-            seasonCard.classList.add("active");
-
-            const seasonCardIcon = seasonCard.querySelector(".icon-arrow-down");
-            if (seasonCardIcon) seasonCardIcon.className = "icon icon-arrow-up";
-          }
-        } else {
-          playEpisode(episode.s, episode.e);
-        }
-      }
-
-      checkSeasonControl();
-    }
-
-    function nextEpisode() {
-      if (seasonsDisabled) return;
-      seasonControlChange(true);
-    }
-
-    function previousEpisode() {
-      if (seasonsDisabled) return;
-      seasonControlChange(false);
-    }
 
     seasonsNext.addEventListener("click", nextEpisode);
     seasonsPrevious.addEventListener("click", previousEpisode);
