@@ -508,11 +508,20 @@ function modal(info, recommendationImages) {
     }
 
     clearPlayerReadyInterval();
+    const requiredPlayerElements = [
+      "video",
+      ".top-right_1_I7J",
+      ".top-left_2-xxL",
+    ];
     playerReadyInterval = setInterval(function () {
       if (!elementExists(currentPlayer)) {
         clearPlayerReadyInterval();
-      } else if (currentPlayer.querySelector("video")) {
-        setTimeout(ready, 250);
+      } else if (
+        !requiredPlayerElements
+          .map((e) => currentPlayer.querySelector(e))
+          .includes(null)
+      ) {
+        ready();
         clearPlayerReadyInterval();
       }
     }, 10);

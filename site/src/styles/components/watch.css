@@ -54,7 +54,9 @@
   width: 100% !important;
   max-width: 100% !important;
   height: 100dvh !important;
+
   border-radius: 0 !important;
+  border: none !important;
 }
 
 .watch .video .backdrop {
