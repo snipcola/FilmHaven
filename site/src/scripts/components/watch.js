@@ -976,6 +976,16 @@ function modal(info, recommendationImages) {
     };
   }
 
+  function checkSeasonControl() {
+    const previous = getPreviousEpisode();
+    const next = getNextEpisode();
+
+    seasonsPrevious.classList[previous ? "remove" : "add"]("inactive");
+    seasonsNext.classList[next ? "remove" : "add"]("inactive");
+
+    seasonsControl.classList[previous || next ? "remove" : "add"]("inactive");
+  }
+
   function seasonControlChange(next) {
     const episode = next ? getNextEpisode() : getPreviousEpisode();
 
@@ -1149,16 +1159,6 @@ function modal(info, recommendationImages) {
   }
 
   if (videoActive) {
-    function checkSeasonControl() {
-      const previous = getPreviousEpisode();
-      const next = getNextEpisode();
-
-      seasonsPrevious.classList[previous ? "remove" : "add"]("inactive");
-      seasonsNext.classList[next ? "remove" : "add"]("inactive");
-
-      seasonsControl.classList[previous || next ? "remove" : "add"]("inactive");
-    }
-
     playEpisodeCallbacks.push(checkSeasonControl);
     checkSeasonControl();
 
