@@ -358,7 +358,18 @@ function modal(info, recommendationImages) {
     seasons.classList.remove("disabled");
   }
 
+  let player = null;
   let playerFullscreen = false;
+
+  function destroyPlayer() {
+    try {
+      if (player) {
+        player.destroy();
+        player = null;
+        playerFullscreen = false;
+      }
+    } catch {}
+  }
 
   function setPlayerButtons() {
     try {
@@ -368,6 +379,7 @@ function modal(info, recommendationImages) {
       const closeButton = {
         icon: "times",
         callback: function () {
+          destroyPlayer();
           hideModal();
         },
       };
@@ -447,8 +459,7 @@ function modal(info, recommendationImages) {
     }
 
     playerFullscreen = false;
-
-    const player = VenomPlayer.make({
+    player = VenomPlayer.make({
       publicPath: "https://cdn.jsdelivr.net/npm/venom-player@0.2.88/dist/",
       container: currentPlayer,
       id:
@@ -547,6 +558,7 @@ function modal(info, recommendationImages) {
     if (hasPlayer) hasPlayer = false;
     if (watch.parentElement?.parentElement)
       watch.parentElement.parentElement.classList.remove("has-player");
+    destroyPlayer();
     clearPlayerReadyInterval();
 
     const provider = getCurrentProvider();
