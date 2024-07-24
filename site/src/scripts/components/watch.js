@@ -502,6 +502,15 @@ function modal(info, recommendationImages) {
 
       try {
         player.play();
+
+        const playerElement = currentPlayer.querySelector(".player_1JR0Q");
+        playerElement.classList.add("user-active");
+
+        setTimeout(function () {
+          if (playerElement.classList.contains("user-active")) {
+            playerElement.classList.remove("user-active");
+          }
+        }, 3000);
       } catch {}
 
       onReady();
@@ -510,6 +519,7 @@ function modal(info, recommendationImages) {
     clearPlayerReadyInterval();
     const requiredPlayerElements = [
       "video",
+      ".player_1JR0Q",
       ".top-right_1_I7J",
       ".top-left_2-xxL",
     ];
