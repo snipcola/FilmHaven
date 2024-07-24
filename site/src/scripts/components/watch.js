@@ -506,11 +506,14 @@ function modal(info, recommendationImages) {
         const playerElement = currentPlayer.querySelector(".player_1JR0Q");
         playerElement.classList.add("user-active");
 
-        setTimeout(function () {
+        function removeUserActive() {
           if (playerElement.classList.contains("user-active")) {
             playerElement.classList.remove("user-active");
           }
-        }, 3000);
+        }
+
+        setTimeout(removeUserActive, 3000);
+        onKeyPress("escape", true, null, playerElement, removeUserActive);
       } catch {}
 
       onReady();
