@@ -568,12 +568,12 @@ function modal(info, recommendationImages) {
     } else {
       currentPlayer = _player.cloneNode();
       video.append(currentPlayer);
-      hasPlayer = true;
-      if (watch.parentElement?.parentElement)
-        watch.parentElement.parentElement.classList.add("has-player");
       initializePlayer(response, function () {
         videoAlert(false);
         toggleBackdrop(false);
+        hasPlayer = true;
+        if (watch.parentElement?.parentElement)
+          watch.parentElement.parentElement.classList.add("has-player");
         currentPlayer.classList.add("active");
       });
     }
