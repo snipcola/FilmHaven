@@ -550,8 +550,12 @@ function modal(info, recommendationImages) {
         }
 
         try {
-          const errorElement = currentPlayer.querySelector(".error_3plQ2");
-          if (!errorElement.classList.contains("hidden_1uh6Y")) {
+          const errorElements = currentPlayer.querySelectorAll(".error_3plQ2");
+          const hasError = Array.from(errorElements).some(
+            (e) => !e.classList.contains("hidden_1uh6Y"),
+          );
+
+          if (hasError) {
             clearPlayerErrorInterval();
             refresh();
           }
