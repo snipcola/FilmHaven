@@ -365,10 +365,12 @@ function modal(info, recommendationImages) {
     try {
       if (player) {
         player.destroy();
-        player = null;
-        playerFullscreen = false;
       }
     } catch {}
+
+    player = null;
+    playerFullscreen = false;
+    clearPlayerIntervals();
   }
 
   function setPlayerButtons() {
@@ -426,10 +428,21 @@ function modal(info, recommendationImages) {
   }
 
   let playerReadyInterval;
+  let playerErrorInterval;
 
   function clearPlayerReadyInterval() {
     if (playerReadyInterval) clearInterval(playerReadyInterval);
     playerReadyInterval = null;
+  }
+
+  function clearPlayerErrorInterval() {
+    if (playerErrorInterval) clearInterval(playerErrorInterval);
+    playerErrorInterval = null;
+  }
+
+  function clearPlayerIntervals() {
+    clearPlayerReadyInterval();
+    clearPlayerErrorInterval();
   }
 
   function initializePlayer(
@@ -528,15 +541,32 @@ function modal(info, recommendationImages) {
       } catch {}
 
       onReady();
+
+      clearPlayerErrorInterval();
+      playerErrorInterval = setInterval(function () {
+        if (!elementExists(currentPlayer)) {
+          clearPlayerErrorInterval();
+          return;
+        }
+
+        try {
+          const errorElement = currentPlayer.querySelector(".error_3plQ2");
+          if (!errorElement.classList.contains("hidden_1uh6Y")) {
+            clearPlayerErrorInterval();
+            refresh();
+          }
+        } catch {}
+      }, 100);
     }
 
-    clearPlayerReadyInterval();
     const requiredPlayerElements = [
       "video",
       ".player_1JR0Q",
       ".top-right_1_I7J",
       ".top-left_2-xxL",
     ];
+
+    clearPlayerReadyInterval();
     playerReadyInterval = setInterval(function () {
       if (!elementExists(currentPlayer)) {
         clearPlayerReadyInterval();
@@ -559,7 +589,6 @@ function modal(info, recommendationImages) {
     if (watch.parentElement?.parentElement)
       watch.parentElement.parentElement.classList.remove("has-player");
     destroyPlayer();
-    clearPlayerReadyInterval();
 
     const provider = getCurrentProvider();
     const response = provider[provider.type];
@@ -752,6 +781,13 @@ function modal(info, recommendationImages) {
   providersRefresh.append(providersRefreshIcon);
   providersControl.append(providersRefresh);
 
+  function refresh() {
+    if (disabled) return;
+
+    playVideo();
+    video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
+  }
+
   if (videoActive) {
     checkProviders();
 
@@ -793,13 +829,6 @@ function modal(info, recommendationImages) {
         providersSelect.value = previous.value;
         providerSet(previous.value);
       }
-    }
-
-    function refresh() {
-      if (disabled) return;
-
-      playVideo();
-      video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
     }
 
     providersTitle.append(providersControl);
