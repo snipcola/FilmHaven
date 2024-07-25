@@ -579,6 +579,12 @@ function modal(info, recommendationImages) {
         clearPlayerReadyInterval();
       }
     }, 10);
+
+    setTimeout(function () {
+      if (elementExists(currentPlayer) && !hasPlayer) {
+        refresh();
+      }
+    }, 1000);
   }
 
   function playVideo() {
