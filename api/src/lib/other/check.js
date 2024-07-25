@@ -1,21 +1,21 @@
 import { blacklist } from "../../config.js";
-import fetch from "ky";
+import kyFetch from "ky";
 
 function promiseWithTimeout(promise, timeout) {
   return Promise.race([
     promise,
     new Promise(function (res) {
-      setTimeout(res, (timeout || 5) * 1000);
+      setTimeout(res, (timeout || 8) * 1000);
     }),
   ]);
 }
 
-export async function get(url, base, json = false) {
+export async function get(url, base, json = false, builtInFetch = false) {
   try {
     const headers = { Origin: `https://${base}`, Referer: `https://${base}/` };
     const response = await promiseWithTimeout(
-      fetch.get(url, { headers }),
-      process.env.TIMEOUT,
+      builtInFetch ? fetch(url, { headers }) : kyFetch.get(url, { headers }),
+      typeof process !== "undefined" ? process.env.TIMEOUT : null,
     );
 
     const status = response.status;

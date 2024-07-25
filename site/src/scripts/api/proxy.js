@@ -25,7 +25,7 @@ export async function getProviders(proxy, info, season, episode) {
     const json = JSON.parse(decodeURIComponent(atob(text)));
 
     return json.success ? json.providers : false;
-  } catch (err) {
+  } catch {
     return false;
   }
 }

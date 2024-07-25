@@ -1,3 +1,4 @@
+import { config } from "./config.js";
 import { initializeTheme } from "./components/theme.js";
 import { initializeCache } from "./cache.js";
 import { initializeDim } from "./components/dim.js";
@@ -58,6 +59,9 @@ function initializeAll() {
 
   initializeSettings();
   enableBody();
+
+  if (window?.location?.origin)
+    console.log(`[${config.name}] Running at ${window.location.origin}`);
 }
 
 initializeAll();

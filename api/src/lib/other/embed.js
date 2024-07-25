@@ -5,10 +5,15 @@ export const config = {
   url: "https://api.insertunit.ws",
 };
 
-export async function getEmbedInfo(type, info) {
+export async function getEmbedInfo(type, info, builtInFetch = false) {
   try {
     const path = `embed/imdb/${info.imdbId}`;
-    const response = await get(`${config.url}/${path}`, config.base);
+    const response = await get(
+      `${config.url}/${path}`,
+      config.base,
+      false,
+      builtInFetch,
+    );
     if (!response || response.status !== 200) return null;
 
     let dashUrl = "";

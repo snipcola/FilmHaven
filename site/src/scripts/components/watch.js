@@ -278,29 +278,33 @@ function modal(info, recommendationImages) {
     async function providersCheck() {
       videoAlert(true, "tv", "Fetching Providers");
 
-      const localProviders = _providers
-        .filter(
-          (provider) =>
-            provider.url?.constructor?.name !== "AsyncFunction" &&
-            provider.data?.constructor?.name !== "AsyncFunction",
-        )
-        .filter((provider) => online || provider.online !== true)
-        .map(function (provider) {
-          const _info = {
-            id: info.id,
-            imdbId: info.imdbId,
-            season: seasonNumber,
-            episode: episodeNumber,
-          };
+      async function fetchProvidersLocal() {
+        const promises = _providers
+          .filter((provider) => online || provider.online !== true)
+          .map(async function (provider) {
+            const _info = {
+              id: info.id,
+              imdbId: info.imdbId,
+              season: seasonNumber,
+              episode: episodeNumber,
+            };
 
-          return {
-            name: provider.base,
-            type: provider.type,
-            [provider.type]: provider[provider.type](info.type, _info),
-          };
-        });
+            return {
+              name: provider.base,
+              type: provider.type,
+              [provider.type]:
+                provider[provider.type]?.constructor?.name === "AsyncFunction"
+                  ? await provider[provider.type](info.type, _info, false, true)
+                  : provider[provider.type](info.type, _info),
+            };
+          });
 
-      async function fetchProviders() {
+        return (await Promise.all(promises)).filter(
+          (provider) => ![undefined, null].includes(provider[provider.type]),
+        );
+      }
+
+      async function fetchProvidersProxy() {
         const promises = Object.values(proxies).map(function (proxy) {
           return new Promise(async function (res, rej) {
             const providers = await getProviders(
@@ -310,10 +314,7 @@ function modal(info, recommendationImages) {
               episodeNumber,
             );
 
-            if (providers)
-              res(
-                online ? providers : providers.filter((p) => p.type !== "data"),
-              );
+            if (providers) res(providers);
             else rej();
           });
         });
@@ -324,7 +325,9 @@ function modal(info, recommendationImages) {
         ]);
       }
 
-      providers = mode === "proxy" ? await fetchProviders() : localProviders;
+      const fetchProviders =
+        mode === "proxy" ? fetchProvidersProxy : fetchProvidersLocal;
+      providers = await fetchProviders();
 
       if (getProvider() === null && providers[0]) {
         setProvider(providers[0]);

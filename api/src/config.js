@@ -3,6 +3,7 @@ import { config as embedConfig, getEmbedInfo } from "./lib/other/embed.js";
 export const providers = [
   {
     base: embedConfig.base,
+    online: true,
     type: "data",
     data: await getEmbedInfo,
   },
