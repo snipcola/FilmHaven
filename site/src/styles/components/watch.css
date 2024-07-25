@@ -814,20 +814,20 @@
   }
 }
 
-.player_1JR0Q.user-active .controls_11sFr,
-.player_1JR0Q.player-paused .controls_11sFr {
+.watch .video .player .player_1JR0Q.user-active .controls_11sFr,
+.watch .video .player .player_1JR0Q.player-paused .controls_11sFr {
   background-color: rgba(0, 0, 0, 0.25);
   transition: background-color 0.25s ease-in-out;
 }
 
-.player_1JR0Q:not(.user-active) * {
+.watch .video .player .player_1JR0Q:not(.user-active) * {
   cursor: none !important;
 }
 
-.top-left_2-xxL {
+.watch .video .player .top-left_2-xxL {
   align-items: center;
 }
 
-.button_1_nBS.disabled {
+.watch .video .player .button_1_nBS.disabled {
   opacity: 25%;
 }

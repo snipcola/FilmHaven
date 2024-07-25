@@ -561,6 +561,12 @@ function modal(info, recommendationImages) {
           }
         } catch {}
       }, 100);
+
+      const timeQuery = getQuery(config.query.time);
+
+      if (timeQuery) {
+        removeQuery(config.query.time);
+      }
     }
 
     const requiredPlayerElements = [
