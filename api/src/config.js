@@ -24,15 +24,6 @@ export const providers = [
       return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
     },
   },
-  {
-    base: "moviesapi.club",
-    online: true,
-    type: "url",
-    url: function (type, { id, season, episode }) {
-      if (type === "movie") return `https://${this.base}/movie/${id}`;
-      return `https://${this.base}/tv/${id}-${season}-${episode}`;
-    },
-  },
 ];
 
 export const blacklist = {
