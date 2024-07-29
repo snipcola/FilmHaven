@@ -327,7 +327,10 @@ function modal(info, recommendationImages) {
 
       const fetchProviders =
         mode === "proxy" ? fetchProvidersProxy : fetchProvidersLocal;
-      providers = await fetchProviders();
+      providers = (await fetchProviders()).filter(
+        (provider) =>
+          typeof VenomPlayer !== "undefined" || provider.type !== "data",
+      );
 
       if (getProvider() === null && providers[0]) {
         setProvider(providers[0]);
