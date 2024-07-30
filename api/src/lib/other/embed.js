@@ -45,9 +45,7 @@ export async function getEmbedInfo(type, info) {
 
       dashUrl = episode.dash;
       hlsUrl = episode.hls;
-
       audio = episode.audio;
-
       subtitles = episode.cc;
 
       try {
