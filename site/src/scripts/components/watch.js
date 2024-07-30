@@ -496,14 +496,17 @@ function modal(info, recommendationImages) {
         cc: subtitles,
       },
       hlsNativeQuality: false,
+      hlsNativeParam: true,
       qualityByWidth: qualities,
+      soundBlock: "delete",
+      autoLandscape: true,
+      theme: "metro",
       ui: {
-        autoLandscape: true,
         pip: true,
-        theme: "modern",
         share: false,
         timeline: true,
         prevNext: true,
+        about: false,
       },
       cssVars: {
         "color-primary":
