@@ -2,15 +2,12 @@ import { providers as _providers } from "../../config.js";
 import { check } from "../other/check.js";
 
 export async function onRequest(req, reply) {
-  // Parameters
   const data = req.query.data;
 
-  // Empty Check
   if (data === "") {
     return btoa(encodeURIComponent(JSON.stringify({ success: false })));
   }
 
-  // Parse Data
   let action;
   let info;
 
@@ -32,7 +29,6 @@ export async function onRequest(req, reply) {
     return btoa(encodeURIComponent(JSON.stringify({ success: false })));
   }
 
-  // Check Action
   if (action === "providers") {
     if (
       !info ||
@@ -45,7 +41,6 @@ export async function onRequest(req, reply) {
       return btoa(encodeURIComponent(JSON.stringify({ success: false })));
     }
 
-    // Get Providers
     const promises = _providers
       .filter(
         (provider) =>
@@ -77,7 +72,6 @@ export async function onRequest(req, reply) {
       });
     const providers = (await Promise.all(promises)).filter((p) => p !== null);
 
-    // Return
     return btoa(
       encodeURIComponent(JSON.stringify({ success: true, providers })),
     );

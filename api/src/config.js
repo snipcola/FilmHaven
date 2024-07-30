@@ -27,16 +27,13 @@ export const providers = [
 ];
 
 export const blacklist = {
-  status: [
-    404, // Not Found
-    500, // Internal Server Error
-  ],
+  status: [404, 500],
   text: [
     "no sources",
     "no movie found",
     "no tv show found",
     "no episode found",
     "no show found",
-    "JTdCJTIyc3VjY2VzcyUyMiUzQWZhbHNlJTdE", // Custom Embeds
+    "JTdCJTIyc3VjY2VzcyUyMiUzQWZhbHNlJTdE",
   ],
 };

@@ -294,7 +294,7 @@ function modal(info, recommendationImages) {
               type: provider.type,
               [provider.type]:
                 provider[provider.type]?.constructor?.name === "AsyncFunction"
-                  ? await provider[provider.type](info.type, _info, false, true)
+                  ? await provider[provider.type](info.type, _info)
                   : provider[provider.type](info.type, _info),
             };
           });

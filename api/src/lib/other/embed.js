@@ -5,15 +5,10 @@ export const config = {
   url: "https://api.insertunit.ws",
 };
 
-export async function getEmbedInfo(type, info, builtInFetch = false) {
+export async function getEmbedInfo(type, info) {
   try {
     const path = `embed/imdb/${info.imdbId}`;
-    const response = await get(
-      `${config.url}/${path}`,
-      config.base,
-      false,
-      builtInFetch,
-    );
+    const response = await get(`${config.url}/${path}`, config.base, false);
     if (!response || response.status !== 200) return null;
 
     let dashUrl = "";
@@ -23,28 +18,23 @@ export async function getEmbedInfo(type, info, builtInFetch = false) {
     let qualities = { 1920: 1080 };
 
     if (type === "movie") {
-      // URL
       dashUrl = /dash:\s"(.+?)"/.exec(response.data)[1];
       hlsUrl = /hls:\s"(.+?)"/.exec(response.data)[1];
 
-      // Audio
       try {
         audio = JSON.parse(/audio:\s+({.*\})/.exec(response.data)[1]);
       } catch {}
 
-      // Subtitles
       try {
         subtitles = JSON.parse(/cc:\s+(\[{.*\}\])/.exec(response.data)[1]);
       } catch {}
 
-      // Qualities
       try {
         qualities = JSON.parse(
           /qualityByWidth:\s+({.*\})/.exec(response.data)[1],
         );
       } catch {}
     } else {
-      // Season
       const seasons = JSON.parse(/seasons:(\[{.*\}\])/.exec(response.data)[1]);
       const episodes = seasons.find(
         (s) => !s.blocked && s.season.toString() === info.season.toString(),
@@ -53,17 +43,13 @@ export async function getEmbedInfo(type, info, builtInFetch = false) {
         (e) => e.episode.toString() === info.episode.toString(),
       );
 
-      // URL
       dashUrl = episode.dash;
       hlsUrl = episode.hls;
 
-      // Audio
       audio = episode.audio;
 
-      // Subtitles
       subtitles = episode.cc;
 
-      // Qualities
       try {
         qualities = JSON.parse(
           /qualityByWidth:\s+({.*\})/.exec(response.data)[1],
@@ -71,7 +57,6 @@ export async function getEmbedInfo(type, info, builtInFetch = false) {
       } catch {}
     }
 
-    // Checks
     if (
       (!dashUrl || typeof dashUrl !== "string" || !dashUrl.endsWith(".mpd")) &&
       (!hlsUrl || typeof hlsUrl !== "string" || !hlsUrl.endsWith(".m3u8"))
@@ -108,7 +93,6 @@ export async function getEmbedInfo(type, info, builtInFetch = false) {
       qualities = { 1920: 1080 };
     }
 
-    // Return
     return { dashUrl, hlsUrl, audio, subtitles, qualities };
   } catch {
     return null;
