@@ -500,7 +500,6 @@ function modal(info, recommendationImages) {
       qualityByWidth: qualities,
       soundBlock: "delete",
       autoLandscape: true,
-      theme: "metro",
       ui: {
         pip: true,
         share: false,
