@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - deploy
+      - disabled # deploy
   
 jobs:
   deploy:
