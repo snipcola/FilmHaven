@@ -8,14 +8,6 @@ export const providers = [
     data: await getEmbedInfo,
   },
   {
-    base: "vidsrc.to",
-    type: "url",
-    url: function (type, { id, season, episode }) {
-      if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
-      return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
-    },
-  },
-  {
     base: "vidsrc.pro",
     online: true,
     type: "url",
