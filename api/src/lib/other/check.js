@@ -1,5 +1,5 @@
 import { blacklist } from "../../config.js";
-import fetch from "ky";
+import fetch from "node-fetch-native";
 
 function promiseWithTimeout(promise, timeout) {
   return Promise.race([
@@ -14,7 +14,7 @@ export async function get(url, base, json = false) {
   try {
     const headers = { Origin: `https://${base}`, Referer: `https://${base}/` };
     const response = await promiseWithTimeout(
-      fetch.get(url, { headers }),
+      fetch(url, { headers }),
       typeof process !== "undefined" ? process.env.TIMEOUT : null,
     );
 
