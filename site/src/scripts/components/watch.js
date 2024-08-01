@@ -278,32 +278,6 @@ function modal(info, recommendationImages) {
     async function providersCheck() {
       videoAlert(true, "tv", "Fetching Providers");
 
-      async function fetchProvidersLocal() {
-        const promises = _providers
-          .filter((provider) => online || provider.online !== true)
-          .map(async function (provider) {
-            const _info = {
-              id: info.id,
-              imdbId: info.imdbId,
-              season: seasonNumber,
-              episode: episodeNumber,
-            };
-
-            return {
-              name: provider.base,
-              type: provider.type,
-              [provider.type]:
-                provider[provider.type]?.constructor?.name === "AsyncFunction"
-                  ? await provider[provider.type](info.type, _info)
-                  : provider[provider.type](info.type, _info),
-            };
-          });
-
-        return (await Promise.all(promises)).filter(
-          (provider) => ![undefined, null].includes(provider[provider.type]),
-        );
-      }
-
       async function fetchProvidersProxy() {
         const promises = Object.values(proxies).map(function (proxy) {
           return new Promise(async function (res, rej) {
@@ -325,8 +299,38 @@ function modal(info, recommendationImages) {
         ]);
       }
 
+      async function fetchProvidersLocal() {
+        const promises = _providers
+          .filter((provider) => online || provider.online !== true)
+          .map(async function (provider) {
+            const _info = {
+              id: info.id,
+              imdbId: info.imdbId,
+              season: seasonNumber,
+              episode: episodeNumber,
+            };
+
+            return {
+              name: provider.base,
+              type: provider.type,
+              online: provider.online || false,
+              [provider.type]:
+                provider[provider.type]?.constructor?.name === "AsyncFunction"
+                  ? await provider[provider.type](info.type, _info)
+                  : provider[provider.type](info.type, _info),
+            };
+          });
+
+        return (await Promise.all(promises))
+          .filter((provider) => online || provider.online !== true)
+          .filter(
+            (provider) => ![undefined, null].includes(provider[provider.type]),
+          );
+      }
+
       const fetchProviders =
         mode === "proxy" ? fetchProvidersProxy : fetchProvidersLocal;
+
       providers = (await fetchProviders()).filter(
         (provider) =>
           typeof VenomPlayer !== "undefined" || provider.type !== "data",

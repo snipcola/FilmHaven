@@ -1,28 +1,12 @@
-import { isOnline } from "../functions.js";
-
-const online = isOnline();
-
 export async function getProviders(proxy, info, season, episode) {
   try {
-    const data = btoa(
-      encodeURIComponent(
-        JSON.stringify({
-          action: "providers",
-          data: {
-            type: info.type,
-            id: info.id,
-            imdbId: info.imdbId,
-            season,
-            episode,
-            online,
-          },
-        }),
-      ),
-    );
-    const url = `${proxy}?data=${data}`;
+    const url =
+      info.type === "movie"
+        ? `${proxy}/${info.id}/${info.imdbId}`
+        : `${proxy}/${info.id}/${info.imdbId}/${season}/${episode}`;
+
     const response = await fetch(url);
-    const text = await response.text();
-    const json = JSON.parse(decodeURIComponent(atob(text)));
+    const json = await response.json();
 
     return json.success ? json.providers : false;
   } catch {

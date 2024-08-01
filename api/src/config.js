@@ -26,6 +26,5 @@ export const blacklist = {
     "no tv show found",
     "no episode found",
     "no show found",
-    "JTdCJTIyc3VjY2VzcyUyMiUzQWZhbHNlJTdE",
   ],
 };
