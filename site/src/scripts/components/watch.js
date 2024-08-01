@@ -456,7 +456,7 @@ function modal(info, recommendationImages) {
   }
 
   function initializePlayer(
-    { dashUrl: dash, hlsUrl: hls, audio, subtitles, qualities },
+    { dash, hls, audio, subtitles, qualities },
     onReady,
   ) {
     localStorage.setItem("player.cc", "Off");

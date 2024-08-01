@@ -11,15 +11,15 @@ export async function getEmbedInfo(type, info) {
     const response = await get(`${config.url}/${path}`, config.base, false);
     if (!response || response.status !== 200) return null;
 
-    let dashUrl = "";
-    let hlsUrl = "";
+    let dash = "";
+    let hls = "";
     let audio = { names: [], order: [] };
     let subtitles = [];
     let qualities = { 1920: 1080 };
 
     if (type === "movie") {
-      dashUrl = /dash:\s"(.+?)"/.exec(response.data)[1];
-      hlsUrl = /hls:\s"(.+?)"/.exec(response.data)[1];
+      dash = /dash:\s"(.+?)"/.exec(response.data)[1];
+      hls = /hls:\s"(.+?)"/.exec(response.data)[1];
 
       try {
         audio = JSON.parse(/audio:\s+({.*\})/.exec(response.data)[1]);
@@ -43,8 +43,8 @@ export async function getEmbedInfo(type, info) {
         (e) => e.episode.toString() === info.episode.toString(),
       );
 
-      dashUrl = episode.dash;
-      hlsUrl = episode.hls;
+      dash = episode.dash;
+      hls = episode.hls;
       audio = episode.audio;
       subtitles = episode.cc;
 
@@ -56,8 +56,8 @@ export async function getEmbedInfo(type, info) {
     }
 
     if (
-      (!dashUrl || typeof dashUrl !== "string" || !dashUrl.endsWith(".mpd")) &&
-      (!hlsUrl || typeof hlsUrl !== "string" || !hlsUrl.endsWith(".m3u8"))
+      (!dash || typeof dash !== "string" || !dash.endsWith(".mpd")) &&
+      (!hls || typeof hls !== "string" || !hls.endsWith(".m3u8"))
     ) {
       return null;
     }
@@ -91,7 +91,7 @@ export async function getEmbedInfo(type, info) {
       qualities = { 1920: 1080 };
     }
 
-    return { dashUrl, hlsUrl, audio, subtitles, qualities };
+    return { dash, hls, audio, subtitles, qualities };
   } catch {
     return null;
   }
