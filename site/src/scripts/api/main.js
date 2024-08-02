@@ -10,6 +10,10 @@ export function getImageUrl(path, type = "poster") {
   return path ? `${api.image.url}/${api.image[type]}${path}` : null;
 }
 
+export function getPersonUrl(id) {
+  return `${api.person}/${id}`;
+}
+
 export function sortByPopularity(obj) {
   return obj.sort((a, b) => b.popularity - a.popularity);
 }

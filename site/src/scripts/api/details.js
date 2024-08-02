@@ -1,5 +1,5 @@
-import { sendRequest, getImageUrl, sortByPopularity } from "./main.js";
-import { shortenNumber, cleanText, getSearchUrl } from "../functions.js";
+import { sendRequest, getImageUrl, getPersonUrl, sortByPopularity } from "./main.js";
+import { shortenNumber, cleanText } from "../functions.js";
 import { getSeason } from "./seasons.js";
 import { config } from "../config.js";
 import { getWatchSection } from "../store/watch-sections.js";
@@ -10,7 +10,7 @@ async function format(item, type) {
     const date = new Date(dateString);
 
     const cast = (item.credits?.cast || [])
-      .filter((p) => p.name && p.character)
+      .filter((p) => p.id && p.name && p.character)
       .splice(0, config.cast.amount)
       .map(function (person) {
         return {
@@ -19,7 +19,7 @@ async function format(item, type) {
           image: person.profile_path
             ? getImageUrl(person.profile_path, "cast")
             : null,
-          url: getSearchUrl(person.name),
+          url: getPersonUrl(person.id),
         };
       });
 

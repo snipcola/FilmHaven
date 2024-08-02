@@ -100,10 +100,6 @@ export function convertMinutesToText(minutes) {
   }
 }
 
-export function getSearchUrl(query) {
-  return `https://duckduckgo.com/?q=${query.replace(/ /g, "+")}`;
-}
-
 export function cleanText(input) {
   return input
     .replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1")

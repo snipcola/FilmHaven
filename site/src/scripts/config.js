@@ -131,7 +131,7 @@ export const config = {
 };
 
 export const api = {
-  url: "https://api.themoviedb.org",
+  url: "https://api.tmdb.org",
   version: "3",
   key: "5622cafbfe8f8cfe358a29c53e19bba0",
   image: {
@@ -142,6 +142,7 @@ export const api = {
     avatar: "w150_and_h150_face",
     episode: "w185",
   },
+  person: "https://tmdb.org/person",
   trending: {
     timeWindow: "week",
   },
