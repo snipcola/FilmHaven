@@ -230,6 +230,7 @@ function modal(info, recommendationImages) {
     backdropVignette.classList[toggle ? "add" : "remove"]("active");
   }
 
+  let hasIframe = false;
   let hasPlayer = false;
 
   if (videoActive) {
@@ -613,6 +614,7 @@ function modal(info, recommendationImages) {
     if (disabled) return;
     if (currentIframe) currentIframe.remove();
     if (currentPlayer) currentPlayer.remove();
+    if (hasIframe) hasIframe = false;
     if (hasPlayer) hasPlayer = false;
     if (watch.parentElement?.parentElement)
       watch.parentElement.parentElement.classList.remove("has-player");
@@ -632,8 +634,15 @@ function modal(info, recommendationImages) {
       currentIframe.addEventListener("load", function () {
         videoAlert(false);
         toggleBackdrop(false);
+        hasIframe = true;
         currentIframe.classList.add("active");
       });
+
+      setTimeout(function () {
+        if (elementExists(currentIframe) && !hasIframe) {
+          refresh();
+        }
+      }, 3000);
     } else {
       currentPlayer = _player.cloneNode();
       video.append(currentPlayer);

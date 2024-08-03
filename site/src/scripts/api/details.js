@@ -1,4 +1,9 @@
-import { sendRequest, getImageUrl, getPersonUrl, sortByPopularity } from "./main.js";
+import {
+  sendRequest,
+  getImageUrl,
+  getPersonUrl,
+  sortByPopularity,
+} from "./main.js";
 import { shortenNumber, cleanText } from "../functions.js";
 import { getSeason } from "./seasons.js";
 import { config } from "../config.js";

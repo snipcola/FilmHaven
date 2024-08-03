@@ -8,7 +8,7 @@ export async function onRequest(info) {
         provider[provider.type]?.constructor?.name === "AsyncFunction"
           ? await provider[provider.type](info.type, info)
           : provider[provider.type](info.type, info);
-          
+
       const valid =
         response &&
         (provider.type === "data" || (await check(response, provider.base)));
