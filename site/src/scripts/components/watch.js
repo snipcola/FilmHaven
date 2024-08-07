@@ -473,14 +473,14 @@ function modal(info, recommendationImages) {
         !name.includes("commentary")
       );
     });
-    if (englishAudio) {
-      localStorage.setItem("player.track", englishAudio);
-    }
+
+    if (englishAudio) localStorage.setItem("player.track", englishAudio);
+    else localStorage.removeItem("player.track");
 
     const highestQuality = Math.max(...Object.values(qualities || []));
-    if (highestQuality) {
-      localStorage.setItem("player.quality", highestQuality);
-    }
+
+    if (highestQuality) localStorage.setItem("player.quality", highestQuality);
+    else localStorage.removeItem("player.quality");
 
     playerFullscreen = false;
     player = VenomPlayer.make({
