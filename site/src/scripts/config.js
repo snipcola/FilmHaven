@@ -51,20 +51,15 @@ export const config = {
   footer: {
     links: [
       {
-        icon: "youtube",
-        url: "https://url.snipcola.com/youtube",
-        label: "YouTube",
+        icon: "download",
+        url: window.location.pathname,
+        label: "Download",
+        download: "FilmHaven.html",
       },
       {
         icon: "github",
         url: "https://url.snipcola.com/git",
         label: "Git",
-      },
-      {
-        icon: "download",
-        url: window.location.pathname,
-        label: "Download",
-        download: "FilmHaven.html",
       },
     ],
   },

@@ -31,11 +31,31 @@
 }
 
 .footer-container .footer .copyright {
+  display: flex;
+  gap: var(--small-gap);
+
+  flex-direction: row-reverse;
+  align-items: center;
+
   opacity: var(--dim-opacity);
   font-weight: 500;
 
   user-select: none;
   -webkit-user-select: none;
+}
+
+.footer-container .footer .copyright span {
+  display: none;
+
+  background-color: var(--lighter);
+  border: 1px solid var(--lightest);
+
+  padding: calc(var(--small-padding) / 2);
+  border-radius: var(--border-radius);
+}
+
+.footer-container .footer .copyright span.active {
+  display: inline-block;
 }
 
 .footer-container .footer .links {

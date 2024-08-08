@@ -5,6 +5,7 @@ export function initializeFooter(element) {
   const footer = document.createElement("div");
 
   const copyright = document.createElement("p");
+  const commitHash = document.createElement("span");
   const links = document.createElement("div");
 
   container.className = "footer-container";
@@ -13,6 +14,13 @@ export function initializeFooter(element) {
   copyright.className = "copyright";
   copyright.innerText = `© ${new Date().getFullYear()} ${config.author}`;
   links.className = "links";
+
+  if (__GIT_COMMIT_HASH__) {
+    commitHash.innerText = __GIT_COMMIT_HASH__;
+    commitHash.className = "active";
+  }
+
+  copyright.append(commitHash);
 
   for (const item of config.footer.links) {
     const link = document.createElement("a");

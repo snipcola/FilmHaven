@@ -1,5 +1,22 @@
-const path = require("path");
+const { DefinePlugin } = require("webpack");
 const { src, dist } = require("./paths.js");
+
+const path = require("path");
+const childProcess = require("child_process");
+
+let gitCommitHash;
+const vercelGitCommitHash = process?.env?.VERCEL_GIT_COMMIT_SHA;
+
+if (typeof vercelGitCommitHash === "string" && vercelGitCommitHash !== "") {
+  gitCommitHash = vercelGitCommitHash.trim().substring(0, 7);
+} else {
+  try {
+    gitCommitHash = childProcess
+      .execSync("git rev-parse --short HEAD")
+      .toString()
+      .trim();
+  } catch {}
+}
 
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
@@ -44,6 +61,9 @@ module.exports = {
       filename: "index.html",
       scriptLoading: "defer",
       inject: false,
+    }),
+    new DefinePlugin({
+      __GIT_COMMIT_HASH__: JSON.stringify(gitCommitHash),
     }),
   ],
 };
