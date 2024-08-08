@@ -15,9 +15,16 @@ export function initializeFooter(element) {
   copyright.innerText = `© ${new Date().getFullYear()} ${config.author}`;
   links.className = "links";
 
-  if (__GIT_COMMIT_HASH__) {
-    commitHash.innerText = __GIT_COMMIT_HASH__;
-    commitHash.className = "active";
+  if (config.commitHash) {
+    commitHash.innerText = config.commitHash;
+    commitHash.classList.add("active");
+
+    if (config.repository) {
+      commitHash.classList.add("has-repo");
+      commitHash.addEventListener("click", function () {
+        window.open(`${config.repository}/commit/${config.commitHash}`);
+      });
+    }
   }
 
   copyright.append(commitHash);

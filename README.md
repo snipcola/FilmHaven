@@ -34,4 +34,4 @@ Due to the nature of how the project works, you might face ads upon viewing cont
 
 ## ⚠️ - Disclaimer
 
-All files, such as media, are linked from third-party services, which FilmHaven is not responsible for and has no control over.
+All files, such as media, are linked from third-party services, which this project is not responsible for and has no control over.

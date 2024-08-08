@@ -58,6 +58,11 @@
   display: inline-block;
 }
 
+.footer-container .footer .copyright span.has-repo:hover {
+  cursor: pointer;
+  background-color: var(--lightest);
+}
+
 .footer-container .footer .links {
   display: flex;
   align-items: center;

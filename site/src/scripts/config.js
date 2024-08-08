@@ -14,9 +14,15 @@ import { resetLastPlayed } from "./store/last-played.js";
 import { getLanguages } from "./api/languages.js";
 import { getLanguage, setLanguage } from "./store/language.js";
 
+const name = "FilmHaven";
+const repository = `https://git.snipcola.com/snipcola/${name}`;
+const author = "Snipcola";
+
 export const config = {
-  author: "Snipcola",
-  name: "FilmHaven",
+  name,
+  author,
+  repository,
+  commitHash: __GIT_COMMIT_HASH__,
   defaultLanguage: "en",
   header: {
     name: {
@@ -54,13 +60,17 @@ export const config = {
         icon: "download",
         url: window.location.pathname,
         label: "Download",
-        download: "FilmHaven.html",
+        download: `${name}.html`,
       },
-      {
-        icon: "github",
-        url: "https://url.snipcola.com/git",
-        label: "Git",
-      },
+      ...[
+        repository
+          ? {
+              icon: "github",
+              url: repository,
+              label: "Git",
+            }
+          : {},
+      ],
     ],
   },
   modal: {
