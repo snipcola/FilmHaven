@@ -29,6 +29,7 @@ import { getDownloads, constructMagnet } from "../downloadsApi/download.js";
 import { providers as _providers } from "../../../../api/src/config.js";
 import { getMode } from "../store/mode.js";
 import { isOnline } from "../functions.js";
+import { VidstackPlayer, VidstackPlayerLayout } from "vidstack/global/player";
 
 const online = isOnline();
 
@@ -231,11 +232,10 @@ function modal(info, recommendationImages) {
   }
 
   let hasIframe = false;
-  let hasPlayer = false;
 
   if (videoActive) {
     function show() {
-      video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
+      video.scrollIntoView({ block: "end" });
     }
 
     onKeyPress("v", true, null, watch, show);
@@ -322,23 +322,20 @@ function modal(info, recommendationImages) {
             };
           });
 
-        return (await Promise.all(promises))
-          .filter((provider) => online || provider.online !== true)
-          .filter(
-            (provider) => ![undefined, null].includes(provider[provider.type]),
-          );
+        return (await Promise.all(promises)).filter(
+          (provider) => ![undefined, null].includes(provider[provider.type]),
+        );
       }
 
       const fetchProviders =
         mode === "proxy" ? fetchProvidersProxy : fetchProvidersLocal;
 
       providers = (await fetchProviders()).filter(
-        (provider) =>
-          typeof VenomPlayer !== "undefined" || provider.type !== "data",
+        (provider) => online || provider.online !== true,
       );
 
       if (getProvider() === null && providers[0]) {
-        setProvider(providers[0]);
+        setProvider(providers[0].name);
       }
     }
 
@@ -370,244 +367,60 @@ function modal(info, recommendationImages) {
   }
 
   let player = null;
-  let playerFullscreen = false;
 
-  function destroyPlayer() {
-    try {
-      if (player) {
-        player.destroy();
-      }
-    } catch {}
+  async function initializePlayer({ dash, hls, subtitles, audio }) {
+    for (let i = 0; i < localStorage.length; i++) {
+      try {
+        const key = localStorage.key(i);
 
-    player = null;
-    playerFullscreen = false;
-    clearPlayerIntervals();
-  }
-
-  function setPlayerButtons() {
-    try {
-      const topRight = currentPlayer.querySelector(".top-right_1_I7J");
-      topRight.innerHTML = "";
-
-      const closeButton = {
-        icon: "times",
-        callback: function () {
-          destroyPlayer();
-          hideModal();
-        },
-      };
-      const buttons = playerFullscreen
-        ? [closeButton]
-        : [closeButton, ...customButtons];
-
-      buttons.reverse().forEach(function ({ icon, callback }) {
-        const button = document.createElement("i");
-        button.className = `button_1_nBS icon_3zeDf icon-${icon}`;
-        button.addEventListener("click", callback);
-        topRight.append(button);
-      });
-    } catch {}
-  }
-
-  function setPlayerSeasonButtons() {
-    try {
-      if (info.type !== "tv") return;
-
-      const topLeft = currentPlayer.querySelector(".top-left_2-xxL");
-      const buttons = [];
-
-      buttons.push({
-        icon: "arrow-left",
-        callback: previousEpisode,
-        disabled: [undefined, null].includes(getPreviousEpisode()),
-      });
-
-      buttons.push({
-        icon: "arrow-right",
-        callback: nextEpisode,
-        disabled: [undefined, null].includes(getNextEpisode()),
-      });
-
-      buttons.forEach(function ({ icon, callback, disabled }) {
-        const button = document.createElement("i");
-        button.className = `button_1_nBS icon_3zeDf icon-${icon}`;
-        if (disabled) button.classList.add("disabled");
-        else button.addEventListener("click", callback);
-        topLeft.append(button);
-      });
-    } catch {}
-  }
-
-  let playerReadyInterval;
-  let playerErrorInterval;
-
-  function clearPlayerReadyInterval() {
-    if (playerReadyInterval) clearInterval(playerReadyInterval);
-    playerReadyInterval = null;
-  }
-
-  function clearPlayerErrorInterval() {
-    if (playerErrorInterval) clearInterval(playerErrorInterval);
-    playerErrorInterval = null;
-  }
-
-  function clearPlayerIntervals() {
-    clearPlayerReadyInterval();
-    clearPlayerErrorInterval();
-  }
-
-  function initializePlayer(
-    { dash, hls, audio, subtitles, qualities },
-    onReady,
-  ) {
-    localStorage.setItem("player.cc", "Off");
-    localStorage.setItem("player.isCountdown", false);
-    localStorage.setItem("player.muted", false);
-    localStorage.setItem("player.speed", "1");
-    localStorage.setItem("player.withTotal", true);
-
-    const englishAudio = (audio.names || []).find(function (_name) {
-      const name = _name.toLowerCase();
-      return (
-        (name.startsWith("eng") || name.includes("original")) &&
-        !name.includes("commentary")
-      );
-    });
-
-    if (englishAudio) localStorage.setItem("player.track", englishAudio);
-    else localStorage.removeItem("player.track");
-
-    const highestQuality = Math.max(...Object.values(qualities || []));
-
-    if (highestQuality) localStorage.setItem("player.quality", highestQuality);
-    else localStorage.removeItem("player.quality");
-
-    playerFullscreen = false;
-    player = VenomPlayer.make({
-      publicPath: "https://cdn.jsdelivr.net/npm/venom-player@0.2.88/dist/",
-      container: currentPlayer,
-      id:
-        info.type === "movie"
-          ? `m${info.id}`
-          : `s${info.id}${seasonNumber}${episodeNumber}`,
+        if (key.startsWith("dashjs") || key.startsWith("http")) {
+          localStorage.removeItem(key);
+          i--;
+        }
+      } catch {}
+    }
+    
+    player = await VidstackPlayer.create({
+      target: currentPlayer,
       title:
         info.type === "movie"
           ? info.title
           : `${info.title} (S${seasonNumber} E${episodeNumber})`,
-      source: {
-        dash: dash === "" ? undefined : dash,
-        hls: hls === "" ? undefined : hls,
-        audio,
-        cc: subtitles,
-      },
-      hlsNativeQuality: false,
-      hlsNativeParam: true,
-      qualityByWidth: qualities,
-      soundBlock: "delete",
-      autoLandscape: true,
-      ui: {
-        pip: true,
-        share: false,
-        timeline: true,
-        prevNext: true,
-        about: false,
-      },
-      cssVars: {
-        "color-primary":
-          getComputedStyle(document.body)?.getPropertyValue("--primary") ||
-          "#e12323",
-        "background-color-primary": "rgba(26, 26, 26, 0.75)",
-      },
-      speed: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
-      trackProgress: 30,
-      replay: false,
+      src: dash || hls || undefined,
+      layout: new VidstackPlayerLayout(),
+      tracks: subtitles.map(function (subtitle) {
+        return {
+          src: subtitle.url,
+          label: subtitle.name,
+          kind: "subtitles",
+        };
+      }),
+      keyTarget: document,
+      crossOrigin: true,
+      autoPlay: true,
+      logLevel: "silent",
     });
 
-    player.on("fullscreenEnter", function () {
-      playerFullscreen = true;
-      setPlayerButtons();
-    });
-
-    player.on("fullscreenExit", function () {
-      playerFullscreen = false;
-      setPlayerButtons();
-    });
-
-    function ready() {
-      setPlayerButtons();
-      setPlayerSeasonButtons();
-
+    player.addEventListener("can-play", function () {
       try {
-        player.play();
-
-        const playerElement = currentPlayer.querySelector(".player_1JR0Q");
-        playerElement.classList.add("user-active");
-
-        function removeUserActive() {
-          if (playerElement.classList.contains("user-active")) {
-            playerElement.classList.remove("user-active");
-          }
-        }
-
-        setTimeout(removeUserActive, 3000);
-        onKeyPress("escape", true, null, playerElement, removeUserActive);
+        player.audioTracks[audio].selected = true;
       } catch {}
 
-      onReady();
+      try {
+        const qualities = Array.from(player.qualities).map((i) => i.width);
+        const preferredQualities = qualities.filter((w) => w <= 1920);
 
-      clearPlayerErrorInterval();
-      playerErrorInterval = setInterval(function () {
-        if (!elementExists(currentPlayer)) {
-          clearPlayerErrorInterval();
-          return;
-        }
+        const maxQuality = qualities.length > 0 && Math.max(...qualities);
+        const preferredQuality =
+          preferredQualities.length > 0 && Math.max(...preferredQualities);
 
-        try {
-          const errorElements = currentPlayer.querySelectorAll(".error_3plQ2");
-          const hasError = Array.from(errorElements).some(
-            (e) => !e.classList.contains("hidden_1uh6Y"),
-          );
+        const quality = Array.from(player.qualities).find(
+          (q) => q.width === (preferredQuality || maxQuality),
+        );
 
-          if (hasError) {
-            clearPlayerErrorInterval();
-            refresh();
-          }
-        } catch {}
-      }, 100);
-
-      const timeQuery = getQuery(config.query.time);
-
-      if (timeQuery) {
-        removeQuery(config.query.time);
-      }
-    }
-
-    const requiredPlayerElements = [
-      "video",
-      ".player_1JR0Q",
-      ".top-right_1_I7J",
-      ".top-left_2-xxL",
-    ];
-
-    clearPlayerReadyInterval();
-    playerReadyInterval = setInterval(function () {
-      if (!elementExists(currentPlayer)) {
-        clearPlayerReadyInterval();
-      } else if (
-        !requiredPlayerElements
-          .map((e) => currentPlayer.querySelector(e))
-          .includes(null)
-      ) {
-        ready();
-        clearPlayerReadyInterval();
-      }
-    }, 10);
-
-    setTimeout(function () {
-      if (elementExists(currentPlayer) && !hasPlayer) {
-        refresh();
-      }
-    }, 1000);
+        quality.selected = true;
+      } catch {}
+    });
   }
 
   function playVideo() {
@@ -615,10 +428,6 @@ function modal(info, recommendationImages) {
     if (currentIframe) currentIframe.remove();
     if (currentPlayer) currentPlayer.remove();
     if (hasIframe) hasIframe = false;
-    if (hasPlayer) hasPlayer = false;
-    if (watch.parentElement?.parentElement)
-      watch.parentElement.parentElement.classList.remove("has-player");
-    destroyPlayer();
 
     const provider = getCurrentProvider();
     const response = provider[provider.type];
@@ -646,14 +455,10 @@ function modal(info, recommendationImages) {
     } else {
       currentPlayer = _player.cloneNode();
       video.append(currentPlayer);
-      initializePlayer(response, function () {
-        videoAlert(false);
-        toggleBackdrop(false);
-        hasPlayer = true;
-        if (watch.parentElement?.parentElement)
-          watch.parentElement.parentElement.classList.add("has-player");
-        currentPlayer.classList.add("active");
-      });
+      videoAlert(false);
+      toggleBackdrop(false);
+      currentPlayer.classList.add("active");
+      initializePlayer(response);
     }
   }
 
@@ -781,11 +586,9 @@ function modal(info, recommendationImages) {
       });
 
       setCustomButtons(customButtons);
-      setPlayerButtons();
     } else if (customButtons.find((b) => b.icon === "download")) {
       customButtons = customButtons.filter((b) => b.icon !== "download");
       setCustomButtons(customButtons);
-      setPlayerButtons();
     }
   }
 
@@ -822,7 +625,7 @@ function modal(info, recommendationImages) {
     if (disabled) return;
 
     playVideo();
-    video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
+    video.scrollIntoView({ block: "end" });
   }
 
   if (videoActive) {
@@ -833,7 +636,7 @@ function modal(info, recommendationImages) {
 
       setProvider(name);
       playVideo();
-      video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
+      video.scrollIntoView({ block: "end" });
     }
 
     function nextProvider() {
@@ -965,7 +768,7 @@ function modal(info, recommendationImages) {
   function playSeries() {
     setLastPlayed(info.id, seasonNumber, episodeNumber);
     checkCurrentlyPlaying();
-    video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
+    video.scrollIntoView({ block: "end" });
   }
 
   let playEpisodeCallbacks = [];
@@ -1684,9 +1487,7 @@ function modal(info, recommendationImages) {
     }
   }
 
-  function cleanup(modal) {
-    if (modal) modal.classList.remove("has-player");
-
+  function cleanup(_modal) {
     if (videoActive && info.backdrop) unloadImages([info.backdrop]);
     if (seasonsActive && info.seasons)
       unloadImages(
@@ -1768,7 +1569,6 @@ function modal(info, recommendationImages) {
   else watch.classList.add("only-video");
 
   setCustomButtons(customButtons);
-  setPlayerButtons();
   setModal(
     info.title,
     null,
@@ -1781,7 +1581,7 @@ function modal(info, recommendationImages) {
   showModal(cleanup);
 
   if (videoActive) {
-    video.scrollIntoView({ block: hasPlayer ? "center" : "end" });
+    video.scrollIntoView({ block: "end" });
   }
 }
 

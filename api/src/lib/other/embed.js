@@ -14,8 +14,8 @@ export async function getEmbedInfo(type, info) {
     let dash = "";
     let hls = "";
     let audio = { names: [], order: [] };
+    let audioIndex;
     let subtitles = [];
-    let qualities = { 1920: 1080 };
 
     if (type === "movie") {
       dash = /dash:\s"(.+?)"/.exec(response.data)[1];
@@ -27,12 +27,6 @@ export async function getEmbedInfo(type, info) {
 
       try {
         subtitles = JSON.parse(/cc:\s+(\[{.*\}\])/.exec(response.data)[1]);
-      } catch {}
-
-      try {
-        qualities = JSON.parse(
-          /qualityByWidth:\s+({.*\})/.exec(response.data)[1],
-        );
       } catch {}
     } else {
       const seasons = JSON.parse(/seasons:(\[{.*\}\])/.exec(response.data)[1]);
@@ -47,12 +41,6 @@ export async function getEmbedInfo(type, info) {
       hls = episode.hls;
       audio = episode.audio;
       subtitles = episode.cc;
-
-      try {
-        qualities = JSON.parse(
-          /qualityByWidth:\s+({.*\})/.exec(response.data)[1],
-        );
-      } catch {}
     }
 
     if (
@@ -60,17 +48,6 @@ export async function getEmbedInfo(type, info) {
       (!hls || typeof hls !== "string" || !hls.endsWith(".m3u8"))
     ) {
       return null;
-    }
-
-    if (
-      !audio ||
-      typeof audio !== "object" ||
-      !audio.names ||
-      !Array.isArray(audio.names) ||
-      !audio.order ||
-      !Array.isArray(audio.order)
-    ) {
-      audio = { names: [], order: [] };
     }
 
     subtitles = subtitles.filter(function (subtitle) {
@@ -83,15 +60,17 @@ export async function getEmbedInfo(type, info) {
       );
     });
 
-    if (
-      !qualities ||
-      typeof qualities !== "object" ||
-      Object.values(qualities).length === 0
-    ) {
-      qualities = { 1920: 1080 };
-    }
+    try {
+      audioIndex = (audio.names || []).findIndex(function (_name) {
+        const name = _name.toLowerCase();
+        return (
+          (name.startsWith("eng") || name.includes("original")) &&
+          !name.includes("commentary")
+        );
+      });
+    } catch {}
 
-    return { dash, hls, audio, subtitles, qualities };
+    return { dash, hls, audio: audioIndex, subtitles };
   } catch {
     return null;
   }

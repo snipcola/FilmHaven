@@ -56,12 +56,6 @@ export const config = {
   },
   footer: {
     links: [
-      {
-        icon: "download",
-        url: window.location.pathname,
-        label: "Download",
-        download: `${name}.html`,
-      },
       ...[
         repository
           ? {
@@ -188,7 +182,7 @@ export const proxy = {
 export const proxies =
   process?.env?.NODE_ENV === "development"
     ? ["http://localhost:2000/api"]
-    : ["/api"];
+    : ["https://film-haven.vercel.app/api"];
 
 export const store = {
   names: {

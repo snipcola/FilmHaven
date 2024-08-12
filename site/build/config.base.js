@@ -20,16 +20,16 @@ if (typeof vercelGitCommitHash === "string" && vercelGitCommitHash !== "") {
 
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
-const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
-
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
 
 module.exports = {
   entry: {
     main: path.resolve(src, "scripts", "main.js"),
     styles: path.resolve(src, "styles", "main.css"),
+    manifest: path.resolve(src, "manifest.json"),
   },
   output: {
     path: dist,
@@ -46,15 +46,18 @@ module.exports = {
         test: /\.pug$/,
         loader: "pug-loader",
       },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf|png|jpg|jpeg|gif|svg|json)$/i,
+        type: "asset/resource",
+      },
     ],
   },
   optimization: {
-    minimizer: ["...", new CssMinimizerPlugin()],
+    minimizer: ["...", new CssMinimizerPlugin(), new JsonMinimizerPlugin()],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new RemoveEmptyScriptsPlugin(),
-    new WebpackManifestPlugin({ fileName: "_manifest.json" }),
     new MiniCssExtractPlugin({ filename: "[contenthash].css" }),
     new HtmlWebpackPlugin({
       template: path.resolve(src, "html.pug"),

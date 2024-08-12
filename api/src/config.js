@@ -3,13 +3,11 @@ import { config as embedConfig, getEmbedInfo } from "./lib/other/embed.js";
 export const providers = [
   {
     base: embedConfig.base,
-    online: true,
     type: "data",
     data: await getEmbedInfo,
   },
   {
     base: "vidsrc.pro",
-    online: true,
     type: "url",
     url: function (type, { id, season, episode }) {
       if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
