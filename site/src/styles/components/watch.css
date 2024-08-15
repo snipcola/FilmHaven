@@ -111,6 +111,14 @@
   overflow: hidden !important;
 }
 
+.watch .video > .player > media-player > media-video-layout > media-controls {
+  border: none !important;
+  outline: none !important;
+
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
 .watch .video > .player > media-player > media-provider > media-poster > img {
   object-fit: cover !important;
 }
