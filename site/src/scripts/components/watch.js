@@ -1,3 +1,4 @@
+import { getTheme } from "../store/theme.js";
 import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
 import {
   setModal,
@@ -261,6 +262,20 @@ function modal(info, recommendationImages) {
 
   const mode = getMode();
 
+  function cleanVideo() {
+    try {
+      if (player) player.destroy();
+    } catch {}
+
+    if (currentIframe) currentIframe.remove();
+    if (currentPlayer) currentPlayer.remove();
+
+    player = null;
+    currentIframe = null;
+    currentPlayer = null;
+    hasIframe = false;
+  }
+
   async function checkProviders() {
     providers = [];
 
@@ -270,8 +285,7 @@ function modal(info, recommendationImages) {
     providersElem.classList.add("disabled");
     seasons.classList.add("disabled");
 
-    if (currentIframe) currentIframe.remove();
-    if (currentPlayer) currentPlayer.remove();
+    cleanVideo();
     providersSelect.innerHTML = "<option selected disabled>...</option>";
 
     toggleBackdrop(true);
@@ -368,7 +382,31 @@ function modal(info, recommendationImages) {
 
   let player = null;
 
-  async function initializePlayer({ dash, hls, subtitles, audio }) {
+  async function getURL(url, audio, type = "application/dash+xml") {
+    try {
+      const response = await fetch(url);
+      const text = await response.text();
+      const contents = text
+        .replace(
+          new RegExp(
+            `<AdaptationSet[^>]*lang="([^"]*?)(?<!${audio})"[^>]*>.*?<\\/AdaptationSet>`,
+            "gs",
+          ),
+          "",
+        )
+        .replace(/\s+/g, " ")
+        .replace(/>\s*</g, "><")
+        .trim();
+      const blob = new Blob([contents], { type });
+      const src = URL.createObjectURL(blob);
+
+      return { src, type };
+    } catch {
+      return undefined;
+    }
+  }
+
+  async function initializePlayer({ dash, subtitles, audio }, onReady) {
     for (let i = 0; i < localStorage.length; i++) {
       try {
         const key = localStorage.key(i);
@@ -379,55 +417,90 @@ function modal(info, recommendationImages) {
         }
       } catch {}
     }
-    
+
+    const theme = getTheme();
+
     player = await VidstackPlayer.create({
       target: currentPlayer,
+      artist: info.producers || undefined,
+      artwork: info.image ? [{ src: info.image }] : undefined,
       title:
         info.type === "movie"
           ? info.title
           : `${info.title} (S${seasonNumber} E${episodeNumber})`,
-      src: dash || hls || undefined,
-      layout: new VidstackPlayerLayout(),
-      tracks: subtitles.map(function (subtitle) {
-        return {
-          src: subtitle.url,
-          label: subtitle.name,
-          kind: "subtitles",
-        };
+      src: await getURL(dash, audio),
+      layout: new VidstackPlayerLayout({
+        menuContainer: currentPlayer,
+        colorScheme: theme === "auto" ? "system" : theme,
+        hideQualityBitrate: true,
+        noAudioGain: true,
+        seekStep: 5,
       }),
+      poster: info.backdrop
+        ? info.backdrop.replace("w1280", "original")
+        : undefined,
+      tracks: subtitles
+        .map(function (subtitle) {
+          return {
+            src: subtitle.url,
+            label: subtitle.name,
+            kind: "subtitles",
+          };
+        })
+        .sort(function (a, b) {
+          const aName = a.label.toLowerCase();
+          const bName = b.label.toLowerCase();
+
+          const aEng = aName.includes("eng");
+          const bEng = bName.includes("eng");
+
+          const aFull = aName.includes("full");
+          const bFull = bName.includes("full");
+
+          if (aEng && aFull && !(bEng && bFull)) return -1;
+          if (bEng && bFull && !(aEng && aFull)) return 1;
+
+          if (aEng && !bEng) return -1;
+          if (bEng && !aEng) return 1;
+
+          return 0;
+        }),
+      viewType: "video",
       keyTarget: document,
       crossOrigin: true,
+      playsInline: true,
       autoPlay: true,
+      controlsDelay: 1500,
+      currentTime: 0,
+      hideControlsOnMouseLeave: true,
       logLevel: "silent",
+      loop: true,
+      paused: false,
+      load: "eager",
+      posterLoad: "eager",
     });
 
-    player.addEventListener("can-play", function () {
-      try {
-        player.audioTracks[audio].selected = true;
-      } catch {}
+    function onPlayerLoad() {
+      if (!currentPlayer || !elementExists(currentPlayer)) {
+        try {
+          if (player) player.destroy();
+        } catch {}
 
-      try {
-        const qualities = Array.from(player.qualities).map((i) => i.width);
-        const preferredQualities = qualities.filter((w) => w <= 1920);
+        player = null;
+        currentPlayer = null;
 
-        const maxQuality = qualities.length > 0 && Math.max(...qualities);
-        const preferredQuality =
-          preferredQualities.length > 0 && Math.max(...preferredQualities);
+        return;
+      }
 
-        const quality = Array.from(player.qualities).find(
-          (q) => q.width === (preferredQuality || maxQuality),
-        );
+      onReady();
+    }
 
-        quality.selected = true;
-      } catch {}
-    });
+    player.addEventListener("can-play", onPlayerLoad);
   }
 
   function playVideo() {
     if (disabled) return;
-    if (currentIframe) currentIframe.remove();
-    if (currentPlayer) currentPlayer.remove();
-    if (hasIframe) hasIframe = false;
+    cleanVideo();
 
     const provider = getCurrentProvider();
     const response = provider[provider.type];
@@ -455,10 +528,11 @@ function modal(info, recommendationImages) {
     } else {
       currentPlayer = _player.cloneNode();
       video.append(currentPlayer);
-      videoAlert(false);
-      toggleBackdrop(false);
-      currentPlayer.classList.add("active");
-      initializePlayer(response);
+      initializePlayer(response, function () {
+        videoAlert(false);
+        toggleBackdrop(false);
+        currentPlayer.classList.add("active");
+      });
     }
   }
 

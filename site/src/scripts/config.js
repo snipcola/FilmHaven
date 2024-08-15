@@ -117,6 +117,9 @@ export const config = {
       mobile: 2,
     },
   },
+  producers: {
+    amount: 4,
+  },
   query: {
     page: "p",
     modal: "m",

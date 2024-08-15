@@ -12,14 +12,12 @@ export async function getEmbedInfo(type, info) {
     if (!response || response.status !== 200) return null;
 
     let dash = "";
-    let hls = "";
     let audio = { names: [], order: [] };
     let audioIndex;
     let subtitles = [];
 
     if (type === "movie") {
       dash = /dash:\s"(.+?)"/.exec(response.data)[1];
-      hls = /hls:\s"(.+?)"/.exec(response.data)[1];
 
       try {
         audio = JSON.parse(/audio:\s+({.*\})/.exec(response.data)[1]);
@@ -38,15 +36,11 @@ export async function getEmbedInfo(type, info) {
       );
 
       dash = episode.dash;
-      hls = episode.hls;
       audio = episode.audio;
       subtitles = episode.cc;
     }
 
-    if (
-      (!dash || typeof dash !== "string" || !dash.endsWith(".mpd")) &&
-      (!hls || typeof hls !== "string" || !hls.endsWith(".m3u8"))
-    ) {
+    if (!dash || typeof dash !== "string" || !dash.endsWith(".mpd")) {
       return null;
     }
 
@@ -70,7 +64,11 @@ export async function getEmbedInfo(type, info) {
       });
     } catch {}
 
-    return { dash, hls, audio: audioIndex, subtitles };
+    if (audioIndex === -1) {
+      return null;
+    }
+
+    return { dash, audio: audioIndex, subtitles };
   } catch {
     return null;
   }

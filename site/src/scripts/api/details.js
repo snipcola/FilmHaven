@@ -85,6 +85,11 @@ async function format(item, type) {
         };
       });
 
+    const producers = (item.production_companies || [])
+      .splice(0, config.producers.amount)
+      .filter((p) => p.name)
+      .map((p) => p.name);
+
     const trailer = (item.videos?.results || [])
       .filter(
         (v) =>
@@ -125,6 +130,7 @@ async function format(item, type) {
       genres,
       seasons,
       recommendations,
+      producers: producers.length > 0 ? producers.join(", ") : null,
       trailer: trailer
         ? `https://www.youtube-nocookie.com/embed/${trailer.key}`
         : null,

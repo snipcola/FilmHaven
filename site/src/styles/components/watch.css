@@ -100,10 +100,19 @@
 
 .watch .video > .player > media-player {
   user-select: none !important;
+  border-radius: 0 !important;
+
   border: none !important;
+  outline: none !important;
 
   width: 100% !important;
   height: 100% !important;
+
+  overflow: hidden !important;
+}
+
+.watch .video > .player > media-player > media-provider > media-poster > img {
+  object-fit: cover !important;
 }
 
 .watch .video .iframe.active {
