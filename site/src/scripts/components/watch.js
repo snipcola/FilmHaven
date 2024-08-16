@@ -470,7 +470,6 @@ function modal(info, recommendationImages) {
       crossOrigin: true,
       playsInline: true,
       autoPlay: true,
-      controlsDelay: 1500,
       currentTime: 0,
       hideControlsOnMouseLeave: true,
       logLevel: "silent",
@@ -495,7 +494,9 @@ function modal(info, recommendationImages) {
       onReady();
     }
 
-    player.addEventListener("can-play", onPlayerLoad);
+    player.addEventListener("can-play", function () {
+      setTimeout(onPlayerLoad, 250);
+    });
   }
 
   function playVideo() {

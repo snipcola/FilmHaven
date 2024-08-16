@@ -23,6 +23,7 @@
   "dependencies": {
     "@fontsource/open-sans": "^5.0.28",
     "dashjs": "^4.7.4",
+    "hls.js": "^1.5.14",
     "normalize.css": "^8.0.1",
     "vidstack": "^1.12.9"
   }
