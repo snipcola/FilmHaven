@@ -16,6 +16,7 @@ import {
   onKeyPress,
   promiseTimeout,
   onSwipe,
+  checkElement,
 } from "../functions.js";
 import { config, proxies, proxy as proxyConfig } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
@@ -233,6 +234,7 @@ function modal(info, recommendationImages) {
   }
 
   let hasIframe = false;
+  let hasPlayer = false;
 
   if (videoActive) {
     function show() {
@@ -274,6 +276,7 @@ function modal(info, recommendationImages) {
     currentIframe = null;
     currentPlayer = null;
     hasIframe = false;
+    hasPlayer = false;
   }
 
   async function checkProviders() {
@@ -406,6 +409,22 @@ function modal(info, recommendationImages) {
     }
   }
 
+  function onPlayerLoad(callback) {
+    if (!currentPlayer || !elementExists(currentPlayer)) {
+      try {
+        if (player) player.destroy();
+      } catch {}
+
+      player = null;
+      currentPlayer = null;
+      hasPlayer = false;
+
+      return;
+    }
+
+    if (callback) callback();
+  }
+
   async function initializePlayer({ dash, subtitles, audio }, onReady) {
     for (let i = 0; i < localStorage.length; i++) {
       try {
@@ -479,24 +498,7 @@ function modal(info, recommendationImages) {
       posterLoad: "eager",
     });
 
-    function onPlayerLoad() {
-      if (!currentPlayer || !elementExists(currentPlayer)) {
-        try {
-          if (player) player.destroy();
-        } catch {}
-
-        player = null;
-        currentPlayer = null;
-
-        return;
-      }
-
-      onReady();
-    }
-
-    player.addEventListener("can-play", function () {
-      setTimeout(onPlayerLoad, 250);
-    });
+    player.addEventListener("can-play", () => onPlayerLoad(onReady));
   }
 
   function playVideo() {
@@ -514,24 +516,31 @@ function modal(info, recommendationImages) {
       currentIframe.src = response;
 
       video.append(currentIframe);
+      checkElement(
+        currentIframe,
+        () => !hasIframe,
+        refresh,
+        config.retryLoadAfter,
+      );
       currentIframe.addEventListener("load", function () {
         videoAlert(false);
         toggleBackdrop(false);
         hasIframe = true;
         currentIframe.classList.add("active");
       });
-
-      setTimeout(function () {
-        if (elementExists(currentIframe) && !hasIframe) {
-          refresh();
-        }
-      }, 3000);
     } else {
       currentPlayer = _player.cloneNode();
       video.append(currentPlayer);
+      checkElement(
+        currentPlayer,
+        () => !hasPlayer,
+        refresh,
+        config.retryLoadAfter,
+      );
       initializePlayer(response, function () {
         videoAlert(false);
         toggleBackdrop(false);
+        hasPlayer = true;
         currentPlayer.classList.add("active");
       });
     }

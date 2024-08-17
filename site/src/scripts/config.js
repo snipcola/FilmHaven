@@ -130,6 +130,7 @@ export const config = {
   maxReviewContentLength: 230,
   maxCacheDays: 5,
   maxMobileWidth: 700,
+  retryLoadAfter: 4000,
 };
 
 export const api = {

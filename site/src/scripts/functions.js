@@ -123,6 +123,20 @@ export function elementExists(element) {
   return document.body.contains(element);
 }
 
+export function checkElement(element, condition, callback, timeout) {
+  setTimeout(function () {
+    if (
+      element &&
+      elementExists(element) &&
+      condition &&
+      condition() &&
+      callback
+    ) {
+      callback();
+    }
+  }, timeout);
+}
+
 export function onWindowResize(callback) {
   window.addEventListener("resize", callback);
 }
