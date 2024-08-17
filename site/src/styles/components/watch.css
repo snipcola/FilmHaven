@@ -111,6 +111,10 @@
   overflow: hidden !important;
 }
 
+.watch .video > .player > media-player:not([data-controls]) {
+  cursor: none !important;
+}
+
 .watch .video > .player > media-player > media-video-layout > media-controls {
   border: none !important;
   outline: none !important;
