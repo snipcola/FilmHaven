@@ -385,21 +385,8 @@ function modal(info, recommendationImages) {
 
   let player = null;
 
-  async function getURL(url, audio, type = "application/dash+xml") {
+  async function getURL({ contents, type }) {
     try {
-      const response = await fetch(url);
-      const text = await response.text();
-      const contents = text
-        .replace(
-          new RegExp(
-            `<AdaptationSet[^>]*lang="([^"]*?)(?<!${audio})"[^>]*>.*?<\\/AdaptationSet>`,
-            "gs",
-          ),
-          "",
-        )
-        .replace(/\s+/g, " ")
-        .replace(/>\s*</g, "><")
-        .trim();
       const blob = new Blob([contents], { type });
       const src = URL.createObjectURL(blob);
 
@@ -425,7 +412,7 @@ function modal(info, recommendationImages) {
     if (callback) callback();
   }
 
-  async function initializePlayer({ dash, subtitles, audio }, onReady) {
+  async function initializePlayer({ source, subtitles }, onReady) {
     for (let i = 0; i < localStorage.length; i++) {
       try {
         const key = localStorage.key(i);
@@ -447,7 +434,7 @@ function modal(info, recommendationImages) {
         info.type === "movie"
           ? info.title
           : `${info.title} (S${seasonNumber} E${episodeNumber})`,
-      src: await getURL(dash, audio),
+      src: await getURL(source),
       layout: new VidstackPlayerLayout({
         menuContainer: currentPlayer,
         colorScheme: theme === "auto" ? "system" : theme,

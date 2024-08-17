@@ -11,6 +11,7 @@ export async function getEmbedInfo(type, info) {
     const response = await get(`${config.url}/${path}`, config.base, false);
     if (!response || response.status !== 200) return null;
 
+    let contents = "";
     let dash = "";
     let audio = { names: [], order: [] };
     let audioIndex;
@@ -44,6 +45,25 @@ export async function getEmbedInfo(type, info) {
       return null;
     }
 
+    const dashResponse = await get(dash, null, false);
+    if (!dashResponse || dashResponse.status !== 200) return null;
+
+    try {
+      contents = dashResponse.data
+        .replace(
+          new RegExp(
+            `<AdaptationSet[^>]*lang="([^"]*?)(?<!${audio})"[^>]*>.*?<\\/AdaptationSet>`,
+            "gs",
+          ),
+          "",
+        )
+        .replace(/\s+/g, " ")
+        .replace(/>\s*</g, "><")
+        .trim();
+    } catch {
+      return null;
+    }
+
     subtitles = subtitles.filter(function (subtitle) {
       return (
         subtitle.url &&
@@ -68,7 +88,13 @@ export async function getEmbedInfo(type, info) {
       return null;
     }
 
-    return { dash, audio: audioIndex, subtitles };
+    return {
+      source: {
+        contents,
+        type: "application/dash+xml",
+      },
+      subtitles,
+    };
   } catch {
     return null;
   }

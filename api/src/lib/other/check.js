@@ -12,7 +12,10 @@ function promiseWithTimeout(promise, timeout) {
 
 export async function get(url, base, json = false) {
   try {
-    const headers = { Origin: `https://${base}`, Referer: `https://${base}/` };
+    const headers = {
+      Origin: base ? `https://${base}` : undefined,
+      Referer: base ? `https://${base}/` : undefined,
+    };
     const response = await promiseWithTimeout(
       fetch(url, { headers }),
       typeof process !== "undefined" ? process.env.TIMEOUT : null,
