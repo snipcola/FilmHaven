@@ -45,25 +45,6 @@ export async function getEmbedInfo(type, info) {
       return null;
     }
 
-    const dashResponse = await get(dash, null, false);
-    if (!dashResponse || dashResponse.status !== 200) return null;
-
-    try {
-      contents = dashResponse.data
-        .replace(
-          new RegExp(
-            `<AdaptationSet[^>]*lang="([^"]*?)(?<!${audio})"[^>]*>.*?<\\/AdaptationSet>`,
-            "gs",
-          ),
-          "",
-        )
-        .replace(/\s+/g, " ")
-        .replace(/>\s*</g, "><")
-        .trim();
-    } catch {
-      return null;
-    }
-
     subtitles = subtitles.filter(function (subtitle) {
       return (
         subtitle.url &&
@@ -85,6 +66,25 @@ export async function getEmbedInfo(type, info) {
     } catch {}
 
     if (audioIndex === -1) {
+      return null;
+    }
+
+    const dashResponse = await get(dash, null, false);
+    if (!dashResponse || dashResponse.status !== 200) return null;
+
+    try {
+      contents = dashResponse.data
+        .replace(
+          new RegExp(
+            `<AdaptationSet[^>]*lang="([^"]*?)(?<!${audioIndex})"[^>]*>.*?<\\/AdaptationSet>`,
+            "gs",
+          ),
+          "",
+        )
+        .replace(/\s+/g, " ")
+        .replace(/>\s*</g, "><")
+        .trim();
+    } catch {
       return null;
     }
 
