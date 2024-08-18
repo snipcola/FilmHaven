@@ -132,7 +132,7 @@ export const config = {
     page: "p",
     modal: "m",
     search: "s",
-    time: "t",
+    watch: "w",
   },
   maxDescriptionLength: 230,
   maxReviewContentLength: 230,

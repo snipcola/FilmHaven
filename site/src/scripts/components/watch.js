@@ -1,5 +1,5 @@
 import { getTheme } from "../store/theme.js";
-import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
+import { setQuery, getQuery, removeQuery, onQueryChange } from "../query.js";
 import {
   setModal,
   showModal,
@@ -32,6 +32,7 @@ import { providers as _providers } from "../../../../api/src/config.js";
 import { getMode } from "../store/mode.js";
 import { isOnline } from "../functions.js";
 import { VidstackPlayer, VidstackPlayerLayout } from "vidstack/global/player";
+import { getSearchResults } from "../api/search.js";
 
 const online = isOnline();
 
@@ -1863,6 +1864,25 @@ function initializeWatchModalCheck() {
   onQueryChange(handleQueryChange);
 }
 
+async function forceWatch(query) {
+  const searchResults = await getSearchResults(query);
+
+  if (searchResults && searchResults.length > 0) {
+    const result = searchResults[0];
+    if (result.type && result.id) watchContent(result.type, result.id);
+  }
+}
+
+function checkForceWatch() {
+  const watchQuery = getQuery(config.query.watch);
+
+  if (watchQuery) {
+    forceWatch(watchQuery);
+    removeQuery(config.query.watch);
+  }
+}
+
 export function initializeWatch() {
   initializeWatchModalCheck();
+  checkForceWatch();
 }
