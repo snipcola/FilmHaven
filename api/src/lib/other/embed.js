@@ -29,6 +29,7 @@ export async function getEmbedInfo(type, info, req) {
     const response = await get(`${config.url}/${path}`, config.base, false);
     if (!response || response.status !== 200) return null;
 
+    let url = "";
     let contents = "";
     let dash = "";
     let audio = { names: [], order: [] };
@@ -87,7 +88,19 @@ export async function getEmbedInfo(type, info, req) {
       return null;
     }
 
-    if (!req) {
+    if (req) {
+      try {
+        const host = req.hostname;
+        const protocol = host.includes("localhost") ? "http" : "https";
+        const data = Buffer.from(encodeURIComponent(dash), "utf8").toString(
+          "base64",
+        );
+
+        url = `${protocol}://${host}/api/play/${data}/${audioIndex}.mpd`;
+      } catch {
+        return null;
+      }
+    } else {
       const dashResponse = await get(dash, null, false);
       if (!dashResponse || dashResponse.status !== 200) return null;
 
@@ -96,15 +109,7 @@ export async function getEmbedInfo(type, info, req) {
     }
 
     return {
-      source: {
-        url: req
-          ? `${req.protocol}://${req.hostname}/api/play/${Buffer.from(encodeURIComponent(dash), "utf8").toString("base64")}/${audioIndex}.mpd`
-          : undefined,
-        ...(!req && {
-          contents,
-          type: "application/dash+xml",
-        }),
-      },
+      source: req ? { url } : { contents, type: "application/dash+xml" },
       subtitles,
     };
   } catch {
