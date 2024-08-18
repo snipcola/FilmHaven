@@ -350,10 +350,6 @@ function modal(info, recommendationImages) {
       providers = (await fetchProviders()).filter(
         (provider) => online || provider.online !== true,
       );
-
-      if (getProvider() === null && providers[0]) {
-        setProvider(providers[0].name);
-      }
     }
 
     await providersCheck();
