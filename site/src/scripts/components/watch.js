@@ -461,7 +461,6 @@ function modal(info, recommendationImages) {
           : `${info.title} (S${seasonNumber} E${episodeNumber})`,
       src: await getURL(source),
       layout: new VidstackPlayerLayout({
-        menuContainer: currentPlayer,
         colorScheme: theme === "auto" ? "system" : theme,
         hideQualityBitrate: true,
         noAudioGain: true,
@@ -496,6 +495,7 @@ function modal(info, recommendationImages) {
 
           return 0;
         }),
+      streamType: "on-demand",
       viewType: "video",
       keyTarget: document,
       crossOrigin: true,
