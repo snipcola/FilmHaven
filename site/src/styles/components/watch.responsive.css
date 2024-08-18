@@ -30,7 +30,8 @@
 }
 
 @media only screen and (max-width: 700px) {
-  .watch .details .cast-cards .cast-card {
+  .watch .details .cast-cards .cast-card,
+  .watch .details .crew-cards .crew-card {
     width: calc(50% - var(--small-padding));
   }
 

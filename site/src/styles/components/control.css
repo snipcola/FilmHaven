@@ -32,14 +32,14 @@
   align-items: center;
 
   background-color: var(--dark);
-  gap: calc(var(--small-gap) / 3);
+  gap: calc(var(--small-gap) / 2);
 
   padding: calc(var(--small-padding) / 1.25);
   border-radius: var(--border-radius);
 }
 
 .control .indicator {
-  padding: 2px 8px;
+  padding: 4px 8px;
   background-color: var(--lighter);
 
   border-radius: var(--border-radius);

@@ -28,6 +28,20 @@ async function format(item, type) {
         };
       });
 
+    const crew = (item.credits?.crew || [])
+      .filter((p) => p.id && p.name && p.job)
+      .splice(0, config.crew.amount)
+      .map(function (person) {
+        return {
+          name: person.name,
+          job: person.job,
+          image: person.profile_path
+            ? getImageUrl(person.profile_path, "crew")
+            : null,
+          url: getPersonUrl(person.id),
+        };
+      });
+
     const reviews = (item.reviews?.results || [])
       .filter((r) => r.url)
       .splice(0, config.reviews.amount)
@@ -126,6 +140,7 @@ async function format(item, type) {
       rating: (Math.round(item.vote_average) / 2).toString(),
       stars: shortenNumber(item.vote_count, 1),
       cast,
+      crew,
       reviews,
       genres,
       seasons,
@@ -144,7 +159,8 @@ export async function getDetails(type = "movie", id) {
   let append_to_response = ["external_ids"];
 
   if (getWatchSection("Trailer")) append_to_response.push("videos");
-  if (getWatchSection("Cast")) append_to_response.push("credits");
+  if (getWatchSection("Cast") || getWatchSection("Crew"))
+    append_to_response.push("credits");
   if (getWatchSection("Reviews")) append_to_response.push("reviews");
   if (getWatchSection("Recommendations"))
     append_to_response.push("recommendations");

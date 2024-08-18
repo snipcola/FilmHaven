@@ -1,5 +1,23 @@
-@media only screen and (max-width: 500px) {
-  .area .control .indicators {
-    display: none;
+@media only screen and (max-width: 1200px) {
+  .area .control .indicators,
+  .details-card .control .indicators {
+    gap: calc(var(--small-padding) / 2);
+  }
+
+  .area .control .indicators .indicator,
+  .details-card .control .indicators .indicator {
+    padding: 6px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .area .control .indicators,
+  .details-card .control .indicators {
+    gap: calc(var(--small-padding) / 3);
+  }
+
+  .area .control .indicators .indicator,
+  .details-card .control .indicators .indicator {
+    padding: 5px;
   }
 }

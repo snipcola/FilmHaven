@@ -49,11 +49,14 @@ function modal(info, recommendationImages) {
   const seasonsActive = getWatchSection("Seasons");
   const descriptionActive = getWatchSection("Description");
   const castActive = getWatchSection("Cast");
+  const crewActive = getWatchSection("Crew");
   const reviewsActive = getWatchSection("Reviews");
   const miscActive = getWatchSection("Misc");
   const recommendationsActive = getWatchSection("Recommendations");
 
-  let desktop = window.innerWidth > config.cast.split.max;
+  let castDesktop = window.innerWidth > config.cast.split.max;
+  let crewDesktop = window.innerWidth > config.crew.split.max;
+  let reviewsDesktop = window.innerWidth > config.reviews.split.max;
 
   let castSlides;
   let castIndex = 0;
@@ -61,7 +64,17 @@ function modal(info, recommendationImages) {
   if (castActive && info.cast && info.cast.length !== 0) {
     castSlides = splitArray(
       info.cast,
-      config.cast.split[desktop ? "desktop" : "mobile"],
+      config.cast.split[castDesktop ? "desktop" : "mobile"],
+    );
+  }
+
+  let crewSlides;
+  let crewIndex = 0;
+
+  if (crewActive && info.crew && info.crew.length !== 0) {
+    crewSlides = splitArray(
+      info.crew,
+      config.crew.split[crewDesktop ? "desktop" : "mobile"],
     );
   }
 
@@ -71,7 +84,7 @@ function modal(info, recommendationImages) {
   if (reviewsActive && info.reviews && info.reviews.length !== 0) {
     reviewSlides = splitArray(
       info.reviews,
-      config.reviews.split[desktop ? "desktop" : "mobile"],
+      config.reviews.split[reviewsDesktop ? "desktop" : "mobile"],
     );
   }
 
@@ -145,6 +158,18 @@ function modal(info, recommendationImages) {
   const castNext = document.createElement("div");
   const castNextIcon = document.createElement("i");
   const castCards = document.createElement("div");
+
+  const crew = document.createElement("div");
+  const crewTitle = document.createElement("div");
+  const crewTitleIcon = document.createElement("i");
+  const crewTitleText = document.createElement("span");
+  const crewControl = document.createElement("div");
+  const crewPrevious = document.createElement("div");
+  const crewPreviousIcon = document.createElement("i");
+  const crewIndicators = document.createElement("div");
+  const crewNext = document.createElement("div");
+  const crewNextIcon = document.createElement("i");
+  const crewCards = document.createElement("div");
 
   const reviews = document.createElement("div");
   const reviewsTitle = document.createElement("div");
@@ -1229,6 +1254,92 @@ function modal(info, recommendationImages) {
     setCast(castSlides[castIndex + 1] ? castIndex + 1 : 0);
   }
 
+  crew.className = "details-card";
+  crewTitle.className = "title";
+  crewTitleIcon.className = "icon icon-group";
+  crewTitleText.className = "text";
+  crewTitleText.innerText = "Crew";
+  crewControl.className = "control";
+  crewPrevious.className = "button secondary icon-only previous";
+  crewPreviousIcon.className = "icon icon-arrow-left";
+  crewIndicators.className = "indicators";
+  crewNext.className = "button secondary icon-only next";
+  crewNextIcon.className = "icon icon-arrow-right";
+  crewCards.className = "crew-cards";
+
+  crewTitle.append(crewTitleIcon);
+  crewTitle.append(crewTitleText);
+  crew.append(crewTitle);
+
+  crewPrevious.append(crewPreviousIcon);
+  crewNext.append(crewNextIcon);
+
+  crewControl.append(crewPrevious);
+  crewControl.append(crewIndicators);
+  crewControl.append(crewNext);
+
+  function addCrew(info) {
+    const crew = document.createElement("div");
+    const image = document.createElement("img");
+    const text = document.createElement("div");
+    const name = document.createElement("span");
+    const job = document.createElement("span");
+
+    crew.className = "crew-card";
+    image.className = "image";
+    if (info.image) image.src = info.image;
+    image.alt = info.name;
+    text.className = "text";
+    name.className = "crew-name";
+    name.innerText = info.name;
+    job.className = "crew-job";
+    job.innerText = info.job;
+
+    text.append(name);
+    text.append(job);
+
+    if (info.image) crew.append(image);
+    crew.append(text);
+    crew.addEventListener("click", function () {
+      window.open(info.url);
+    });
+
+    crewCards.append(crew);
+  }
+
+  function setCrewIndicators() {
+    crewIndicators.innerHTML = "";
+
+    crewSlides.forEach(function (_, i) {
+      const indicator = document.createElement("div");
+
+      indicator.className = crewIndex === i ? "indicator active" : "indicator";
+      indicator.addEventListener("click", function () {
+        setCrew(i);
+      });
+
+      crewIndicators.append(indicator);
+    });
+  }
+
+  function setCrew(newIndex) {
+    crewIndex = crewSlides[newIndex] ? newIndex : 0;
+    const slide = crewSlides[crewIndex];
+
+    crewCards.innerHTML = "";
+    slide.forEach(addCrew);
+
+    setCrewIndicators();
+  }
+
+  function setCrewPrevious() {
+    setCrew(crewSlides[crewIndex - 1] ? crewIndex - 1 : crewSlides.length - 1);
+  }
+
+  function setCrewNext() {
+    setCrew(crewSlides[crewIndex + 1] ? crewIndex + 1 : 0);
+  }
+
   reviews.className = "details-card";
   reviewsTitle.className = "title";
   reviewsTitleIcon.className = "icon icon-bookmark";
@@ -1469,9 +1580,9 @@ function modal(info, recommendationImages) {
 
   recommendations.className = "details-card";
   recommendationsTitle.className = "title";
-  recommendationsTitleIcon.className = "icon icon-check";
+  recommendationsTitleIcon.className = "icon icon-film";
   recommendationsTitleText.className = "text";
-  recommendationsTitleText.innerText = "Recommendations";
+  recommendationsTitleText.innerText = "Watch Next";
   recommendationsArea.className = "area minimal";
 
   recommendationsTitle.append(recommendationsTitleIcon);
@@ -1504,21 +1615,23 @@ function modal(info, recommendationImages) {
 
   function checkResize() {
     if (!elementExists(watch)) return removeWindowResize(checkResize);
-    const newDesktop = window.innerWidth > config.cast.split.max;
+    const newCastDesktop = window.innerWidth > config.cast.split.max;
+    const newCrewDesktop = window.innerWidth > config.crew.split.max;
+    const newReviewsDesktop = window.innerWidth > config.reviews.split.max;
 
-    if (desktop !== newDesktop) {
-      desktop = newDesktop;
+    if (castDesktop !== newCastDesktop) {
+      castDesktop = newCastDesktop;
 
       if (castActive && castSlides && castSlides.length !== 0) {
         castSlides = splitArray(
           info.cast,
-          config.cast.split[desktop ? "desktop" : "mobile"],
+          config.cast.split[castDesktop ? "desktop" : "mobile"],
         );
 
         castIndex =
           castIndex === 0
             ? 0
-            : desktop
+            : castDesktop
               ? Math.round(
                   (castIndex + 1) /
                     (config.cast.split.desktop / config.cast.split.mobile),
@@ -1530,17 +1643,47 @@ function modal(info, recommendationImages) {
 
         setCast(castIndex);
       }
+    }
+
+    if (crewDesktop !== newCrewDesktop) {
+      crewDesktop = newCrewDesktop;
+
+      if (crewActive && crewSlides && crewSlides.length !== 0) {
+        crewSlides = splitArray(
+          info.crew,
+          config.crew.split[crewDesktop ? "desktop" : "mobile"],
+        );
+
+        crewIndex =
+          crewIndex === 0
+            ? 0
+            : crewDesktop
+              ? Math.round(
+                  (crewIndex + 1) /
+                    (config.crew.split.desktop / config.crew.split.mobile),
+                ) - 1
+              : Math.round(
+                  (crewIndex + 1) *
+                    (config.crew.split.desktop / config.crew.split.mobile),
+                ) - 2;
+
+        setCrew(crewIndex);
+      }
+    }
+
+    if (reviewsDesktop !== newReviewsDesktop) {
+      reviewsDesktop = newReviewsDesktop;
 
       if (reviewsActive && reviewSlides && reviewSlides.length !== 0) {
         reviewSlides = splitArray(
           info.reviews,
-          config.reviews.split[desktop ? "desktop" : "mobile"],
+          config.reviews.split[reviewsDesktop ? "desktop" : "mobile"],
         );
 
         reviewIndex =
           reviewIndex === 0
             ? 0
-            : desktop
+            : reviewsDesktop
               ? Math.round(
                   (reviewIndex + 1) /
                     (config.reviews.split.desktop /
@@ -1564,6 +1707,7 @@ function modal(info, recommendationImages) {
         info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1),
       );
     if (castActive && info.cast) unloadImages(info.cast.map((p) => p.image));
+    if (crewActive && info.crew) unloadImages(info.crew.map((p) => p.image));
     if (reviewsActive && info.reviews)
       unloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
     if (recommendationsActive && recommendationImages)
@@ -1587,6 +1731,23 @@ function modal(info, recommendationImages) {
     cast.append(castCards);
   } else {
     cast.append(notice.cloneNode(true));
+  }
+
+  if (crewActive && crewSlides) {
+    setCrew(crewIndex);
+
+    crewPrevious.addEventListener("click", setCrewPrevious);
+    crewNext.addEventListener("click", setCrewNext);
+
+    onSwipe(crewCards, function (right) {
+      if (right) setCrewNext();
+      else setCrewPrevious();
+    });
+
+    crewTitle.append(crewControl);
+    crew.append(crewCards);
+  } else {
+    crew.append(notice.cloneNode(true));
   }
 
   if (reviewsActive && reviewSlides) {
@@ -1616,6 +1777,7 @@ function modal(info, recommendationImages) {
 
   if (descriptionActive) left.append(description);
   if (castActive) left.append(cast);
+  if (crewActive) left.append(crew);
   if (reviewsActive) left.append(reviews);
 
   if (left.childElementCount === 0) {
@@ -1679,6 +1841,8 @@ function initializeWatchModalCheck() {
             preloadImages([info.backdrop]);
           if (info.cast && getWatchSection("Cast"))
             preloadImages(info.cast.map((p) => p.image));
+          if (info.crew && getWatchSection("Crew"))
+            preloadImages(info.crew.map((p) => p.image));
           if (info.reviews && getWatchSection("Reviews"))
             preloadImages(
               info.reviews.filter((r) => r.avatar).map((r) => r.avatar),

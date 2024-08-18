@@ -101,6 +101,14 @@ export const config = {
       mobile: 2,
     },
   },
+  crew: {
+    amount: 100,
+    split: {
+      max: 700,
+      desktop: 4,
+      mobile: 2,
+    },
+  },
   reviews: {
     amount: 50,
     split: {
@@ -110,7 +118,7 @@ export const config = {
     },
   },
   recommendations: {
-    amount: 8,
+    amount: 10,
     split: {
       max: 700,
       desktop: 2,
@@ -142,6 +150,7 @@ export const api = {
     poster: "w342",
     backdrop: "w1280",
     cast: "w150_and_h150_face",
+    crew: "w150_and_h150_face",
     avatar: "w150_and_h150_face",
     episode: "w185",
   },
@@ -242,6 +251,7 @@ export const watchSections = {
   Seasons: true,
   Description: true,
   Cast: true,
+  Crew: true,
   Reviews: true,
   Misc: true,
   Recommendations: true,
