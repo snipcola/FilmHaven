@@ -5,7 +5,25 @@ export const config = {
   url: "https://api.insertunit.ws",
 };
 
-export async function getEmbedInfo(type, info) {
+export function setDashAudio(contents, audio) {
+  try {
+    return contents
+      .replace(
+        new RegExp(
+          `<AdaptationSet[^>]*lang="([^"]*?)(?<!${audio})"[^>]*>.*?<\\/AdaptationSet>`,
+          "gs",
+        ),
+        "",
+      )
+      .replace(/\s+/g, " ")
+      .replace(/>\s*</g, "><")
+      .trim();
+  } catch {
+    return null;
+  }
+}
+
+export async function getEmbedInfo(type, info, req) {
   try {
     const path = `embed/imdb/${info.imdbId}`;
     const response = await get(`${config.url}/${path}`, config.base, false);
@@ -69,29 +87,23 @@ export async function getEmbedInfo(type, info) {
       return null;
     }
 
-    const dashResponse = await get(dash, null, false);
-    if (!dashResponse || dashResponse.status !== 200) return null;
+    if (!req) {
+      const dashResponse = await get(dash, null, false);
+      if (!dashResponse || dashResponse.status !== 200) return null;
 
-    try {
-      contents = dashResponse.data
-        .replace(
-          new RegExp(
-            `<AdaptationSet[^>]*lang="([^"]*?)(?<!${audioIndex})"[^>]*>.*?<\\/AdaptationSet>`,
-            "gs",
-          ),
-          "",
-        )
-        .replace(/\s+/g, " ")
-        .replace(/>\s*</g, "><")
-        .trim();
-    } catch {
-      return null;
+      contents = setDashAudio(dashResponse.data, audioIndex);
+      if ([null, ""].includes(contents)) return null;
     }
 
     return {
       source: {
-        contents,
-        type: "application/dash+xml",
+        url: req
+          ? `${req.protocol}://${req.hostname}/api/play/${Buffer.from(encodeURIComponent(dash), "utf8").toString("base64")}/${audioIndex}.mpd`
+          : undefined,
+        ...(!req && {
+          contents,
+          type: "application/dash+xml",
+        }),
       },
       subtitles,
     };

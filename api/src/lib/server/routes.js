@@ -1,4 +1,8 @@
-import { onRequest } from "./request.js";
+import { onRequest, onPlayRequest } from "./request.js";
+
+export function notFound(reply) {
+  reply.code(404).send("404: Not Found");
+}
 
 async function resolve(type, req) {
   const info = { type, ...req.params };
@@ -7,17 +11,16 @@ async function resolve(type, req) {
     return { success: false, message: "Missing Parameters" };
   }
 
-  return await onRequest(info);
-}
-
-function notFound(_, reply) {
-  reply.code(404).send("404: Not Found");
+  return await onRequest(info, req);
 }
 
 export default function (server) {
-  server.setNotFoundHandler(notFound);
+  server.setNotFoundHandler((_, reply) => notFound(reply));
+
   server.get("/api/:id/:imdbId", (...args) => resolve("movie", ...args));
   server.get("/api/:id/:imdbId/:season/:episode", (...args) =>
     resolve("tv", ...args),
   );
+
+  server.get("/api/play/:data/:audio.mpd", onPlayRequest);
 }

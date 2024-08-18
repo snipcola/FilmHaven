@@ -21,7 +21,9 @@ function runServer(server, host, port) {
 
 export function initializeServer(serverless) {
   return new Promise(async function (res) {
-    const server = fastify();
+    const server = fastify({
+      maxParamLength: 300,
+    });
 
     await applyCors(
       server,

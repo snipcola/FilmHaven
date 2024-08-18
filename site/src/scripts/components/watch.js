@@ -385,12 +385,15 @@ function modal(info, recommendationImages) {
 
   let player = null;
 
-  async function getURL({ contents, type }) {
+  async function getURL({ url, contents, type }) {
     try {
-      const blob = new Blob([contents], { type });
-      const src = URL.createObjectURL(blob);
+      if (url) return url;
+      else if (contents && type) {
+        const blob = new Blob([contents], { type });
+        const src = URL.createObjectURL(blob);
 
-      return { src, type };
+        return { src, type };
+      } else throw Error;
     } catch {
       return undefined;
     }
