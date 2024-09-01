@@ -14,14 +14,6 @@ export const providers = [
       return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
     },
   },
-  {
-    base: "vidsrc2.to",
-    type: "url",
-    url: function (type, { id, season, episode }) {
-      if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
-      return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
-    },
-  },
 ];
 
 export const blacklist = {
