@@ -1,4 +1,4 @@
-import { onRequest, onPlayRequest } from "./request.js";
+import { onRequest } from "./request.js";
 
 export function notFound(reply) {
   reply.code(404).send("404: Not Found");
@@ -17,10 +17,8 @@ async function resolve(type, req) {
 export default function (server) {
   server.setNotFoundHandler((_, reply) => notFound(reply));
 
-  server.get("/api/:id/:imdbId", (...args) => resolve("movie", ...args));
-  server.get("/api/:id/:imdbId/:season/:episode", (...args) =>
+  server.get("/api/:id/:imdbId/:agent", (...args) => resolve("movie", ...args));
+  server.get("/api/:id/:imdbId/:season/:episode/:agent", (...args) =>
     resolve("tv", ...args),
   );
-
-  server.get("/api/play/:data/:audio.mpd", onPlayRequest);
 }

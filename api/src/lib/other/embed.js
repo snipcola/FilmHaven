@@ -23,13 +23,17 @@ export function setDashAudio(contents, audio) {
   }
 }
 
-export async function getEmbedInfo(type, info, req) {
+export async function getEmbedInfo(type, info) {
   try {
     const path = `embed/imdb/${info.imdbId}`;
-    const response = await get(`${config.url}/${path}`, config.base, false);
+    const response = await get(
+      `${config.url}/${path}`,
+      config.base,
+      false,
+      decodeURIComponent(info.agent),
+    );
     if (!response || response.status !== 200) return null;
 
-    let url = "";
     let contents = "";
     let dash = "";
     let audio = { names: [], order: [] };
@@ -60,7 +64,11 @@ export async function getEmbedInfo(type, info, req) {
       subtitles = episode.cc;
     }
 
-    if (!dash || typeof dash !== "string" || !dash.endsWith(".mpd")) {
+    if (
+      !dash ||
+      typeof dash !== "string" ||
+      !dash.split("?")[0].endsWith(".mpd")
+    ) {
       return null;
     }
 
@@ -68,7 +76,7 @@ export async function getEmbedInfo(type, info, req) {
       return (
         subtitle.url &&
         typeof subtitle.url === "string" &&
-        subtitle.url.endsWith(".vtt") &&
+        subtitle.url.split("?")[0].endsWith(".vtt") &&
         subtitle.name &&
         typeof subtitle.name === "string"
       );
@@ -84,32 +92,23 @@ export async function getEmbedInfo(type, info, req) {
       });
     } catch {}
 
-    if (audioIndex === -1) {
+    if (!audioIndex || audioIndex === -1) {
       return null;
     }
 
-    if (req) {
-      try {
-        const host = req.hostname;
-        const protocol = host.includes("localhost") ? "http" : "https";
-        const data = Buffer.from(encodeURIComponent(dash), "utf8").toString(
-          "base64",
-        );
+    const dashResponse = await get(
+      dash,
+      config.base,
+      false,
+      decodeURIComponent(info.agent),
+    );
+    if (!dashResponse || dashResponse.status !== 200) return null;
 
-        url = `${protocol}://${host}/api/play/${data}/${audioIndex}.mpd`;
-      } catch {
-        return null;
-      }
-    } else {
-      const dashResponse = await get(dash, null, false);
-      if (!dashResponse || dashResponse.status !== 200) return null;
-
-      contents = setDashAudio(dashResponse.data, audioIndex);
-      if ([null, ""].includes(contents)) return null;
-    }
+    contents = setDashAudio(dashResponse.data, audioIndex);
+    if ([null, ""].includes(contents)) return null;
 
     return {
-      source: req ? { url } : { contents, type: "application/dash+xml" },
+      source: { contents, type: "application/dash+xml" },
       subtitles,
     };
   } catch {

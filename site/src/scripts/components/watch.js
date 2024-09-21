@@ -330,6 +330,7 @@ function modal(info, recommendationImages) {
               info,
               seasonNumber,
               episodeNumber,
+              encodeURIComponent(navigator.userAgent),
             );
 
             if (providers) res(providers);
@@ -344,16 +345,17 @@ function modal(info, recommendationImages) {
       }
 
       async function fetchProvidersLocal() {
+        const _info = {
+          id: info.id,
+          imdbId: info.imdbId,
+          season: seasonNumber,
+          episode: episodeNumber,
+          agent: encodeURIComponent(navigator.userAgent),
+        };
+
         const promises = _providers
           .filter((provider) => online || provider.online !== true)
           .map(async function (provider) {
-            const _info = {
-              id: info.id,
-              imdbId: info.imdbId,
-              season: seasonNumber,
-              episode: episodeNumber,
-            };
-
             return {
               name: provider.base,
               type: provider.type,
