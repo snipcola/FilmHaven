@@ -8,7 +8,7 @@ export const providers = [
     },
   },
   {
-    base: "vidsrc.to",
+    base: "vidsrc.xyz",
     type: "url",
     url: function (type, { id, season, episode }) {
       if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
@@ -25,5 +25,6 @@ export const blacklist = {
     "no tv show found",
     "no episode found",
     "no show found",
+    "media is unavailable", // vidsrc.xyz
   ],
 };
