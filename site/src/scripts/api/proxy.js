@@ -1,9 +1,9 @@
-export async function getProviders(proxy, info, season, episode, agent) {
+export async function getProviders(proxy, info, season, episode) {
   try {
     const url =
       info.type === "movie"
-        ? `${proxy}/${info.id}/${info.imdbId}/${agent}`
-        : `${proxy}/${info.id}/${info.imdbId}/${season}/${episode}/${agent}`;
+        ? `${proxy}/${info.id}/${info.imdbId}`
+        : `${proxy}/${info.id}/${info.imdbId}/${season}/${episode}`;
 
     const response = await fetch(url);
     const json = await response.json();

@@ -10,12 +10,11 @@ function promiseWithTimeout(promise, timeout) {
   ]);
 }
 
-export async function get(url, base, json = false, agent) {
+export async function get(url, base, json = false) {
   try {
     const headers = {
       Origin: base ? `https://${base}` : undefined,
       Referer: base ? `https://${base}/` : undefined,
-      "User-Agent": agent,
     };
 
     const response = await promiseWithTimeout(
@@ -35,8 +34,8 @@ export async function get(url, base, json = false, agent) {
   }
 }
 
-export async function check(url, base, agent) {
-  const response = await get(url, base, false, agent);
+export async function check(url, base) {
+  const response = await get(url, base, false);
   const data =
     typeof response?.data === "string" ? response.data.toLowerCase() : "";
 

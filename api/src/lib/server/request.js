@@ -11,8 +11,7 @@ export async function onRequest(info, req) {
 
       const valid =
         response &&
-        (provider.type === "data" ||
-          (await check(response, provider.base, info.agent)));
+        (provider.type === "data" || (await check(response, provider.base)));
 
       res(
         valid

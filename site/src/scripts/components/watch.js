@@ -330,7 +330,6 @@ function modal(info, recommendationImages) {
               info,
               seasonNumber,
               episodeNumber,
-              encodeURIComponent(navigator.userAgent),
             );
 
             if (providers) res(providers);
@@ -350,7 +349,6 @@ function modal(info, recommendationImages) {
           imdbId: info.imdbId,
           season: seasonNumber,
           episode: episodeNumber,
-          agent: encodeURIComponent(navigator.userAgent),
         };
 
         const promises = _providers

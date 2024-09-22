@@ -17,8 +17,8 @@ async function resolve(type, req) {
 export default function (server) {
   server.setNotFoundHandler((_, reply) => notFound(reply));
 
-  server.get("/api/:id/:imdbId/:agent", (...args) => resolve("movie", ...args));
-  server.get("/api/:id/:imdbId/:season/:episode/:agent", (...args) =>
+  server.get("/api/:id/:imdbId", (...args) => resolve("movie", ...args));
+  server.get("/api/:id/:imdbId/:season/:episode", (...args) =>
     resolve("tv", ...args),
   );
 }
