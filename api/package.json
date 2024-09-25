@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "@fastify/cors": "^7.0.0",
-    "dotenv": "^16.4.1",
+    "dotenv": "^16.4.5",
     "fastify": "^3.29.0",
     "fastify-response-caching": "^0.0.4",
     "node-fetch-native": "^1.6.4"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.1.7"
   }
 }

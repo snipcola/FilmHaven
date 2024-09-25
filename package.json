@@ -16,8 +16,8 @@
     "clean": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,css,html,rs}\""
   },
   "devDependencies": {
-    "concurrently": "^8.2.2",
+    "concurrently": "^9.0.1",
     "prettier": "^3.3.3",
-    "vercel": "^36.0.0"
+    "vercel": "^37.5.4"
   }
 }
