@@ -1,4 +1,3 @@
-import { getTheme } from "../store/theme.js";
 import { setQuery, getQuery, removeQuery, onQueryChange } from "../query.js";
 import {
   setModal,
@@ -31,7 +30,6 @@ import { getDownloads, constructMagnet } from "../downloadsApi/download.js";
 import { providers as _providers } from "../../../../api/src/config.js";
 import { getMode } from "../store/mode.js";
 import { isOnline } from "../functions.js";
-import { VidstackPlayer, VidstackPlayerLayout } from "vidstack/global/player";
 import { getSearchResults } from "../api/search.js";
 
 const online = isOnline();
@@ -110,7 +108,6 @@ function modal(info, recommendationImages) {
   const backdrop = document.createElement("img");
   const backdropVignette = document.createElement("div");
   const iframe = document.createElement("iframe");
-  const _player = document.createElement("div");
 
   const trailer = document.createElement("div");
   const trailerIframe = document.createElement("iframe");
@@ -243,7 +240,6 @@ function modal(info, recommendationImages) {
   iframe.className = "iframe";
   iframe.setAttribute("allowfullscreen", true);
   iframe.setAttribute("allow", "autoplay");
-  _player.className = "player";
   video.append(videoNoticeContainer);
 
   backdrop.className = "backdrop";
@@ -259,9 +255,6 @@ function modal(info, recommendationImages) {
     backdropVignette.classList[toggle ? "add" : "remove"]("active");
   }
 
-  let hasIframe = false;
-  let hasPlayer = false;
-
   if (videoActive) {
     function show() {
       video.scrollIntoView({ block: "end" });
@@ -270,8 +263,8 @@ function modal(info, recommendationImages) {
     onKeyPress("v", true, null, watch, show);
   }
 
+  let hasIframe = false;
   let currentIframe;
-  let currentPlayer;
 
   let disabled = false;
   let seasonsDisabled = false;
@@ -291,18 +284,9 @@ function modal(info, recommendationImages) {
   const mode = getMode();
 
   function cleanVideo() {
-    try {
-      if (player) player.destroy();
-    } catch {}
-
     if (currentIframe) currentIframe.remove();
-    if (currentPlayer) currentPlayer.remove();
-
-    player = null;
     currentIframe = null;
-    currentPlayer = null;
     hasIframe = false;
-    hasPlayer = false;
   }
 
   async function checkProviders() {
@@ -356,17 +340,16 @@ function modal(info, recommendationImages) {
           .map(async function (provider) {
             return {
               name: provider.base,
-              type: provider.type,
               online: provider.online || false,
-              [provider.type]:
-                provider[provider.type]?.constructor?.name === "AsyncFunction"
-                  ? await provider[provider.type](info.type, _info)
-                  : provider[provider.type](info.type, _info),
+              url:
+                provider?.url?.constructor?.name === "AsyncFunction"
+                  ? await provider.url(info.type, _info)
+                  : provider.url(info.type, _info),
             };
           });
 
         return (await Promise.all(promises)).filter(
-          (provider) => ![undefined, null].includes(provider[provider.type]),
+          (provider) => ![undefined, null].includes(provider.url),
         );
       }
 
@@ -405,157 +388,34 @@ function modal(info, recommendationImages) {
     seasons.classList.remove("disabled");
   }
 
-  let player = null;
-
-  async function getURL({ url, contents, type }) {
-    try {
-      if (url) return url;
-      else if (contents && type) {
-        const blob = new Blob([contents], { type });
-        const src = URL.createObjectURL(blob);
-
-        return { src, type };
-      } else throw Error;
-    } catch {
-      return undefined;
-    }
-  }
-
-  function onPlayerLoad(callback) {
-    if (!currentPlayer || !elementExists(currentPlayer)) {
-      try {
-        if (player) player.destroy();
-      } catch {}
-
-      player = null;
-      currentPlayer = null;
-      hasPlayer = false;
-
-      return;
-    }
-
-    if (callback) callback();
-  }
-
-  async function initializePlayer({ source, subtitles }, onReady) {
-    for (let i = 0; i < localStorage.length; i++) {
-      try {
-        const key = localStorage.key(i);
-
-        if (key.startsWith("dashjs") || key.startsWith("http")) {
-          localStorage.removeItem(key);
-          i--;
-        }
-      } catch {}
-    }
-
-    const theme = getTheme();
-
-    player = await VidstackPlayer.create({
-      target: currentPlayer,
-      artist: info.producers || undefined,
-      artwork: info.image ? [{ src: info.image }] : undefined,
-      title:
-        info.type === "movie"
-          ? info.title
-          : `${info.title} (S${seasonNumber} E${episodeNumber})`,
-      src: await getURL(source),
-      layout: new VidstackPlayerLayout({
-        colorScheme: theme === "auto" ? "system" : theme,
-        hideQualityBitrate: true,
-        noAudioGain: true,
-        seekStep: 5,
-      }),
-      poster: info.backdrop
-        ? info.backdrop.replace("w1280", "original")
-        : undefined,
-      tracks: subtitles
-        .map(function (subtitle) {
-          return {
-            src: subtitle.url,
-            label: subtitle.name,
-            kind: "subtitles",
-          };
-        })
-        .sort(function (a, b) {
-          const aName = a.label.toLowerCase();
-          const bName = b.label.toLowerCase();
-
-          const aEng = aName.includes("eng");
-          const bEng = bName.includes("eng");
-
-          const aFull = aName.includes("full");
-          const bFull = bName.includes("full");
-
-          if (aEng && aFull && !(bEng && bFull)) return -1;
-          if (bEng && bFull && !(aEng && aFull)) return 1;
-
-          if (aEng && !bEng) return -1;
-          if (bEng && !aEng) return 1;
-
-          return 0;
-        }),
-      streamType: "on-demand",
-      viewType: "video",
-      keyTarget: document,
-      crossOrigin: true,
-      playsInline: true,
-      autoPlay: true,
-      currentTime: 0,
-      hideControlsOnMouseLeave: true,
-      logLevel: "silent",
-      loop: true,
-      paused: false,
-      load: "eager",
-      posterLoad: "eager",
-    });
-
-    player.addEventListener("can-play", () => onPlayerLoad(onReady));
-  }
-
   function playVideo() {
     if (disabled) return;
     cleanVideo();
 
     const provider = getCurrentProvider();
-    const response = provider[provider.type];
+    const response = provider.url;
 
     toggleBackdrop(true);
     videoAlert(true, "sync", "Loading Content");
 
-    if (provider.type === "url") {
-      currentIframe = iframe.cloneNode();
-      currentIframe.src = response;
+    currentIframe = iframe.cloneNode();
+    currentIframe.src = response;
 
-      video.append(currentIframe);
-      checkElement(
-        currentIframe,
-        () => !hasIframe,
-        refresh,
-        config.retryLoadAfter,
-      );
-      currentIframe.addEventListener("load", function () {
-        videoAlert(false);
-        toggleBackdrop(false);
-        hasIframe = true;
-        currentIframe.classList.add("active");
-      });
-    } else {
-      currentPlayer = _player.cloneNode();
-      video.append(currentPlayer);
-      checkElement(
-        currentPlayer,
-        () => !hasPlayer,
-        refresh,
-        config.retryLoadAfter,
-      );
-      initializePlayer(response, function () {
-        videoAlert(false);
-        toggleBackdrop(false);
-        hasPlayer = true;
-        currentPlayer.classList.add("active");
-      });
-    }
+    video.append(currentIframe);
+
+    checkElement(
+      currentIframe,
+      () => !hasIframe,
+      refresh,
+      config.retryLoadAfter,
+    );
+
+    currentIframe.addEventListener("load", function () {
+      videoAlert(false);
+      toggleBackdrop(false);
+      hasIframe = true;
+      currentIframe.classList.add("active");
+    });
   }
 
   if (trailerActive && info.trailer) {

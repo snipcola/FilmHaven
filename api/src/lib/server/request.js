@@ -5,21 +5,18 @@ export async function onRequest(info, req) {
   const promises = providers.map(function (provider) {
     return new Promise(async function (res) {
       const response =
-        provider[provider.type]?.constructor?.name === "AsyncFunction"
-          ? await provider[provider.type](info.type, info, req)
-          : provider[provider.type](info.type, info);
+        provider?.url?.constructor?.name === "AsyncFunction"
+          ? await provider.url(info.type, info, req)
+          : provider.url(info.type, info);
 
-      const valid =
-        response &&
-        (provider.type === "data" || (await check(response, provider.base)));
+      const valid = response && (await check(response, provider.base));
 
       res(
         valid
           ? {
               name: provider.base,
               online: provider.online || false,
-              type: provider.type,
-              [provider.type]: response,
+              url: response,
             }
           : null,
       );

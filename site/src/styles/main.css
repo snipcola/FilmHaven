@@ -1,10 +1,5 @@
-@import url(normalize.css);
-
-@import url(@fontsource/open-sans/300.css);
-@import url(@fontsource/open-sans/500.css);
-
-@import url(vidstack/player/styles/default/theme.css);
-@import url(vidstack/player/styles/default/layouts/video.css);
+@import url(./external/normalize.css);
+@import url(./external/font.css);
 
 @import url(./variables.css);
 @import url(./body.css);

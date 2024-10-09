@@ -23,13 +23,11 @@ const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
 
 module.exports = {
   entry: {
     main: path.resolve(src, "scripts", "main.js"),
     styles: path.resolve(src, "styles", "main.css"),
-    manifest: path.resolve(src, "manifest.json"),
   },
   output: {
     path: dist,
@@ -46,14 +44,10 @@ module.exports = {
         test: /\.pug$/,
         loader: "pug-loader",
       },
-      {
-        test: /\.(woff|woff2|eot|ttf|otf|png|jpg|jpeg|gif|svg|json)$/i,
-        type: "asset/resource",
-      },
     ],
   },
   optimization: {
-    minimizer: ["...", new CssMinimizerPlugin(), new JsonMinimizerPlugin()],
+    minimizer: ["...", new CssMinimizerPlugin()],
   },
   plugins: [
     new CleanWebpackPlugin(),

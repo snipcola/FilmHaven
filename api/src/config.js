@@ -1,7 +1,6 @@
 export const providers = [
   {
-    base: "vidsrc.pro",
-    type: "url",
+    base: "embed.su",
     url: function (type, { id, season, episode }) {
       if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
       return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
@@ -9,7 +8,6 @@ export const providers = [
   },
   {
     base: "vidsrc.xyz",
-    type: "url",
     url: function (type, { id, season, episode }) {
       if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
       return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
