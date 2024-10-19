@@ -13,6 +13,14 @@ export const providers = [
       return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
     },
   },
+  {
+    base: "vidlink.pro",
+    url: function (type, { id, season, episode }) {
+      if (type === "movie")
+        return `https://${this.base}/movie/${id}?autoplay=false`;
+      return `https://${this.base}/tv/${id}/${season}/${episode}?autoplay=false`;
+    },
+  },
 ];
 
 export const blacklist = {
