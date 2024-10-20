@@ -8,6 +8,7 @@ A simple, customizable, and lightweight frontend to view and interact with movie
 
 **Accessible here:**
 
+- <a target="\_blank" href="https://fh.snipcola.com">fh.snipcola.com</a>
 - <a target="\_blank" href="https://film-haven.vercel.app">film-haven.vercel.app</a>
 
 ## 🗒️ - Note

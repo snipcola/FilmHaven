@@ -201,7 +201,7 @@ export const proxy = {
 export const proxies =
   process?.env?.NODE_ENV === "development"
     ? ["http://localhost:2000/api"]
-    : ["https://film-haven.vercel.app/api"];
+    : ["https://fh.snipcola.com/api", "https://film-haven.vercel.app/api"];
 
 export const store = {
   names: {

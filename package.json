@@ -8,6 +8,7 @@
     "api"
   ],
   "scripts": {
+    "serve": "concurrently \"npm run --workspace=api start\" \"npm run --workspace=site serve\"",
     "build": "npm run --workspace=site build",
     "api": "npm run --workspace=api start",
     "dev": "concurrently \"npm run --workspace=api dev\" \"npm run --workspace=site dev\"",
@@ -16,8 +17,8 @@
     "clean": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,css,html,rs}\""
   },
   "devDependencies": {
-    "concurrently": "^9.0.1",
-    "prettier": "^3.3.3",
-    "vercel": "^37.5.4"
+    "concurrently": "9.0.1",
+    "prettier": "3.3.3",
+    "vercel": "37.5.4"
   }
 }
