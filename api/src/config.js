@@ -1,13 +1,13 @@
 export const providers = [
   {
-    base: "embed.su",
+    base: "vidsrc.xyz",
     url: function (type, { id, season, episode }) {
       if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
       return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
     },
   },
   {
-    base: "vidsrc.xyz",
+    base: "embed.su",
     url: function (type, { id, season, episode }) {
       if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
       return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
@@ -31,6 +31,8 @@ export const blacklist = {
     "no tv show found",
     "no episode found",
     "no show found",
+    "you have been blocked", // cloudflare
+    "__next_error__", // nextjs
     "media is unavailable", // vidsrc.xyz
   ],
 };

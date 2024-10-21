@@ -1,7 +1,18 @@
 import { providers } from "../../config.js";
 import { check } from "../other/check.js";
+import { getCache, setCache } from "./cache.js";
 
-export async function onRequest(info, req) {
+function parse(providers) {
+  return { success: true, providers };
+}
+
+export async function onRequest({ cache }, info, req) {
+  const cached = await getCache(cache, info);
+
+  if (cached?.item) {
+    return parse(cached.item);
+  }
+
   const promises = providers.map(function (provider) {
     return new Promise(async function (res) {
       const response =
@@ -23,8 +34,7 @@ export async function onRequest(info, req) {
     });
   });
 
-  return {
-    success: true,
-    providers: (await Promise.all(promises)).filter((p) => p !== null),
-  };
+  const urls = (await Promise.all(promises)).filter((p) => p !== null);
+  await setCache(cache, info, urls);
+  return parse(urls);
 }

@@ -19,5 +19,8 @@
     "concurrently": "9.0.1",
     "prettier": "3.3.3",
     "vercel": "37.5.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
