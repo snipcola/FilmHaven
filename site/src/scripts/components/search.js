@@ -326,10 +326,10 @@ function initializeSearch(area, placeholder) {
     const query = input.value;
 
     if (query.length > 0) {
-      document.title = `Searching ${query}`;
       setQueries({
         [config.query.query]: query,
       });
+      document.title = `Searching ${query}`;
     } else {
       setTitle();
       removeQueries(config.query.query);
