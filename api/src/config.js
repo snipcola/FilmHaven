@@ -1,17 +1,20 @@
+function genericUrlFunction(type, { id, season, episode }) {
+  if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
+  return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
+}
+
 export const providers = [
   {
     base: "vidsrc.xyz",
-    url: function (type, { id, season, episode }) {
-      if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
-      return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
-    },
+    url: genericUrlFunction,
+  },
+  {
+    base: "vidbinge.dev",
+    url: genericUrlFunction,
   },
   {
     base: "embed.su",
-    url: function (type, { id, season, episode }) {
-      if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
-      return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
-    },
+    url: genericUrlFunction,
   },
   {
     base: "vidlink.pro",
