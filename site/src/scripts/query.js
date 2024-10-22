@@ -1,4 +1,4 @@
-export function setQueries(queries) {
+export function setQueries(queries, override) {
   const params = new URLSearchParams(window.location.search);
 
   for (const [key, value] of Object.entries(queries)) {
@@ -14,10 +14,13 @@ export function setQueries(queries) {
   }
 
   const currentPath = `${window.location.pathname}${window.location.search}`;
-  const newPath = `${window.location.pathname}?${params.toString()}`;
+  const newPath =
+    params.size > 0
+      ? `${window.location.pathname}?${params.toString()}`
+      : window.location.pathname;
 
   if (currentPath !== newPath) {
-    window.history.pushState({}, "", newPath);
+    window.history[override ? "replaceState" : "pushState"]({}, "", newPath);
   }
 }
 
@@ -33,7 +36,6 @@ export function removeQueries(...keys) {
 export function getQuery(key) {
   const params = new URLSearchParams(window.location.search);
   const value = params.get(key);
-
   return value ? decodeURIComponent(value) : null;
 }
 

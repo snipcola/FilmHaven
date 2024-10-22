@@ -63,10 +63,12 @@ export function watchContent(type, id, ignore) {
       [config.query.modal]: modal,
       [config.query.season]: s,
       [config.query.episode]: e,
+      [config.query.query]: null,
     });
   } else {
     setQueries({
       [config.query.modal]: modal,
+      [config.query.query]: null,
     });
   }
 }

@@ -28,7 +28,11 @@ export function getSectionName() {
 }
 
 export function setTitle() {
-  document.title = `${config.name} - ${getSectionName()}`;
+  const title = getSectionName() && `${config.name} - ${getSectionName()}`;
+
+  if (title && document.title !== title && !getQuery(config.query.query)) {
+    document.title = title;
+  }
 }
 
 function setSectionActive() {
@@ -76,6 +80,8 @@ function initializeResizeCheck() {
   onWindowResize(checkResize);
 }
 
+let initialized = false;
+
 function initializePageChangeCheck() {
   function handleQueryChange() {
     const activePage = getQuery(config.query.page);
@@ -89,9 +95,14 @@ function initializePageChangeCheck() {
       document.documentElement.scrollTo({ top: 0 });
     }
 
-    setQueries({
-      [config.query.page]: activeIndex + 1,
-    });
+    setQueries(
+      {
+        [config.query.page]: activeIndex + 1,
+      },
+      !initialized,
+    );
+
+    if (!initialized) initialized = true;
   }
 
   handleQueryChange();

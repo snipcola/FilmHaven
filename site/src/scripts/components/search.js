@@ -14,7 +14,13 @@ import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../api/search.js";
 import { watchContent } from "./watch.js";
 import { hideModal } from "./modal.js";
-import { setQueries, getQuery, removeQueries } from "../query.js";
+import {
+  setQueries,
+  getQuery,
+  removeQueries,
+  onQueryChange,
+} from "../query.js";
+import { setTitle } from "./header.js";
 
 function initializeSearch(area, placeholder) {
   let results = [];
@@ -123,12 +129,6 @@ function initializeSearch(area, placeholder) {
     });
 
     card.addEventListener("click", function () {
-      input.value = "";
-      clear.classList.remove("active");
-
-      reset();
-      cleanup();
-
       watchContent(info.type, info.id, true);
     });
 
@@ -326,10 +326,14 @@ function initializeSearch(area, placeholder) {
     const query = input.value;
 
     if (query.length > 0) {
+      document.title = `Searching ${query}`;
       setQueries({
         [config.query.query]: query,
       });
-    } else removeQueries(config.query.query);
+    } else {
+      setTitle();
+      removeQueries(config.query.query);
+    }
   }
 
   async function onInput() {
@@ -402,6 +406,18 @@ function initializeSearch(area, placeholder) {
   area.append(search);
   area.append(notice);
   area.append(cards);
+
+  function queryChangeCheck() {
+    const page = getQuery(config.query.page);
+    const modal = getQuery(config.query.modal);
+    const query = getQuery(config.query.query);
+
+    if (page !== "1" || modal) onClear();
+    else if (query !== input.value) forceSearch(query);
+  }
+
+  onQueryChange(queryChangeCheck);
+  queryChangeCheck();
 }
 
 export function initializeSearches() {
