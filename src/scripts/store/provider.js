@@ -1,5 +1,5 @@
 import { store } from "../config.js";
-import { providers } from "../../../../api/src/config.js";
+import { providers } from "../config.js";
 
 function get() {
   const provider = localStorage.getItem(store.names.provider);

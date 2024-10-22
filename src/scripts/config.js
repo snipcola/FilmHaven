@@ -1,6 +1,5 @@
 import { getTheme, setTheme } from "./store/theme.js";
 import { getAdult, setAdult } from "./store/adult.js";
-import { getMode, setMode } from "./store/mode.js";
 import { getPages, getPage, setPage } from "./store/pages.js";
 import { getSections, getSection, setSection } from "./store/sections.js";
 import {
@@ -17,6 +16,34 @@ import { getLanguage, setLanguage } from "./store/language.js";
 const name = "FilmHaven";
 const repository = `https://git.snipcola.com/snipcola/${name}`;
 const author = "Snipcola";
+
+function genericUrlFunction(type, { id, season, episode }) {
+  if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
+  return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
+}
+
+export const providers = [
+  {
+    base: "vidsrc.xyz",
+    url: genericUrlFunction,
+  },
+  {
+    base: "vidbinge.dev",
+    url: genericUrlFunction,
+  },
+  {
+    base: "embed.su",
+    url: genericUrlFunction,
+  },
+  {
+    base: "vidlink.pro",
+    url: function (type, { id, season, episode }) {
+      if (type === "movie")
+        return `https://${this.base}/movie/${id}?autoplay=false`;
+      return `https://${this.base}/tv/${id}/${season}/${episode}?autoplay=false`;
+    },
+  },
+];
 
 export const config = {
   name,
@@ -196,15 +223,6 @@ export const downloadApi = {
   ],
 };
 
-export const proxy = {
-  checkTimeout: 10000,
-};
-
-export const proxies =
-  process?.env?.NODE_ENV === "development"
-    ? ["http://localhost:2000/api"]
-    : ["https://fh.snipcola.com/api", "https://film-haven.vercel.app/api"];
-
 export const store = {
   names: {
     cache: function (key) {
@@ -213,7 +231,6 @@ export const store = {
     theme: "fh-theme",
     adult: "fh-adult",
     language: "fh-language",
-    mode: "fh-mode",
     provider: "fh-provider",
     lastPlayed: "fh-last-played",
     pages: "fh-pages",
@@ -243,13 +260,6 @@ export const sections = {
   "Top-Rated": true,
   New: true,
 };
-
-export const mode = {
-  local: "Local",
-  proxy: "Proxy",
-};
-
-export const defaultMode = proxies.length > 0 ? "proxy" : "local";
 
 export const watchSections = {
   Video: true,
@@ -498,24 +508,6 @@ export const settings = [
       }
     },
     preventChange: true,
-    type: "select",
-  },
-  {
-    label: {
-      icon: "globe",
-      text: "Mode",
-    },
-    items: function () {
-      const currentMode = getMode();
-      const modeItems = Object.values(mode);
-
-      return modeItems.map((a) => ({
-        label: a,
-        value: a.toLowerCase(),
-        active: a.toLowerCase() === currentMode,
-      }));
-    },
-    onSelect: setMode,
     type: "select",
   },
   {

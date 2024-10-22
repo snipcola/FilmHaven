@@ -2,25 +2,25 @@
   "name": "filmhaven",
   "author": "Snipcola",
   "license": "MIT",
-  "workspaces": [
-    "site",
-    "api"
-  ],
   "scripts": {
-    "serve": "concurrently \"npm run --workspace=api start\" \"npm run --workspace=site serve\"",
-    "build": "npm run --workspace=site build",
-    "api": "npm run --workspace=api start",
-    "dev": "concurrently \"npm run --workspace=api dev\" \"npm run --workspace=site dev\"",
+    "build": "webpack --config ./build/config.production.js",
+    "dev": "webpack --config ./build/config.development.js",
     "release": "git push origin main:release -f",
     "deploy-vercel": "vercel --prod",
     "clean": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,css,html,rs}\""
   },
   "devDependencies": {
-    "concurrently": "9.0.1",
     "prettier": "3.3.3",
-    "vercel": "37.5.4"
-  },
-  "engines": {
-    "node": ">=20.0.0"
+    "vercel": "37.5.4",
+    "clean-webpack-plugin": "4.0.0",
+    "css-loader": "7.1.2",
+    "css-minimizer-webpack-plugin": "7.0.0",
+    "html-webpack-plugin": "5.6.2",
+    "mini-css-extract-plugin": "2.9.1",
+    "pug-loader": "2.4.0",
+    "webpack": "5.95.0",
+    "webpack-cli": "5.1.4",
+    "webpack-merge": "6.0.1",
+    "webpack-remove-empty-scripts": "1.0.4"
   }
 }

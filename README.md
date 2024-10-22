@@ -31,7 +31,7 @@ Due to the nature of how the project works, you might face ads upon viewing cont
 1. Ensure you have `node` and `npm` installed.
 2. Run `npm install`.
 3. Run `npm run build` or `npm run dev` depending on what you need.
-4. Access the site at `site/dist/index.html`.
+4. Access the site at `dist/index.html`.
 
 ## ⚠️ - Disclaimer
 

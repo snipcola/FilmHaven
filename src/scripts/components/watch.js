@@ -18,22 +18,19 @@ import {
   removeWindowResize,
   splitArray,
   onKeyPress,
-  promiseTimeout,
   onSwipe,
   checkElement,
 } from "../functions.js";
-import { config, proxies, proxy as proxyConfig } from "../config.js";
+import { config } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
 import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js";
 import { addContinueWatching } from "../store/continue.js";
 import { getWatchSection } from "../store/watch-sections.js";
 import { initializeArea } from "./area.js";
-import { getProviders } from "../api/proxy.js";
 import { toggleDim } from "./dim.js";
 import { getDownloads, constructMagnet } from "../downloadsApi/download.js";
-import { providers as _providers } from "../../../../api/src/config.js";
-import { getMode } from "../store/mode.js";
+import { providers as _providers } from "../config.js";
 import { isOnline } from "../functions.js";
 import { getSearchResults } from "../api/search.js";
 
@@ -328,8 +325,6 @@ function modal(info, recommendationImages) {
     videoNoticeContainer.classList[toggle ? "add" : "remove"]("active");
   }
 
-  const mode = getMode();
-
   function cleanVideo() {
     if (currentIframe) currentIframe.remove();
     currentIframe = null;
@@ -353,28 +348,7 @@ function modal(info, recommendationImages) {
     async function providersCheck() {
       videoAlert(true, "tv", "Fetching Providers");
 
-      async function fetchProvidersProxy() {
-        const promises = Object.values(proxies).map(function (proxy) {
-          return new Promise(async function (res, rej) {
-            const providers = await getProviders(
-              proxy,
-              info,
-              seasonNumber,
-              episodeNumber,
-            );
-
-            if (providers) res(providers);
-            else rej();
-          });
-        });
-
-        return await Promise.any([
-          ...promises,
-          promiseTimeout(proxyConfig.checkTimeout),
-        ]);
-      }
-
-      async function fetchProvidersLocal() {
+      async function fetchProviders() {
         const _info = {
           id: info.id,
           imdbId: info.imdbId,
@@ -399,9 +373,6 @@ function modal(info, recommendationImages) {
           (provider) => ![undefined, null].includes(provider.url),
         );
       }
-
-      const fetchProviders =
-        mode === "proxy" ? fetchProvidersProxy : fetchProvidersLocal;
 
       providers = (await fetchProviders()).filter(
         (provider) => online || provider.online !== true,

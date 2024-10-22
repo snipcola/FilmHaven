@@ -60,8 +60,11 @@ function initializeAll() {
   initializeSettings();
   enableBody();
 
-  if (window?.location?.origin)
+  if (![null, undefined, "null"].includes(window?.location?.origin)) {
     console.log(`[${config.name}] Running at ${window.location.origin}`);
+  } else if (window?.location?.pathname) {
+    console.log(`[${config.name}] Running at ${window.location.pathname}`);
+  }
 }
 
 initializeAll();
