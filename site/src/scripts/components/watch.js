@@ -1,4 +1,9 @@
-import { setQuery, getQuery, removeQuery, onQueryChange } from "../query.js";
+import {
+  setQueries,
+  getQuery,
+  removeQueries,
+  onQueryChange,
+} from "../query.js";
 import {
   setModal,
   showModal,
@@ -34,8 +39,36 @@ import { getSearchResults } from "../api/search.js";
 
 const online = isOnline();
 
-export function watchContent(type, id) {
-  setQuery(config.query.modal, `${type === "movie" ? "m" : "s"}-${id}`);
+function getSeasonAndEpisode(id) {
+  try {
+    const season = parseInt(getQuery(config.query.season));
+    const episode = parseInt(getQuery(config.query.episode));
+
+    if (season && episode) {
+      setLastPlayed(id, season, episode);
+      return { s: season, e: episode };
+    }
+  } catch {}
+
+  return getLastPlayed(id);
+}
+
+export function watchContent(type, id, ignore) {
+  const modal = `${type === "movie" ? "m" : "s"}-${id}`;
+
+  if (type === "tv") {
+    const { s, e } = !ignore ? getSeasonAndEpisode(id) : getLastPlayed(id);
+
+    setQueries({
+      [config.query.modal]: modal,
+      [config.query.season]: s,
+      [config.query.episode]: e,
+    });
+  } else {
+    setQueries({
+      [config.query.modal]: modal,
+    });
+  }
 }
 
 function modal(info, recommendationImages) {
@@ -85,16 +118,6 @@ function modal(info, recommendationImages) {
       info.reviews,
       config.reviews.split[reviewsDesktop ? "desktop" : "mobile"],
     );
-  }
-
-  let seasonNumber;
-  let episodeNumber;
-
-  if (info.type === "tv") {
-    const lastPlayed = getLastPlayed(info.id);
-
-    seasonNumber = lastPlayed.s;
-    episodeNumber = lastPlayed.e;
   }
 
   let customButtons = [];
@@ -214,6 +237,29 @@ function modal(info, recommendationImages) {
   const recommendationsArea = document.createElement("div");
 
   watch.className = "watch";
+  watch.setAttribute("media-type", info.type);
+  watch.setAttribute("media-id", info.id);
+
+  let seasonNumber;
+  let episodeNumber;
+
+  function setSeasonAndEpisode(season, episode) {
+    seasonNumber = season;
+    episodeNumber = episode;
+
+    watch.setAttribute("media-season", season);
+    watch.setAttribute("media-episode", episode);
+
+    setQueries({
+      [config.query.season]: season,
+      [config.query.episode]: episode,
+    });
+  }
+
+  if (info.type === "tv") {
+    const { s, e } = getSeasonAndEpisode(info.id);
+    setSeasonAndEpisode(s, e);
+  }
 
   notice.className = "notice active";
   noticeIcon.className = "icon icon-eye-slash";
@@ -730,9 +776,7 @@ function modal(info, recommendationImages) {
 
   function playEpisode(sNumber, eNumber, episode) {
     if (!videoActive || seasonsDisabled) return;
-
-    seasonNumber = sNumber;
-    episodeNumber = eNumber;
+    setSeasonAndEpisode(sNumber, eNumber);
 
     if (downloadActive && info.imdbId) {
       checkDownloads();
@@ -1685,10 +1729,26 @@ function initializeWatchModalCheck() {
       const [type, id] = modalQuery.split("-");
 
       if (type !== "g" && config.modal.validTypes.includes(type)) {
-        hideModal(true);
+        const _type = type === "m" ? "movie" : "tv";
+        const watch = document.querySelector(".modal-content > .watch");
+        const watchInfo = watch && {
+          id: watch.getAttribute("media-id"),
+          type: watch.getAttribute("media-type"),
+          season: watch.getAttribute("media-season"),
+          episode: watch.getAttribute("media-episode"),
+        };
+
+        if (watchInfo && id === watchInfo.id && type === watchInfo.type) {
+          if (type === "movie") return;
+
+          const { s, e } = getSeasonAndEpisode(id);
+          if (s === watchInfo.season && e === watchInfo.episode) return;
+        }
+
+        hideModal(true, true);
         toggleDim(true);
 
-        const info = await getDetails(type === "m" ? "movie" : "tv", id);
+        const info = await getDetails(_type, id);
 
         if (info && info.title) {
           let recommendationImages = [];
@@ -1711,7 +1771,11 @@ function initializeWatchModalCheck() {
 
           modal(info, recommendationImages);
         } else {
-          removeQuery(config.query.modal);
+          removeQueries(
+            config.query.modal,
+            config.query.season,
+            config.query.episode,
+          );
         }
 
         toggleDim(false);
@@ -1737,7 +1801,7 @@ function checkForceWatch() {
 
   if (watchQuery) {
     forceWatch(watchQuery);
-    removeQuery(config.query.watch);
+    removeQueries(config.query.watch);
   }
 }
 

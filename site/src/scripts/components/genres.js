@@ -13,7 +13,12 @@ import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getTrending } from "../api/trending.js";
 import { getRated } from "../api/rated.js";
 import { getNew } from "../api/new.js";
-import { getQuery, onQueryChange, setQuery, removeQuery } from "../query.js";
+import {
+  getQuery,
+  onQueryChange,
+  setQueries,
+  removeQueries,
+} from "../query.js";
 import { getPage } from "../store/pages.js";
 import { toggleDim } from "./dim.js";
 
@@ -172,10 +177,9 @@ function initializeGenreArea(area, initialSlides, type, failed) {
     genreIcon.className = "icon icon-arrow-right";
 
     genre.addEventListener("click", function () {
-      setQuery(
-        config.query.modal,
-        `g-${type === "movie" ? "m" : "s"}-${info.id}`,
-      );
+      setQueries({
+        [config.query.modal]: `g-${type === "movie" ? "m" : "s"}-${info.id}`,
+      });
     });
 
     genre.append(genreText);
@@ -282,7 +286,7 @@ function initializeGenreModalCheck() {
       const [modalType, type, id] = modalQuery.split("-");
 
       if (modalType === "g") {
-        hideModal(true);
+        hideModal(true, true);
         toggleDim(true);
 
         const info =
@@ -294,7 +298,7 @@ function initializeGenreModalCheck() {
           modal(info, type === "m" ? "movie" : "tv");
           document.title = `${type === "m" ? "Movies" : "Shows"} - ${info.name}`;
         } else {
-          removeQuery(config.query.modal);
+          removeQueries(config.query.modal);
         }
 
         toggleDim(false);

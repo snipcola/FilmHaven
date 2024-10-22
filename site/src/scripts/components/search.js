@@ -14,7 +14,12 @@ import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../api/search.js";
 import { watchContent } from "./watch.js";
 import { hideModal } from "./modal.js";
-import { setQuery, getQuery, removeQuery, onQueryChange } from "../query.js";
+import {
+  setQueries,
+  getQuery,
+  removeQueries,
+  onQueryChange,
+} from "../query.js";
 
 function initializeSearch(area, placeholder) {
   let results = [];
@@ -129,7 +134,7 @@ function initializeSearch(area, placeholder) {
       reset();
       cleanup();
 
-      watchContent(info.type, info.id);
+      watchContent(info.type, info.id, true);
     });
 
     title.innerText =
@@ -371,8 +376,11 @@ function initializeSearch(area, placeholder) {
   function queryCheck() {
     const query = input.value;
 
-    if (query.length > 0) setQuery(config.query.search, query);
-    else removeQuery(config.query.search);
+    if (query.length > 0) {
+      setQueries({
+        [config.query.query]: query,
+      });
+    } else removeQueries(config.query.query);
   }
 
   onWindowResize(checkResize);
@@ -386,7 +394,7 @@ function initializeSearch(area, placeholder) {
     else setPrevious();
   });
 
-  const searchQuery = getQuery(config.query.search);
+  const searchQuery = getQuery(config.query.query);
   if (searchQuery) forceSearch(searchQuery);
 
   clear.addEventListener("click", onClear);
@@ -420,8 +428,10 @@ export function initializeSearches() {
 
   if (homeInput) {
     function focus() {
-      hideModal();
-      setQuery(config.query.page, 1);
+      hideModal(false, true);
+      setQueries({
+        [config.query.page]: 1,
+      });
 
       setTimeout(function () {
         scrollToElement(homeSearchArea, -30);

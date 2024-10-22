@@ -1,24 +1,33 @@
-export function setQuery(key, value) {
-  if (key === null || key === undefined) {
-    return;
-  }
-
+export function setQueries(queries) {
   const params = new URLSearchParams(window.location.search);
 
-  if (value !== null && value !== undefined) {
-    params.set(key, encodeURIComponent(value));
-  } else {
-    params.delete(key);
+  for (const [key, value] of Object.entries(queries)) {
+    if (key === null || key === undefined) {
+      continue;
+    }
+
+    if (value !== null && value !== undefined) {
+      params.set(key, encodeURIComponent(value));
+    } else {
+      params.delete(key);
+    }
   }
 
   const currentPath = `${window.location.pathname}${window.location.search}`;
   const newPath = `${window.location.pathname}?${params.toString()}`;
 
-  if (currentPath !== newPath) window.history.pushState({}, "", newPath);
+  if (currentPath !== newPath) {
+    window.history.pushState({}, "", newPath);
+  }
 }
 
-export function removeQuery(key) {
-  setQuery(key, null);
+export function removeQueries(...keys) {
+  setQueries(
+    keys.reduce((obj, k) => {
+      if (![undefined, null].includes(k)) obj[k] = null;
+      return obj;
+    }, {}),
+  );
 }
 
 export function getQuery(key) {

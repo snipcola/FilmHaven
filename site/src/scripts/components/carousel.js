@@ -84,7 +84,7 @@ function initializeCarousel(carousel, slides, type) {
     const slide = slides[index];
 
     button.onclick = function () {
-      watchContent(slide.type, slide.id);
+      watchContent(slide.type, slide.id, true);
     };
 
     image.src = slide.backdrop;

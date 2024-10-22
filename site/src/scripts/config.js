@@ -137,8 +137,10 @@ export const config = {
   query: {
     page: "p",
     modal: "m",
-    search: "s",
+    query: "q",
     watch: "w",
+    season: "s",
+    episode: "e",
   },
   maxDescriptionLength: 230,
   maxReviewContentLength: 230,

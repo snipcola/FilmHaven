@@ -1,6 +1,6 @@
 import { config } from "../config.js";
 import { getInnerText, onWindowResize } from "../functions.js";
-import { getQuery, setQuery, onQueryChange } from "../query.js";
+import { getQuery, setQueries, onQueryChange } from "../query.js";
 import { getPage } from "../store/pages.js";
 
 let activeIndex;
@@ -89,7 +89,9 @@ function initializePageChangeCheck() {
       document.documentElement.scrollTo({ top: 0 });
     }
 
-    setQuery(config.query.page, activeIndex + 1);
+    setQueries({
+      [config.query.page]: activeIndex + 1,
+    });
   }
 
   handleQueryChange();
@@ -100,7 +102,9 @@ function initializeLinks() {
   links.forEach(function (link, index) {
     link.addEventListener("click", function () {
       if (!link.classList.contains("active")) {
-        setQuery(config.query.page, index + 1);
+        setQueries({
+          [config.query.page]: index + 1,
+        });
       }
     });
   });

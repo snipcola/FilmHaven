@@ -149,7 +149,7 @@ export function initializeArea(
 
     card.addEventListener("click", function () {
       if (!card.classList.contains("disabled")) {
-        watchContent(info.type, info.id);
+        watchContent(info.type, info.id, true);
       }
     });
 

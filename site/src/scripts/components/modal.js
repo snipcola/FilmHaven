@@ -1,6 +1,6 @@
 import { config } from "../config.js";
 import { onKeyPress } from "../functions.js";
-import { getQuery, onQueryChange, removeQuery } from "../query.js";
+import { getQuery, onQueryChange, removeQueries } from "../query.js";
 import { setTitle } from "./header.js";
 
 let modal;
@@ -65,12 +65,18 @@ export function showModal(cb) {
   document.body.classList.add("modal-active");
 }
 
-export function hideModal(ignore) {
-  if (!ignore) removeQuery(config.query.modal);
-  if (!ignore) document.body.classList.remove("modal-active");
+export function hideModal(ignore, seasonAndEpisode) {
+  if (!ignore) {
+    removeQueries(
+      config.query.modal,
+      ...(seasonAndEpisode ? [config.query.season, config.query.episode] : []),
+    );
 
-  if (!ignore) setModal();
-  if (!ignore) setTitle();
+    document.body.classList.remove("modal-active");
+    setModal();
+    setTitle();
+  }
+
   checkCallback();
 }
 
@@ -85,7 +91,7 @@ function initializeModalChangeCheck() {
       const [modalType] = modalQuery.split("-");
 
       if (!config.modal.validTypes.includes(modalType)) {
-        hideModal();
+        hideModal(false, true);
       }
     }
   }
@@ -152,7 +158,7 @@ export function initializeModal() {
 
   headerButton.append(headerButtonIcon);
   headerButton.addEventListener("click", function () {
-    hideModal();
+    hideModal(false, true);
   });
 
   buttons.append(customButtons);
@@ -172,7 +178,7 @@ export function initializeModal() {
   initializeModalChangeCheck();
   onKeyPress("x", false, null, null, function () {
     if (document.body.classList.contains("modal-active")) {
-      hideModal();
+      hideModal(false, true);
     }
   });
 }
