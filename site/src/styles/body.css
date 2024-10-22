@@ -1,6 +1,7 @@
 * {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-drag: none;
+  line-height: 1.25 !important;
 }
 
 body {
