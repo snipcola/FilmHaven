@@ -287,7 +287,7 @@ function modal(info, recommendationImages) {
   video.append(videoNoticeContainer);
 
   backdrop.className = "backdrop";
-  backdrop.src = info.backdrop;
+  if (info.backdrop) backdrop.src = info.backdrop;
   backdrop.alt = info.title;
   if (info.backdrop) video.append(backdrop);
 
