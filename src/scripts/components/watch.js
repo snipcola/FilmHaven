@@ -1774,7 +1774,12 @@ function checkForceWatch() {
 
   if (watchQuery) {
     forceWatch(watchQuery);
-    removeQueries(config.query.watch);
+    setQueries(
+      {
+        [config.query.watch]: null,
+      },
+      true,
+    );
   }
 }
 

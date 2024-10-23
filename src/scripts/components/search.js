@@ -14,12 +14,7 @@ import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../api/search.js";
 import { watchContent } from "./watch.js";
 import { hideModal } from "./modal.js";
-import {
-  setQueries,
-  getQuery,
-  removeQueries,
-  onQueryChange,
-} from "../query.js";
+import { setQueries, getQuery, onQueryChange } from "../query.js";
 import { setTitle } from "./header.js";
 
 function initializeSearch(area, placeholder) {
@@ -331,8 +326,13 @@ function initializeSearch(area, placeholder) {
       });
       document.title = `Searching ${query}`;
     } else {
+      setQueries(
+        {
+          [config.query.query]: null,
+        },
+        true,
+      );
       setTitle();
-      removeQueries(config.query.query);
     }
   }
 
