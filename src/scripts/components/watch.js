@@ -1777,6 +1777,8 @@ function checkForceWatch() {
     setQueries(
       {
         [config.query.watch]: null,
+        [config.query.season]: null,
+        [config.query.episode]: null,
       },
       true,
     );
