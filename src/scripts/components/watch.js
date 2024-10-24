@@ -58,8 +58,12 @@ export function watchContent(type, id, ignore) {
 
     setQueries({
       [config.query.modal]: modal,
-      [config.query.season]: s,
-      [config.query.episode]: e,
+      ...(getWatchSection("Video")
+        ? {
+            [config.query.season]: s,
+            [config.query.episode]: e,
+          }
+        : {}),
       [config.query.query]: null,
     });
   } else {
@@ -255,7 +259,7 @@ function modal(info, recommendationImages) {
     });
   }
 
-  if (info.type === "tv") {
+  if (info.type === "tv" && videoActive) {
     const { s, e } = getSeasonAndEpisode(info.id);
     setSeasonAndEpisode(s, e);
   }

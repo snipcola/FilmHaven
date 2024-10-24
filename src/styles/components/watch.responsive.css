@@ -1,11 +1,3 @@
-@media only screen and (min-width: 1200px) {
-  .modal .watch .video,
-  .modal .modal-header.has-video {
-    width: calc(100% - (20px * 2)) !important;
-    max-width: 100% !important;
-  }
-}
-
 @media only screen and (max-width: 1200px) {
   .watch .details {
     flex-direction: column;
