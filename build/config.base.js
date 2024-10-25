@@ -59,8 +59,12 @@ module.exports = {
       scriptLoading: "defer",
       inject: false,
     }),
-    new DefinePlugin({
-      __GIT_COMMIT_HASH__: JSON.stringify(gitCommitHash),
-    }),
+    ...(gitCommitHash
+      ? [
+          new DefinePlugin({
+            __GIT_COMMIT_HASH__: JSON.stringify(gitCommitHash),
+          }),
+        ]
+      : []),
   ],
 };

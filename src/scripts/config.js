@@ -49,7 +49,11 @@ export const config = {
   name,
   author,
   repository,
-  commitHash: __GIT_COMMIT_HASH__,
+  commitHash: (function () {
+    try {
+      return __GIT_COMMIT_HASH__;
+    } catch {}
+  })(),
   defaultLanguage: "en",
   header: {
     name: {

@@ -25,9 +25,9 @@ export function initializeFooter(element) {
         window.open(`${config.repository}/commit/${config.commitHash}`);
       });
     }
-  }
 
-  copyright.append(commitHash);
+    copyright.append(commitHash);
+  }
 
   for (const item of config.footer.links) {
     const link = document.createElement("a");
