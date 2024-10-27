@@ -407,7 +407,7 @@ export const settings = [
   {
     label: {
       icon: "language",
-      text: "Language (reset required)",
+      text: "Language (will reset)",
     },
     items: async function () {
       const languages = await getLanguages();
@@ -551,7 +551,7 @@ export const settings = [
   {
     label: {
       icon: "file",
-      text: "Pages (refresh required)",
+      text: "Pages",
     },
     items: function () {
       const pages = getPages();
@@ -564,6 +564,7 @@ export const settings = [
     },
     onClick: function (p) {
       setPage(p, !getPage(p));
+      refresh();
     },
     type: "selection",
     multi: true,
@@ -571,7 +572,7 @@ export const settings = [
   {
     label: {
       icon: "tags",
-      text: "Sections (refresh required)",
+      text: "Sections",
     },
     items: function () {
       const sections = getSections();
@@ -584,6 +585,7 @@ export const settings = [
     },
     onClick: function (s) {
       setSection(s, !getSection(s));
+      refresh();
     },
     type: "selection",
     multi: true,
