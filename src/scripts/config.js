@@ -89,6 +89,7 @@ export const config = {
       {
         icon: "cog",
         text: "Settings",
+        required: true,
       },
       {
         icon: "cog",
@@ -556,11 +557,13 @@ export const settings = [
     items: function () {
       const pages = getPages();
 
-      return Object.entries(pages).map(([p, a]) => ({
-        label: p,
-        value: p,
-        active: a,
-      }));
+      return Object.entries(pages)
+        .filter(([_, a]) => !a.hidden)
+        .map(([p, a]) => ({
+          label: p,
+          value: p,
+          active: a.enabled,
+        }));
     },
     onClick: function (p) {
       setPage(p, !getPage(p));

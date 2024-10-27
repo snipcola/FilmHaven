@@ -18,8 +18,10 @@ export function getPages() {
     const defaultPages = Object.assign(
       {},
       ...config.header.links
-        .filter((l) => l.text !== "Settings")
-        .map((l) => ({ [l.text]: true })),
+        .filter((l) => !l.required)
+        .map((l) => ({
+          [l.text]: { enabled: true, hidden: l.hidden || false },
+        })),
     );
 
     set(defaultPages);
@@ -35,12 +37,12 @@ export function getPage(name) {
     ([key]) => key?.toLowerCase() === name,
   );
 
-  return page ? page[1] : null;
+  return page ? page[1]?.enabled : null;
 }
 
 export function setPage(name, value) {
   const pages = getPages();
-  pages[name] = value;
+  pages[name].enabled = value;
   set(pages);
 }
 

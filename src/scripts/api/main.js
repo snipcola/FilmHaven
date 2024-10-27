@@ -19,11 +19,13 @@ export function sortByPopularity(obj) {
 }
 
 export function sortAlphabetically(obj, key) {
-  return obj.sort(function (a, b) {
-    if (a[key] < b[key]) return -1;
-    if (a[key] > b[key]) return 1;
-    return 0;
-  });
+  return obj
+    ? obj.sort(function (a, b) {
+        if (a[key] < b[key]) return -1;
+        if (a[key] > b[key]) return 1;
+        return 0;
+      })
+    : [];
 }
 
 export async function sendRequest(
