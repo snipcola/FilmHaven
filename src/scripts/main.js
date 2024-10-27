@@ -13,6 +13,7 @@ import { initializeContinue } from "./components/continue.js";
 import { initializeGenres } from "./components/genres.js";
 import { initializeAreas } from "./components/area.js";
 import { initializeSettings } from "./components/settings.js";
+import { initializeProviders } from "./components/providers.js";
 
 import { getPage } from "./store/pages.js";
 import { getSection } from "./store/sections.js";
@@ -49,15 +50,16 @@ function initializeAll() {
   initializeFooter(container);
   initializeWatch();
 
-  if (getPage("Home") && getSection("Search")) initializeSearches();
-  if (getPage("Home") && getSection("Continue")) initializeContinue();
+  if (getPage("home") && getSection("search")) initializeSearches();
+  if (getPage("home") && getSection("continue")) initializeContinue();
 
-  if (getSection("Carousel")) initializeCarousels();
+  if (getSection("carousel")) initializeCarousels();
   else content.classList.add("no-carousel");
-  if (getSection("Genres")) initializeGenres();
+  if (getSection("genres")) initializeGenres();
   initializeAreas();
 
   initializeSettings();
+  initializeProviders();
   enableBody();
 
   if (![null, undefined, "null"].includes(window?.location?.origin)) {

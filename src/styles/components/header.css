@@ -84,6 +84,10 @@ body.modal-active .header-container .header .links {
   pointer-events: none;
 }
 
+.header-container .header .links .link.hidden {
+  display: none !important;
+}
+
 .header-container .header .links .link:not(.active) {
   cursor: pointer;
   opacity: var(--dim-opacity);

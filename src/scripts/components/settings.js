@@ -89,7 +89,11 @@ export function initializeSettings() {
           const buttonText = document.createElement("span");
 
           button.className = "button";
-          if (item.class) button.classList.add(item.class);
+          if (item.class) {
+            button.classList.add(
+              ...(Array.isArray(item.class) ? item.class : [item.class]),
+            );
+          }
           buttonIcon.className = `icon icon-${item.label.icon}`;
           buttonText.className = "text";
           buttonText.innerHTML = item.label.text;

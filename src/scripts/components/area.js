@@ -309,12 +309,12 @@ export function initializeArea(
 }
 
 export function initializeAreas() {
-  const moviesActive = getPage("Movies");
-  const showsActive = getPage("Shows");
+  const moviesActive = getPage("movies");
+  const showsActive = getPage("shows");
 
-  const trendingActive = getSection("Trending");
-  const ratedActive = getSection("Top-Rated");
-  const newActive = getSection("New");
+  const trendingActive = getSection("trending");
+  const ratedActive = getSection("top-rated");
+  const newActive = getSection("new");
 
   function initializeTrending() {
     const label = "Trending";

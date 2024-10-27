@@ -16,6 +16,7 @@ import { watchContent } from "./watch.js";
 import { hideModal } from "./modal.js";
 import { setQueries, getQuery, onQueryChange } from "../query.js";
 import { setTitle } from "./header.js";
+import { getPageIndex } from "../store/pages.js";
 
 function initializeSearch(area, placeholder) {
   let results = [];
@@ -440,7 +441,7 @@ export function initializeSearches() {
     function focus() {
       hideModal(false, true);
       setQueries({
-        [config.query.page]: 1,
+        [config.query.page]: getPageIndex("home"),
       });
 
       setTimeout(function () {

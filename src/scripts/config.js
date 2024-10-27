@@ -1,6 +1,6 @@
 import { getTheme, setTheme } from "./store/theme.js";
 import { getAdult, setAdult } from "./store/adult.js";
-import { getPages, getPage, setPage } from "./store/pages.js";
+import { getPages, getPage, setPage, getPageIndex } from "./store/pages.js";
 import { getSections, getSection, setSection } from "./store/sections.js";
 import {
   getWatchSections,
@@ -12,6 +12,7 @@ import { resetContinueWatching } from "./store/continue.js";
 import { resetLastPlayed } from "./store/last-played.js";
 import { getLanguages } from "./api/languages.js";
 import { getLanguage, setLanguage } from "./store/language.js";
+import { getUrlWithQueries, setQueries } from "./query.js";
 
 const name = "FilmHaven";
 const repository = `https://git.snipcola.com/snipcola/${name}`;
@@ -44,6 +45,12 @@ export const providers = [
     },
   },
 ];
+
+function refresh() {
+  window.location.href = getUrlWithQueries({
+    [config.query.page]: getPageIndex("settings"),
+  });
+}
 
 export const config = {
   name,
@@ -82,6 +89,11 @@ export const config = {
       {
         icon: "cog",
         text: "Settings",
+      },
+      {
+        icon: "cog",
+        text: "Providers",
+        hidden: true,
       },
     ],
   },
@@ -296,7 +308,7 @@ export const settings = [
             localStorage.clear();
 
             document.body.classList.remove("active");
-            window.location.href = `${(window.location.href || "").split("?")[0]}?${config.query.page}=4`;
+            refresh();
 
             self.classList.add("inactive");
             self.querySelector(".icon").className = "icon icon-check";
@@ -419,13 +431,35 @@ export const settings = [
   },
   {
     label: {
+      icon: "tv",
+      text: "Providers",
+    },
+    items: function () {
+      return [
+        {
+          label: {
+            text: "Edit",
+          },
+          class: ["secondary", "full"],
+          onClick: function () {
+            setQueries({
+              [config.query.page]: getPageIndex("providers"),
+            });
+          },
+        },
+      ];
+    },
+    type: "buttons",
+  },
+  {
+    label: {
       icon: "list",
       text: "Presets",
     },
     items: function () {
       return [
         {
-          label: "...",
+          label: "Set",
           value: "",
           placeholder: true,
         },
@@ -462,7 +496,7 @@ export const settings = [
         }
 
         document.body.classList.remove("active");
-        window.location.href = `${(window.location.href || "").split("?")[0]}?${config.query.page}=4`;
+        refresh();
       } else if (i === "minimal") {
         const pages = getPages();
         const sections = getSections();
@@ -489,7 +523,7 @@ export const settings = [
         }
 
         document.body.classList.remove("active");
-        window.location.href = `${(window.location.href || "").split("?")[0]}?${config.query.page}=2`;
+        refresh();
       } else {
         const pages = getPages();
         const sections = getSections();
@@ -508,7 +542,7 @@ export const settings = [
         }
 
         document.body.classList.remove("active");
-        window.location.href = `${(window.location.href || "").split("?")[0]}?${config.query.page}=2`;
+        refresh();
       }
     },
     preventChange: true,

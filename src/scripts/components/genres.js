@@ -357,8 +357,8 @@ export async function initializeGenres() {
 
   const promises = [];
 
-  if (getPage("Movies")) promises.push(initializeMovies());
-  if (getPage("Shows")) promises.push(initializeShows());
+  if (getPage("movies")) promises.push(initializeMovies());
+  if (getPage("shows")) promises.push(initializeShows());
 
   await Promise.all(promises);
   initializeGenreModalCheck();

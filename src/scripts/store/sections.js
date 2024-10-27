@@ -21,8 +21,12 @@ export function getSections() {
 }
 
 export function getSection(name) {
+  name = (name || "").toLowerCase();
+
   const sections = getSections();
-  const section = Object.entries(sections).find(([key]) => key === name);
+  const section = Object.entries(sections).find(
+    ([key]) => key?.toLowerCase() === name,
+  );
 
   return section ? section[1] : null;
 }

@@ -1,5 +1,9 @@
-export function setQueries(queries, override) {
-  const params = new URLSearchParams(window.location.search);
+function set(
+  queries,
+  pathname = window.location.pathname,
+  search = window.location.search,
+) {
+  const params = new URLSearchParams(search);
 
   for (const [key, value] of Object.entries(queries)) {
     if (key === null || key === undefined) {
@@ -13,15 +17,20 @@ export function setQueries(queries, override) {
     }
   }
 
+  return params.size > 0 ? `${pathname}?${params.toString()}` : pathname;
+}
+
+export function setQueries(queries, override) {
   const currentPath = `${window.location.pathname}${window.location.search}`;
-  const newPath =
-    params.size > 0
-      ? `${window.location.pathname}?${params.toString()}`
-      : window.location.pathname;
+  const newPath = set(queries);
 
   if (currentPath !== newPath) {
     window.history[override ? "replaceState" : "pushState"]({}, "", newPath);
   }
+}
+
+export function getUrlWithQueries(queries) {
+  return set(queries, (window.location.href || "").split("?")[0]);
 }
 
 export function removeQueries(...keys) {

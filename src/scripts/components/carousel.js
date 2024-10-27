@@ -190,6 +190,6 @@ export function initializeCarousels() {
     }
   }
 
-  if (getPage("Movies")) initializeMovies();
-  if (getPage("Shows")) initializeShows();
+  if (getPage("movies")) initializeMovies();
+  if (getPage("shows")) initializeShows();
 }

@@ -155,7 +155,7 @@ export function initializeHeader(element, content) {
     const linkIcon = document.createElement("i");
     const linkText = document.createElement("span");
 
-    link.className = "link";
+    link.className = item.hidden ? "link hidden" : "link";
     linkIcon.className = `icon icon-${item.icon}`;
     linkText.className = "text";
     linkText.innerText = item.text;
