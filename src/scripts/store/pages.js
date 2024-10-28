@@ -12,7 +12,7 @@ function set(data) {
 export function getPages() {
   const pages = get();
 
-  if (pages) {
+  if (pages && !Object.values(pages).some((p) => typeof p !== "object")) {
     return pages;
   } else {
     const defaultPages = Object.assign(
