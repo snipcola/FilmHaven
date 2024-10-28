@@ -27,5 +27,5 @@ export async function getLanguages() {
   const json = format(response);
 
   setCache(cacheName, json);
-  return json;
+  return json || [];
 }

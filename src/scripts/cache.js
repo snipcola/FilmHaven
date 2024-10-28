@@ -74,10 +74,12 @@ export function unloadImages(images, clean) {
 }
 
 export function setCache(key, value) {
-  localStorage.setItem(
-    store.names.cache(key),
-    JSON.stringify({ d: Date.now(), v: value }),
-  );
+  if (![undefined, null].includes(value)) {
+    localStorage.setItem(
+      store.names.cache(key),
+      JSON.stringify({ d: Date.now(), v: value }),
+    );
+  }
 }
 
 export function getCache(key, max = config.maxCacheDays) {

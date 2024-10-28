@@ -25,7 +25,7 @@ export function sortAlphabetically(obj, key) {
         if (a[key] > b[key]) return 1;
         return 0;
       })
-    : [];
+    : null;
 }
 
 export async function sendRequest(
