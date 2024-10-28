@@ -38,6 +38,8 @@
 
 .area.search .search .input::placeholder {
   font-weight: 300;
+
+  color: var(--text);
   opacity: var(--dim-opacity);
 
   user-select: none;
