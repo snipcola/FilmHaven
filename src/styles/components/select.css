@@ -21,13 +21,15 @@
   text-align: center;
   appearance: none;
 
-  font-weight: 300;
+  font-size: var(--large-font);
+  font-weight: 400;
+
   text-align-last: center;
 }
 
 @media (hover: hover) {
   .select:hover {
     opacity: var(--dim-opacity);
-    background-color: var(--light);
+    background-color: var(--lighter);
   }
 }

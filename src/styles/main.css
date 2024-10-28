@@ -43,5 +43,6 @@
 
 @import url(./components/settings.css);
 @import url(./components/settings.responsive.css);
+@import url(./components/providers.css);
 
 @import url(./components/footer.css);

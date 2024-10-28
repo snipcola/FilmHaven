@@ -100,11 +100,11 @@ body.modal-active .modal-container {
   background-color: var(--light);
   border: var(--small-border) solid var(--lighter);
 
-  padding: calc(var(--small-padding) / 2);
+  padding: calc(var(--small-padding) / 1.75) calc(var(--small-padding) / 1.5);
   box-sizing: border-box;
 
   text-align: center;
-  border-radius: var(--border-radius);
+  border-radius: 5rem;
 }
 
 .modal-header .info.active {

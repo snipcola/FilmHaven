@@ -64,6 +64,26 @@
   background-color: var(--primary) !important;
 }
 
+@media (prefers-color-scheme: dark) {
+  .control.continue .button.active {
+    color: var(--background);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .control.continue .button.active {
+    color: var(--text);
+  }
+}
+
+html.dark .control.continue .button.active {
+  color: var(--background);
+}
+
+html.light .control.continue .button.active {
+  color: var(--text);
+}
+
 @media (hover: hover) {
   .area .control .button:hover {
     background-color: var(--lighter);

@@ -112,16 +112,16 @@
   padding: calc(var(--small-padding) / 2);
   box-sizing: border-box;
 
-  top: calc(var(--small-padding) * 1.25);
-  right: calc(var(--small-padding) * 1.25);
+  top: calc(var(--small-padding) * 1.3);
+  right: calc(var(--small-padding) * 1.3);
 
-  border-radius: calc(var(--border-radius) / 1.5);
-  opacity: var(--dim-opacity);
+  border-radius: calc(var(--border-radius) / 1.3);
+  opacity: calc(var(--dim-opacity) + 20%);
 }
 
 .card .type-info {
   right: initial !important;
-  left: calc(var(--small-padding) * 1.25);
+  left: calc(var(--small-padding) * 1.3);
 }
 
 .card .footer {
@@ -173,6 +173,11 @@
   gap: calc(var(--small-gap) / 4);
 }
 
+.card .footer .star,
+.watch .rating .star {
+  color: var(--lightest);
+}
+
 .card .footer .star.fill,
 .watch .rating .star.fill {
   color: var(--primary);
@@ -183,7 +188,7 @@
   background: linear-gradient(
     to right,
     var(--primary) 50%,
-    rgba(var(--text-rgb), 0.75) 50%
+    rgba(var(--lightest-rgb), 0.75) 50%
   );
   color: transparent;
 

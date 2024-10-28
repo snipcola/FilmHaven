@@ -59,7 +59,7 @@ function initializeAll() {
   initializeAreas();
 
   initializeSettings();
-  initializeProviders();
+  // initializeProviders();
   enableBody();
 
   if (![null, undefined, "null"].includes(window?.location?.origin)) {

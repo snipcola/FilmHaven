@@ -16,9 +16,30 @@
   -webkit-user-select: none;
 
   width: fit-content;
-  font-size: var(--large-font);
-
   transition: var(--transition-speed) opacity;
+
+  font-size: var(--large-font);
+  font-weight: 400;
+}
+
+@media (prefers-color-scheme: dark) {
+  .button:not(.secondary) {
+    color: var(--background);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .button:not(.secondary) {
+    color: var(--text);
+  }
+}
+
+html.dark .button:not(.secondary) {
+  color: var(--background);
+}
+
+html.light .button:not(.secondary) {
+  color: var(--text);
 }
 
 .button.icon-only {
@@ -36,6 +57,6 @@
   }
 
   .button.secondary:hover {
-    background-color: var(--light);
+    background-color: var(--lighter);
   }
 }

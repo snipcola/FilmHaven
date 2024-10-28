@@ -5,7 +5,7 @@
   width: 100%;
   align-items: center;
 
-  background-color: var(--light);
+  background-color: rgba(var(--light-rgb), 0.75);
   border: var(--small-border) solid var(--lighter);
 
   border-radius: var(--border-radius);
@@ -19,7 +19,7 @@
 }
 
 .area.search .search:focus-within {
-  background-color: var(--lighter);
+  background-color: rgba(var(--light-rgb), 1.25);
 }
 
 .area.search .search .input {
@@ -65,13 +65,33 @@
   cursor: pointer;
 }
 
+@media (prefers-color-scheme: dark) {
+  .area.search .search .clear {
+    color: var(--background);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .area.search .search .clear {
+    color: var(--text);
+  }
+}
+
+html.dark .area.search .search .clear {
+  color: var(--background);
+}
+
+html.light .area.search .search .clear {
+  color: var(--text);
+}
+
 .area.search .search .clear.active {
   display: flex;
 }
 
 @media (hover: hover) {
   .area.search .search:hover {
-    background-color: var(--lighter);
+    background-color: rgba(var(--light-rgb), 1.25);
   }
 
   .area.search .search .clear:hover {

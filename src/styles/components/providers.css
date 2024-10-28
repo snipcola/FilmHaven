@@ -1,0 +1,20 @@
+.area.providers .container {
+  display: flex;
+  flex-direction: column;
+
+  gap: calc(var(--small-gap) * 1.5);
+}
+
+.area.providers .container .label {
+  display: flex;
+
+  gap: var(--small-gap);
+  align-items: center;
+
+  opacity: var(--dim-opacity);
+  font-weight: 500;
+}
+
+.area.providers .container select {
+  width: fit-content;
+}

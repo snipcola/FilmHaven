@@ -32,7 +32,7 @@
   display: flex;
 }
 
-.area .label {
+.area > .label {
   position: absolute;
   padding: var(--small-padding) var(--large-padding);
 
@@ -45,7 +45,27 @@
   font-weight: 500;
 }
 
-.area.minimal .label {
+@media (prefers-color-scheme: dark) {
+  .area > .label {
+    color: var(--background);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .area > .label {
+    color: var(--text);
+  }
+}
+
+html.dark .area > .label {
+  color: var(--background);
+}
+
+html.light .area > .label {
+  color: var(--text);
+}
+
+.area.minimal > .label {
   display: none;
 }
 
