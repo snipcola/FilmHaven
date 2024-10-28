@@ -27,8 +27,9 @@ export function getSectionName() {
   }
 }
 
-export function setTitle() {
-  const title = getSectionName() && `${config.name} - ${getSectionName()}`;
+export function setTitle(custom) {
+  const text = custom || getSectionName();
+  const title = text && `${config.name} - ${text}`;
 
   if (title && document.title !== title && !getQuery(config.query.query)) {
     document.title = title;

@@ -1705,7 +1705,10 @@ function initializeWatchModalCheck() {
     if (modalQuery) {
       const [type, id] = modalQuery.split("-");
 
-      if (type !== "g" && config.modal.validTypes.includes(type)) {
+      if (
+        !["g", "p"].includes(type) &&
+        config.modal.validTypes.includes(type)
+      ) {
         const _type = type === "m" ? "movie" : "tv";
         const watch = document.querySelector(".modal-content > .watch");
         const watchInfo = watch && {

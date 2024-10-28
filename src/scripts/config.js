@@ -91,11 +91,6 @@ export const config = {
         text: "Settings",
         required: true,
       },
-      {
-        icon: "cog",
-        text: "Providers",
-        hidden: true,
-      },
     ],
   },
   footer: {
@@ -118,7 +113,7 @@ export const config = {
     ],
   },
   modal: {
-    validTypes: ["g", "m", "s"],
+    validTypes: ["g", "m", "s", "p"],
   },
   search: {
     debounce: 500,
@@ -444,7 +439,7 @@ export const settings = [
           class: ["secondary", "full"],
           onClick: function () {
             setQueries({
-              [config.query.page]: getPageIndex("providers"),
+              [config.query.modal]: "p",
             });
           },
         },
