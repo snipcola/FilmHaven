@@ -2,6 +2,48 @@ import { config } from "../config.js";
 import { hideModal, setModal, showModal } from "./modal.js";
 import { getQuery, onQueryChange } from "../query.js";
 import { setTitle } from "./header.js";
+import { getProviders, setProviders } from "../store/providers.js";
+import { useDefaultProviders as defaultProviders } from "../config.js";
+import {
+  getDefaultProviders,
+  setDefaultProviders,
+} from "../store/default-providers.js";
+
+export function parseProvider(provider, info) {
+  let url = info.type === "movie" ? provider.movieUrl : provider.tvUrl;
+  const replacements = [
+    {
+      text: "%b",
+      replace: provider.base,
+    },
+    {
+      text: "%i",
+      replace: info.id,
+    },
+    {
+      text: "%i2",
+      replace: info.imdbId,
+    },
+    ...(info.type !== "movie"
+      ? [
+          {
+            text: "%s",
+            replace: info.season,
+          },
+          {
+            text: "%e",
+            replace: info.episode,
+          },
+        ]
+      : []),
+  ];
+
+  for (const replacement of replacements) {
+    url = url.replace(new RegExp(replacement.text, "g"), replacement.replace);
+  }
+
+  return url;
+}
 
 function createArea(text) {
   const area = document.createElement("div");
@@ -69,29 +111,154 @@ function createSelect(text, icon, _items, onSelect) {
   return container;
 }
 
+function createTable(columns, rows) {
+  const table = document.createElement("table");
+  const headerRow = document.createElement("tr");
+
+  for (const column of columns) {
+    const th = document.createElement("th");
+    th.textContent = column;
+    headerRow.append(th);
+  }
+
+  table.append(headerRow);
+
+  for (const { cells, disabled } of rows) {
+    const row = document.createElement("tr");
+    if (disabled) row.classList.add("disabled");
+
+    for (const cell of cells) {
+      const td = document.createElement("td");
+
+      if (cell instanceof HTMLElement) td.append(cell);
+      else td.textContent = cell;
+
+      row.append(td);
+    }
+
+    table.append(row);
+  }
+
+  return table;
+}
+
 function modal() {
   const [settingsArea, settingsContent] = createArea("Settings");
   const [providersArea, providersContent] = createArea("Providers");
-  const useDefaultProviders = createSelect(
+
+  let providers = getProviders();
+  let providersTable;
+
+  const notice = document.createElement("div");
+  const noticeIcon = document.createElement("i");
+  const noticeText = document.createElement("span");
+  notice.className = "notice";
+  noticeIcon.className = "icon icon-censor";
+  noticeText.className = "text";
+  noticeText.innerText = "No Providers";
+  notice.append(noticeIcon, noticeText);
+
+  function updateTable() {
+    const tableRows = [];
+
+    for (const provider of providers) {
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      const moveUpButton = document.createElement("div");
+      const moveUpButtonIcon = document.createElement("i");
+      moveUpButton.className = "button secondary icon-only";
+      moveUpButtonIcon.className = "icon icon-arrow-up";
+      moveUpButton.append(moveUpButtonIcon);
+
+      const moveDownButton = document.createElement("div");
+      const moveDownButtonIcon = document.createElement("i");
+      moveDownButton.className = "button secondary icon-only";
+      moveDownButtonIcon.className = "icon icon-arrow-down";
+      moveDownButton.append(moveDownButtonIcon);
+
+      const editButton = document.createElement("div");
+      const editButtonIcon = document.createElement("i");
+      editButton.className = "button secondary icon-only";
+      editButtonIcon.className = "icon icon-pencil";
+      editButton.append(editButtonIcon);
+
+      const deleteButton = document.createElement("div");
+      const deleteButtonIcon = document.createElement("i");
+      deleteButton.className = "button secondary icon-only";
+      deleteButtonIcon.className = "icon icon-trash";
+      deleteButton.append(deleteButtonIcon);
+
+      actions.append(moveUpButton, moveDownButton, editButton, deleteButton);
+
+      tableRows.push({
+        cells: [provider.base, actions],
+        disabled: provider.default || false,
+      });
+    }
+
+    const newTable =
+      tableRows.length > 0
+        ? createTable(["Provider", "Actions"], tableRows)
+        : notice;
+
+    if (providersTable) providersTable.replaceWith(newTable);
+    providersTable = newTable;
+  }
+
+  updateTable();
+
+  const buttons = document.createElement("div");
+  buttons.className = "buttons";
+
+  const createButton = document.createElement("div");
+  const createButtonIcon = document.createElement("i");
+  const createButtonText = document.createElement("span");
+  createButton.className = "button disabled"; // TODO: remove `disabled` when implementation is complete
+  createButtonIcon.className = "icon icon-film";
+  createButtonText.className = "text";
+  createButtonText.innerText = "Create";
+  createButton.append(createButtonIcon, createButtonText);
+
+  const resetButton = document.createElement("div");
+  const resetButtonIcon = document.createElement("i");
+  const resetButtonText = document.createElement("span");
+  resetButton.className = "button secondary";
+  resetButtonIcon.className = "icon icon-sync";
+  resetButtonText.className = "text";
+  resetButtonText.innerText = "Reset";
+  resetButton.append(resetButtonIcon, resetButtonText);
+
+  buttons.append(createButton, resetButton);
+  providersContent.append(providersTable, buttons);
+
+  const useDefaultProviders = getDefaultProviders();
+  const defaultProvidersSelect = createSelect(
     "Default Providers",
     "cog",
     function () {
-      return [
-        {
-          label: "Include",
-          value: "yes",
-          active: true,
-        },
-        {
-          label: "Exclude",
-          value: "no",
-        },
-      ];
+      return Object.entries(defaultProviders).map(([value, label]) => ({
+        label,
+        value,
+        active: useDefaultProviders === value,
+      }));
     },
-    function (defaults) {},
+    function (defaults) {
+      setDefaultProviders(defaults);
+      providers = getProviders();
+      updateTable();
+    },
   );
 
-  settingsContent.append(useDefaultProviders);
+  resetButton.addEventListener("click", function () {
+    defaultProvidersSelect.querySelector("select").value = "include";
+    setDefaultProviders("include");
+    setProviders([]);
+    providers = getProviders();
+    updateTable();
+  });
+
+  settingsContent.append(defaultProvidersSelect);
 
   setModal("Providers", null, [settingsArea, providersArea], "arrow-left");
   showModal();

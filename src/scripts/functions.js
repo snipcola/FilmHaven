@@ -104,7 +104,7 @@ export function cleanText(input) {
   return input
     .replace(/(?:__|[*#])|\[(.*?)\]\(.*?\)/gm, "$1")
     .replace(/\r\n/g, " ")
-    .replace(/[_<>]/g, "")
+    .replace(/<[^>]*>/g, "")
     .replace(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)/g, "");
 }
 

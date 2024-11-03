@@ -220,11 +220,13 @@ function initializeSearch(area, placeholder) {
   }
 
   function setPrevious() {
-    set(slides[index - 1] ? index - 1 : slides.length - 1);
+    const newIndex = slides[index - 1] ? index - 1 : slides.length - 1;
+    if (index !== newIndex) set(newIndex);
   }
 
   function setNext() {
-    set(slides[index + 1] ? index + 1 : 0);
+    const newIndex = slides[index + 1] ? index + 1 : 0;
+    if (index !== newIndex) set(newIndex);
   }
 
   function checkResize() {

@@ -46,9 +46,23 @@ html.light .button:not(.secondary) {
   padding: calc(var(--small-padding) * 1.25);
 }
 
+.button.icon-only .icon {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: var(--icon-font) !important;
+  height: var(--icon-font) !important;
+}
+
 .button.secondary {
   background-color: var(--dark);
   border: var(--small-border) solid var(--lighter);
+}
+
+.button.disabled {
+  opacity: var(--dimmer-opacity) !important;
+  pointer-events: none !important;
+  user-select: none !important;
 }
 
 @media (hover: hover) {

@@ -111,10 +111,6 @@ body.modal-active .modal-container {
   display: inline-block;
 }
 
-.modal-header .button {
-  width: 2.6rem;
-}
-
 .modal-header .copied {
   opacity: var(--dim-opacity);
   pointer-events: none;

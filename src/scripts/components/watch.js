@@ -30,9 +30,10 @@ import { getWatchSection } from "../store/watch-sections.js";
 import { initializeArea } from "./area.js";
 import { toggleDim } from "./dim.js";
 import { getDownloads, constructMagnet } from "../downloadsApi/download.js";
-import { providers as _providers } from "../config.js";
 import { isOnline } from "../functions.js";
 import { getSearchResults } from "../api/search.js";
+import { getProviders } from "../store/providers.js";
+import { parseProvider } from "./providers.js";
 
 const online = isOnline();
 
@@ -320,7 +321,7 @@ function modal(info, recommendationImages) {
   let providers = [];
 
   function getCurrentProvider() {
-    return providers.find((p) => p.name === getProvider()) || providers[0];
+    return providers[getProvider()] || providers[0];
   }
 
   function videoAlert(toggle, icon, text) {
@@ -352,35 +353,21 @@ function modal(info, recommendationImages) {
     async function providersCheck() {
       videoAlert(true, "tv", "Fetching Providers");
 
-      async function fetchProviders() {
-        const _info = {
-          id: info.id,
-          imdbId: info.imdbId,
-          season: seasonNumber,
-          episode: episodeNumber,
-        };
+      const _info = {
+        type: info.type,
+        id: info.id,
+        imdbId: info.imdbId,
+        season: seasonNumber,
+        episode: episodeNumber,
+      };
 
-        const promises = _providers
-          .filter((provider) => online || provider.online !== true)
-          .map(async function (provider) {
-            return {
-              name: provider.base,
-              online: provider.online || false,
-              url:
-                provider?.url?.constructor?.name === "AsyncFunction"
-                  ? await provider.url(info.type, _info)
-                  : provider.url(info.type, _info),
-            };
-          });
-
-        return (await Promise.all(promises)).filter(
-          (provider) => ![undefined, null].includes(provider.url),
-        );
-      }
-
-      providers = (await fetchProviders()).filter(
-        (provider) => online || provider.online !== true,
-      );
+      providers = getProviders()
+        .filter((provider) => online || provider.online !== true)
+        .map((provider) => ({
+          name: provider.base,
+          online: provider.online || false,
+          url: parseProvider(provider, _info),
+        }));
     }
 
     await providersCheck();
@@ -403,7 +390,7 @@ function modal(info, recommendationImages) {
       disabled = false;
       playVideo();
     } else {
-      videoAlert(true, "censor", "Not Available");
+      videoAlert(true, "censor", "No Providers");
     }
 
     seasonsDisabled = false;
@@ -609,10 +596,10 @@ function modal(info, recommendationImages) {
   if (videoActive) {
     checkProviders();
 
-    function providerSet(name) {
+    function providerSet(index) {
       if (disabled) return;
 
-      setProvider(name);
+      setProvider(index);
       playVideo();
       video.scrollIntoView({ block: "end" });
     }
@@ -629,7 +616,7 @@ function modal(info, recommendationImages) {
 
       if (next) {
         providersSelect.value = next.value;
-        providerSet(next.value);
+        providerSet(index + 1);
       }
     }
 
@@ -645,13 +632,15 @@ function modal(info, recommendationImages) {
 
       if (previous) {
         providersSelect.value = previous.value;
-        providerSet(previous.value);
+        providerSet(index - 1);
       }
     }
 
     providersTitle.append(providersControl);
     providersSelect.addEventListener("change", function () {
-      providerSet(providersSelect.value);
+      const providers = Array.from(providersSelect.children);
+      const index = providers.indexOf(providersSelect.selectedOptions[0]);
+      providerSet(index);
     });
 
     providersRefresh.addEventListener("click", refresh);
@@ -1128,11 +1117,16 @@ function modal(info, recommendationImages) {
   }
 
   function setCastPrevious() {
-    setCast(castSlides[castIndex - 1] ? castIndex - 1 : castSlides.length - 1);
+    const newIndex = castSlides[castIndex - 1]
+      ? castIndex - 1
+      : castSlides.length - 1;
+
+    if (castIndex !== newIndex) setCast(newIndex);
   }
 
   function setCastNext() {
-    setCast(castSlides[castIndex + 1] ? castIndex + 1 : 0);
+    const newIndex = castSlides[castIndex + 1] ? castIndex + 1 : 0;
+    if (castIndex !== newIndex) setCast(newIndex);
   }
 
   crew.className = "details-card";
@@ -1214,11 +1208,16 @@ function modal(info, recommendationImages) {
   }
 
   function setCrewPrevious() {
-    setCrew(crewSlides[crewIndex - 1] ? crewIndex - 1 : crewSlides.length - 1);
+    const newIndex = crewSlides[crewIndex - 1]
+      ? crewIndex - 1
+      : crewSlides.length - 1;
+
+    if (crewIndex !== newIndex) setCrew(newIndex);
   }
 
   function setCrewNext() {
-    setCrew(crewSlides[crewIndex + 1] ? crewIndex + 1 : 0);
+    const newIndex = crewSlides[crewIndex + 1] ? crewIndex + 1 : 0;
+    if (crewIndex !== newIndex) setCrew(newIndex);
   }
 
   reviews.className = "details-card";
@@ -1346,13 +1345,16 @@ function modal(info, recommendationImages) {
   }
 
   function setReviewPrevious() {
-    setReviews(
-      reviewSlides[reviewIndex - 1] ? reviewIndex - 1 : reviewSlides.length - 1,
-    );
+    const newIndex = reviewSlides[reviewIndex - 1]
+      ? reviewIndex - 1
+      : reviewSlides.length - 1;
+
+    if (reviewIndex !== newIndex) setReviews(newIndex);
   }
 
   function setReviewNext() {
-    setReviews(reviewSlides[reviewIndex + 1] ? reviewIndex + 1 : 0);
+    const newIndex = reviewSlides[reviewIndex + 1] ? reviewIndex + 1 : 0;
+    if (reviewIndex !== newIndex) setReviews(newIndex);
   }
 
   misc.className = "details-card misc";

@@ -18,31 +18,26 @@ const name = "FilmHaven";
 const repository = `https://git.snipcola.com/snipcola/${name}`;
 const author = "Snipcola";
 
-function genericUrlFunction(type, { id, season, episode }) {
-  if (type === "movie") return `https://${this.base}/embed/movie/${id}`;
-  return `https://${this.base}/embed/tv/${id}/${season}/${episode}`;
-}
-
-export const providers = [
+export const defaultProviders = [
   {
     base: "vidsrc.xyz",
-    url: genericUrlFunction,
+    movieUrl: "https://%b/embed/movie/%i",
+    tvUrl: "https://%b/embed/tv/%i/%s/%e",
   },
   {
     base: "vidbinge.dev",
-    url: genericUrlFunction,
+    movieUrl: "https://%b/embed/movie/%i",
+    tvUrl: "https://%b/embed/tv/%i/%s/%e",
   },
   {
     base: "embed.su",
-    url: genericUrlFunction,
+    movieUrl: "https://%b/embed/movie/%i",
+    tvUrl: "https://%b/embed/tv/%i/%s/%e",
   },
   {
     base: "vidlink.pro",
-    url: function (type, { id, season, episode }) {
-      if (type === "movie")
-        return `https://${this.base}/movie/${id}?autoplay=false`;
-      return `https://${this.base}/tv/${id}/${season}/${episode}?autoplay=false`;
-    },
+    movieUrl: "https://%b/movie/%i?autoplay=false",
+    tvUrl: "https://%b/tv/%i/%s/%e?autoplay=false",
   },
 ];
 
@@ -61,6 +56,7 @@ export const config = {
       return __GIT_COMMIT_HASH__;
     } catch {}
   })(),
+  storePrefix: "fh",
   defaultLanguage: "en",
   header: {
     name: {
@@ -217,6 +213,7 @@ export const downloadApi = {
     limit: 100,
   },
   trackers: [
+    "udp://open.demonii.com:1337/announce",
     "udp://glotorrents.pw:6969/announce",
     "udp://tracker.opentrackr.org:1337/announce",
     "udp://torrent.gresille.org:80/announce",
@@ -235,20 +232,25 @@ export const downloadApi = {
   ],
 };
 
+const prefix = config.storePrefix;
+const cachePrefix = `${prefix}-cache`;
+
 export const store = {
   names: {
     cache: function (key) {
-      return `fhc-${key}`;
+      return `${cachePrefix}-${key}`;
     },
-    theme: "fh-theme",
-    adult: "fh-adult",
-    language: "fh-language",
-    provider: "fh-provider",
-    lastPlayed: "fh-last-played",
-    pages: "fh-pages",
-    sections: "fh-sections",
-    watchSections: "fh-watch-sections",
-    continue: "fh-continue",
+    theme: `${prefix}-theme`,
+    adult: `${prefix}-adult`,
+    language: `${prefix}-language`,
+    defaultProviders: `${prefix}-default-providers`,
+    providers: `${prefix}-providers`,
+    provider: `${prefix}-provider`,
+    lastPlayed: `${prefix}-last-played`,
+    pages: `${prefix}-pages`,
+    sections: `${prefix}-sections`,
+    watchSections: `${prefix}-watch-sections`,
+    continue: `${prefix}-continue`,
   },
 };
 
@@ -261,6 +263,11 @@ export const themes = {
 export const adult = {
   show: "Show",
   hide: "Hide",
+};
+
+export const useDefaultProviders = {
+  include: "Include",
+  exclude: "Exclude",
 };
 
 export const sections = {
@@ -403,7 +410,7 @@ export const settings = [
   {
     label: {
       icon: "language",
-      text: "Language (will reset)",
+      text: "Language (performs reset)",
     },
     items: async function () {
       const languages = await getLanguages();

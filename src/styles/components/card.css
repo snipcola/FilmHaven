@@ -176,6 +176,7 @@
 .card .footer .star,
 .watch .rating .star {
   color: var(--lightest);
+  line-height: 1 !important;
 }
 
 .card .footer .star.fill,

@@ -18,3 +18,29 @@
 .area.providers .container select {
   width: fit-content;
 }
+
+.area.providers .actions {
+  display: flex;
+  gap: calc(var(--small-gap) / 2.5);
+}
+
+.area.providers .actions .button {
+  font-size: calc(var(--small-font) / 1.25) !important;
+  padding: var(--small-padding);
+}
+
+.area.providers table tr.disabled .actions {
+  opacity: var(--dimmer-opacity) !important;
+  pointer-events: none !important;
+}
+
+.area.providers > div > .buttons {
+  display: flex;
+  gap: var(--small-gap);
+  margin-top: var(--large-gap);
+}
+
+.area.providers .notice {
+  margin-left: 0;
+  margin-right: 0;
+}

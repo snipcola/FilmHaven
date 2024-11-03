@@ -48,7 +48,7 @@
   display: none;
 
   background-color: var(--lighter);
-  border: 1px solid var(--lightest);
+  border: var(--small-border) solid var(--lightest);
 
   padding: calc(var(--small-padding) / 2);
   border-radius: var(--border-radius);
