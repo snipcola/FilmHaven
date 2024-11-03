@@ -73,6 +73,10 @@
   opacity: var(--dim-opacity);
 }
 
+.footer-container .footer .links .link .icon {
+  font-size: 14px !important;
+}
+
 @media (hover: hover) {
   .footer-container .footer .copyright span.has-repo:hover {
     cursor: pointer;
