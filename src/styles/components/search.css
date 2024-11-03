@@ -52,13 +52,12 @@
 
 .area.search .search .clear {
   display: none;
-  width: 1.8rem;
 
   align-items: center;
   justify-content: center;
 
   background-color: var(--primary);
-  padding: calc(var(--small-padding) / 1.75);
+  padding: calc(var(--small-padding) / 1.5);
 
   border-radius: var(--border-radius);
   transition: var(--transition-speed) opacity;
