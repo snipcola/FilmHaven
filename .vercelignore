@@ -10,9 +10,6 @@ dist
 .AppleDouble
 .LSOverride
 
-# Other
-fiveserver.config.js
-
 # Vercel
 .env
 .git
