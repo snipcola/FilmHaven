@@ -1,15 +1,8 @@
-# Node
 node_modules
-package-lock.json
 pnpm-lock.yaml
-
-# Webpack
-dist
-
-# macOS
+package-lock.json
+yarn.lock
 .DS_Store
-.AppleDouble
-.LSOverride
 
-# Other
-.vercel
+/dist
+/.vercel
