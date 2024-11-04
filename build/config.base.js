@@ -1,8 +1,10 @@
-const { DefinePlugin } = require("webpack");
-const { src, dist } = require("./paths.js");
+import webpack from "webpack";
+const { DefinePlugin } = webpack;
 
-const path = require("path");
-const childProcess = require("child_process");
+import { src, dist } from "./paths.js";
+
+import path from "path";
+import childProcess from "child_process";
 
 let gitCommitHash;
 const vercelGitCommitHash = process?.env?.VERCEL_GIT_COMMIT_SHA;
@@ -18,13 +20,13 @@ if (typeof vercelGitCommitHash === "string" && vercelGitCommitHash !== "") {
   } catch {}
 }
 
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const RemoveEmptyScriptsPlugin = require("webpack-remove-empty-scripts");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import RemoveEmptyScriptsPlugin from "webpack-remove-empty-scripts";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
-module.exports = {
+export default {
   entry: {
     main: path.resolve(src, "scripts", "main.js"),
     styles: path.resolve(src, "styles", "main.css"),

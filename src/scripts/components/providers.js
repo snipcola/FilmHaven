@@ -10,7 +10,7 @@ import {
 } from "../store/default-providers.js";
 
 export function parseProvider(provider, info) {
-  let url = info.type === "movie" ? provider.movieUrl : provider.tvUrl;
+  let url = info.type === "movie" ? provider.movie : provider.tv;
   const replacements = [
     {
       text: "%b",

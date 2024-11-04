@@ -2,6 +2,7 @@
   "name": "filmhaven",
   "author": "Snipcola",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "webpack --config ./build/config.production.js",
     "dev": "webpack --config ./build/config.development.js",

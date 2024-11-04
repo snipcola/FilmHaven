@@ -21,23 +21,23 @@ const author = "Snipcola";
 export const defaultProviders = [
   {
     base: "vidsrc.xyz",
-    movieUrl: "https://%b/embed/movie/%i",
-    tvUrl: "https://%b/embed/tv/%i/%s/%e",
+    movie: "https://%b/embed/movie/%i",
+    tv: "https://%b/embed/tv/%i/%s/%e",
   },
   {
     base: "vidbinge.dev",
-    movieUrl: "https://%b/embed/movie/%i",
-    tvUrl: "https://%b/embed/tv/%i/%s/%e",
+    movie: "https://%b/embed/movie/%i",
+    tv: "https://%b/embed/tv/%i/%s/%e",
   },
   {
     base: "embed.su",
-    movieUrl: "https://%b/embed/movie/%i",
-    tvUrl: "https://%b/embed/tv/%i/%s/%e",
+    movie: "https://%b/embed/movie/%i",
+    tv: "https://%b/embed/tv/%i/%s/%e",
   },
   {
     base: "vidlink.pro",
-    movieUrl: "https://%b/movie/%i?autoplay=false",
-    tvUrl: "https://%b/tv/%i/%s/%e?autoplay=false",
+    movie: "https://%b/movie/%i?autoplay=false",
+    tv: "https://%b/tv/%i/%s/%e?autoplay=false",
   },
 ];
 
