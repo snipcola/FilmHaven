@@ -22,6 +22,16 @@ export function getProvider() {
   }
 }
 
+export function getProviderIndex() {
+  const index = get() || "0";
+
+  try {
+    return parseInt(index);
+  } catch {
+    return 0;
+  }
+}
+
 export function setProvider(provider) {
   set(provider);
 }

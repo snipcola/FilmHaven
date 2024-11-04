@@ -3,6 +3,7 @@ import { hideModal, setModal, showModal } from "./modal.js";
 import { getQuery, onQueryChange } from "../query.js";
 import { setTitle } from "./header.js";
 import { getProviders, setProviders } from "../store/providers.js";
+import { getProviderIndex, setProvider } from "../store/provider.js";
 import { useDefaultProviders as defaultProviders } from "../config.js";
 import {
   getDefaultProviders,
@@ -142,6 +143,77 @@ function createTable(columns, rows) {
   return table;
 }
 
+function createModal(titleText, buttonText, fields, onButtonClick) {
+  const modalContainer = document.createElement("div");
+  const modal = document.createElement("div");
+  const header = document.createElement("div");
+  const content = document.createElement("div");
+  const title = document.createElement("span");
+
+  modalContainer.className = "provider-modal-container";
+  modal.className = "provider-modal";
+  header.className = "provider-header";
+  content.className = "provider-content";
+  title.className = "title";
+  title.textContent = titleText;
+
+  const inputs = [];
+
+  for (const { name, placeholder, value } of fields) {
+    const input = document.createElement("input");
+    if (placeholder) input.setAttribute("placeholder", placeholder);
+    if (value) input.value = value;
+    inputs.push({ input, name, value });
+    content.append(input);
+  }
+
+  function close() {
+    modalContainer.classList.remove("active");
+
+    for (const { input, value } of inputs) {
+      input.value = value || "";
+    }
+  }
+
+  const buttons = document.createElement("div");
+  buttons.className = "buttons";
+
+  const createButton = document.createElement("div");
+  const createButtonText = document.createElement("span");
+  createButton.className = "button";
+  createButtonText.className = "text";
+  createButtonText.innerText = buttonText;
+  createButton.append(createButtonText);
+  createButton.addEventListener("click", function () {
+    const values = inputs.reduce((acc, { name, input }) => {
+      acc[name] = input.value;
+      return acc;
+    }, {});
+
+    const result = onButtonClick(values);
+
+    if (result?.error) alert(result.error);
+    else if (result?.success) close();
+  });
+
+  const cancelButton = document.createElement("div");
+  const cancelButtonText = document.createElement("span");
+  cancelButton.className = "button secondary";
+  cancelButtonText.className = "text";
+  cancelButtonText.innerText = "Cancel";
+  cancelButton.append(cancelButtonText);
+  cancelButton.addEventListener("click", close);
+
+  buttons.append(createButton, cancelButton);
+  content.append(buttons);
+
+  header.append(title);
+  modal.append(header, content);
+  modalContainer.append(modal);
+
+  return modalContainer;
+}
+
 function modal() {
   const [settingsArea, settingsContent] = createArea("Settings");
   const [providersArea, providersContent] = createArea("Providers");
@@ -158,10 +230,13 @@ function modal() {
   noticeText.innerText = "No Providers";
   notice.append(noticeIcon, noticeText);
 
+  let editModal = document.createElement("div");
+  editModal.className = "provider-modal-container";
+
   function updateTable() {
     const tableRows = [];
 
-    for (const provider of providers) {
+    for (const [index, provider] of providers.entries()) {
       const actions = document.createElement("div");
       actions.className = "actions";
 
@@ -170,29 +245,169 @@ function modal() {
       moveUpButton.className = "button secondary icon-only";
       moveUpButtonIcon.className = "icon icon-arrow-up";
       moveUpButton.append(moveUpButtonIcon);
+      moveUpButton.addEventListener("click", function () {
+        [providers[index], providers[index - 1]] = [
+          providers[index - 1],
+          providers[index],
+        ];
+
+        setProviders(providers.filter((p) => !p.default));
+
+        const providerIndex = getProviderIndex();
+        let newIndex;
+
+        if (providerIndex === index) {
+          newIndex = providerIndex - 1;
+        } else if (providerIndex === index - 1) {
+          newIndex = providerIndex + 1;
+        }
+
+        if (newIndex && providers[newIndex]) setProvider(newIndex);
+        updateTable();
+      });
+
+      const previousProvider = providers[index - 1];
+
+      if (
+        !provider.default &&
+        (!previousProvider || previousProvider.default)
+      ) {
+        moveUpButton.classList.add("disabled");
+      }
 
       const moveDownButton = document.createElement("div");
       const moveDownButtonIcon = document.createElement("i");
       moveDownButton.className = "button secondary icon-only";
       moveDownButtonIcon.className = "icon icon-arrow-down";
       moveDownButton.append(moveDownButtonIcon);
+      moveDownButton.addEventListener("click", function () {
+        [providers[index], providers[index + 1]] = [
+          providers[index + 1],
+          providers[index],
+        ];
+
+        setProviders(providers.filter((p) => !p.default));
+
+        const providerIndex = getProviderIndex();
+        let newIndex;
+
+        if (providerIndex === index) {
+          newIndex = providerIndex + 1;
+        } else if (providerIndex === index + 1) {
+          newIndex = providerIndex - 1;
+        }
+
+        if (newIndex && providers[newIndex]) setProvider(newIndex);
+        updateTable();
+      });
+
+      const nextProvider = providers[index + 1];
+
+      if (!provider.default && (!nextProvider || nextProvider.default)) {
+        moveDownButton.classList.add("disabled");
+      }
 
       const editButton = document.createElement("div");
       const editButtonIcon = document.createElement("i");
       editButton.className = "button secondary icon-only";
       editButtonIcon.className = "icon icon-pencil";
       editButton.append(editButtonIcon);
+      editButton.addEventListener("click", function () {
+        const newEditModal = createModal(
+          `Edit ${provider.name || provider.base}`,
+          "Edit",
+          [
+            {
+              name: "name",
+              placeholder: "Name (optional)",
+              value: provider.name,
+            },
+            {
+              name: "base",
+              placeholder: "Base (e.g. example.org)",
+              value: provider.base,
+            },
+            {
+              name: "movie",
+              placeholder: "Movie URL",
+              value: provider.movie,
+            },
+            {
+              name: "tv",
+              placeholder: "Series URL",
+              value: provider.tv,
+            },
+          ],
+          function ({ name, base, movie, tv }) {
+            if ([base, movie, tv].includes("")) {
+              return {
+                success: false,
+                error: "Ensure required fields are provided.",
+              };
+            }
+
+            if (
+              providers.find(
+                (p, i) => i !== index && (p.name || p.base) === (name || base),
+              )
+            ) {
+              return {
+                success: false,
+                error: "Similar provider already exists.",
+              };
+            }
+
+            providers[index] = { base, movie, tv };
+            if (name) providers[index].name = name;
+
+            setProviders(providers.filter((p) => !p.default));
+            updateTable();
+
+            return { success: true };
+          },
+        );
+
+        newEditModal.classList.add("active");
+        editModal.replaceWith(newEditModal);
+        editModal = newEditModal;
+      });
 
       const deleteButton = document.createElement("div");
       const deleteButtonIcon = document.createElement("i");
       deleteButton.className = "button secondary icon-only";
       deleteButtonIcon.className = "icon icon-trash";
       deleteButton.append(deleteButtonIcon);
+      deleteButton.addEventListener("click", function () {
+        providers = providers.filter((_, i) => i !== index);
+        setProviders(providers.filter((p) => !p.default));
+
+        const providerIndex = getProviderIndex();
+        let newIndex;
+
+        if (providerIndex === index) {
+          if (index === 0) {
+            newIndex = 0;
+          } else {
+            newIndex = providers[providerIndex + 1]
+              ? providerIndex + 1
+              : providers[providerIndex - 1]
+                ? providerIndex - 1
+                : providers.length - 1;
+          }
+        } else if (providerIndex > index) {
+          newIndex = providers[providerIndex - 1]
+            ? providerIndex - 1
+            : providers.length - 1;
+        }
+
+        if (newIndex && providers[newIndex]) setProvider(newIndex);
+        updateTable();
+      });
 
       actions.append(moveUpButton, moveDownButton, editButton, deleteButton);
 
       tableRows.push({
-        cells: [provider.base, actions],
+        cells: [provider.name || provider.base, actions],
         disabled: provider.default || false,
       });
     }
@@ -211,14 +426,66 @@ function modal() {
   const buttons = document.createElement("div");
   buttons.className = "buttons";
 
+  const creationModal = createModal(
+    "Create Provider",
+    "Create",
+    [
+      {
+        name: "name",
+        placeholder: "Name (optional)",
+      },
+      {
+        name: "base",
+        placeholder: "Base (e.g. example.org)",
+      },
+      {
+        name: "movie",
+        placeholder: "Movie URL",
+        value: "https://%b/embed/movie/%i",
+      },
+      {
+        name: "tv",
+        placeholder: "Series URL",
+        value: "https://%b/embed/tv/%i/%s/%e",
+      },
+    ],
+    function ({ name, base, movie, tv }) {
+      if ([base, movie, tv].includes("")) {
+        return {
+          success: false,
+          error: "Ensure required fields are provided.",
+        };
+      }
+
+      if (providers.find((p) => (p.name || p.base) === (name || base))) {
+        return {
+          success: false,
+          error: "Similar provider already exists.",
+        };
+      }
+
+      const provider = { base, movie, tv };
+      if (name) provider.name = name;
+
+      providers.push(provider);
+      setProviders(providers.filter((p) => !p.default));
+      updateTable();
+
+      return { success: true };
+    },
+  );
+
   const createButton = document.createElement("div");
   const createButtonIcon = document.createElement("i");
   const createButtonText = document.createElement("span");
-  createButton.className = "button disabled"; // TODO: remove `disabled` when implementation is complete
-  createButtonIcon.className = "icon icon-film";
+  createButton.className = "button";
+  createButtonIcon.className = "icon icon-plus";
   createButtonText.className = "text";
   createButtonText.innerText = "Create";
   createButton.append(createButtonIcon, createButtonText);
+  createButton.addEventListener("click", function () {
+    creationModal.classList.add("active");
+  });
 
   const resetButton = document.createElement("div");
   const resetButtonIcon = document.createElement("i");
@@ -254,13 +521,19 @@ function modal() {
     defaultProvidersSelect.querySelector("select").value = "include";
     setDefaultProviders("include");
     setProviders([]);
+    setProvider(0);
     providers = getProviders();
     updateTable();
   });
 
   settingsContent.append(defaultProvidersSelect);
 
-  setModal("Providers", null, [settingsArea, providersArea], "arrow-left");
+  setModal(
+    "Providers",
+    null,
+    [creationModal, editModal, settingsArea, providersArea],
+    "arrow-left",
+  );
   showModal();
 }
 

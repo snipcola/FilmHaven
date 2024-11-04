@@ -1,0 +1,5 @@
+@media only screen and (max-width: 600px) {
+  .provider-modal-container .provider-modal {
+    width: 70dvw;
+  }
+}

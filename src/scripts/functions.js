@@ -1,3 +1,6 @@
+import { config } from "./config.js";
+import { getQuery } from "./query.js";
+
 export function isOnline() {
   return !window.location.href.startsWith("file:");
 }
@@ -65,6 +68,10 @@ export function onKeyPress(key, prevent, active, depends, callback) {
   function listener(e) {
     if (depends && !elementExists(depends)) {
       document.removeEventListener("keypress", listener);
+      return;
+    }
+
+    if (getQuery(config.query.modal) === "p") {
       return;
     }
 

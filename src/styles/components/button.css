@@ -62,7 +62,9 @@ html.light .button:not(.secondary) {
 .button.disabled {
   opacity: var(--dimmer-opacity) !important;
   pointer-events: none !important;
+
   user-select: none !important;
+  -webkit-user-select: none !important;
 }
 
 @media (hover: hover) {

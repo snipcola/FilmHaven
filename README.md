@@ -26,6 +26,21 @@ Due to the nature of how the project works, you might face ads upon viewing cont
 - `v` - Focuses on video. _Only works on movie or series modal._
 - `x` - Closes modal. _Only works when modal is open._
 
+## 🗂️ - Custom Providers
+
+To add a custom provider, navigate to the `Settings` page and press the `Edit` button under the `Providers` section.
+
+The movie/series url will be formatted and have replacements performed, such as:
+
+- `%b` -> base (e.g. `example.org`, you'll provide this)
+- `%i` -> id
+- `%i2` -> imdb id
+- `%s` -> season
+- `%e` -> episode
+
+Example of a movie url: `https://%b/embed/movie/%i`<br/>
+Example of a series url: `https://%b/embed/tv/%i/%s/%e`
+
 ## 💻 - Compilation
 
 1. Ensure you have `node` and `npm` installed.

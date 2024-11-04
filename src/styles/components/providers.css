@@ -13,6 +13,9 @@
 
   opacity: var(--dim-opacity);
   font-weight: 500;
+
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .area.providers .container select {
@@ -43,4 +46,105 @@
 .area.providers .notice {
   margin-left: 0;
   margin-right: 0;
+}
+
+.provider-modal-container {
+  display: none;
+  position: fixed;
+
+  z-index: 9;
+  background-color: rgba(var(--light-rgb), 0.6);
+
+  align-items: center;
+  justify-content: center;
+
+  top: 0;
+  left: 0;
+
+  width: 100dvw;
+  max-width: 100dvw;
+  height: 100dvh;
+
+  margin: 0;
+}
+
+.provider-modal-container.active {
+  display: flex;
+}
+
+.provider-modal-container .provider-modal {
+  background-color: var(--background);
+  border-radius: var(--border-radius);
+
+  display: flex;
+  flex-direction: column;
+
+  max-width: 70dvw;
+  width: 40dvw;
+  max-height: 70dvh;
+
+  overflow: auto;
+}
+
+.provider-modal-container .provider-modal .provider-header {
+  background-color: var(--dark);
+  border-bottom: var(--small-border) solid var(--lighter);
+  padding: var(--small-padding) var(--large-padding);
+
+  font-weight: 400;
+  font-size: calc(var(--large-font) * 1.25);
+
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.provider-modal-container .provider-modal .provider-content {
+  display: flex;
+  flex-direction: column;
+
+  padding: var(--small-padding);
+  gap: var(--small-gap);
+}
+
+.provider-modal-container .provider-modal .provider-content input {
+  background-color: rgba(var(--light-rgb), 0.75);
+  border: var(--small-border) solid var(--lighter);
+
+  border-radius: var(--border-radius);
+  padding: var(--small-padding);
+
+  font-size: var(--large-font);
+  color: var(--text);
+
+  box-sizing: border-box;
+  transition: var(--transition-speed) background-color;
+
+  outline: none;
+  cursor: text;
+  height: 3rem;
+}
+
+.provider-modal-container .provider-modal .provider-content input:focus {
+  background-color: rgba(var(--light-rgb), 1.25);
+}
+
+.provider-modal-container .provider-modal .provider-content input::placeholder {
+  font-weight: 300;
+
+  color: var(--text);
+  opacity: var(--dim-opacity);
+
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@media (hover: hover) {
+  .provider-modal-container .provider-modal .provider-content input:hover {
+    background-color: rgba(var(--light-rgb), 1.25);
+  }
+}
+
+.provider-modal-container .provider-modal .provider-content .buttons {
+  display: flex;
+  gap: var(--small-gap);
 }

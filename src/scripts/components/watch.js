@@ -364,7 +364,7 @@ function modal(info, recommendationImages) {
       providers = getProviders()
         .filter((provider) => online || provider.online !== true)
         .map((provider) => ({
-          name: provider.base,
+          name: provider.name || provider.base,
           online: provider.online || false,
           url: parseProvider(provider, _info),
         }));
