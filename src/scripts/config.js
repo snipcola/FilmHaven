@@ -25,11 +25,6 @@ export const defaultProviders = [
     tv: "https://%b/embed/tv/%i/%s/%e",
   },
   {
-    base: "vidbinge.dev",
-    movie: "https://%b/embed/movie/%i",
-    tv: "https://%b/embed/tv/%i/%s/%e",
-  },
-  {
     base: "embed.su",
     movie: "https://%b/embed/movie/%i",
     tv: "https://%b/embed/tv/%i/%s/%e",
