@@ -30,12 +30,9 @@ import { getWatchSection } from "../store/watch-sections.js";
 import { initializeArea } from "./area.js";
 import { toggleDim } from "./dim.js";
 import { getDownloads, constructMagnet } from "../downloadsApi/download.js";
-import { isOnline } from "../functions.js";
 import { getSearchResults } from "../api/search.js";
 import { getProviders } from "../store/providers.js";
 import { parseProvider } from "./providers.js";
-
-const online = isOnline();
 
 function getSeasonAndEpisode(id) {
   try {
@@ -321,7 +318,8 @@ function modal(info, recommendationImages) {
   let providers = [];
 
   function getCurrentProvider() {
-    return providers[getProvider()] || providers[0];
+    const providerId = getProvider();
+    return providers.find(({ id }) => id === providerId) || providers[0];
   }
 
   function videoAlert(toggle, icon, text) {
@@ -361,13 +359,11 @@ function modal(info, recommendationImages) {
         episode: episodeNumber,
       };
 
-      providers = getProviders()
-        .filter((provider) => online || provider.online !== true)
-        .map((provider) => ({
-          name: provider.name || provider.base,
-          online: provider.online || false,
-          url: parseProvider(provider, _info),
-        }));
+      providers = getProviders().map((provider) => ({
+        id: provider.id,
+        name: provider.name || provider.base,
+        url: parseProvider(provider, _info),
+      }));
     }
 
     await providersCheck();
@@ -375,16 +371,16 @@ function modal(info, recommendationImages) {
     providersSelect.innerHTML = "";
 
     if (providers.length > 0) {
-      providers.forEach(function ({ name }) {
+      providers.forEach(function ({ id, name }) {
         const provider = document.createElement("option");
 
-        provider.value = name.toLowerCase();
+        provider.value = id;
         provider.innerText = name;
 
         providersSelect.append(provider);
       });
 
-      providersSelect.value = getCurrentProvider().name;
+      providersSelect.value = getCurrentProvider().id;
       providersElem.classList.remove("disabled");
 
       disabled = false;
@@ -610,13 +606,13 @@ function modal(info, recommendationImages) {
       const provider = getCurrentProvider();
       const providers = Array.from(providersSelect.children);
 
-      const providerElem = providers.find((p) => p.value === provider.name);
+      const providerElem = providers.find((p) => p.value === provider.id);
       const index = providerElem && providers.indexOf(providerElem);
       const next = index !== -1 && providers[index + 1];
 
       if (next) {
         providersSelect.value = next.value;
-        providerSet(index + 1);
+        providerSet(next.value);
       }
     }
 
@@ -626,21 +622,20 @@ function modal(info, recommendationImages) {
       const provider = getCurrentProvider();
       const providers = Array.from(providersSelect.children);
 
-      const providerElem = providers.find((p) => p.value === provider.name);
+      const providerElem = providers.find((p) => p.value === provider.id);
       const index = providerElem && providers.indexOf(providerElem);
       const previous = index !== -1 && providers[index - 1];
 
       if (previous) {
         providersSelect.value = previous.value;
-        providerSet(index - 1);
+        providerSet(previous.value);
       }
     }
 
     providersTitle.append(providersControl);
     providersSelect.addEventListener("change", function () {
-      const providers = Array.from(providersSelect.children);
-      const index = providers.indexOf(providersSelect.selectedOptions[0]);
-      providerSet(index);
+      const selected = providersSelect.selectedOptions[0];
+      if (selected) providerSet(selected.value);
     });
 
     providersRefresh.addEventListener("click", refresh);

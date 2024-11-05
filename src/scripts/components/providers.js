@@ -3,12 +3,13 @@ import { hideModal, setModal, showModal } from "./modal.js";
 import { getQuery, onQueryChange } from "../query.js";
 import { setTitle } from "./header.js";
 import { getProviders, setProviders } from "../store/providers.js";
-import { getProviderIndex, setProvider } from "../store/provider.js";
+import { getProvider, setProvider, resetProvider } from "../store/provider.js";
 import { useDefaultProviders as defaultProviders } from "../config.js";
 import {
   getDefaultProviders,
   setDefaultProviders,
 } from "../store/default-providers.js";
+import { generateUUID } from "../functions.js";
 
 export function parseProvider(provider, info) {
   let url = info.type === "movie" ? provider.movie : provider.tv;
@@ -238,7 +239,7 @@ function modal() {
 
   function updateTable() {
     const tableRows = [];
-    const providerIndex = getProviderIndex();
+    const selectedProviderId = getProvider();
 
     for (const [index, provider] of providers.entries()) {
       const actions = document.createElement("div");
@@ -250,11 +251,11 @@ function modal() {
       selectButtonIcon.className = "icon icon-check";
       selectButton.append(selectButtonIcon);
       selectButton.addEventListener("click", function () {
-        setProvider(index);
+        setProvider(provider.id);
         updateTable();
       });
 
-      if (index === providerIndex) {
+      if (provider.id === selectedProviderId) {
         selectButton.classList.add("disabled");
       }
 
@@ -270,19 +271,6 @@ function modal() {
         ];
 
         setProviders(providers.filter((p) => !p.default));
-
-        let newIndex;
-
-        if (providerIndex === index) {
-          newIndex = providerIndex - 1;
-        } else if (providerIndex === index - 1) {
-          newIndex = providerIndex + 1;
-        }
-
-        if (typeof newIndex === "number" && providers[newIndex]) {
-          setProvider(newIndex);
-        }
-
         updateTable();
       });
 
@@ -307,19 +295,6 @@ function modal() {
         ];
 
         setProviders(providers.filter((p) => !p.default));
-
-        let newIndex;
-
-        if (providerIndex === index) {
-          newIndex = providerIndex + 1;
-        } else if (providerIndex === index + 1) {
-          newIndex = providerIndex - 1;
-        }
-
-        if (typeof newIndex === "number" && providers[newIndex]) {
-          setProvider(newIndex);
-        }
-
         updateTable();
       });
 
@@ -368,18 +343,7 @@ function modal() {
               };
             }
 
-            if (
-              providers.find(
-                (p, i) => i !== index && (p.name || p.base) === (name || base),
-              )
-            ) {
-              return {
-                success: false,
-                error: "Similar provider already exists.",
-              };
-            }
-
-            providers[index] = { base, movie, tv };
+            providers[index] = { id: provider.id, base, movie, tv };
             if (name) providers[index].name = name;
 
             setProviders(providers.filter((p) => !p.default));
@@ -400,31 +364,10 @@ function modal() {
       deleteButtonIcon.className = "icon icon-trash";
       deleteButton.append(deleteButtonIcon);
       deleteButton.addEventListener("click", function () {
-        providers = providers.filter((_, i) => i !== index);
+        providers = providers.filter(({ id }) => id !== provider.id);
         setProviders(providers.filter((p) => !p.default));
 
-        let newIndex;
-
-        if (providerIndex === index) {
-          if (index === 0) {
-            newIndex = 0;
-          } else {
-            newIndex = providers[providerIndex + 1]
-              ? providerIndex + 1
-              : providers[providerIndex - 1]
-                ? providerIndex - 1
-                : providers.length - 1;
-          }
-        } else if (providerIndex > index) {
-          newIndex = providers[providerIndex - 1]
-            ? providerIndex - 1
-            : providers.length - 1;
-        }
-
-        if (typeof newIndex === "number" && providers[newIndex]) {
-          setProvider(newIndex);
-        }
-
+        if (provider.id === selectedProviderId) resetProvider();
         updateTable();
       });
 
@@ -488,14 +431,7 @@ function modal() {
         };
       }
 
-      if (providers.find((p) => (p.name || p.base) === (name || base))) {
-        return {
-          success: false,
-          error: "Similar provider already exists.",
-        };
-      }
-
-      const provider = { base, movie, tv };
+      const provider = { id: generateUUID(), base, movie, tv };
       if (name) provider.name = name;
 
       providers.push(provider);
@@ -543,7 +479,9 @@ function modal() {
         {
           name: "providers",
           placeholder: "JSON Array",
-          value: JSON.stringify(providers.filter((p) => !p.default)),
+          value: JSON.stringify(
+            providers.filter((p) => !p.default).map(({ id, ...p }) => p),
+          ),
         },
       ],
       function ({ providers: newProviders }) {
@@ -604,8 +542,8 @@ function modal() {
           }
         }
 
-        setProviders(jsonArray);
-        setProvider(0);
+        setProviders(jsonArray.map((p) => ({ id: generateUUID(), ...p })));
+        resetProvider();
         providers = getProviders();
         updateTable();
         return { success: true };
@@ -634,24 +572,15 @@ function modal() {
     },
     function (defaults) {
       setDefaultProviders(defaults);
+
       providers = getProviders();
+      const selectedProviderId = getProvider();
+      const selectedProvider = providers.find(
+        ({ id }) => id === selectedProviderId,
+      );
 
-      const defaultProvidersLength = defaultProvidersList.length;
-      const providerIndex = getProviderIndex();
-      let newIndex;
-
-      if (defaults === "include") {
-        newIndex = providers[providerIndex + defaultProvidersLength]
-          ? providerIndex + defaultProvidersLength
-          : 0;
-      } else {
-        newIndex = providers[providerIndex - defaultProvidersLength]
-          ? providerIndex - defaultProvidersLength
-          : 0;
-      }
-
-      if (typeof newIndex === "number" && providers[newIndex]) {
-        setProvider(newIndex);
+      if (defaults === "exclude" && selectedProvider?.default) {
+        resetProvider();
       }
 
       updateTable();
@@ -662,7 +591,7 @@ function modal() {
     defaultProvidersSelect.querySelector("select").value = "include";
     setDefaultProviders("include");
     setProviders([]);
-    setProvider(0);
+    resetProvider();
     providers = getProviders();
     updateTable();
   });

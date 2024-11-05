@@ -11,27 +11,23 @@ function set(data) {
 }
 
 export function getProvider() {
-  const provider = get();
+  const providerId = get();
+  const providers = getProviders();
 
-  if (provider && getProviders(provider)) {
-    return provider;
+  if (providerId && providers.find(({ id }) => id === providerId)) {
+    return providerId;
   } else {
-    const defaultProvider = getProviders()[0];
-    if (defaultProvider) setProvider(0);
-    return defaultProvider;
+    const defaultProviderId = getProviders()[0]?.id;
+    if (defaultProviderId) setProvider(defaultProviderId);
+    return defaultProviderId;
   }
 }
 
-export function getProviderIndex() {
-  const index = get() || "0";
-
-  try {
-    return parseInt(index);
-  } catch {
-    return 0;
-  }
+export function setProvider(providerId) {
+  if (providerId) set(providerId);
 }
 
-export function setProvider(provider) {
-  set(provider);
+export function resetProvider() {
+  set("");
+  getProvider();
 }

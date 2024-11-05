@@ -17,7 +17,11 @@ export function getProviders() {
 
   providers = [
     ...(getDefaultProviders() === "include"
-      ? defaultProviders.map((p) => ({ ...p, default: true }))
+      ? defaultProviders.map((p) => ({
+          id: p.name || p.base,
+          ...p,
+          default: true,
+        }))
       : []),
     ...(providers || []),
   ];

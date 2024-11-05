@@ -1,9 +1,8 @@
 import { config } from "./config.js";
 import { getQuery } from "./query.js";
 
-export function isOnline() {
-  return !window.location.href.startsWith("file:");
-}
+import { v4 as uuid } from "uuid";
+import { filesize } from "filesize";
 
 export function transparentImage() {
   return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVYAAAIACAQAAABzmYx/AAADrklEQVR42u3SAQkAAADCMO1f2hzCFuG8gROVALOCWTErmBXMilnBrGBWzApmBbNiVjArmBWzglnBrJgVzApmxaxgVjArZgWzglkxK5gVs4JZwayYFcwKZsWsYFYwK2YFs4JZMSuYFcyKWcGsYFbMCmYFs2JWMCuYFbOCWcGsmBXMilnBrGBWzApmBbNiVjArmBWzglnBrJgVzApmxaxgVjArZgWzglkxK5gVzIpZwaxgVswKZsWsYFYwK2YFs4JZMSuYFcyKWcGsYFbMCmYFs2JWMCuYFbOCWcGsmBXMCmbFrGBWMCtmBbNiVjArmBWzglnBrJgVzApmxaxgVjArZgWzglkxK5gVzIpZwaxgVswKZgWzYlYwK5gVs4JZMSuYFcyKWcGsYFbMCmYFs2JWMCuYFbOCWcGsmBXMCmbFrGBWMCtmBbOCWTErmBXMilnBrJgVzApmxaxgVjArZgWzglkxK5gVzIpZwaxgVswKZgWzYlYwK5gVs4JZwayYFcwKZsWsYFbMCmYFs2JWMCuYFbOCWcGsmBXMCmbFrGBWMCtmBbOCWTErmBXMilnBrGBWzApmBbNiVjArZgWzglkxK5gVzIpZwaxgVswKZgWzYlYwK5gVs4JZwayYFcwKZsWsYFYwK2YFs2JWCTArmBWzglnBrJgVzApmxaxgVjArZgWzglkxK5gVzIpZwaxgVswKZgWzYlYwK5gVs4JZMSuYFcyKWcGsYFbMCmYFs2JWMCuYFbOCWcGsmBXMCmbFrGBWMCtmBbOCWTErmBXMilnBrJgVzApmxaxgVjArZgWzglkxK5gVzIpZwaxgVswKZgWzYlYwK5gVs4JZwayYFcwKZsWsYFbMCmYFs2JWMCuYFbOCWcGsmBXMCmbFrGBWMCtmBbOCWTErmBXMilnBrGBWzApmBbNiVjArZgWzglkxK5gVzIpZwaxgVswKZgWzYlYwK5gVs4JZwayYFcwKZsWsYFYwK2YFs4JZMSuYFbOCWcGsmBXMCmbFrGBWMCtmBbOCWTErmBXMilnBrGBWzApmBbNiVjArmBWzglnBrJgVzIpZwaxgVswKZgWzYlYwK5gVs4JZwayYFcwKZsWsYFYwK2YFs4JZMSuYFcyKWcGsYFbMCmbFrGBWMCtmBbOCWTErmBXMilnBrGBWzApmBbNiVjArmBWzglnBrJgVzApmxaxgVjArZgWzYlYwK5gVs4JZwayYFcwKZsWsYFYwK2YFs4JZMSuYFcyKWcGsYFZ+DVe+AgHBddcXAAAAAElFTkSuQmCC";
@@ -161,34 +160,10 @@ export function isHovered(element) {
 }
 
 export function shortenNumber(number, fixed) {
-  number = number.toString().replace(/[^0-9.]/g, "");
-
-  if (number < 1000) {
-    return number;
-  }
-
-  const shortIndex = [
-    { v: 1e3, s: "K" },
-    { v: 1e6, s: "M" },
-    { v: 1e9, s: "B" },
-    { v: 1e12, s: "T" },
-    { v: 1e15, s: "P" },
-    { v: 1e18, s: "E" },
-  ];
-
-  let index;
-
-  for (index = shortIndex.length - 1; index > 0; index--) {
-    if (number >= shortIndex[index].v) {
-      break;
-    }
-  }
-
-  return (
-    (number / shortIndex[index].v)
-      .toFixed(fixed || 2)
-      .replace(/\.0+$|(\.[0-9]*[1-9])0+$/, "$1") + shortIndex[index].s
-  );
+  return Intl.NumberFormat(navigator.language || navigator.userLanguage, {
+    notation: "compact",
+    maximumFractionDigits: fixed || 0,
+  }).format(number);
 }
 
 export function splitArray(array, amount = 1) {
@@ -201,26 +176,5 @@ export function splitArray(array, amount = 1) {
   return newArray;
 }
 
-export function formatBytes(_bytes) {
-  let bytes;
-
-  if (typeof _bytes === "string") {
-    try {
-      bytes = parseInt(_bytes);
-    } catch {
-      bytes = 0;
-    }
-  } else {
-    bytes = _bytes;
-  }
-
-  if (bytes === 0) {
-    return "0 Bytes";
-  }
-
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  const formattedBytes = (bytes / Math.pow(1024, i)).toFixed(2);
-
-  return `${formattedBytes} ${sizes[i]}`;
-}
+export const formatBytes = filesize;
+export const generateUUID = uuid;
