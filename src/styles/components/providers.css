@@ -24,6 +24,7 @@
 
 .area.providers .actions {
   display: flex;
+  flex-wrap: wrap;
   gap: calc(var(--small-gap) / 2.5);
 }
 
@@ -39,6 +40,8 @@
 
 .area.providers > div > .buttons {
   display: flex;
+  flex-wrap: wrap;
+
   gap: var(--small-gap);
   margin-top: var(--large-gap);
 }
@@ -106,7 +109,7 @@
   gap: var(--small-gap);
 }
 
-.provider-modal-container .provider-modal .provider-content input {
+.provider-modal-container .provider-modal .provider-content .input {
   background-color: rgba(var(--light-rgb), 0.75);
   border: var(--small-border) solid var(--lighter);
 
@@ -124,11 +127,19 @@
   height: 3rem;
 }
 
-.provider-modal-container .provider-modal .provider-content input:focus {
+.provider-modal-container .provider-modal .provider-content textarea.input {
+  resize: vertical;
+  height: 15rem;
+}
+
+.provider-modal-container .provider-modal .provider-content .input:focus {
   background-color: rgba(var(--light-rgb), 1.25);
 }
 
-.provider-modal-container .provider-modal .provider-content input::placeholder {
+.provider-modal-container
+  .provider-modal
+  .provider-content
+  .input::placeholder {
   font-weight: 300;
 
   color: var(--text);
@@ -139,12 +150,13 @@
 }
 
 @media (hover: hover) {
-  .provider-modal-container .provider-modal .provider-content input:hover {
+  .provider-modal-container .provider-modal .provider-content .input:hover {
     background-color: rgba(var(--light-rgb), 1.25);
   }
 }
 
 .provider-modal-container .provider-modal .provider-content .buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--small-gap);
 }

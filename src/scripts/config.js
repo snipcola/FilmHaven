@@ -322,6 +322,7 @@ export const settings = [
             icon: "sync",
             text: "Empty Cache",
           },
+          class: "secondary",
           onClick: function (self) {
             resetCache();
             document.body.classList.remove("active");

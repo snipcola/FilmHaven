@@ -1,4 +1,4 @@
-import { config } from "../config.js";
+import { config, defaultProviders as defaultProvidersList } from "../config.js";
 import { hideModal, setModal, showModal } from "./modal.js";
 import { getQuery, onQueryChange } from "../query.js";
 import { setTitle } from "./header.js";
@@ -124,9 +124,8 @@ function createTable(columns, rows) {
 
   table.append(headerRow);
 
-  for (const { cells, disabled } of rows) {
+  for (const cells of rows) {
     const row = document.createElement("tr");
-    if (disabled) row.classList.add("disabled");
 
     for (const cell of cells) {
       const td = document.createElement("td");
@@ -143,7 +142,7 @@ function createTable(columns, rows) {
   return table;
 }
 
-function createModal(titleText, buttonText, fields, onButtonClick) {
+function createModal(titleText, buttonText, fields, onButtonClick, textarea) {
   const modalContainer = document.createElement("div");
   const modal = document.createElement("div");
   const header = document.createElement("div");
@@ -160,7 +159,8 @@ function createModal(titleText, buttonText, fields, onButtonClick) {
   const inputs = [];
 
   for (const { name, placeholder, value } of fields) {
-    const input = document.createElement("input");
+    const input = document.createElement(textarea ? "textarea" : "input");
+    input.className = "input";
     if (placeholder) input.setAttribute("placeholder", placeholder);
     if (value) input.value = value;
     inputs.push({ input, name, value });
@@ -233,12 +233,30 @@ function modal() {
   let editModal = document.createElement("div");
   editModal.className = "provider-modal-container";
 
+  let rawModal = document.createElement("div");
+  rawModal.className = "provider-modal-container";
+
   function updateTable() {
     const tableRows = [];
+    const providerIndex = getProviderIndex();
 
     for (const [index, provider] of providers.entries()) {
       const actions = document.createElement("div");
       actions.className = "actions";
+
+      const selectButton = document.createElement("div");
+      const selectButtonIcon = document.createElement("i");
+      selectButton.className = "button secondary icon-only";
+      selectButtonIcon.className = "icon icon-check";
+      selectButton.append(selectButtonIcon);
+      selectButton.addEventListener("click", function () {
+        setProvider(index);
+        updateTable();
+      });
+
+      if (index === providerIndex) {
+        selectButton.classList.add("disabled");
+      }
 
       const moveUpButton = document.createElement("div");
       const moveUpButtonIcon = document.createElement("i");
@@ -253,7 +271,6 @@ function modal() {
 
         setProviders(providers.filter((p) => !p.default));
 
-        const providerIndex = getProviderIndex();
         let newIndex;
 
         if (providerIndex === index) {
@@ -262,7 +279,10 @@ function modal() {
           newIndex = providerIndex + 1;
         }
 
-        if (newIndex && providers[newIndex]) setProvider(newIndex);
+        if (typeof newIndex === "number" && providers[newIndex]) {
+          setProvider(newIndex);
+        }
+
         updateTable();
       });
 
@@ -288,7 +308,6 @@ function modal() {
 
         setProviders(providers.filter((p) => !p.default));
 
-        const providerIndex = getProviderIndex();
         let newIndex;
 
         if (providerIndex === index) {
@@ -297,7 +316,10 @@ function modal() {
           newIndex = providerIndex - 1;
         }
 
-        if (newIndex && providers[newIndex]) setProvider(newIndex);
+        if (typeof newIndex === "number" && providers[newIndex]) {
+          setProvider(newIndex);
+        }
+
         updateTable();
       });
 
@@ -381,7 +403,6 @@ function modal() {
         providers = providers.filter((_, i) => i !== index);
         setProviders(providers.filter((p) => !p.default));
 
-        const providerIndex = getProviderIndex();
         let newIndex;
 
         if (providerIndex === index) {
@@ -400,16 +421,26 @@ function modal() {
             : providers.length - 1;
         }
 
-        if (newIndex && providers[newIndex]) setProvider(newIndex);
+        if (typeof newIndex === "number" && providers[newIndex]) {
+          setProvider(newIndex);
+        }
+
         updateTable();
       });
 
-      actions.append(moveUpButton, moveDownButton, editButton, deleteButton);
+      actions.append(
+        ...(provider.default
+          ? [selectButton]
+          : [
+              selectButton,
+              moveUpButton,
+              moveDownButton,
+              editButton,
+              deleteButton,
+            ]),
+      );
 
-      tableRows.push({
-        cells: [provider.name || provider.base, actions],
-        disabled: provider.default || false,
-      });
+      tableRows.push([provider.name || provider.base, actions]);
     }
 
     const newTable =
@@ -496,7 +527,98 @@ function modal() {
   resetButtonText.innerText = "Reset";
   resetButton.append(resetButtonIcon, resetButtonText);
 
-  buttons.append(createButton, resetButton);
+  const rawButton = document.createElement("div");
+  const rawButtonIcon = document.createElement("i");
+  const rawButtonText = document.createElement("span");
+  rawButton.className = "button secondary";
+  rawButtonIcon.className = "icon icon-file";
+  rawButtonText.className = "text";
+  rawButtonText.innerText = "Raw";
+  rawButton.append(rawButtonIcon, rawButtonText);
+  rawButton.addEventListener("click", function () {
+    const newRawModal = createModal(
+      "Edit Providers (Raw JSON)",
+      "Edit",
+      [
+        {
+          name: "providers",
+          placeholder: "JSON Array",
+          value: JSON.stringify(providers.filter((p) => !p.default)),
+        },
+      ],
+      function ({ providers: newProviders }) {
+        if (newProviders === "") {
+          return {
+            success: false,
+            error: "Providers field is empty.",
+          };
+        }
+
+        let jsonArray;
+
+        try {
+          jsonArray = JSON.parse(newProviders);
+        } catch {
+          return {
+            success: false,
+            error: "Failed to parse JSON.",
+          };
+        }
+
+        if (!Array.isArray(jsonArray)) {
+          return {
+            success: false,
+            error: "Not a JSON array.",
+          };
+        }
+
+        const forcedProperties = ["base", "movie", "tv"];
+        const optionalProperties = ["name"];
+
+        function improperlyStructured() {
+          return {
+            success: false,
+            error: "JSON is improperly structured.",
+          };
+        }
+
+        for (const object of jsonArray) {
+          if (typeof object !== "object") {
+            return improperlyStructured();
+          }
+
+          for (const forcedProperty of forcedProperties) {
+            if (!object[forcedProperty]) {
+              return improperlyStructured();
+            }
+          }
+
+          for (const [key, value] of Object.entries(object)) {
+            if (
+              ![...forcedProperties, ...optionalProperties].includes(key) ||
+              typeof value !== "string" ||
+              value === ""
+            ) {
+              return improperlyStructured();
+            }
+          }
+        }
+
+        setProviders(jsonArray);
+        setProvider(0);
+        providers = getProviders();
+        updateTable();
+        return { success: true };
+      },
+      true,
+    );
+
+    newRawModal.classList.add("active");
+    rawModal.replaceWith(newRawModal);
+    rawModal = newRawModal;
+  });
+
+  buttons.append(createButton, resetButton, rawButton);
   providersContent.append(providersTable, buttons);
 
   const useDefaultProviders = getDefaultProviders();
@@ -513,6 +635,25 @@ function modal() {
     function (defaults) {
       setDefaultProviders(defaults);
       providers = getProviders();
+
+      const defaultProvidersLength = defaultProvidersList.length;
+      const providerIndex = getProviderIndex();
+      let newIndex;
+
+      if (defaults === "include") {
+        newIndex = providers[providerIndex + defaultProvidersLength]
+          ? providerIndex + defaultProvidersLength
+          : 0;
+      } else {
+        newIndex = providers[providerIndex - defaultProvidersLength]
+          ? providerIndex - defaultProvidersLength
+          : 0;
+      }
+
+      if (typeof newIndex === "number" && providers[newIndex]) {
+        setProvider(newIndex);
+      }
+
       updateTable();
     },
   );
@@ -531,7 +672,7 @@ function modal() {
   setModal(
     "Providers",
     null,
-    [creationModal, editModal, settingsArea, providersArea],
+    [creationModal, editModal, rawModal, settingsArea, providersArea],
     "arrow-left",
   );
   showModal();
