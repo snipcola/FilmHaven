@@ -182,7 +182,7 @@ export const config = {
 export const api = {
   url: "https://api.tmdb.org",
   version: "3",
-  key: "5622cafbfe8f8cfe358a29c53e19bba0",
+  defaultKey: "5622cafbfe8f8cfe358a29c53e19bba0",
   image: {
     url: "https://image.tmdb.org/t/p",
     poster: "w342",
@@ -238,6 +238,7 @@ export const store = {
     theme: `${prefix}-theme`,
     adult: `${prefix}-adult`,
     language: `${prefix}-language`,
+    tmdbKey: `${prefix}-tmdb-key`,
     defaultProviders: `${prefix}-default-providers`,
     providers: `${prefix}-providers`,
     provider: `${prefix}-provider`,

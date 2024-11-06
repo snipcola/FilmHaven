@@ -1,4 +1,4 @@
-import { config, defaultProviders as defaultProvidersList } from "../config.js";
+import { config } from "../config.js";
 import { hideModal, setModal, showModal } from "./modal.js";
 import { getQuery, onQueryChange } from "../query.js";
 import { setTitle } from "./header.js";
@@ -10,6 +10,7 @@ import {
   setDefaultProviders,
 } from "../store/default-providers.js";
 import { generateUUID } from "../functions.js";
+import { getTMDBKey, resetTMDBKey, setTMDBKey } from "../store/tmdb-key.js";
 
 export function parseProvider(provider, info) {
   let url = info.type === "movie" ? provider.movie : provider.tv;
@@ -143,6 +144,37 @@ function createTable(columns, rows) {
   return table;
 }
 
+function createButton(text, icon, buttonClasses, buttonText, onClick) {
+  const container = document.createElement("div");
+
+  const label = document.createElement("div");
+  const labelIcon = document.createElement("i");
+  const labelText = document.createElement("span");
+
+  container.className = "container";
+
+  label.className = "label";
+  labelIcon.className = `icon icon-${icon}`;
+  labelText.className = "text";
+  labelText.innerHTML = text;
+
+  label.append(labelIcon);
+  label.append(labelText);
+  container.append(label);
+
+  const button = document.createElement("div");
+  const buttonTextElem = document.createElement("span");
+  button.className = "button";
+  if (buttonClasses) button.classList.add(...buttonClasses);
+  buttonTextElem.className = "text";
+  buttonTextElem.innerText = buttonText;
+  button.append(buttonTextElem);
+  button.addEventListener("click", onClick);
+
+  container.append(button);
+  return container;
+}
+
 function createModal(titleText, buttonText, fields, onButtonClick, textarea) {
   const modalContainer = document.createElement("div");
   const modal = document.createElement("div");
@@ -179,13 +211,13 @@ function createModal(titleText, buttonText, fields, onButtonClick, textarea) {
   const buttons = document.createElement("div");
   buttons.className = "buttons";
 
-  const createButton = document.createElement("div");
+  const _createButton = document.createElement("div");
   const createButtonText = document.createElement("span");
-  createButton.className = "button";
+  _createButton.className = "button";
   createButtonText.className = "text";
   createButtonText.innerText = buttonText;
-  createButton.append(createButtonText);
-  createButton.addEventListener("click", function () {
+  _createButton.append(createButtonText);
+  _createButton.addEventListener("click", function () {
     const values = inputs.reduce((acc, { name, input }) => {
       acc[name] = input.value;
       return acc;
@@ -205,7 +237,7 @@ function createModal(titleText, buttonText, fields, onButtonClick, textarea) {
   cancelButton.append(cancelButtonText);
   cancelButton.addEventListener("click", close);
 
-  buttons.append(createButton, cancelButton);
+  buttons.append(_createButton, cancelButton);
   content.append(buttons);
 
   header.append(title);
@@ -442,15 +474,15 @@ function modal() {
     },
   );
 
-  const createButton = document.createElement("div");
+  const _createButton = document.createElement("div");
   const createButtonIcon = document.createElement("i");
   const createButtonText = document.createElement("span");
-  createButton.className = "button";
+  _createButton.className = "button";
   createButtonIcon.className = "icon icon-plus";
   createButtonText.className = "text";
   createButtonText.innerText = "Create";
-  createButton.append(createButtonIcon, createButtonText);
-  createButton.addEventListener("click", function () {
+  _createButton.append(createButtonIcon, createButtonText);
+  _createButton.addEventListener("click", function () {
     creationModal.classList.add("active");
   });
 
@@ -556,8 +588,37 @@ function modal() {
     rawModal = newRawModal;
   });
 
-  buttons.append(createButton, resetButton, rawButton);
+  buttons.append(_createButton, resetButton, rawButton);
   providersContent.append(providersTable, buttons);
+
+  const tmdbApiKeyModal = createModal(
+    "TMDB API Key",
+    "Set",
+    [
+      {
+        name: "apiKey",
+        placeholder: "Key (leave blank for default)",
+        value: getTMDBKey(true),
+      },
+    ],
+    function ({ apiKey }) {
+      if (apiKey && apiKey !== "") setTMDBKey(apiKey);
+      else resetTMDBKey();
+
+      window.location.reload();
+      return { success: true };
+    },
+  );
+
+  const tmdbApiKeyButton = createButton(
+    "TMDB API Key",
+    "key",
+    ["secondary"],
+    "Edit",
+    function () {
+      tmdbApiKeyModal.classList.add("active");
+    },
+  );
 
   const useDefaultProviders = getDefaultProviders();
   const defaultProvidersSelect = createSelect(
@@ -596,12 +657,20 @@ function modal() {
     updateTable();
   });
 
-  settingsContent.append(defaultProvidersSelect);
+  settingsContent.className = "settings-content";
+  settingsContent.append(tmdbApiKeyButton, defaultProvidersSelect);
 
   setModal(
     "Providers",
     null,
-    [creationModal, editModal, rawModal, settingsArea, providersArea],
+    [
+      tmdbApiKeyModal,
+      creationModal,
+      editModal,
+      rawModal,
+      settingsArea,
+      providersArea,
+    ],
     "arrow-left",
   );
   showModal();

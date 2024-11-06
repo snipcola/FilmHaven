@@ -1,4 +1,5 @@
 import { api } from "../config.js";
+import { getTMDBKey } from "../store/tmdb-key.js";
 import { getAdult } from "../store/adult.js";
 import { getLanguage } from "../store/language.js";
 
@@ -37,7 +38,7 @@ export async function sendRequest(
   const apiUrl = getApiUrl();
   const url = new URL(`${apiUrl}/${path}`);
 
-  url.searchParams.append("api_key", api.key);
+  url.searchParams.append("api_key", getTMDBKey());
   url.searchParams.append("language", getLanguage());
   url.searchParams.append("include_adult", getAdult() === "show");
 

@@ -18,10 +18,6 @@
   -webkit-user-select: none;
 }
 
-.area.providers .container select {
-  width: fit-content;
-}
-
 .area.providers .actions {
   display: flex;
   flex-wrap: wrap;
@@ -44,6 +40,17 @@
 
   gap: var(--small-gap);
   margin-top: var(--large-gap);
+}
+
+.area.providers > .settings-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--large-gap) * 1.5);
+}
+
+.area.providers > .settings-content .select,
+.area.providers > .settings-content .button {
+  width: 100%;
 }
 
 .area.providers .notice {
