@@ -1,5 +1,19 @@
 @media only screen and (max-width: 600px) {
   .provider-modal-container .provider-modal {
-    width: 70dvw;
+    width: 80dvw;
+    max-width: 80dvw;
+  }
+
+  .area.providers > .settings-content,
+  .area.providers > div > .buttons,
+  .provider-modal-container .provider-modal .provider-content .buttons {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .area.providers > .settings-content > .container,
+  .area.providers > div > .buttons .button,
+  .provider-modal-container .provider-modal .provider-content .buttons .button {
+    width: 100%;
   }
 }

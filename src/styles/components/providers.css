@@ -29,6 +29,15 @@
   padding: var(--small-padding);
 }
 
+.area.providers table,
+.area.providers table tr > td:last-child {
+  width: 100%;
+}
+
+.area.providers table tr > td:not(:last-child) {
+  white-space: nowrap;
+}
+
 .area.providers table tr.disabled .actions {
   opacity: var(--dimmer-opacity) !important;
   pointer-events: none !important;
