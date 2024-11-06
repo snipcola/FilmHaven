@@ -730,7 +730,7 @@
 
 .watch .details .season-card .episodes .episode .episode-title .time {
   display: flex;
-  gap: var(--small-gap);
+  gap: calc(var(--small-gap) / 1.5);
 
   align-items: center;
   justify-content: center;
@@ -738,7 +738,7 @@
   background-color: var(--light);
   border: var(--small-border) solid var(--lighter);
 
-  padding: calc(var(--small-padding) / 1.5) calc(var(--small-padding) / 1.25);
+  padding: calc(var(--small-padding) / 1.25) var(--small-padding);
   box-sizing: border-box;
 
   border-radius: 5rem;

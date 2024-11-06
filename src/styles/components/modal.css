@@ -100,7 +100,7 @@ body.modal-active .modal-container {
   background-color: var(--light);
   border: var(--small-border) solid var(--lighter);
 
-  padding: calc(var(--small-padding) / 1.75) calc(var(--small-padding) / 1.5);
+  padding: calc(var(--small-padding) / 1.75) var(--small-padding);
   box-sizing: border-box;
 
   text-align: center;
