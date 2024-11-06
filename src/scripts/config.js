@@ -98,7 +98,7 @@ export const config = {
           icon: "download",
           url: window.location.pathname,
           label: "Download",
-          download: "FilmHaven.html",
+          download: `${name}.html`,
         },
       ],
     ],
