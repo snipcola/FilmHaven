@@ -20,12 +20,12 @@ export function parseProvider(provider, info) {
       replace: provider.base,
     },
     {
-      text: "%i",
-      replace: info.id,
-    },
-    {
       text: "%i2",
       replace: info.imdbId,
+    },
+    {
+      text: "%i",
+      replace: info.id,
     },
     ...(info.type !== "movie"
       ? [
