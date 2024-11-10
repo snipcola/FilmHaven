@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  release:
+    name: Build and Publish
+    runs-on: host
+
+    env:
+      SITE_DIRECTORY: /websites/filmhaven
+      SITE_OUTPUT: ./dist
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Publish
+        run: |
+          mkdir -p "$SITE_DIRECTORY"
+          rm -rf "$SITE_DIRECTORY"/*
+          mv "$SITE_OUTPUT"/.* "$SITE_DIRECTORY" || true
+          mv "$SITE_OUTPUT"/* "$SITE_DIRECTORY"
