@@ -45,13 +45,13 @@ html {
   html {
     --background: #e2e2de;
     --primary: #2db119;
-    --light: #c8c9c5;
-    --light-rgb: 200, 201, 197;
-    --lighter: #b3b2ae;
-    --lightest: #8f8c8c;
-    --lightest-rgb: 143, 140, 140;
+    --light: #cfd1cc;
+    --light-rgb: 207, 209, 204;
+    --lighter: #bbbab6;
+    --lightest: #999797;
+    --lightest-rgb: 153, 151, 151;
     --dark: #d9d8d4;
-    --text: #2b2d29;
+    --text: #0f0f0e;
     --blue: #096c80;
     --green: #0b8819;
     --orange: #826a0a;
@@ -76,13 +76,13 @@ html.dark {
 html.light {
   --background: #e2e2de;
   --primary: #2db119;
-  --light: #c8c9c5;
-  --light-rgb: 200, 201, 197;
-  --lighter: #b3b2ae;
-  --lightest: #8f8c8c;
-  --lightest-rgb: 143, 140, 140;
+  --light: #cfd1cc;
+  --light-rgb: 207, 209, 204;
+  --lighter: #bbbab6;
+  --lightest: #999797;
+  --lightest-rgb: 153, 151, 151;
   --dark: #d9d8d4;
-  --text: #2b2d29;
+  --text: #0f0f0e;
   --blue: #096c80;
   --green: #0b8819;
   --orange: #826a0a;
