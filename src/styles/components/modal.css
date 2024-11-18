@@ -104,7 +104,7 @@ body.modal-active .modal-container {
   box-sizing: border-box;
 
   text-align: center;
-  border-radius: 5rem;
+  border-radius: calc(var(--border-radius) * 1.25);
 }
 
 .modal-header .info.active {

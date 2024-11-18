@@ -216,7 +216,7 @@
 
 .watch .downloads .torrents .download span {
   padding: calc(var(--small-padding) / 2.5) calc(var(--small-padding) / 2);
-  border-radius: 5rem;
+  border-radius: calc(var(--border-radius) * 1.25);
 
   color: var(--dark);
   font-weight: 500;
@@ -484,7 +484,7 @@
   box-sizing: border-box;
 
   overflow: hidden;
-  border-radius: 5rem;
+  border-radius: 50%;
 
   background-color: var(--light);
 }
@@ -508,7 +508,7 @@
 
 .watch .details .rating {
   background-color: var(--light);
-  border-radius: 5rem;
+  border-radius: calc(var(--border-radius) * 1.25);
 
   width: fit-content;
   font-size: var(--small-font);
@@ -741,7 +741,7 @@
   padding: calc(var(--small-padding) / 1.25) var(--small-padding);
   box-sizing: border-box;
 
-  border-radius: 5rem;
+  border-radius: calc(var(--border-radius) * 1.25);
 }
 
 .watch .details .season-card .episodes .episode.active .episode-title .time {

@@ -12,7 +12,7 @@
   margin-right: auto;
 
   background-color: var(--light);
-  border-radius: 5rem;
+  border-radius: calc(var(--border-radius) * 1.25);
 
   padding: calc(var(--small-padding) / 1.25) var(--small-padding);
   box-sizing: border-box;
