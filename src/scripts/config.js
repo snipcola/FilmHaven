@@ -14,9 +14,10 @@ import { getLanguages } from "./api/languages.js";
 import { getLanguage, setLanguage } from "./store/language.js";
 import { getUrlWithQueries, setQueries } from "./query.js";
 
-const name = "FilmHaven";
-const repository = `https://git.snipcola.com/snipcola/${name}`;
-const author = "Snipcola";
+const name = __NAME__ || "FilmHaven";
+const repository =
+  __REPOSITORY__ || "https://git.snipcola.com/snipcola/FilmHaven";
+const author = __AUTHOR__ || "Snipcola";
 
 export const defaultProviders = [
   {
@@ -51,17 +52,17 @@ export const config = {
       return __GIT_COMMIT_HASH__;
     } catch {}
   })(),
-  storePrefix: "fh",
-  defaultLanguage: "en",
+  storePrefix: __STORE_PREFIX__ || "fh",
+  defaultLanguage: __DEFAULT_LANGUAGE__ || "en",
   header: {
     name: {
       normal: {
-        text: "Film",
-        accent: "Haven",
+        text: __HEADER_NAME_TEXT__ || "Film",
+        accent: __HEADER_NAME_ACCENT__ || "Haven",
       },
       mobile: {
-        text: "F",
-        accent: "H",
+        text: __HEADER_NAME_MOBILE_TEXT__ || "F",
+        accent: __HEADER_NAME_MOBILE_ACCENT__ || "H",
       },
     },
     links: [
@@ -182,7 +183,7 @@ export const config = {
 export const api = {
   url: "https://api.tmdb.org",
   version: "3",
-  defaultKey: "5622cafbfe8f8cfe358a29c53e19bba0",
+  defaultKey: __TMDB_API_DEFAULT_KEY__ || "5622cafbfe8f8cfe358a29c53e19bba0",
   image: {
     url: "https://image.tmdb.org/t/p",
     poster: "w342",
