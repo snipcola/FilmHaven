@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config ./build/config.production.js",
     "dev": "webpack --config ./build/config.development.js",
-    "release": "git push origin main:release -f",
+    "release": "docker buildx build --platform linux/amd64,linux/arm64 -t git.snipcola.com/snipcola/filmhaven:latest --push .",
     "deploy-vercel": "vercel --prod",
     "format": "prettier --write \"build/**/*\" \"src/**/*\""
   },
