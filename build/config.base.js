@@ -44,7 +44,7 @@ export default {
       },
       {
         test: /\.pug$/,
-        loader: "pug-loader",
+        loader: "@webdiscus/pug-loader",
       },
     ],
   },
