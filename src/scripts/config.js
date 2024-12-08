@@ -14,10 +14,12 @@ import { getLanguages } from "./api/languages.js";
 import { getLanguage, setLanguage } from "./store/language.js";
 import { getUrlWithQueries, setQueries } from "./query.js";
 
-const name = __NAME__ || "FilmHaven";
+const name = typeof __NAME__ !== "undefined" ? __NAME__ : "FilmHaven";
 const repository =
-  __REPOSITORY__ || "https://git.snipcola.com/snipcola/FilmHaven";
-const author = __AUTHOR__ || "Snipcola";
+  typeof __REPOSITORY__ !== "undefined"
+    ? __REPOSITORY__
+    : "https://git.snipcola.com/snipcola/FilmHaven";
+const author = typeof __AUTHOR__ !== "undefined" ? __AUTHOR__ : "Snipcola";
 
 export const defaultProviders = [
   {
@@ -47,22 +49,32 @@ export const config = {
   name,
   author,
   repository,
-  commitHash: (function () {
-    try {
-      return __GIT_COMMIT_HASH__;
-    } catch {}
-  })(),
-  storePrefix: __STORE_PREFIX__ || "fh",
-  defaultLanguage: __DEFAULT_LANGUAGE__ || "en",
+  commitHash: typeof __GIT_COMMIT_HASH__ !== "undefined" && __GIT_COMMIT_HASH__,
+  storePrefix:
+    typeof __STORE_PREFIX__ !== "undefined" ? __STORE_PREFIX__ : "fh",
+  defaultLanguage:
+    typeof __DEFAULT_LANGUAGE__ !== "undefined" ? __DEFAULT_LANGUAGE__ : "en",
   header: {
     name: {
       normal: {
-        text: __HEADER_NAME_TEXT__ || "Film",
-        accent: __HEADER_NAME_ACCENT__ || "Haven",
+        text:
+          typeof __HEADER_NAME_TEXT__ !== "undefined"
+            ? __HEADER_NAME_TEXT__
+            : "Film",
+        accent:
+          typeof __HEADER_NAME_ACCENT__ !== "undefined"
+            ? __HEADER_NAME_ACCENT__
+            : "Haven",
       },
       mobile: {
-        text: __HEADER_NAME_MOBILE_TEXT__ || "F",
-        accent: __HEADER_NAME_MOBILE_ACCENT__ || "H",
+        text:
+          typeof __HEADER_NAME_MOBILE_TEXT__ !== "undefined"
+            ? __HEADER_NAME_MOBILE_TEXT__
+            : "F",
+        accent:
+          typeof __HEADER_NAME_MOBILE_ACCENT__ !== "undefined"
+            ? __HEADER_NAME_MOBILE_ACCENT__
+            : "H",
       },
     },
     links: [
@@ -183,7 +195,10 @@ export const config = {
 export const api = {
   url: "https://api.tmdb.org",
   version: "3",
-  defaultKey: __TMDB_API_DEFAULT_KEY__ || "5622cafbfe8f8cfe358a29c53e19bba0",
+  defaultKey:
+    typeof __TMDB_API_DEFAULT_KEY__ !== "undefined"
+      ? __TMDB_API_DEFAULT_KEY__
+      : "5622cafbfe8f8cfe358a29c53e19bba0",
   image: {
     url: "https://image.tmdb.org/t/p",
     poster: "w342",
