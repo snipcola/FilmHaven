@@ -6,9 +6,9 @@
   "scripts": {
     "build": "webpack --config ./build/config.production.js",
     "dev": "webpack --config ./build/config.development.js",
-    "release": "docker buildx build --platform linux/amd64,linux/arm64 -t git.snipcola.com/snipcola/filmhaven:latest --push .",
-    "deploy-vercel": "vercel --prod",
-    "format": "prettier --write \"build/**/*\" \"src/**/*\""
+    "format": "prettier --write \"build/**/*\" \"src/**/*\"",
+    "release": "git push origin main:release --force",
+    "deploy-vercel": "vercel --prod"
   },
   "devDependencies": {
     "@webdiscus/pug-loader": "2.11.0",
