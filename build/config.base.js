@@ -2,7 +2,6 @@ import webpack from "webpack";
 const { DefinePlugin } = webpack;
 
 import { src, dist } from "./paths.js";
-import "dotenv/config";
 
 import path from "path";
 import childProcess from "child_process";
@@ -66,24 +65,6 @@ export default {
       ? [
           new DefinePlugin({
             __GIT_COMMIT_HASH__: JSON.stringify(gitCommitHash),
-            __NAME__: JSON.stringify(process.env.NAME),
-            __REPOSITORY__: JSON.stringify(process.env.REPOSITORY),
-            __AUTHOR__: JSON.stringify(process.env.AUTHOR),
-            __STORE_PREFIX__: JSON.stringify(process.env.STORE_PREFIX),
-            __DEFAULT_LANGUAGE__: JSON.stringify(process.env.DEFAULT_LANGUAGE),
-            __HEADER_NAME_TEXT__: JSON.stringify(process.env.HEADER_NAME_TEXT),
-            __HEADER_NAME_ACCENT__: JSON.stringify(
-              process.env.HEADER_NAME_ACCENT,
-            ),
-            __HEADER_NAME_MOBILE_TEXT__: JSON.stringify(
-              process.env.HEADER_NAME_MOBILE_TEXT,
-            ),
-            __HEADER_NAME_MOBILE_ACCENT__: JSON.stringify(
-              process.env.HEADER_NAME_MOBILE_ACCENT,
-            ),
-            __TMDB_API_DEFAULT_KEY__: JSON.stringify(
-              process.env.TMDB_API_DEFAULT_KEY,
-            ),
           }),
         ]
       : []),
