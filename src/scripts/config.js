@@ -46,7 +46,7 @@ export const config = {
   name,
   author,
   repository,
-  commitHash: typeof __GIT_COMMIT_HASH__ !== "undefined" && __GIT_COMMIT_HASH__,
+  version: typeof __VERSION__ !== "undefined" && __VERSION__,
   storePrefix: "fh",
   defaultLanguage: "en",
   header: {

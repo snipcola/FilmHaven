@@ -78,11 +78,6 @@
 }
 
 @media (hover: hover) {
-  .footer-container .footer .copyright span.has-repo:hover {
-    cursor: pointer;
-    background-color: var(--lightest);
-  }
-
   .footer-container .footer .links .link:hover {
     opacity: 100%;
   }

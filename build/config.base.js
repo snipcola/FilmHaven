@@ -2,29 +2,19 @@ import webpack from "webpack";
 const { DefinePlugin } = webpack;
 
 import { src, dist } from "./paths.js";
-
-import path from "path";
-import childProcess from "child_process";
-
-let gitCommitHash;
-const vercelGitCommitHash = process?.env?.VERCEL_GIT_COMMIT_SHA;
-
-if (typeof vercelGitCommitHash === "string" && vercelGitCommitHash !== "") {
-  gitCommitHash = vercelGitCommitHash.trim().substring(0, 7);
-} else {
-  try {
-    gitCommitHash = childProcess
-      .execSync("git rev-parse --short HEAD")
-      .toString()
-      .trim();
-  } catch {}
-}
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+import { readFileSync } from "fs";
 
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import RemoveEmptyScriptsPlugin from "webpack-remove-empty-scripts";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const packageJSONPath = path.resolve(__dirname, "..", "package.json");
+const { version } = JSON.parse(readFileSync(packageJSONPath, "utf8"));
 
 export default {
   entry: {
@@ -61,12 +51,8 @@ export default {
       scriptLoading: "defer",
       inject: false,
     }),
-    ...(gitCommitHash
-      ? [
-          new DefinePlugin({
-            __GIT_COMMIT_HASH__: JSON.stringify(gitCommitHash),
-          }),
-        ]
-      : []),
+    new DefinePlugin({
+      __VERSION__: JSON.stringify(version),
+    }),
   ],
 };
