@@ -2,10 +2,10 @@ FROM node:23.5.0-alpine AS build
 RUN mkdir -p /usr/src/app && chown -R node:node /usr/src/app
 WORKDIR /usr/src/app
 COPY package.json src LICENSE .
-RUN corepack enable pnpm && pnpm install
+RUN npm install
 USER node
 COPY --chown=node:node . .
-RUN pnpm build
+RUN npm run build
 
 FROM nginx:1.27.3-alpine
 COPY --from=build /usr/src/app/dist/index.html /usr/share/nginx/html/index.html

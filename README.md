@@ -3,7 +3,7 @@
 A simple, customizable, and lightweight frontend to view and interact with movies & shows.
 
 <div align="center">
-<img src="./assets/showcase.png" width="600"/>
+<img src="assets/showcase.png" width="600"/>
 </div>
 
 **Accessible here:**

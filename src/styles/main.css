@@ -1,51 +1,51 @@
-@import url(./external/normalize.css);
-@import url(./external/font.css);
+@import url(external/normalize.css);
+@import url(external/font.css);
 
-@import url(./variables.css);
-@import url(./body.css);
-@import url(./icons.css);
-@import url(./scrollbar.css);
+@import url(variables.css);
+@import url(body.css);
+@import url(icons.css);
+@import url(scrollbar.css);
 
-@import url(./components/cache.css);
-@import url(./components/dim.css);
+@import url(components/cache.css);
+@import url(components/dim.css);
 
-@import url(./components/header.css);
-@import url(./components/header.responsive.css);
+@import url(components/header.css);
+@import url(components/header.responsive.css);
 
-@import url(./components/content.css);
+@import url(components/content.css);
 
-@import url(./components/carousel.css);
-@import url(./components/carousel.responsive.css);
+@import url(components/carousel.css);
+@import url(components/carousel.responsive.css);
 
-@import url(./components/button.css);
-@import url(./components/area.css);
+@import url(components/button.css);
+@import url(components/area.css);
 
-@import url(./components/control.css);
-@import url(./components/control.responsive.css);
+@import url(components/control.css);
+@import url(components/control.responsive.css);
 
-@import url(./components/card.css);
-@import url(./components/card.responsive.css);
+@import url(components/card.css);
+@import url(components/card.responsive.css);
 
-@import url(./components/modal.css);
-@import url(./components/modal.responsive.css);
+@import url(components/modal.css);
+@import url(components/modal.responsive.css);
 
-@import url(./components/genre.css);
-@import url(./components/genre.responsive.css);
+@import url(components/genre.css);
+@import url(components/genre.responsive.css);
 
-@import url(./components/search.css);
-@import url(./components/search.responsive.css);
+@import url(components/search.css);
+@import url(components/search.responsive.css);
 
-@import url(./components/select.css);
-@import url(./components/notice.css);
+@import url(components/select.css);
+@import url(components/notice.css);
 
-@import url(./components/watch.css);
-@import url(./components/watch.responsive.css);
+@import url(components/watch.css);
+@import url(components/watch.responsive.css);
 
-@import url(./components/settings.css);
-@import url(./components/settings.responsive.css);
+@import url(components/settings.css);
+@import url(components/settings.responsive.css);
 
-@import url(./components/providers.css);
-@import url(./components/providers.responsive.css);
+@import url(components/providers.css);
+@import url(components/providers.responsive.css);
 
-@import url(./components/table.css);
-@import url(./components/footer.css);
+@import url(components/table.css);
+@import url(components/footer.css);
