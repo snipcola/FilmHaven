@@ -29,6 +29,8 @@ html(lang = "en")
       "display": "standalone",
       "start_url": "https://fh.snipcola.com"
     })).toString("base64")}`)
+    link(rel = "preconnect", href = "https://api.tmdb.org")
+    link(rel = "preconnect", href = "https://image.tmdb.org")
     each cssFile in htmlWebpackPlugin.files.css
       style !{compilation.assets[cssFile.substr(htmlWebpackPlugin.files.publicPath.length)].source()}
   body

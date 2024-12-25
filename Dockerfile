@@ -2,7 +2,7 @@ FROM node:23.3.0-alpine AS build
 RUN mkdir -p /usr/src/app && chown -R node:node /usr/src/app
 WORKDIR /usr/src/app
 COPY package.json src LICENSE .
-RUN npm install -g pnpm && pnpm install
+RUN corepack enable pnpm && pnpm install
 USER node
 COPY --chown=node:node . .
 RUN pnpm build
