@@ -1,4 +1,4 @@
-FROM node:23.3.0-alpine AS build
+FROM node:23.5.0-alpine AS build
 RUN mkdir -p /usr/src/app && chown -R node:node /usr/src/app
 WORKDIR /usr/src/app
 COPY package.json src LICENSE .

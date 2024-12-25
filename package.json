@@ -1,13 +1,13 @@
 {
   "name": "filmhaven",
   "author": "Snipcola",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "webpack --config ./build/config.production.js",
     "dev": "webpack --config ./build/config.development.js",
-    "format": "prettier --write \"build/**/*\" \"src/**/*\"",
+    "format": "prettier --write \"build/**/*.js\" \"src/**/*.{js,css}\"",
     "release": "git push origin main:release --force",
     "deploy-vercel": "vercel --prod"
   },
