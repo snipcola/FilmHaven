@@ -3,13 +3,15 @@
 A simple, customizable, and lightweight frontend to view and interact with movies & shows.
 
 <div align="center">
-<img src="assets/showcase.png" width="600"/>
+
+![preview](assets/preview.png)
+
 </div>
 
 **Accessible here:**
 
-- <a target="\_blank" href="https://fh.snipcola.com">fh.snipcola.com</a>
-- <a target="\_blank" href="https://film-haven.vercel.app">film-haven.vercel.app</a>
+- [fh.snipcola.com](https://fh.snipcola.com)
+- [film-haven.vercel.app](https://film-haven.vercel.app)
 
 ## 🗒️ - Note
 
