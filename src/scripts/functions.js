@@ -1,7 +1,7 @@
 import { config } from "./config.js";
 import { getQuery } from "./query.js";
 
-import { v4 as uuid } from "uuid";
+import { ulid } from "ulidx";
 import { filesize } from "filesize";
 
 export function transparentImage() {
@@ -177,4 +177,4 @@ export function splitArray(array, amount = 1) {
 }
 
 export const formatBytes = filesize;
-export const generateUUID = uuid;
+export const generateULID = ulid;

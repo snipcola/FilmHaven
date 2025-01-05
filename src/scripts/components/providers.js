@@ -9,7 +9,7 @@ import {
   getDefaultProviders,
   setDefaultProviders,
 } from "../store/default-providers.js";
-import { generateUUID } from "../functions.js";
+import { generateULID } from "../functions.js";
 import { getTMDBKey, resetTMDBKey, setTMDBKey } from "../store/tmdb-key.js";
 
 export function parseProvider(provider, info) {
@@ -463,7 +463,7 @@ function modal() {
         };
       }
 
-      const provider = { id: generateUUID(), base, movie, tv };
+      const provider = { id: generateULID(), base, movie, tv };
       if (name) provider.name = name;
 
       providers.push(provider);
@@ -574,7 +574,7 @@ function modal() {
           }
         }
 
-        setProviders(jsonArray.map((p) => ({ id: generateUUID(), ...p })));
+        setProviders(jsonArray.map((p) => ({ id: generateULID(), ...p })));
         resetProvider();
         providers = getProviders();
         updateTable();
