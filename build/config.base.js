@@ -9,7 +9,7 @@ import { readFileSync } from "fs";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import RemoveEmptyScriptsPlugin from "webpack-remove-empty-scripts";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import UglifyJsPlugin from "uglifyjs-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
@@ -40,14 +40,15 @@ export default {
     ],
   },
   optimization: {
+    minimize: true,
     minimizer: [
-      "...",
-      new UglifyJsPlugin({
-        uglifyOptions: {
-          output: {
+      new TerserPlugin({
+        terserOptions: {
+          format: {
             comments: false,
           },
         },
+        extractComments: false,
       }),
       new CssMinimizerPlugin(),
     ],
