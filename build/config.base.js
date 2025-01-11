@@ -1,7 +1,7 @@
 import webpack from "webpack";
 const { DefinePlugin } = webpack;
 
-import { src, dist } from "./paths.js";
+import { src, out } from "./paths.js";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
@@ -9,6 +9,7 @@ import { readFileSync } from "fs";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import RemoveEmptyScriptsPlugin from "webpack-remove-empty-scripts";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import UglifyJsPlugin from "uglifyjs-webpack-plugin";
 import CssMinimizerPlugin from "css-minimizer-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
@@ -22,7 +23,7 @@ export default {
     styles: path.resolve(src, "styles", "main.css"),
   },
   output: {
-    path: dist,
+    path: out,
     filename: "[contenthash].js",
     publicPath: "",
   },
@@ -39,7 +40,17 @@ export default {
     ],
   },
   optimization: {
-    minimizer: ["...", new CssMinimizerPlugin()],
+    minimizer: [
+      "...",
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          output: {
+            comments: false,
+          },
+        },
+      }),
+      new CssMinimizerPlugin(),
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),

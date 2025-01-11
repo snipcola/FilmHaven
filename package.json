@@ -1,12 +1,12 @@
 {
   "name": "filmhaven",
   "author": "Snipcola",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "webpack --config build/config.production.js",
-    "dev": "concurrently \"webpack --config build/config.development.js\" \"serve -s dist/index.html\"",
+    "dev": "concurrently \"webpack --config build/config.development.js\" \"serve -s out/index.html\"",
     "format": "prettier --write \"build/**/*.js\" \"src/**/*.{js,css}\"",
     "release": "git push origin main:release --force",
     "deploy-vercel": "vercel --prod"
@@ -22,8 +22,9 @@
     "mini-css-extract-plugin": "2.9.2",
     "prettier": "3.4.2",
     "serve": "14.2.4",
+    "uglifyjs-webpack-plugin": "2.2.0",
     "ulidx": "2.4.1",
-    "vercel": "39.2.5",
+    "vercel": "39.2.6",
     "webpack": "5.97.1",
     "webpack-cli": "6.0.1",
     "webpack-merge": "6.0.1",

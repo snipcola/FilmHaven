@@ -48,7 +48,7 @@ Example of a series url: `https://%b/embed/tv/%i/%s/%e`
 1. Ensure you have `node` and `npm` installed.
 2. Run `npm install`.
 3. Run `npm run build` or `npm run dev` depending on what you need.
-4. Access the site at `dist/index.html`.
+4. Access the site at `out/index.html`.
 
 ## ⚠️ - Disclaimer
 

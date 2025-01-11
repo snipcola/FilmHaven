@@ -8,6 +8,6 @@ COPY --chown=node:node . .
 RUN npm run build
 
 FROM nginx:1.27.3-alpine
-COPY --from=build /usr/src/app/dist/index.html /usr/share/nginx/html/index.html
+COPY --from=build /usr/src/app/out/index.html /usr/share/nginx/html/index.html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
