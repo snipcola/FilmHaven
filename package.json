@@ -24,7 +24,7 @@
     "serve": "14.2.4",
     "terser-webpack-plugin": "5.3.11",
     "ulidx": "2.4.1",
-    "vercel": "39.2.6",
+    "vercel": "39.4.2",
     "webpack": "5.97.1",
     "webpack-cli": "6.0.1",
     "webpack-merge": "6.0.1",
