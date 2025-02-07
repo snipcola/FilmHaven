@@ -1,7 +1,9 @@
 node_modules
+bun.lock
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
-.DS_Store
 
+/out
+/.vercel
 /README.md
