@@ -20,12 +20,12 @@ const author = "Snipcola";
 
 export const defaultProviders = [
   {
-    base: "vidsrc.xyz",
+    base: "embed.su",
     movie: "https://%b/embed/movie/%i",
     tv: "https://%b/embed/tv/%i/%s/%e",
   },
   {
-    base: "embed.su",
+    base: "vidsrc.xyz",
     movie: "https://%b/embed/movie/%i",
     tv: "https://%b/embed/tv/%i/%s/%e",
   },
