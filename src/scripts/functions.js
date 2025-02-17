@@ -70,7 +70,11 @@ export function onKeyPress(key, prevent, active, depends, callback) {
       return;
     }
 
-    if (getQuery(config.query.modal) === "p") {
+    if (
+      ["input", "textarea"].includes(
+        document.activeElement.tagName?.toLowerCase(),
+      )
+    ) {
       return;
     }
 
