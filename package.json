@@ -11,23 +11,25 @@
     "release": "git push origin main:release --force",
     "deploy-vercel": "vercel --prod"
   },
-  "devDependencies": {
+  "dependencies": {
     "@webdiscus/pug-loader": "2.11.1",
     "clean-webpack-plugin": "4.0.0",
-    "concurrently": "9.1.2",
     "css-loader": "7.1.2",
     "css-minimizer-webpack-plugin": "7.0.2",
     "filesize": "10.1.6",
     "html-webpack-plugin": "5.6.3",
     "mini-css-extract-plugin": "2.9.2",
-    "prettier": "3.5.3",
-    "serve": "14.2.4",
     "terser-webpack-plugin": "5.3.14",
     "ulidx": "2.4.1",
-    "vercel": "41.4.0",
     "webpack": "5.98.0",
     "webpack-cli": "6.0.1",
     "webpack-merge": "6.0.1",
     "webpack-remove-empty-scripts": "1.0.4"
+  },
+  "devDependencies": {
+    "concurrently": "9.1.2",
+    "prettier": "3.5.3",
+    "serve": "14.2.4",
+    "vercel": "41.4.1"
   }
 }

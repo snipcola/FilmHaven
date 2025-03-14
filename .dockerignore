@@ -1,6 +1,13 @@
 node_modules
 package-lock.json
 
-/out
-/.vercel
-/README.md
+.dockerignore
+dockerfile
+
+.git
+.gitignore
+.gitea
+
+out
+.vercel
+README.md
