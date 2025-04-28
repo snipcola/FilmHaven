@@ -15,7 +15,7 @@ import { getLanguage, setLanguage } from "./store/language.js";
 import { getUrlWithQueries, setQueries } from "./query.js";
 
 const name = "FilmHaven";
-const repository = "https://git.snipcola.com/snipcola/FilmHaven";
+const repository = "https://code.snipcola.com/snipcola/FilmHaven";
 const author = "Snipcola";
 
 export const defaultProviders = [
