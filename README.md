@@ -10,7 +10,7 @@ A simple, customizable, and lightweight frontend to view and interact with movie
 
 **Accessible here:**
 
-- [fh.snipcola.com](https://fh.snipcola.com)
+- [watch.snipcola.com](https://watch.snipcola.com)
 - [film-haven.vercel.app](https://film-haven.vercel.app)
 
 ## 🗒️ - Note
