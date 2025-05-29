@@ -1,7 +1,7 @@
 {
   "name": "filmhaven",
   "author": "Snipcola",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -21,15 +21,15 @@
     "mini-css-extract-plugin": "2.9.2",
     "terser-webpack-plugin": "5.3.14",
     "ulidx": "2.4.1",
-    "webpack": "5.99.7",
+    "webpack": "5.99.9",
     "webpack-cli": "6.0.1",
     "webpack-merge": "6.0.1",
-    "webpack-remove-empty-scripts": "1.0.4"
+    "webpack-remove-empty-scripts": "1.1.1"
   },
   "devDependencies": {
     "concurrently": "9.1.2",
     "prettier": "3.5.3",
     "serve": "14.2.4",
-    "vercel": "41.7.0"
+    "vercel": "42.2.0"
   }
 }
