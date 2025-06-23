@@ -1,7 +1,7 @@
 {
   "name": "filmhaven",
   "author": "Snipcola",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -27,9 +27,9 @@
     "webpack-remove-empty-scripts": "1.1.1"
   },
   "devDependencies": {
-    "concurrently": "9.1.2",
-    "prettier": "3.5.3",
+    "concurrently": "9.2.0",
+    "prettier": "3.6.0",
     "serve": "14.2.4",
-    "vercel": "42.2.0"
+    "vercel": "43.3.0"
   }
 }

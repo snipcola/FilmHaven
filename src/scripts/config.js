@@ -25,6 +25,11 @@ export const defaultProviders = [
     tv: "https://%b/tv/%i/%s/%e?autoplay=false",
   },
   {
+    base: "111movies.com",
+    movie: "https://%b/movie/%i",
+    tv: "https://%b/tv/%i/%s/%e",
+  },
+  {
     base: "vidsrc.xyz",
     movie: "https://%b/embed/movie/%i",
     tv: "https://%b/embed/tv/%i/%s/%e",
