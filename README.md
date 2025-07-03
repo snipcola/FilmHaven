@@ -15,7 +15,7 @@ A simple, customizable, and lightweight frontend to view and interact with movie
 
 ## 🗒️ - Note
 
-Due to the nature of how the project works, you might face ads upon viewing content; to fix this, use [uBlock Origin](https://ublockorigin.com), [AdGuard](http://adguard.com), or an ad-blocker of your choice.
+Due to the nature of how the project works, you might face ads upon viewing content; to fix this, use [uBlock Origin](https://ublockorigin.com), [AdGuard](https://adguard.com), or an ad-blocker of your choice.
 
 ## ⌨️ - Shortcuts
 
