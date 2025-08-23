@@ -9,5 +9,6 @@ RUN npm install --production && npm run build
 
 FROM nginx:$NGINX_VERSION
 COPY --from=build /usr/src/build/out/index.html /usr/share/nginx/html/index.html
+RUN sed -i '/^\s*access_log\s\+/c\    access_log off;' /etc/nginx/nginx.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
