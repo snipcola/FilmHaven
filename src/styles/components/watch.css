@@ -32,7 +32,7 @@
   border: var(--small-border) solid var(--light);
   border-radius: var(--border-radius);
 
-  height: calc(100dvh - (16px + 1px + 10px + 42px + 8px + 20px + 1rem));
+  height: calc(100dvh - var(--watch-height-subtract));
   min-height: calc(var(--max-width) / 20);
 
   -webkit-mask-image: -webkit-radial-gradient(var(--light), var(--dark));
@@ -132,7 +132,7 @@
   position: fixed;
 
   z-index: 9;
-  background-color: rgba(var(--light-rgb), 0.6);
+  background-color: rgba(var(--light-rgb), 0.8);
 
   user-select: none;
   -webkit-user-select: none;
@@ -341,7 +341,7 @@
 }
 
 .watch .details .control .button {
-  border-radius: 50%;
+  border-radius: var(--border-radius);
 }
 
 .watch .details .cast-cards,
@@ -409,7 +409,7 @@
   user-select: none;
   -webkit-user-select: none;
 
-  border-radius: 50%;
+  border-radius: var(--border-radius);
   object-fit: cover;
 }
 
@@ -484,7 +484,7 @@
   box-sizing: border-box;
 
   overflow: hidden;
-  border-radius: 50%;
+  border-radius: var(--border-radius);
 
   background-color: var(--light);
 }
@@ -594,7 +594,7 @@
   background-color: var(--light);
   border: var(--small-border) solid var(--lighter);
 
-  border-radius: 50%;
+  border-radius: var(--border-radius);
   margin-left: auto;
 
   font-size: var(--small-font);

@@ -57,7 +57,7 @@
   justify-content: center;
 
   background-color: var(--primary);
-  padding: calc(var(--small-padding) / 1.5);
+  padding: calc(var(--small-padding) / 1.25);
 
   border-radius: var(--border-radius);
   transition: var(--transition-speed) opacity;

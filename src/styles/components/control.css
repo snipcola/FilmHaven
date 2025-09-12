@@ -39,7 +39,7 @@
 }
 
 .control .indicator {
-  padding: 4px 8px;
+  padding: 4.5px 8.5px;
   background-color: var(--lighter);
 
   border-radius: var(--border-radius);

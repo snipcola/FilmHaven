@@ -120,10 +120,12 @@ export function initializeArea(
 
     if (info.continue) {
       const typeInfo = document.createElement("div");
+      const typeInfoIcon = document.createElement("i");
 
       typeInfo.className = "type-info";
-      typeInfo.innerText = info.type?.toUpperCase();
+      typeInfoIcon.className = `icon icon-${info.type === "movie" ? "film" : "tv"}`;
 
+      typeInfo.append(typeInfoIcon);
       card.append(typeInfo);
     }
 

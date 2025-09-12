@@ -95,6 +95,7 @@ function initializeSearch(area, placeholder) {
     const loadImage = document.createElement("img");
     const title = document.createElement("div");
     const typeInfo = document.createElement("div");
+    const typeInfoIcon = document.createElement("i");
 
     const footer = document.createElement("div");
 
@@ -117,8 +118,10 @@ function initializeSearch(area, placeholder) {
     loadImage.src = transparentImage();
     loadImage.alt = "";
     title.className = "title";
+
     typeInfo.className = "type-info";
-    typeInfo.innerText = info.type?.toUpperCase();
+    typeInfoIcon.className = `icon icon-${info.type === "movie" ? "film" : "tv"}`;
+    typeInfo.append(typeInfoIcon);
 
     image.addEventListener("load", function () {
       card.classList.add("loaded");

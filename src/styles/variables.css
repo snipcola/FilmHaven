@@ -1,25 +1,28 @@
 html {
-  --border-radius: 0.8rem;
+  --border-radius: 0.2rem;
   --max-width: 80rem;
-  --transition-speed: 0.2s;
+  --transition-speed: 0.1s;
 
-  --dim-opacity: 75%;
-  --dimmer-opacity: 50%;
+  --dim-opacity: 80%;
+  --dimmer-opacity: 40%;
 
   --small-gap: 10px;
   --large-gap: 15px;
 
-  --small-border: 1.5px;
-  --large-border: 3px;
+  --small-border: 1px;
+  --large-border: 2px;
 
-  --small-padding: 10px;
-  --large-padding: 18px;
+  --small-padding: 8px;
+  --large-padding: 16px;
 
   --min-font: 13px;
   --small-font: 13px;
   --large-font: 14px;
   --max-font: 17px;
   --icon-font: 12px;
+
+  --watch-height-subtract: 6.3rem;
+  --watch-responsive-height-subtract: 6.05rem;
 
   --footer-height: 4rem;
 }
