@@ -332,12 +332,9 @@ function initializeSearch(area, placeholder) {
       });
       document.title = `Searching ${query}`;
     } else {
-      setQueries(
-        {
-          [config.query.query]: null,
-        },
-        true,
-      );
+      setQueries({
+        [config.query.query]: null,
+      });
       setTitle();
     }
   }
@@ -372,7 +369,11 @@ function initializeSearch(area, placeholder) {
     }
   }
 
-  const debouncedOnInput = debounce(onInput, config.search.debounce);
+  const debounceFunction = debounce(onInput, config.search.debounce);
+
+  function debouncedOnInput(...args) {
+    return (input.value.length > 0 ? debounceFunction : onInput)(...args);
+  }
 
   function onClear() {
     input.value = "";
