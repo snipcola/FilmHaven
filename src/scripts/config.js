@@ -13,16 +13,18 @@ import { resetLastPlayed } from "./store/last-played.js";
 import { getLanguages } from "./api/languages.js";
 import { getLanguage, setLanguage } from "./store/language.js";
 import { getUrlWithQueries, setQueries } from "./query.js";
+import { getCSSVariable } from "./functions.js";
 
 const name = "FilmHaven";
 const repository = "https://code.snipcola.com/snipcola/FilmHaven";
 const author = "Snipcola";
+const colour = getCSSVariable("primary").replace("#", "") || "ffffff";
 
 export const defaultProviders = [
   {
     base: "vidlink.pro",
-    movie: "https://%b/movie/%i?autoplay=false",
-    tv: "https://%b/tv/%i/%s/%e?autoplay=false",
+    movie: `https://%b/movie/%i?primaryColor=${colour}&secondaryColor=a2a2a2&iconColor=eefdec&icons=vid&player=default&title=false&poster=false&autoplay=false&nextbutton=false`,
+    tv: `https://%b/tv/%i/%s/%e?primaryColor=${colour}&secondaryColor=a2a2a2&iconColor=eefdec&icons=vid&player=default&title=false&poster=false&autoplay=false&nextbutton=false`,
   },
   {
     base: "111movies.com",

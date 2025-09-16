@@ -182,3 +182,8 @@ export function splitArray(array, amount = 1) {
 
 export const formatBytes = filesize;
 export const generateULID = ulid;
+
+export function getCSSVariable(name) {
+  const styles = getComputedStyle(document.documentElement);
+  return styles.getPropertyValue(`--${name}`).trim();
+}
