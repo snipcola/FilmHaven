@@ -1,5 +1,4 @@
-import { config, store } from "../config.js";
-import { isDeletable, unloadImages } from "../cache.js";
+import { store } from "../config.js";
 
 function get() {
   const continueWatching = localStorage.getItem(store.names.continue);
@@ -17,10 +16,6 @@ function get() {
 function set(data) {
   const jsonData = JSON.stringify(data);
   localStorage.setItem(store.names.continue, jsonData);
-}
-
-function cleanup(record) {
-  if (isDeletable(record?.image)) unloadImages([record.image]);
 }
 
 export function getContinueWatching() {
@@ -55,11 +50,6 @@ export function addContinueWatching(id, type, title, image) {
     records[existingRecord] = newRecord;
   } else {
     records.unshift(newRecord);
-
-    if (records.length > config.area.amount) {
-      const record = records.pop();
-      cleanup(record);
-    }
   }
 
   set(records);
@@ -69,16 +59,9 @@ export function removeFromContinueWatching(id, type) {
   const records = getContinueWatching();
   const newRecords = records.filter((r) => !(r.id === id && r.type === type));
 
-  const record = records.find((r) => r.id === id && r.type === type);
-  cleanup(record);
-
   set(newRecords);
 }
 
 export function resetContinueWatching() {
-  for (const record of getContinueWatching()) {
-    cleanup(record);
-  }
-
   localStorage.removeItem(store.names.continue);
 }

@@ -10,21 +10,14 @@ body {
 
   background-color: var(--background);
   color: var(--text);
-
-  transition: var(--transition-speed) opacity;
-  opacity: 0;
 }
 
-body.active {
-  opacity: 100%;
-}
-
-body > .container {
+body>.container {
   position: relative;
   min-height: calc(100dvh - (var(--large-padding) * 4));
 }
 
-body > .container > .content-container {
+body>.container>.content-container {
   margin-top: calc(var(--large-padding) * 4);
   padding-bottom: var(--footer-height);
 }
@@ -33,7 +26,7 @@ body.modal-active {
   overflow: hidden;
 }
 
-body.modal-active > .container {
+body.modal-active>.container {
   user-select: none;
   -webkit-user-select: none;
 }

@@ -9,7 +9,7 @@ import {
 import { getGenres } from "../api/genres.js";
 import { hideModal, setModal, showModal } from "./modal.js";
 import { initializeArea } from "./area.js";
-import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
+import { preloadImages } from "../cache.js";
 import { getTrending } from "../api/trending.js";
 import { getRated } from "../api/rated.js";
 import { getNew } from "../api/new.js";
@@ -33,12 +33,8 @@ async function modal(info, type) {
 
   const images = [];
 
-  function cleanup() {
-    unloadImages(images, true);
-  }
-
   setModal(info.name, null, [popularArea, ratedArea, newArea], "arrow-left");
-  showModal(cleanup);
+  showModal();
 
   async function initializePopular() {
     const label = "Popular";
@@ -50,12 +46,9 @@ async function modal(info, type) {
       initializeArea(popularArea, null, label, true);
     } else {
       popularContent.splice(config.area.amount, popularContent.length);
-      const popularContentImages = getNonCachedImages(
-        popularContent.map((i) => i.image),
-      );
+      const popularContentImages = popularContent.map((i) => i.image);
       images.push(...popularContentImages);
-
-      preloadImages(popularContentImages, true);
+      preloadImages(popularContentImages);
       initializeArea(popularArea, popularContent, label);
     }
   }
@@ -70,12 +63,9 @@ async function modal(info, type) {
       initializeArea(ratedArea, null, label, true);
     } else {
       ratedContent.splice(config.area.amount, ratedContent.length);
-      const ratedContentImages = getNonCachedImages(
-        ratedContent.map((i) => i.image),
-      );
+      const ratedContentImages = ratedContent.map((i) => i.image);
       images.push(...ratedContentImages);
-
-      preloadImages(ratedContentImages, true);
+      preloadImages(ratedContentImages);
       initializeArea(ratedArea, ratedContent, label);
     }
   }
@@ -90,12 +80,9 @@ async function modal(info, type) {
       initializeArea(newArea, null, label, true);
     } else {
       newContent.splice(config.area.amount, newContent.length);
-      const newContentImages = getNonCachedImages(
-        newContent.map((i) => i.image),
-      );
+      const newContentImages = newContent.map((i) => i.image);
       images.push(...newContentImages);
-
-      preloadImages(newContentImages, true);
+      preloadImages(newContentImages);
       initializeArea(newArea, newContent, label);
     }
   }
@@ -241,13 +228,13 @@ function initializeGenreArea(area, initialSlides, type, failed) {
             ? 0
             : desktop
               ? Math.round(
-                  (index + 1) /
-                    (config.genre.split.desktop / config.genre.split.mobile),
-                ) - 1
+                (index + 1) /
+                (config.genre.split.desktop / config.genre.split.mobile),
+              ) - 1
               : Math.round(
-                  (index + 1) *
-                    (config.genre.split.desktop / config.genre.split.mobile),
-                ) - 2;
+                (index + 1) *
+                (config.genre.split.desktop / config.genre.split.mobile),
+              ) - 2;
 
         set(index);
       }

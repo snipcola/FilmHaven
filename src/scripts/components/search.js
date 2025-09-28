@@ -10,7 +10,7 @@ import {
   onSwipe,
   transparentImage,
 } from "../functions.js";
-import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
+import { preloadImages, cacheLoadImage } from "../cache.js";
 import { getSearchResults } from "../api/search.js";
 import { watchContent } from "./watch.js";
 import { hideModal } from "./modal.js";
@@ -112,10 +112,10 @@ function initializeSearch(area, placeholder) {
 
     card.className = "card";
     image.className = "image";
-    image.src = info.image;
+    cacheLoadImage(image, info.image);
     image.alt = info.title;
     loadImage.className = "image load-image";
-    loadImage.src = transparentImage();
+    loadImage.src = transparentImage;
     loadImage.alt = "";
     title.className = "title";
 
@@ -134,8 +134,8 @@ function initializeSearch(area, placeholder) {
     title.innerText =
       info.title.length > config.area.maxTitleLength * 1.75
         ? info.title
-            .substring(0, config.area.maxTitleLength * 1.75)
-            .replace(/\s+\S*$/, "...")
+          .substring(0, config.area.maxTitleLength * 1.75)
+          .replace(/\s+\S*$/, "...")
         : info.title;
 
     footer.className = "footer";
@@ -250,13 +250,13 @@ function initializeSearch(area, placeholder) {
             ? 0
             : desktop
               ? Math.round(
-                  (index + 1) /
-                    (config.area.split.desktop / config.area.split.mobile),
-                ) - 1
+                (index + 1) /
+                (config.area.split.desktop / config.area.split.mobile),
+              ) - 1
               : Math.round(
-                  (index + 1) *
-                    (config.area.split.desktop / config.area.split.mobile),
-                ) - 2;
+                (index + 1) *
+                (config.area.split.desktop / config.area.split.mobile),
+              ) - 2;
 
         set(index);
       }
@@ -303,7 +303,6 @@ function initializeSearch(area, placeholder) {
   }
 
   function cleanup() {
-    unloadImages(images, true);
     images = [];
   }
 
@@ -353,12 +352,9 @@ function initializeSearch(area, placeholder) {
       if (!searchResults) {
         notify(true, "Failed to fetch results", "warning");
       } else {
-        const searchImages = getNonCachedImages(
-          searchResults.map((i) => i.image),
-        );
+        const searchImages = searchResults.map((i) => i.image);
         images.push(...searchImages);
-
-        preloadImages(searchImages, true);
+        preloadImages(searchImages);
 
         if (input.value.length === 0) {
           cleanup();

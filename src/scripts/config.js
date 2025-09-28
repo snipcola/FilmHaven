@@ -7,7 +7,7 @@ import {
   getWatchSection,
   setWatchSection,
 } from "./store/watch-sections.js";
-import { resetCache } from "./cache.js";
+import { resetCache, resetDB } from "./cache.js";
 import { resetContinueWatching } from "./store/continue.js";
 import { resetLastPlayed } from "./store/last-played.js";
 import { getLanguages } from "./api/languages.js";
@@ -92,10 +92,10 @@ export const config = {
       ...[
         repository
           ? {
-              icon: "github",
-              url: repository,
-              label: "Git",
-            }
+            icon: "github",
+            url: repository,
+            label: "Git",
+          }
           : {},
         {
           icon: "download",
@@ -231,7 +231,7 @@ export const downloadApi = {
 };
 
 const prefix = config.storePrefix;
-const cachePrefix = `${prefix}-cache`;
+export const cachePrefix = `${prefix}-cache`;
 
 export const store = {
   names: {
@@ -306,8 +306,9 @@ export const settings = [
             icon: "sync",
             text: "Reset",
           },
-          onClick: function (self) {
+          onClick: async function (self) {
             localStorage.clear();
+            await resetDB();
 
             document.body.classList.remove("active");
             refresh();
@@ -322,8 +323,10 @@ export const settings = [
             text: "Empty Cache",
           },
           class: "secondary",
-          onClick: function (self) {
+          onClick: async function (self) {
             resetCache();
+            await resetDB();
+
             document.body.classList.remove("active");
             window.location.reload();
 

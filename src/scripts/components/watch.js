@@ -23,7 +23,7 @@ import {
 } from "../functions.js";
 import { config } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
-import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
+import { preloadImages, cacheLoadImage } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js";
 import { addContinueWatching } from "../store/continue.js";
 import { getWatchSection } from "../store/watch-sections.js";
@@ -43,7 +43,7 @@ function getSeasonAndEpisode(id) {
       setLastPlayed(id, season, episode);
       return { s: season, e: episode };
     }
-  } catch {}
+  } catch { }
 
   return getLastPlayed(id);
 }
@@ -58,9 +58,9 @@ export function watchContent(type, id, ignore) {
       [config.query.modal]: modal,
       ...(getWatchSection("Video")
         ? {
-            [config.query.season]: s,
-            [config.query.episode]: e,
-          }
+          [config.query.season]: s,
+          [config.query.episode]: e,
+        }
         : {}),
       [config.query.query]: null,
     });
@@ -72,7 +72,7 @@ export function watchContent(type, id, ignore) {
   }
 }
 
-function modal(info, recommendationImages) {
+function modal(info) {
   addContinueWatching(info.id, info.type, info.title, info.image);
 
   const videoActive = getWatchSection("Video");
@@ -289,7 +289,7 @@ function modal(info, recommendationImages) {
   video.append(videoNoticeContainer);
 
   backdrop.className = "backdrop";
-  if (info.backdrop) backdrop.src = info.backdrop;
+  if (info.backdrop) cacheLoadImage(backdrop, info.backdrop);
   backdrop.alt = info.title;
   if (info.backdrop) video.append(backdrop);
 
@@ -922,8 +922,8 @@ function modal(info, recommendationImages) {
 
         episode.className =
           videoActive &&
-          season.number === seasonNumber &&
-          episodeInfo.number === episodeNumber
+            season.number === seasonNumber &&
+            episodeInfo.number === episodeNumber
             ? "episode active"
             : "episode";
         episodeLeft.className = "episode-left";
@@ -940,7 +940,7 @@ function modal(info, recommendationImages) {
         episodePreviewImage.className = "image";
 
         if (episodeInfo.image) {
-          episodePreviewImage.src = episodeInfo.image;
+          cacheLoadImage(episodePreviewImage, episodeInfo.image);
         } else {
           episodePreviewContainer.append(notice.cloneNode(true));
         }
@@ -1066,7 +1066,7 @@ function modal(info, recommendationImages) {
 
     cast.className = "cast-card";
     image.className = "image";
-    if (info.image) image.src = info.image;
+    if (info.image) cacheLoadImage(image, info.image);
     image.alt = info.name;
     text.className = "text";
     name.className = "cast-name";
@@ -1157,7 +1157,7 @@ function modal(info, recommendationImages) {
 
     crew.className = "crew-card";
     image.className = "image";
-    if (info.image) image.src = info.image;
+    if (info.image) cacheLoadImage(image, info.image);
     image.alt = info.name;
     text.className = "text";
     name.className = "crew-name";
@@ -1260,7 +1260,7 @@ function modal(info, recommendationImages) {
     if (info.avatar) {
       titleAvatar.className = "avatar";
       titleAvatarImage.className = "image";
-      titleAvatarImage.src = info.avatar;
+      cacheLoadImage(titleAvatarImage, info.avatar);
     }
 
     titleText.className = "author";
@@ -1511,13 +1511,13 @@ function modal(info, recommendationImages) {
             ? 0
             : castDesktop
               ? Math.round(
-                  (castIndex + 1) /
-                    (config.cast.split.desktop / config.cast.split.mobile),
-                ) - 1
+                (castIndex + 1) /
+                (config.cast.split.desktop / config.cast.split.mobile),
+              ) - 1
               : Math.round(
-                  (castIndex + 1) *
-                    (config.cast.split.desktop / config.cast.split.mobile),
-                ) - 2;
+                (castIndex + 1) *
+                (config.cast.split.desktop / config.cast.split.mobile),
+              ) - 2;
 
         setCast(castIndex);
       }
@@ -1537,13 +1537,13 @@ function modal(info, recommendationImages) {
             ? 0
             : crewDesktop
               ? Math.round(
-                  (crewIndex + 1) /
-                    (config.crew.split.desktop / config.crew.split.mobile),
-                ) - 1
+                (crewIndex + 1) /
+                (config.crew.split.desktop / config.crew.split.mobile),
+              ) - 1
               : Math.round(
-                  (crewIndex + 1) *
-                    (config.crew.split.desktop / config.crew.split.mobile),
-                ) - 2;
+                (crewIndex + 1) *
+                (config.crew.split.desktop / config.crew.split.mobile),
+              ) - 2;
 
         setCrew(crewIndex);
       }
@@ -1563,33 +1563,19 @@ function modal(info, recommendationImages) {
             ? 0
             : reviewsDesktop
               ? Math.round(
-                  (reviewIndex + 1) /
-                    (config.reviews.split.desktop /
-                      config.reviews.split.mobile),
-                ) - 1
+                (reviewIndex + 1) /
+                (config.reviews.split.desktop /
+                  config.reviews.split.mobile),
+              ) - 1
               : Math.round(
-                  (reviewIndex + 1) *
-                    (config.reviews.split.desktop /
-                      config.reviews.split.mobile),
-                ) - 2;
+                (reviewIndex + 1) *
+                (config.reviews.split.desktop /
+                  config.reviews.split.mobile),
+              ) - 2;
 
         setReviews(reviewIndex);
       }
     }
-  }
-
-  function cleanup(_modal) {
-    if (videoActive && info.backdrop) unloadImages([info.backdrop]);
-    if (seasonsActive && info.seasons)
-      unloadImages(
-        info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1),
-      );
-    if (castActive && info.cast) unloadImages(info.cast.map((p) => p.image));
-    if (crewActive && info.crew) unloadImages(info.crew.map((p) => p.image));
-    if (reviewsActive && info.reviews)
-      unloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
-    if (recommendationsActive && recommendationImages)
-      unloadImages(recommendationImages);
   }
 
   onWindowResize(checkResize);
@@ -1688,7 +1674,7 @@ function modal(info, recommendationImages) {
     videoActive ? "has-video" : null,
   );
   checkCurrentlyPlaying();
-  showModal(cleanup);
+  showModal();
 
   if (videoActive) {
     video.scrollIntoView({ block: "end" });
@@ -1730,10 +1716,7 @@ function initializeWatchModalCheck() {
         if (info && info.title) {
           let recommendationImages = [];
           if (info.recommendations && getWatchSection("Recommendations"))
-            recommendationImages = getNonCachedImages(
-              info.recommendations.map((r) => r.image),
-            );
-
+            recommendationImages = info.recommendations.map((r) => r.image);
           if (info.backdrop && getWatchSection("Video"))
             preloadImages([info.backdrop]);
           if (info.cast && getWatchSection("Cast"))
@@ -1741,12 +1724,10 @@ function initializeWatchModalCheck() {
           if (info.crew && getWatchSection("Crew"))
             preloadImages(info.crew.map((p) => p.image));
           if (info.reviews && getWatchSection("Reviews"))
-            preloadImages(
-              info.reviews.filter((r) => r.avatar).map((r) => r.avatar),
-            );
+            preloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
           preloadImages(recommendationImages);
 
-          modal(info, recommendationImages);
+          modal(info);
         } else {
           removeQueries(
             config.query.modal,

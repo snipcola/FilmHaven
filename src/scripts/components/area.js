@@ -7,7 +7,7 @@ import {
   onSwipe,
   transparentImage,
 } from "../functions.js";
-import { preloadImages } from "../cache.js";
+import { cacheLoadImage, preloadImages } from "../cache.js";
 import { getTrending } from "../api/trending.js";
 import { getRated } from "../api/rated.js";
 import { getNew } from "../api/new.js";
@@ -107,10 +107,10 @@ export function initializeArea(
 
     card.className = "card";
     image.className = "image";
-    image.src = info.image;
+    cacheLoadImage(image, info.image);
     image.alt = info.title;
     loadImage.className = "image load-image";
-    loadImage.src = transparentImage();
+    loadImage.src = transparentImage;
     loadImage.alt = "";
     title.className = "title";
 
@@ -158,8 +158,8 @@ export function initializeArea(
     title.innerText =
       info.title.length > config.area.maxTitleLength
         ? info.title
-            .substring(0, config.area.maxTitleLength)
-            .replace(/\s+\S*$/, "...")
+          .substring(0, config.area.maxTitleLength)
+          .replace(/\s+\S*$/, "...")
         : info.title;
 
     footer.className = "footer";
@@ -274,15 +274,15 @@ export function initializeArea(
             ? 0
             : desktop
               ? Math.round(
-                  (index + 1) /
-                    ((customSplit || config.area.split).desktop /
-                      (customSplit || config.area.split).mobile),
-                ) - 1
+                (index + 1) /
+                ((customSplit || config.area.split).desktop /
+                  (customSplit || config.area.split).mobile),
+              ) - 1
               : Math.round(
-                  (index + 1) *
-                    ((customSplit || config.area.split).desktop /
-                      (customSplit || config.area.split).mobile),
-                ) - 2;
+                (index + 1) *
+                ((customSplit || config.area.split).desktop /
+                  (customSplit || config.area.split).mobile),
+              ) - 2;
 
         set(index);
       }
@@ -343,10 +343,7 @@ export function initializeAreas() {
         trendingMovies.splice(0, config.carousel.amount);
         trendingMovies.splice(config.area.amount, trendingMovies.length);
 
-        preloadImages(
-          trendingMovies.map((i) => i.image),
-          true,
-        );
+        preloadImages(trendingMovies.map((i) => i.image));
         initializeArea(moviesTrendingArea, trendingMovies, label);
       }
     }
@@ -371,10 +368,7 @@ export function initializeAreas() {
         trendingShows.splice(0, config.carousel.amount);
         trendingShows.splice(config.area.amount, trendingShows.length);
 
-        preloadImages(
-          trendingShows.map((i) => i.image),
-          true,
-        );
+        preloadImages(trendingShows.map((i) => i.image));
         initializeArea(showsTrendingArea, trendingShows, label);
       }
     }
@@ -404,10 +398,7 @@ export function initializeAreas() {
         initializeArea(moviesRatedArea, null, label, true);
       } else {
         ratedMovies.splice(config.area.amount, ratedMovies.length);
-        preloadImages(
-          ratedMovies.map((i) => i.image),
-          true,
-        );
+        preloadImages(ratedMovies.map((i) => i.image));
         initializeArea(moviesRatedArea, ratedMovies, label);
       }
     }
@@ -430,10 +421,7 @@ export function initializeAreas() {
         initializeArea(showsRatedArea, null, label, true);
       } else {
         ratedShows.splice(config.area.amount, ratedShows.length);
-        preloadImages(
-          ratedShows.map((i) => i.image),
-          true,
-        );
+        preloadImages(ratedShows.map((i) => i.image));
         initializeArea(showsRatedArea, ratedShows, label);
       }
     }
@@ -463,10 +451,7 @@ export function initializeAreas() {
         initializeArea(moviesNewArea, null, label, true);
       } else {
         newMovies.splice(config.area.amount, newMovies.length);
-        preloadImages(
-          newMovies.map((i) => i.image),
-          true,
-        );
+        preloadImages(newMovies.map((i) => i.image));
         initializeArea(moviesNewArea, newMovies, label);
       }
     }
@@ -489,10 +474,7 @@ export function initializeAreas() {
         initializeArea(showsNewArea, null, label, true);
       } else {
         newShows.splice(config.area.amount, newShows.length);
-        preloadImages(
-          newShows.map((i) => i.image),
-          true,
-        );
+        preloadImages(newShows.map((i) => i.image));
         initializeArea(showsNewArea, newShows, label);
       }
     }
