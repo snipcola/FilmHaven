@@ -1,5 +1,6 @@
 import { config } from "./config.js";
 import { cleanupDB } from "./cache.js";
+import { initializeCache } from "./cache.js";
 import { initializeTheme } from "./components/theme.js";
 import { initializeDim } from "./components/dim.js";
 import { initializeModal } from "./components/modal.js";
@@ -40,6 +41,7 @@ function initializeBody() {
 
 async function initializeAll() {
   await cleanupDB();
+  initializeCache();
 
   initializeTheme();
   initializeDim();

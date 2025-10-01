@@ -9,7 +9,7 @@ import {
 import { getGenres } from "../api/genres.js";
 import { hideModal, setModal, showModal } from "./modal.js";
 import { initializeArea } from "./area.js";
-import { preloadImages } from "../cache.js";
+import { cacheImages } from "../cache.js";
 import { getTrending } from "../api/trending.js";
 import { getRated } from "../api/rated.js";
 import { getNew } from "../api/new.js";
@@ -48,7 +48,7 @@ async function modal(info, type) {
       popularContent.splice(config.area.amount, popularContent.length);
       const popularContentImages = popularContent.map((i) => i.image);
       images.push(...popularContentImages);
-      preloadImages(popularContentImages);
+      cacheImages(popularContentImages);
       initializeArea(popularArea, popularContent, label);
     }
   }
@@ -65,7 +65,7 @@ async function modal(info, type) {
       ratedContent.splice(config.area.amount, ratedContent.length);
       const ratedContentImages = ratedContent.map((i) => i.image);
       images.push(...ratedContentImages);
-      preloadImages(ratedContentImages);
+      cacheImages(ratedContentImages);
       initializeArea(ratedArea, ratedContent, label);
     }
   }
@@ -82,7 +82,7 @@ async function modal(info, type) {
       newContent.splice(config.area.amount, newContent.length);
       const newContentImages = newContent.map((i) => i.image);
       images.push(...newContentImages);
-      preloadImages(newContentImages);
+      cacheImages(newContentImages);
       initializeArea(newArea, newContent, label);
     }
   }

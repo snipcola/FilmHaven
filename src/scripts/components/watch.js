@@ -23,7 +23,7 @@ import {
 } from "../functions.js";
 import { config } from "../config.js";
 import { getProvider, setProvider } from "../store/provider.js";
-import { preloadImages, cacheLoadImage } from "../cache.js";
+import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getLastPlayed, setLastPlayed } from "../store/last-played.js";
 import { addContinueWatching } from "../store/continue.js";
 import { getWatchSection } from "../store/watch-sections.js";
@@ -72,7 +72,7 @@ export function watchContent(type, id, ignore) {
   }
 }
 
-function modal(info) {
+function modal(info, recommendationImages) {
   addContinueWatching(info.id, info.type, info.title, info.image);
 
   const videoActive = getWatchSection("Video");
@@ -289,7 +289,7 @@ function modal(info) {
   video.append(videoNoticeContainer);
 
   backdrop.className = "backdrop";
-  if (info.backdrop) cacheLoadImage(backdrop, info.backdrop);
+  if (info.backdrop) backdrop.src = info.backdrop;
   backdrop.alt = info.title;
   if (info.backdrop) video.append(backdrop);
 
@@ -940,7 +940,7 @@ function modal(info) {
         episodePreviewImage.className = "image";
 
         if (episodeInfo.image) {
-          cacheLoadImage(episodePreviewImage, episodeInfo.image);
+          episodePreviewImage.src = episodeInfo.image;
         } else {
           episodePreviewContainer.append(notice.cloneNode(true));
         }
@@ -1066,7 +1066,7 @@ function modal(info) {
 
     cast.className = "cast-card";
     image.className = "image";
-    if (info.image) cacheLoadImage(image, info.image);
+    if (info.image) image.src = info.image;
     image.alt = info.name;
     text.className = "text";
     name.className = "cast-name";
@@ -1157,7 +1157,7 @@ function modal(info) {
 
     crew.className = "crew-card";
     image.className = "image";
-    if (info.image) cacheLoadImage(image, info.image);
+    if (info.image) image.src = info.image;
     image.alt = info.name;
     text.className = "text";
     name.className = "crew-name";
@@ -1260,7 +1260,7 @@ function modal(info) {
     if (info.avatar) {
       titleAvatar.className = "avatar";
       titleAvatarImage.className = "image";
-      cacheLoadImage(titleAvatarImage, info.avatar);
+      titleAvatarImage.src = info.avatar;
     }
 
     titleText.className = "author";
@@ -1478,6 +1478,7 @@ function modal(info) {
       "",
       null,
       config.recommendations.split,
+      false,
     );
 
     const control = recommendationsArea.querySelector(".control");
@@ -1578,6 +1579,17 @@ function modal(info) {
     }
   }
 
+  function cleanup(_modal) {
+    if (videoActive && info.backdrop) unloadImages([info.backdrop]);
+    if (seasonsActive && info.seasons) unloadImages(info.seasons.map((s) => s.episodes.map((e) => e.image)).flat(1));
+    if (castActive && info.cast) unloadImages(info.cast.map((p) => p.image));
+    if (crewActive && info.crew) unloadImages(info.crew.map((p) => p.image));
+    if (reviewsActive && info.reviews)
+      unloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
+    if (recommendationsActive && recommendationImages)
+      unloadImages(recommendationImages);
+  }
+
   onWindowResize(checkResize);
 
   if (castActive && castSlides) {
@@ -1674,7 +1686,7 @@ function modal(info) {
     videoActive ? "has-video" : null,
   );
   checkCurrentlyPlaying();
-  showModal();
+  showModal(cleanup);
 
   if (videoActive) {
     video.scrollIntoView({ block: "end" });
@@ -1716,7 +1728,7 @@ function initializeWatchModalCheck() {
         if (info && info.title) {
           let recommendationImages = [];
           if (info.recommendations && getWatchSection("Recommendations"))
-            recommendationImages = info.recommendations.map((r) => r.image);
+            recommendationImages = getNonCachedImages(info.recommendations.map((r) => r.image));
           if (info.backdrop && getWatchSection("Video"))
             preloadImages([info.backdrop]);
           if (info.cast && getWatchSection("Cast"))
@@ -1727,7 +1739,7 @@ function initializeWatchModalCheck() {
             preloadImages(info.reviews.filter((r) => r.avatar).map((r) => r.avatar));
           preloadImages(recommendationImages);
 
-          modal(info);
+          modal(info, recommendationImages);
         } else {
           removeQueries(
             config.query.modal,

@@ -50,19 +50,19 @@ export function resetCache(exclusion) {
 let fetching = new Map();
 let db;
 
-function initializeDB() {
+async function initializeDB() {
   if (!db) {
-    db = new openDB(config.storePrefix, 1, {
+    db = await openDB(config.storePrefix, 1, {
       upgrade: (db) => db.createObjectStore(cachePrefix)
     });
   }
 }
 
 async function setDB(key, value) {
-  initializeDB();
+  await initializeDB();
 
   if (![undefined, null].includes(value)) {
-    await (await db).put(
+    await db.put(
       cachePrefix,
       JSON.stringify({ d: Date.now(), v: value }),
       store.names.cache(key)
@@ -71,8 +71,8 @@ async function setDB(key, value) {
 }
 
 async function getDB(key, max = config.maxCacheDays) {
-  initializeDB();
-  const result = await (await db).get(cachePrefix, store.names.cache(key));
+  await initializeDB();
+  const result = await db.get(cachePrefix, store.names.cache(key));
 
   if (result) {
     let json;
@@ -95,15 +95,15 @@ async function getDB(key, max = config.maxCacheDays) {
 }
 
 export async function resetDB() {
-  initializeDB();
-  await (await db).clear(cachePrefix);
+  await initializeDB();
+  await db.clear(cachePrefix);
 }
 
 export async function cleanupDB(max = config.maxCacheDays) {
-  initializeDB();
+  await initializeDB();
 
   async function checkKey(key) {
-    const result = await (await db).get(cachePrefix, key);
+    const result = await db.get(cachePrefix, key);
 
     if (result) {
       let json;
@@ -118,12 +118,12 @@ export async function cleanupDB(max = config.maxCacheDays) {
       const daysDiff = Math.floor(diff / (1000 * 60 * 60 * 24));
 
       if (daysDiff >= max) {
-        await (await db).delete(cachePrefix, key);
+        await db.delete(cachePrefix, key);
       }
     }
   }
 
-  const keys = await (await db).getAllKeys(cachePrefix);
+  const keys = await db.getAllKeys(cachePrefix);
   await Promise.all(keys.map(checkKey));
 }
 
@@ -170,6 +170,67 @@ export async function cacheLoadImage(image, initial) {
   }
 }
 
-export async function preloadImages(images) {
+export async function cacheImages(images) {
   await Promise.all(images.map((url) => cacheLoadImage(null, url)));
+}
+
+let cache;
+
+export function initializeCache() {
+  cache = document.createElement("cache");
+  document.body.append(cache);
+}
+
+export async function preloadImages(images) {
+  let count = 0;
+
+  function imageExists(url) {
+    return Array.from(cache.children).some((i) => i.src === url);
+  }
+
+  async function loadImage(url) {
+    return new Promise(function (resolve) {
+      function checkCount() {
+        if (count >= images.length) {
+          resolve();
+        }
+      }
+
+      function incrementCount() {
+        count++;
+        resolve();
+      }
+
+      if (imageExists(url) || url === undefined || url === null) {
+        incrementCount();
+      } else {
+        const image = document.createElement("img");
+
+        image.addEventListener("load", incrementCount);
+        image.addEventListener("error", incrementCount);
+
+        image.src = url;
+        image.alt = `${config.storePrefix}-cache`;
+
+        cache.append(image);
+        checkCount();
+      }
+    });
+  }
+
+  await Promise.all(images.map(loadImage));
+}
+
+export function getNonCachedImages(images) {
+  return images.filter(function (url) {
+    const image = document.querySelector(`cache img[src="${url}"]`);
+    return !image;
+  });
+}
+
+export function unloadImages(images) {
+  for (const url of images) {
+    const image = document.querySelector(`cache img[src="${url}"]`);
+    if (image) image.remove();
+  }
 }

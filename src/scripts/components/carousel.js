@@ -1,6 +1,6 @@
 import { config } from "../config.js";
 import { isHovered, onSwipe } from "../functions.js";
-import { cacheLoadImage, preloadImages } from "../cache.js";
+import { cacheLoadImage, cacheImages } from "../cache.js";
 import { getTrending } from "../api/trending.js";
 import { watchContent } from "./watch.js";
 import { getPage } from "../store/pages.js";
@@ -160,7 +160,7 @@ export function initializeCarousels() {
 
     if (movies) {
       movies.splice(config.carousel.amount, movies.length);
-      preloadImages(movies.map((i) => i.backdrop));
+      cacheImages(movies.map((i) => i.backdrop));
       initializeCarousel(moviesCard, movies, "movie");
     }
   }
@@ -181,7 +181,7 @@ export function initializeCarousels() {
 
     if (shows) {
       shows.splice(config.carousel.amount, shows.length);
-      preloadImages(shows.map((i) => i.backdrop));
+      cacheImages(shows.map((i) => i.backdrop));
       initializeCarousel(showsCard, shows, "tv");
     }
   }

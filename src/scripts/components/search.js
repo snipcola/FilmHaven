@@ -10,7 +10,7 @@ import {
   onSwipe,
   transparentImage,
 } from "../functions.js";
-import { preloadImages, cacheLoadImage } from "../cache.js";
+import { preloadImages, getNonCachedImages, unloadImages } from "../cache.js";
 import { getSearchResults } from "../api/search.js";
 import { watchContent } from "./watch.js";
 import { hideModal } from "./modal.js";
@@ -112,7 +112,7 @@ function initializeSearch(area, placeholder) {
 
     card.className = "card";
     image.className = "image";
-    cacheLoadImage(image, info.image);
+    image.src = info.image;
     image.alt = info.title;
     loadImage.className = "image load-image";
     loadImage.src = transparentImage;
@@ -303,6 +303,7 @@ function initializeSearch(area, placeholder) {
   }
 
   function cleanup() {
+    unloadImages(images);
     images = [];
   }
 
@@ -352,7 +353,7 @@ function initializeSearch(area, placeholder) {
       if (!searchResults) {
         notify(true, "Failed to fetch results", "warning");
       } else {
-        const searchImages = searchResults.map((i) => i.image);
+        const searchImages = getNonCachedImages(searchResults.map((i) => i.image));
         images.push(...searchImages);
         preloadImages(searchImages);
 

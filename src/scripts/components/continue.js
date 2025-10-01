@@ -3,7 +3,7 @@ import {
   getContinueWatching,
   removeFromContinueWatching,
 } from "../store/continue.js";
-import { preloadImages } from "../cache.js";
+import { cacheImages } from "../cache.js";
 import { isHovered } from "../functions.js";
 
 export async function initializeContinue() {
@@ -74,7 +74,7 @@ export async function initializeContinue() {
       controlActive = false;
       control.remove();
     } else {
-      preloadImages(continueWatching.map((i) => i.image));
+      cacheImages(continueWatching.map((i) => i.image));
       initializeArea(homeContinueArea, continueWatching, label);
       homeContinueArea.classList.remove("inactive");
       homeContinueArea.append(control);

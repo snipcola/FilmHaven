@@ -183,10 +183,8 @@ export function getCSSVariable(name) {
   return styles.getPropertyValue(`--${name}`).trim();
 }
 
-export function blobToBase64(blob) {
-  return new Promise(function (resolve) {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.readAsDataURL(blob);
-  });
+export async function blobToBase64(blob) {
+  const buffer = await blob.arrayBuffer();
+  const base64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+  return `data:${blob.type};base64,${base64}`;
 }

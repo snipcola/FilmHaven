@@ -1,4 +1,4 @@
-import { store } from "../config.js";
+import { config, store } from "../config.js";
 
 function get() {
   const continueWatching = localStorage.getItem(store.names.continue);
@@ -50,6 +50,10 @@ export function addContinueWatching(id, type, title, image) {
     records[existingRecord] = newRecord;
   } else {
     records.unshift(newRecord);
+
+    if (records.length > config.area.amount) {
+      records.pop();
+    }
   }
 
   set(records);

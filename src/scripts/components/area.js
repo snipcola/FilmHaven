@@ -7,7 +7,7 @@ import {
   onSwipe,
   transparentImage,
 } from "../functions.js";
-import { cacheLoadImage, preloadImages } from "../cache.js";
+import { cacheLoadImage, cacheImages } from "../cache.js";
 import { getTrending } from "../api/trending.js";
 import { getRated } from "../api/rated.js";
 import { getNew } from "../api/new.js";
@@ -22,6 +22,7 @@ export function initializeArea(
   labelText,
   failed,
   customSplit,
+  cache = true
 ) {
   area.innerHTML = "";
   const noResults = Array.isArray(initialSlides) && initialSlides.length === 0;
@@ -107,7 +108,8 @@ export function initializeArea(
 
     card.className = "card";
     image.className = "image";
-    cacheLoadImage(image, info.image);
+    if (cache) cacheLoadImage(image, info.image);
+    else image.src = info.image;
     image.alt = info.title;
     loadImage.className = "image load-image";
     loadImage.src = transparentImage;
@@ -343,7 +345,7 @@ export function initializeAreas() {
         trendingMovies.splice(0, config.carousel.amount);
         trendingMovies.splice(config.area.amount, trendingMovies.length);
 
-        preloadImages(trendingMovies.map((i) => i.image));
+        cacheImages(trendingMovies.map((i) => i.image));
         initializeArea(moviesTrendingArea, trendingMovies, label);
       }
     }
@@ -368,7 +370,7 @@ export function initializeAreas() {
         trendingShows.splice(0, config.carousel.amount);
         trendingShows.splice(config.area.amount, trendingShows.length);
 
-        preloadImages(trendingShows.map((i) => i.image));
+        cacheImages(trendingShows.map((i) => i.image));
         initializeArea(showsTrendingArea, trendingShows, label);
       }
     }
@@ -398,7 +400,7 @@ export function initializeAreas() {
         initializeArea(moviesRatedArea, null, label, true);
       } else {
         ratedMovies.splice(config.area.amount, ratedMovies.length);
-        preloadImages(ratedMovies.map((i) => i.image));
+        cacheImages(ratedMovies.map((i) => i.image));
         initializeArea(moviesRatedArea, ratedMovies, label);
       }
     }
@@ -421,7 +423,7 @@ export function initializeAreas() {
         initializeArea(showsRatedArea, null, label, true);
       } else {
         ratedShows.splice(config.area.amount, ratedShows.length);
-        preloadImages(ratedShows.map((i) => i.image));
+        cacheImages(ratedShows.map((i) => i.image));
         initializeArea(showsRatedArea, ratedShows, label);
       }
     }
@@ -451,7 +453,7 @@ export function initializeAreas() {
         initializeArea(moviesNewArea, null, label, true);
       } else {
         newMovies.splice(config.area.amount, newMovies.length);
-        preloadImages(newMovies.map((i) => i.image));
+        cacheImages(newMovies.map((i) => i.image));
         initializeArea(moviesNewArea, newMovies, label);
       }
     }
@@ -474,7 +476,7 @@ export function initializeAreas() {
         initializeArea(showsNewArea, null, label, true);
       } else {
         newShows.splice(config.area.amount, newShows.length);
-        preloadImages(newShows.map((i) => i.image));
+        cacheImages(newShows.map((i) => i.image));
         initializeArea(showsNewArea, newShows, label);
       }
     }

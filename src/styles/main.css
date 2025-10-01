@@ -6,6 +6,7 @@
 @import url(icons.css);
 @import url(scrollbar.css);
 
+@import url(components/cache.css);
 @import url(components/dim.css);
 
 @import url(components/header.css);
