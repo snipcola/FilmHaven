@@ -134,7 +134,6 @@ function modal(info, recommendationImages) {
   const iframe = document.createElement("iframe");
 
   const trailer = document.createElement("div");
-  const trailerIframe = document.createElement("iframe");
 
   const downloadsContainer = document.createElement("div");
   const downloadsList = document.createElement("div");
@@ -424,31 +423,34 @@ function modal(info, recommendationImages) {
   }
 
   if (trailerActive && info.trailer) {
-    let currentTrailerIframe;
+    let trailerIframe;
+
+    function removeTrailerIframe() {
+      if (trailerIframe) trailerIframe.remove();
+    }
+
+    function createTrailerIframe() {
+      removeTrailerIframe();
+
+      trailerIframe = document.createElement("iframe");
+      trailerIframe.className = "iframe";
+      trailerIframe.setAttribute("allowfullscreen", true);
+      trailerIframe.src = info.trailer;
+      trailer.append(trailerIframe);
+    }
 
     trailer.className = "trailer";
     trailer.addEventListener("click", function (e) {
       if (e.target === trailer) {
         trailer.classList.remove("active");
-
-        if (currentTrailerIframe) {
-          currentTrailerIframe.remove();
-          currentTrailerIframe = trailerIframe.cloneNode();
-          trailer.append(currentTrailerIframe);
-        }
+        removeTrailerIframe();
       }
     });
-
-    trailerIframe.className = "iframe";
-    trailerIframe.setAttribute("allowfullscreen", true);
-    trailerIframe.src = info.trailer;
-
-    currentTrailerIframe = trailerIframe.cloneNode();
-    trailer.append(currentTrailerIframe);
 
     customButtons.push({
       icon: "camera",
       callback: function () {
+        createTrailerIframe();
         trailer.classList.add("active");
       },
     });
