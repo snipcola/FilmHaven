@@ -1,7 +1,7 @@
 {
   "name": "filmhaven",
   "author": "Snipcola",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -31,6 +31,6 @@
     "concurrently": "9.2.1",
     "prettier": "3.6.2",
     "serve": "14.2.5",
-    "vercel": "48.1.6"
+    "vercel": "48.2.0"
   }
 }

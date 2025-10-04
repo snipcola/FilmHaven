@@ -27,6 +27,11 @@ export const defaultProviders = [
     tv: `https://%b/tv/%i/%s/%e?primaryColor=${colour}&secondaryColor=a2a2a2&iconColor=eefdec&icons=vid&player=default&title=false&poster=false&autoplay=false&nextbutton=false`,
   },
   {
+    base: "videasy.net",
+    movie: `https://player.%b/movie/%i?color=${colour}&nextEpisode=false&episodeSelector=false&autoplayNextEpisode=false&overlay=false`,
+    tv: `https://player.%b/tv/%i/%s/%e?color=${colour}&nextEpisode=false&episodeSelector=false&autoplayNextEpisode=false&overlay=false`,
+  },
+  {
     base: "111movies.com",
     movie: "https://%b/movie/%i",
     tv: "https://%b/tv/%i/%s/%e",
@@ -37,9 +42,9 @@ export const defaultProviders = [
     tv: "https://%b/embed/tv/%i/%s/%e",
   },
   {
-    base: "embed.su",
-    movie: "https://%b/embed/movie/%i",
-    tv: "https://%b/embed/tv/%i/%s/%e",
+    base: "vidrock.net",
+    movie: `https://%b/movie/%i?theme=${colour}&autoplay=false&autonext=false&download=false&nextbutton=false&episodeselector=false`,
+    tv: `https://%b/tv/%i/%s/%e?theme=${colour}&autoplay=false&autonext=false&download=false&nextbutton=false&episodeselector=false`,
   },
 ];
 
@@ -92,10 +97,10 @@ export const config = {
       ...[
         repository
           ? {
-            icon: "github",
-            url: repository,
-            label: "Git",
-          }
+              icon: "github",
+              url: repository,
+              label: "Git",
+            }
           : {},
         {
           icon: "download",
