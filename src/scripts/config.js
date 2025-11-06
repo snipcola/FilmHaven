@@ -37,9 +37,14 @@ export const defaultProviders = [
     tv: "https://%b/tv/%i/%s/%e",
   },
   {
-    base: "vidsrc.xyz",
+    base: "vidsrc-embed.ru",
     movie: "https://%b/embed/movie/%i",
     tv: "https://%b/embed/tv/%i/%s/%e",
+  },
+  {
+    base: "vidking.net",
+    movie: `https://%b/embed/movie/%i?color=${colour}&autoPlay=false&nextEpisode=false&episodeSelector=false`,
+    tv: `https://%b/embed/tv/%i/%s/%e?color=${colour}&autoPlay=false&nextEpisode=false&episodeSelector=false`,
   },
   {
     base: "vidrock.net",
