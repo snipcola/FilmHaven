@@ -1,11 +1,12 @@
-ARG NODE_VERSION=25.1.0-alpine
-ARG NGINX_VERSION=1.29.3-alpine
+ARG BUN_VERSION=1.3.5-alpine
+ARG NGINX_VERSION=1.29.4-alpine
 
-FROM node:$NODE_VERSION AS build
-USER node
+FROM oven/bun:$BUN_VERSION AS build
 WORKDIR /usr/src/build
-COPY --chown=node:node . .
-RUN npm install --production && npm run build
+COPY package.json bun.lock ./
+RUN bun ci --production
+COPY . .
+RUN bun run build
 
 FROM nginx:$NGINX_VERSION
 COPY --from=build /usr/src/build/out/index.html /usr/share/nginx/html/index.html

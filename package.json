@@ -1,36 +1,26 @@
 {
   "name": "filmhaven",
   "author": "Snipcola",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "webpack --config build/config.production.js",
-    "dev": "concurrently \"webpack --config build/config.development.js\" \"serve -s out\"",
+    "build": "bun run scripts/build.js",
+    "dev": "bun run scripts/dev.js",
     "format": "prettier --write \"build/**/*.js\" \"src/**/*.{js,css}\"",
     "release": "git push origin main:release --force",
     "deploy-vercel": "vercel --prod"
   },
   "dependencies": {
-    "@webdiscus/pug-loader": "2.11.1",
-    "clean-webpack-plugin": "4.0.0",
-    "css-loader": "7.1.2",
-    "css-minimizer-webpack-plugin": "7.0.2",
     "filesize": "11.0.13",
-    "html-webpack-plugin": "5.6.4",
+    "html-minifier-terser": "7.2.0",
     "idb": "8.0.3",
-    "mini-css-extract-plugin": "2.9.4",
-    "terser-webpack-plugin": "5.3.14",
-    "ulidx": "2.4.1",
-    "webpack": "5.102.1",
-    "webpack-cli": "6.0.1",
-    "webpack-merge": "6.0.1",
-    "webpack-remove-empty-scripts": "1.1.1"
+    "pug": "3.0.3",
+    "ulidx": "2.4.1"
   },
   "devDependencies": {
-    "concurrently": "9.2.1",
-    "prettier": "3.6.2",
-    "serve": "14.2.5",
-    "vercel": "48.8.2"
+    "open": "11.0.0",
+    "prettier": "3.7.4",
+    "vercel": "50.1.3"
   }
 }

@@ -213,7 +213,7 @@ export const api = {
 
 export const downloadApi = {
   movies: {
-    url: "https://yts.mx/api",
+    url: "https://yts.lt/api",
     version: "v2",
   },
   tv: {
@@ -224,19 +224,28 @@ export const downloadApi = {
     "udp://open.demonii.com:1337/announce",
     "udp://glotorrents.pw:6969/announce",
     "udp://tracker.opentrackr.org:1337/announce",
-    "udp://torrent.gresille.org:80/announce",
-    "udp://tracker.openbittorrent.com:80",
     "udp://tracker.coppersurfer.tk:6969",
     "udp://tracker.leechers-paradise.org:6969",
     "udp://p4p.arenabg.ch:1337",
     "udp://tracker.internetwarriors.net:1337",
-    "udp://9.rarbg.me:2970/announce",
     "udp://p4p.arenabg.com:1337/announce",
     "udp://tracker.torrent.eu.org:451/announce",
     "udp://tracker.dler.org:6969/announce",
+    "udp://tracker2.dler.org:80/announce",
     "udp://open.stealth.si:80/announce",
-    "udp://ipv4.tracker.harry.lu:80/announce",
-    "https://opentracker.i2p.rocks:443/announce",
+    "udp://open.demonoid.ch:6969/announce",
+    "udp://explodie.org:6969/announce",
+    "udp://tracker.tryhackx.org:6969/announce",
+    "udp://tracker.torrust-demo.com:6969/announce",
+    "udp://tracker.therarbg.to:6969/announce",
+    "udp://tracker.qu.ax:6969/announce",
+    "udp://tracker.hifimarket.in:2710/announce",
+    "udp://tracker.gmi.gd:6969/announce",
+    "udp://tracker.bittor.pw:1337/announce",
+    "udp://tracker.0x7c0.com:6969/announce",
+    "udp://tracker-udp.gbitt.info:80/announce",
+    "udp://tr4ck3r.duckdns.org:6969/announce",
+    "udp://t.overflow.biz:6969/announce",
   ],
 };
 
