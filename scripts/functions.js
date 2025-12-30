@@ -29,28 +29,40 @@ export async function build(dev = false) {
     await rm(config.out, { recursive: true, force: true });
   }
 
-  const jsBuild = await Bun.build({
-    entrypoints: config.scripts,
-    minify: !dev,
-    target: "browser",
-    define: {
-      __VERSION__: JSON.stringify(packageJSON.version),
-    },
-  });
+  let jsBuild, cssBuild;
 
-  if (!jsBuild.success) {
-    console.error("JavaScript build failed:", jsBuild.logs);
+  try {
+    jsBuild = await Bun.build({
+      entrypoints: config.scripts,
+      target: "browser",
+      minify: !dev,
+      define: {
+        __VERSION__: JSON.stringify(packageJSON.version),
+      },
+    });
+  } catch (error) {
+    console.error("JavaScript build failed:\n", error);
     return false;
   }
 
-  const cssBuild = await Bun.build({
-    entrypoints: config.styles,
-    target: "browser",
-    minify: !dev,
-  });
+  if (!jsBuild.success) {
+    console.error("JavaScript build failed:\n", jsBuild.logs);
+    return false;
+  }
+
+  try {
+    cssBuild = await Bun.build({
+      entrypoints: config.styles,
+      target: "browser",
+      minify: !dev,
+    });
+  } catch (error) {
+    console.error("CSS build failed:\n", error);
+    return false;
+  }
 
   if (!cssBuild.success) {
-    console.error("CSS build failed:", cssBuild.logs);
+    console.error("CSS build failed:\n", cssBuild.logs);
     return false;
   }
 
@@ -76,20 +88,32 @@ export async function build(dev = false) {
     start_url: "https://watch.snipcola.com",
   });
 
-  let html = pug.renderFile(config.pug, {
-    jsContent: await jsBuild.outputs[0].text(),
-    cssContent: await cssBuild.outputs[0].text(),
-    manifestBase64: Buffer.from(manifestJSON).toString("base64"),
-  });
+  let html;
+
+  try {
+    html = pug.renderFile(config.pug, {
+      jsContent: await jsBuild.outputs[0].text(),
+      cssContent: await cssBuild.outputs[0].text(),
+      manifestBase64: Buffer.from(manifestJSON).toString("base64"),
+    });
+  } catch (error) {
+    console.error("Pug compilation failed:\n", error);
+    return false;
+  }
 
   if (!dev) {
-    html = await minify(html, {
-      collapseWhitespace: true,
-      removeComments: true,
-      minifyCSS: true,
-      minifyJS: true,
-      minifyURLs: true,
-    });
+    try {
+      html = await minify(html, {
+        collapseWhitespace: true,
+        removeComments: true,
+        minifyCSS: true,
+        minifyJS: true,
+        minifyURLs: true,
+      });
+    } catch (error) {
+      console.error("Minification failed:\n", error);
+      return false;
+    }
   }
 
   await Bun.write(config.result, html);

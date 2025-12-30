@@ -5,7 +5,7 @@ import { config, build, serve } from "./functions.js";
 const success = await build(true);
 
 if (!success) {
-  console.warn("Initial build failed");
+  console.error("Initial build failed");
 }
 
 serve(config.dev.port);
