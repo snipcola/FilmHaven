@@ -85,7 +85,7 @@ export async function build(dev = false) {
     background_color: "#141514",
     theme_color: "#0f100f",
     display: "standalone",
-    start_url: "https://watch.snipcola.com",
+    start_url: "https://watch.snipcola.st",
   });
 
   let html;

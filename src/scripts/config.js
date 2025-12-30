@@ -16,7 +16,7 @@ import { getUrlWithQueries, setQueries } from "./query.js";
 import { getCSSVariable } from "./functions.js";
 
 const name = "FilmHaven";
-const repository = "https://code.snipcola.com/snipcola/FilmHaven";
+const repository = "https://code.snipcola.st/snipcola/FilmHaven";
 const author = "Snipcola";
 const colour = getCSSVariable("primary").replace("#", "") || "ffffff";
 
